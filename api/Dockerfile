@@ -23,9 +23,11 @@ RUN uv sync --locked --no-install-project --no-dev
 COPY api/ /app/api/
 RUN uv sync --locked --no-dev
 
-# 4) Diccionario (seeds + load_kb.py): lo usa el paso de carga en Railway
-#    (`python /app/knowledgebase/load_kb.py`). En local va por volumen (compose).
+# 4) Diccionario (seeds + load_kb.py) y datos NormTrace (catálogos ODS/metas +
+#    CSV semilla del Ejecutivo): los usan los pasos de carga en Railway
+#    (`load_kb.py`, `load_executive.py`) y el API para servir catálogos.
 COPY knowledgebase /app/knowledgebase
+COPY normtrace /app/normtrace
 
 ENV PATH="/app/.venv/bin:$PATH"
 

@@ -310,3 +310,24 @@ no es prerequisito del escáner interactivo.
 - **Limitación del sandbox:** el scraping en vivo de gaceta.diputados.gob.mx no se
   ejecuta aquí (egress/Mongo); el parser y la ingesta se verifican con fixtures. F6
   es opcional y no es prerequisito del escáner interactivo.
+
+### 2026-07-17 — Fase H v2 (Huella 2030) — Módulo A backend
+
+- **Assets** colocados: CSV semilla → `normtrace/03_tables/legislative_mapping/`,
+  referencia de diseño → `docs/referencia/`.
+- **Catálogos** `normtrace/03_tables/catalogos/`: `ods.json` (17 ODS con nombre es +
+  color oficial, de la referencia) y `metas.json` (169 metas: código+ods, nombre
+  corto de las 45 usadas; `nombre_oficial_es: null` — no se inventan redacciones ONU).
+- **Datos** `executive_initiatives`: modelo + repositorio en qhld-data
+  (`upsert_preserving_coding` no pisa `ods_*`/`metas`/`tema`/`confianza`);
+  importador `knowledgebase/load_executive.py` (id `EJE-2024-2030-{num}-{seccion_slug}`).
+- **API** `GET /huella/ejecutivo`, `/ejecutivo/iniciativas`, `/ejecutivo/iniciativas/{id}`
+  (agregación pura y testeable, caché 1 h). `COPY normtrace` añadido a la imagen del api.
+- **Verificado contra la semilla:** 82 iniciativas, 76 aprobadas, 95% con
+  correspondencia ODS, 17 leyes nuevas, ODS 16 dominante, 45 metas distintas con
+  16.6 (23) y 16.3 (14) a la cabeza; end-to-end con mongomock. api 12 tests unit verdes.
+- **Nota:** el criterio 2 dice "ODS 16 con 40 menciones"; el dato real de la semilla
+  (y de la referencia) es **44** (35 principal + 9 secundario). La agregación reproduce
+  la referencia con fidelidad; el "40" del brief es aproximado.
+- **Pendiente de la fase:** scraper SIL (H.5), Módulo B Minutas (H.6), identidad +
+  vistas Vue (H.7), tests con fixtures + capturas (H.8).

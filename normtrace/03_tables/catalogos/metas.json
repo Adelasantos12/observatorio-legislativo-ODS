@@ -1,0 +1,1016 @@
+[
+  {
+    "codigo": "1.1",
+    "ods": 1,
+    "nombre_corto_es": null,
+    "nombre_oficial_es": null
+  },
+  {
+    "codigo": "1.2",
+    "ods": 1,
+    "nombre_corto_es": null,
+    "nombre_oficial_es": null
+  },
+  {
+    "codigo": "1.3",
+    "ods": 1,
+    "nombre_corto_es": "Sistemas de protección social",
+    "nombre_oficial_es": null
+  },
+  {
+    "codigo": "1.4",
+    "ods": 1,
+    "nombre_corto_es": "Acceso a servicios básicos y vivienda",
+    "nombre_oficial_es": null
+  },
+  {
+    "codigo": "1.5",
+    "ods": 1,
+    "nombre_corto_es": null,
+    "nombre_oficial_es": null
+  },
+  {
+    "codigo": "1.a",
+    "ods": 1,
+    "nombre_corto_es": null,
+    "nombre_oficial_es": null
+  },
+  {
+    "codigo": "1.b",
+    "ods": 1,
+    "nombre_corto_es": null,
+    "nombre_oficial_es": null
+  },
+  {
+    "codigo": "2.1",
+    "ods": 2,
+    "nombre_corto_es": null,
+    "nombre_oficial_es": null
+  },
+  {
+    "codigo": "2.2",
+    "ods": 2,
+    "nombre_corto_es": null,
+    "nombre_oficial_es": null
+  },
+  {
+    "codigo": "2.3",
+    "ods": 2,
+    "nombre_corto_es": null,
+    "nombre_oficial_es": null
+  },
+  {
+    "codigo": "2.4",
+    "ods": 2,
+    "nombre_corto_es": null,
+    "nombre_oficial_es": null
+  },
+  {
+    "codigo": "2.5",
+    "ods": 2,
+    "nombre_corto_es": "Diversidad genética de semillas y cultivos",
+    "nombre_oficial_es": null
+  },
+  {
+    "codigo": "2.a",
+    "ods": 2,
+    "nombre_corto_es": null,
+    "nombre_oficial_es": null
+  },
+  {
+    "codigo": "2.b",
+    "ods": 2,
+    "nombre_corto_es": null,
+    "nombre_oficial_es": null
+  },
+  {
+    "codigo": "2.c",
+    "ods": 2,
+    "nombre_corto_es": null,
+    "nombre_oficial_es": null
+  },
+  {
+    "codigo": "3.1",
+    "ods": 3,
+    "nombre_corto_es": null,
+    "nombre_oficial_es": null
+  },
+  {
+    "codigo": "3.2",
+    "ods": 3,
+    "nombre_corto_es": null,
+    "nombre_oficial_es": null
+  },
+  {
+    "codigo": "3.3",
+    "ods": 3,
+    "nombre_corto_es": null,
+    "nombre_oficial_es": null
+  },
+  {
+    "codigo": "3.4",
+    "ods": 3,
+    "nombre_corto_es": "Enfermedades no transmisibles",
+    "nombre_oficial_es": null
+  },
+  {
+    "codigo": "3.5",
+    "ods": 3,
+    "nombre_corto_es": null,
+    "nombre_oficial_es": null
+  },
+  {
+    "codigo": "3.6",
+    "ods": 3,
+    "nombre_corto_es": null,
+    "nombre_oficial_es": null
+  },
+  {
+    "codigo": "3.7",
+    "ods": 3,
+    "nombre_corto_es": null,
+    "nombre_oficial_es": null
+  },
+  {
+    "codigo": "3.8",
+    "ods": 3,
+    "nombre_corto_es": null,
+    "nombre_oficial_es": null
+  },
+  {
+    "codigo": "3.9",
+    "ods": 3,
+    "nombre_corto_es": null,
+    "nombre_oficial_es": null
+  },
+  {
+    "codigo": "3.a",
+    "ods": 3,
+    "nombre_corto_es": "Control del tabaco (CMCT)",
+    "nombre_oficial_es": null
+  },
+  {
+    "codigo": "3.b",
+    "ods": 3,
+    "nombre_corto_es": null,
+    "nombre_oficial_es": null
+  },
+  {
+    "codigo": "3.c",
+    "ods": 3,
+    "nombre_corto_es": null,
+    "nombre_oficial_es": null
+  },
+  {
+    "codigo": "3.d",
+    "ods": 3,
+    "nombre_corto_es": null,
+    "nombre_oficial_es": null
+  },
+  {
+    "codigo": "4.1",
+    "ods": 4,
+    "nombre_corto_es": null,
+    "nombre_oficial_es": null
+  },
+  {
+    "codigo": "4.2",
+    "ods": 4,
+    "nombre_corto_es": null,
+    "nombre_oficial_es": null
+  },
+  {
+    "codigo": "4.3",
+    "ods": 4,
+    "nombre_corto_es": null,
+    "nombre_oficial_es": null
+  },
+  {
+    "codigo": "4.4",
+    "ods": 4,
+    "nombre_corto_es": null,
+    "nombre_oficial_es": null
+  },
+  {
+    "codigo": "4.5",
+    "ods": 4,
+    "nombre_corto_es": null,
+    "nombre_oficial_es": null
+  },
+  {
+    "codigo": "4.6",
+    "ods": 4,
+    "nombre_corto_es": null,
+    "nombre_oficial_es": null
+  },
+  {
+    "codigo": "4.7",
+    "ods": 4,
+    "nombre_corto_es": null,
+    "nombre_oficial_es": null
+  },
+  {
+    "codigo": "4.a",
+    "ods": 4,
+    "nombre_corto_es": null,
+    "nombre_oficial_es": null
+  },
+  {
+    "codigo": "4.b",
+    "ods": 4,
+    "nombre_corto_es": null,
+    "nombre_oficial_es": null
+  },
+  {
+    "codigo": "4.c",
+    "ods": 4,
+    "nombre_corto_es": null,
+    "nombre_oficial_es": null
+  },
+  {
+    "codigo": "5.1",
+    "ods": 5,
+    "nombre_corto_es": "Fin de la discriminación contra las mujeres",
+    "nombre_oficial_es": null
+  },
+  {
+    "codigo": "5.2",
+    "ods": 5,
+    "nombre_corto_es": "Eliminación de la violencia de género",
+    "nombre_oficial_es": null
+  },
+  {
+    "codigo": "5.3",
+    "ods": 5,
+    "nombre_corto_es": null,
+    "nombre_oficial_es": null
+  },
+  {
+    "codigo": "5.4",
+    "ods": 5,
+    "nombre_corto_es": "Cuidados y trabajo doméstico no remunerado",
+    "nombre_oficial_es": null
+  },
+  {
+    "codigo": "5.5",
+    "ods": 5,
+    "nombre_corto_es": "Participación plena y paridad",
+    "nombre_oficial_es": null
+  },
+  {
+    "codigo": "5.6",
+    "ods": 5,
+    "nombre_corto_es": null,
+    "nombre_oficial_es": null
+  },
+  {
+    "codigo": "5.a",
+    "ods": 5,
+    "nombre_corto_es": null,
+    "nombre_oficial_es": null
+  },
+  {
+    "codigo": "5.b",
+    "ods": 5,
+    "nombre_corto_es": null,
+    "nombre_oficial_es": null
+  },
+  {
+    "codigo": "5.c",
+    "ods": 5,
+    "nombre_corto_es": "Políticas y leyes para la igualdad",
+    "nombre_oficial_es": null
+  },
+  {
+    "codigo": "6.1",
+    "ods": 6,
+    "nombre_corto_es": "Agua potable segura y asequible",
+    "nombre_oficial_es": null
+  },
+  {
+    "codigo": "6.2",
+    "ods": 6,
+    "nombre_corto_es": "Saneamiento e higiene",
+    "nombre_oficial_es": null
+  },
+  {
+    "codigo": "6.3",
+    "ods": 6,
+    "nombre_corto_es": null,
+    "nombre_oficial_es": null
+  },
+  {
+    "codigo": "6.4",
+    "ods": 6,
+    "nombre_corto_es": "Uso eficiente del agua",
+    "nombre_oficial_es": null
+  },
+  {
+    "codigo": "6.5",
+    "ods": 6,
+    "nombre_corto_es": "Gestión integrada de recursos hídricos",
+    "nombre_oficial_es": null
+  },
+  {
+    "codigo": "6.6",
+    "ods": 6,
+    "nombre_corto_es": null,
+    "nombre_oficial_es": null
+  },
+  {
+    "codigo": "6.a",
+    "ods": 6,
+    "nombre_corto_es": null,
+    "nombre_oficial_es": null
+  },
+  {
+    "codigo": "6.b",
+    "ods": 6,
+    "nombre_corto_es": "Participación local en la gestión del agua",
+    "nombre_oficial_es": null
+  },
+  {
+    "codigo": "7.1",
+    "ods": 7,
+    "nombre_corto_es": "Acceso a energía asequible",
+    "nombre_oficial_es": null
+  },
+  {
+    "codigo": "7.2",
+    "ods": 7,
+    "nombre_corto_es": "Energías renovables",
+    "nombre_oficial_es": null
+  },
+  {
+    "codigo": "7.3",
+    "ods": 7,
+    "nombre_corto_es": null,
+    "nombre_oficial_es": null
+  },
+  {
+    "codigo": "7.a",
+    "ods": 7,
+    "nombre_corto_es": null,
+    "nombre_oficial_es": null
+  },
+  {
+    "codigo": "7.b",
+    "ods": 7,
+    "nombre_corto_es": "Infraestructura energética",
+    "nombre_oficial_es": null
+  },
+  {
+    "codigo": "8.1",
+    "ods": 8,
+    "nombre_corto_es": null,
+    "nombre_oficial_es": null
+  },
+  {
+    "codigo": "8.2",
+    "ods": 8,
+    "nombre_corto_es": "Productividad y diversificación",
+    "nombre_oficial_es": null
+  },
+  {
+    "codigo": "8.3",
+    "ods": 8,
+    "nombre_corto_es": "Políticas para empleo y emprendimiento",
+    "nombre_oficial_es": null
+  },
+  {
+    "codigo": "8.4",
+    "ods": 8,
+    "nombre_corto_es": null,
+    "nombre_oficial_es": null
+  },
+  {
+    "codigo": "8.5",
+    "ods": 8,
+    "nombre_corto_es": "Empleo pleno y trabajo decente",
+    "nombre_oficial_es": null
+  },
+  {
+    "codigo": "8.6",
+    "ods": 8,
+    "nombre_corto_es": null,
+    "nombre_oficial_es": null
+  },
+  {
+    "codigo": "8.7",
+    "ods": 8,
+    "nombre_corto_es": "Erradicación del trabajo forzoso",
+    "nombre_oficial_es": null
+  },
+  {
+    "codigo": "8.8",
+    "ods": 8,
+    "nombre_corto_es": "Derechos laborales y trabajo seguro",
+    "nombre_oficial_es": null
+  },
+  {
+    "codigo": "8.9",
+    "ods": 8,
+    "nombre_corto_es": null,
+    "nombre_oficial_es": null
+  },
+  {
+    "codigo": "8.10",
+    "ods": 8,
+    "nombre_corto_es": null,
+    "nombre_oficial_es": null
+  },
+  {
+    "codigo": "8.a",
+    "ods": 8,
+    "nombre_corto_es": null,
+    "nombre_oficial_es": null
+  },
+  {
+    "codigo": "8.b",
+    "ods": 8,
+    "nombre_corto_es": null,
+    "nombre_oficial_es": null
+  },
+  {
+    "codigo": "9.1",
+    "ods": 9,
+    "nombre_corto_es": "Infraestructura de calidad",
+    "nombre_oficial_es": null
+  },
+  {
+    "codigo": "9.2",
+    "ods": 9,
+    "nombre_corto_es": "Industrialización inclusiva",
+    "nombre_oficial_es": null
+  },
+  {
+    "codigo": "9.3",
+    "ods": 9,
+    "nombre_corto_es": null,
+    "nombre_oficial_es": null
+  },
+  {
+    "codigo": "9.4",
+    "ods": 9,
+    "nombre_corto_es": null,
+    "nombre_oficial_es": null
+  },
+  {
+    "codigo": "9.5",
+    "ods": 9,
+    "nombre_corto_es": "Investigación e innovación",
+    "nombre_oficial_es": null
+  },
+  {
+    "codigo": "9.a",
+    "ods": 9,
+    "nombre_corto_es": null,
+    "nombre_oficial_es": null
+  },
+  {
+    "codigo": "9.b",
+    "ods": 9,
+    "nombre_corto_es": "Desarrollo tecnológico nacional",
+    "nombre_oficial_es": null
+  },
+  {
+    "codigo": "9.c",
+    "ods": 9,
+    "nombre_corto_es": "Acceso a las TIC",
+    "nombre_oficial_es": null
+  },
+  {
+    "codigo": "10.1",
+    "ods": 10,
+    "nombre_corto_es": null,
+    "nombre_oficial_es": null
+  },
+  {
+    "codigo": "10.2",
+    "ods": 10,
+    "nombre_corto_es": "Inclusión social, económica y política",
+    "nombre_oficial_es": null
+  },
+  {
+    "codigo": "10.3",
+    "ods": 10,
+    "nombre_corto_es": null,
+    "nombre_oficial_es": null
+  },
+  {
+    "codigo": "10.4",
+    "ods": 10,
+    "nombre_corto_es": "Políticas fiscales y de protección social",
+    "nombre_oficial_es": null
+  },
+  {
+    "codigo": "10.5",
+    "ods": 10,
+    "nombre_corto_es": null,
+    "nombre_oficial_es": null
+  },
+  {
+    "codigo": "10.6",
+    "ods": 10,
+    "nombre_corto_es": null,
+    "nombre_oficial_es": null
+  },
+  {
+    "codigo": "10.7",
+    "ods": 10,
+    "nombre_corto_es": null,
+    "nombre_oficial_es": null
+  },
+  {
+    "codigo": "10.a",
+    "ods": 10,
+    "nombre_corto_es": null,
+    "nombre_oficial_es": null
+  },
+  {
+    "codigo": "10.b",
+    "ods": 10,
+    "nombre_corto_es": null,
+    "nombre_oficial_es": null
+  },
+  {
+    "codigo": "10.c",
+    "ods": 10,
+    "nombre_corto_es": null,
+    "nombre_oficial_es": null
+  },
+  {
+    "codigo": "11.1",
+    "ods": 11,
+    "nombre_corto_es": "Vivienda adecuada y asequible",
+    "nombre_oficial_es": null
+  },
+  {
+    "codigo": "11.2",
+    "ods": 11,
+    "nombre_corto_es": "Transporte seguro y sostenible",
+    "nombre_oficial_es": null
+  },
+  {
+    "codigo": "11.3",
+    "ods": 11,
+    "nombre_corto_es": null,
+    "nombre_oficial_es": null
+  },
+  {
+    "codigo": "11.4",
+    "ods": 11,
+    "nombre_corto_es": null,
+    "nombre_oficial_es": null
+  },
+  {
+    "codigo": "11.5",
+    "ods": 11,
+    "nombre_corto_es": null,
+    "nombre_oficial_es": null
+  },
+  {
+    "codigo": "11.6",
+    "ods": 11,
+    "nombre_corto_es": null,
+    "nombre_oficial_es": null
+  },
+  {
+    "codigo": "11.7",
+    "ods": 11,
+    "nombre_corto_es": null,
+    "nombre_oficial_es": null
+  },
+  {
+    "codigo": "11.a",
+    "ods": 11,
+    "nombre_corto_es": null,
+    "nombre_oficial_es": null
+  },
+  {
+    "codigo": "11.b",
+    "ods": 11,
+    "nombre_corto_es": null,
+    "nombre_oficial_es": null
+  },
+  {
+    "codigo": "11.c",
+    "ods": 11,
+    "nombre_corto_es": null,
+    "nombre_oficial_es": null
+  },
+  {
+    "codigo": "12.1",
+    "ods": 12,
+    "nombre_corto_es": null,
+    "nombre_oficial_es": null
+  },
+  {
+    "codigo": "12.2",
+    "ods": 12,
+    "nombre_corto_es": null,
+    "nombre_oficial_es": null
+  },
+  {
+    "codigo": "12.3",
+    "ods": 12,
+    "nombre_corto_es": null,
+    "nombre_oficial_es": null
+  },
+  {
+    "codigo": "12.4",
+    "ods": 12,
+    "nombre_corto_es": null,
+    "nombre_oficial_es": null
+  },
+  {
+    "codigo": "12.5",
+    "ods": 12,
+    "nombre_corto_es": null,
+    "nombre_oficial_es": null
+  },
+  {
+    "codigo": "12.6",
+    "ods": 12,
+    "nombre_corto_es": null,
+    "nombre_oficial_es": null
+  },
+  {
+    "codigo": "12.7",
+    "ods": 12,
+    "nombre_corto_es": "Adquisiciones públicas sostenibles",
+    "nombre_oficial_es": null
+  },
+  {
+    "codigo": "12.8",
+    "ods": 12,
+    "nombre_corto_es": null,
+    "nombre_oficial_es": null
+  },
+  {
+    "codigo": "12.a",
+    "ods": 12,
+    "nombre_corto_es": null,
+    "nombre_oficial_es": null
+  },
+  {
+    "codigo": "12.b",
+    "ods": 12,
+    "nombre_corto_es": null,
+    "nombre_oficial_es": null
+  },
+  {
+    "codigo": "12.c",
+    "ods": 12,
+    "nombre_corto_es": null,
+    "nombre_oficial_es": null
+  },
+  {
+    "codigo": "13.1",
+    "ods": 13,
+    "nombre_corto_es": null,
+    "nombre_oficial_es": null
+  },
+  {
+    "codigo": "13.2",
+    "ods": 13,
+    "nombre_corto_es": null,
+    "nombre_oficial_es": null
+  },
+  {
+    "codigo": "13.3",
+    "ods": 13,
+    "nombre_corto_es": null,
+    "nombre_oficial_es": null
+  },
+  {
+    "codigo": "13.a",
+    "ods": 13,
+    "nombre_corto_es": null,
+    "nombre_oficial_es": null
+  },
+  {
+    "codigo": "13.b",
+    "ods": 13,
+    "nombre_corto_es": null,
+    "nombre_oficial_es": null
+  },
+  {
+    "codigo": "14.1",
+    "ods": 14,
+    "nombre_corto_es": null,
+    "nombre_oficial_es": null
+  },
+  {
+    "codigo": "14.2",
+    "ods": 14,
+    "nombre_corto_es": null,
+    "nombre_oficial_es": null
+  },
+  {
+    "codigo": "14.3",
+    "ods": 14,
+    "nombre_corto_es": null,
+    "nombre_oficial_es": null
+  },
+  {
+    "codigo": "14.4",
+    "ods": 14,
+    "nombre_corto_es": null,
+    "nombre_oficial_es": null
+  },
+  {
+    "codigo": "14.5",
+    "ods": 14,
+    "nombre_corto_es": null,
+    "nombre_oficial_es": null
+  },
+  {
+    "codigo": "14.6",
+    "ods": 14,
+    "nombre_corto_es": null,
+    "nombre_oficial_es": null
+  },
+  {
+    "codigo": "14.7",
+    "ods": 14,
+    "nombre_corto_es": null,
+    "nombre_oficial_es": null
+  },
+  {
+    "codigo": "14.a",
+    "ods": 14,
+    "nombre_corto_es": null,
+    "nombre_oficial_es": null
+  },
+  {
+    "codigo": "14.b",
+    "ods": 14,
+    "nombre_corto_es": null,
+    "nombre_oficial_es": null
+  },
+  {
+    "codigo": "14.c",
+    "ods": 14,
+    "nombre_corto_es": null,
+    "nombre_oficial_es": null
+  },
+  {
+    "codigo": "15.1",
+    "ods": 15,
+    "nombre_corto_es": "Conservación de ecosistemas terrestres",
+    "nombre_oficial_es": null
+  },
+  {
+    "codigo": "15.2",
+    "ods": 15,
+    "nombre_corto_es": "Gestión sostenible de bosques",
+    "nombre_oficial_es": null
+  },
+  {
+    "codigo": "15.3",
+    "ods": 15,
+    "nombre_corto_es": null,
+    "nombre_oficial_es": null
+  },
+  {
+    "codigo": "15.4",
+    "ods": 15,
+    "nombre_corto_es": null,
+    "nombre_oficial_es": null
+  },
+  {
+    "codigo": "15.5",
+    "ods": 15,
+    "nombre_corto_es": null,
+    "nombre_oficial_es": null
+  },
+  {
+    "codigo": "15.6",
+    "ods": 15,
+    "nombre_corto_es": null,
+    "nombre_oficial_es": null
+  },
+  {
+    "codigo": "15.7",
+    "ods": 15,
+    "nombre_corto_es": null,
+    "nombre_oficial_es": null
+  },
+  {
+    "codigo": "15.8",
+    "ods": 15,
+    "nombre_corto_es": null,
+    "nombre_oficial_es": null
+  },
+  {
+    "codigo": "15.9",
+    "ods": 15,
+    "nombre_corto_es": null,
+    "nombre_oficial_es": null
+  },
+  {
+    "codigo": "15.a",
+    "ods": 15,
+    "nombre_corto_es": null,
+    "nombre_oficial_es": null
+  },
+  {
+    "codigo": "15.b",
+    "ods": 15,
+    "nombre_corto_es": null,
+    "nombre_oficial_es": null
+  },
+  {
+    "codigo": "15.c",
+    "ods": 15,
+    "nombre_corto_es": null,
+    "nombre_oficial_es": null
+  },
+  {
+    "codigo": "16.1",
+    "ods": 16,
+    "nombre_corto_es": "Reducción de la violencia",
+    "nombre_oficial_es": null
+  },
+  {
+    "codigo": "16.2",
+    "ods": 16,
+    "nombre_corto_es": null,
+    "nombre_oficial_es": null
+  },
+  {
+    "codigo": "16.3",
+    "ods": 16,
+    "nombre_corto_es": "Estado de derecho y acceso a la justicia",
+    "nombre_oficial_es": null
+  },
+  {
+    "codigo": "16.4",
+    "ods": 16,
+    "nombre_corto_es": "Combate a la delincuencia organizada",
+    "nombre_oficial_es": null
+  },
+  {
+    "codigo": "16.5",
+    "ods": 16,
+    "nombre_corto_es": "Reducción de la corrupción",
+    "nombre_oficial_es": null
+  },
+  {
+    "codigo": "16.6",
+    "ods": 16,
+    "nombre_corto_es": "Instituciones eficaces y transparentes",
+    "nombre_oficial_es": null
+  },
+  {
+    "codigo": "16.7",
+    "ods": 16,
+    "nombre_corto_es": "Decisiones inclusivas y participativas",
+    "nombre_oficial_es": null
+  },
+  {
+    "codigo": "16.8",
+    "ods": 16,
+    "nombre_corto_es": null,
+    "nombre_oficial_es": null
+  },
+  {
+    "codigo": "16.9",
+    "ods": 16,
+    "nombre_corto_es": null,
+    "nombre_oficial_es": null
+  },
+  {
+    "codigo": "16.10",
+    "ods": 16,
+    "nombre_corto_es": "Acceso a la información",
+    "nombre_oficial_es": null
+  },
+  {
+    "codigo": "16.a",
+    "ods": 16,
+    "nombre_corto_es": "Fortalecimiento de capacidades institucionales",
+    "nombre_oficial_es": null
+  },
+  {
+    "codigo": "16.b",
+    "ods": 16,
+    "nombre_corto_es": null,
+    "nombre_oficial_es": null
+  },
+  {
+    "codigo": "17.1",
+    "ods": 17,
+    "nombre_corto_es": "Movilización de recursos internos",
+    "nombre_oficial_es": null
+  },
+  {
+    "codigo": "17.2",
+    "ods": 17,
+    "nombre_corto_es": null,
+    "nombre_oficial_es": null
+  },
+  {
+    "codigo": "17.3",
+    "ods": 17,
+    "nombre_corto_es": "Recursos financieros adicionales",
+    "nombre_oficial_es": null
+  },
+  {
+    "codigo": "17.4",
+    "ods": 17,
+    "nombre_corto_es": null,
+    "nombre_oficial_es": null
+  },
+  {
+    "codigo": "17.5",
+    "ods": 17,
+    "nombre_corto_es": null,
+    "nombre_oficial_es": null
+  },
+  {
+    "codigo": "17.6",
+    "ods": 17,
+    "nombre_corto_es": null,
+    "nombre_oficial_es": null
+  },
+  {
+    "codigo": "17.7",
+    "ods": 17,
+    "nombre_corto_es": null,
+    "nombre_oficial_es": null
+  },
+  {
+    "codigo": "17.8",
+    "ods": 17,
+    "nombre_corto_es": null,
+    "nombre_oficial_es": null
+  },
+  {
+    "codigo": "17.9",
+    "ods": 17,
+    "nombre_corto_es": null,
+    "nombre_oficial_es": null
+  },
+  {
+    "codigo": "17.10",
+    "ods": 17,
+    "nombre_corto_es": null,
+    "nombre_oficial_es": null
+  },
+  {
+    "codigo": "17.11",
+    "ods": 17,
+    "nombre_corto_es": null,
+    "nombre_oficial_es": null
+  },
+  {
+    "codigo": "17.12",
+    "ods": 17,
+    "nombre_corto_es": null,
+    "nombre_oficial_es": null
+  },
+  {
+    "codigo": "17.13",
+    "ods": 17,
+    "nombre_corto_es": null,
+    "nombre_oficial_es": null
+  },
+  {
+    "codigo": "17.14",
+    "ods": 17,
+    "nombre_corto_es": null,
+    "nombre_oficial_es": null
+  },
+  {
+    "codigo": "17.15",
+    "ods": 17,
+    "nombre_corto_es": null,
+    "nombre_oficial_es": null
+  },
+  {
+    "codigo": "17.16",
+    "ods": 17,
+    "nombre_corto_es": null,
+    "nombre_oficial_es": null
+  },
+  {
+    "codigo": "17.17",
+    "ods": 17,
+    "nombre_corto_es": null,
+    "nombre_oficial_es": null
+  },
+  {
+    "codigo": "17.18",
+    "ods": 17,
+    "nombre_corto_es": null,
+    "nombre_oficial_es": null
+  },
+  {
+    "codigo": "17.19",
+    "ods": 17,
+    "nombre_corto_es": null,
+    "nombre_oficial_es": null
+  }
+]

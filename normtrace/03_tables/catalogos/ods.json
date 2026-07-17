@@ -1,0 +1,19 @@
+{
+  "1":  {"nombre_es": "Fin de la pobreza", "color": "#e5243b"},
+  "2":  {"nombre_es": "Hambre cero", "color": "#dda63a"},
+  "3":  {"nombre_es": "Salud y bienestar", "color": "#4c9f38"},
+  "4":  {"nombre_es": "Educación de calidad", "color": "#c5192d"},
+  "5":  {"nombre_es": "Igualdad de género", "color": "#ff3a21"},
+  "6":  {"nombre_es": "Agua limpia y saneamiento", "color": "#26bde2"},
+  "7":  {"nombre_es": "Energía asequible y no contaminante", "color": "#fcc30b"},
+  "8":  {"nombre_es": "Trabajo decente y crecimiento económico", "color": "#a21942"},
+  "9":  {"nombre_es": "Industria, innovación e infraestructura", "color": "#fd6925"},
+  "10": {"nombre_es": "Reducción de las desigualdades", "color": "#dd1367"},
+  "11": {"nombre_es": "Ciudades y comunidades sostenibles", "color": "#fd9d24"},
+  "12": {"nombre_es": "Producción y consumo responsables", "color": "#bf8b2e"},
+  "13": {"nombre_es": "Acción por el clima", "color": "#3f7e44"},
+  "14": {"nombre_es": "Vida submarina", "color": "#0a97d9"},
+  "15": {"nombre_es": "Vida de ecosistemas terrestres", "color": "#56c02b"},
+  "16": {"nombre_es": "Paz, justicia e instituciones sólidas", "color": "#00689d"},
+  "17": {"nombre_es": "Alianzas para lograr los objetivos", "color": "#19486a"}
+}
