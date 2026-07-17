@@ -1,0 +1,145 @@
+# Conversion log - Mexico Constitution / CPEUM
+
+## Converted files
+
+- Source PDF: `CPEUM-20.pdf`
+- Markdown output: `01_sources/domestic_legal_frameworks/mexico/md/mexico_constitution_cpeum_latest_reform_2026_04_23.md`
+- Metadata output: `01_sources/domestic_legal_frameworks/mexico/metadata/mexico_constitution_cpeum_latest_reform_2026_04_23_metadata.yml`
+
+## Conversion rules applied
+
+- Preserved article numbering, title/chapter structure, reform notes, numerals, incisos, and transitory provisions where extractable.
+- Used Markdown headings for title, constitutional titles, chapters, and articles.
+- Added page markers as HTML comments for traceability against the source PDF.
+- Did not summarize, rewrite, or legally correct the text.
+
+## Extraction issues / manual review
+
+- The source is a long legal PDF with 408 pages and recurrent official headers, footers, reform notes, and transitory provisions.
+- Manual review is recommended for transitory articles, reform-note placement, and dense pages where line wrapping may affect numerals or incisos.
+- No image-based OCR was required; text was extractable from the PDF.
+- General note inserted in the Markdown: `[Extraction note: dense legal layout, reform notes, and transitory provisions require manual review against the PDF source.]`
+
+## Pages flagged for review
+
+- Page 25: dense layout or possible table/form alignment detected; manual review recommended.
+- Page 44: dense layout or possible table/form alignment detected; manual review recommended.
+- Page 50: dense layout or possible table/form alignment detected; manual review recommended.
+- Page 58: dense layout or possible table/form alignment detected; manual review recommended.
+- Page 72: dense layout or possible table/form alignment detected; manual review recommended.
+- Page 73: dense layout or possible table/form alignment detected; manual review recommended.
+- Page 75: dense layout or possible table/form alignment detected; manual review recommended.
+- Page 83: dense layout or possible table/form alignment detected; manual review recommended.
+- Page 90: dense layout or possible table/form alignment detected; manual review recommended.
+- Page 108: dense layout or possible table/form alignment detected; manual review recommended.
+- Page 124: dense layout or possible table/form alignment detected; manual review recommended.
+- Page 125: dense layout or possible table/form alignment detected; manual review recommended.
+- Page 126: dense layout or possible table/form alignment detected; manual review recommended.
+- Page 133: dense layout or possible table/form alignment detected; manual review recommended.
+- Page 139: dense layout or possible table/form alignment detected; manual review recommended.
+- Page 142: dense layout or possible table/form alignment detected; manual review recommended.
+- Page 149: dense layout or possible table/form alignment detected; manual review recommended.
+- Page 150: dense layout or possible table/form alignment detected; manual review recommended.
+- Page 151: dense layout or possible table/form alignment detected; manual review recommended.
+- Page 152: dense layout or possible table/form alignment detected; manual review recommended.
+- Page 159: transitory provisions detected; manual review recommended for numbering and reform notes.
+- Page 161: transitory provisions detected; manual review recommended for numbering and reform notes.
+- Page 164: transitory provisions detected; manual review recommended for numbering and reform notes.
+- Page 165: transitory provisions detected; manual review recommended for numbering and reform notes.
+- Page 167: transitory provisions detected; manual review recommended for numbering and reform notes.
+- Page 171: transitory provisions detected; manual review recommended for numbering and reform notes.
+- Page 173: transitory provisions detected; manual review recommended for numbering and reform notes.
+- Page 174: transitory provisions detected; manual review recommended for numbering and reform notes.
+- Page 175: transitory provisions detected; manual review recommended for numbering and reform notes.
+- Page 176: transitory provisions detected; manual review recommended for numbering and reform notes.
+- Page 177: transitory provisions detected; manual review recommended for numbering and reform notes.
+- Page 179: transitory provisions detected; manual review recommended for numbering and reform notes.
+- Page 180: transitory provisions detected; manual review recommended for numbering and reform notes.
+- Page 181: transitory provisions detected; manual review recommended for numbering and reform notes.
+- Page 182: transitory provisions detected; manual review recommended for numbering and reform notes.
+- Page 184: transitory provisions detected; manual review recommended for numbering and reform notes.
+- Page 185: transitory provisions detected; manual review recommended for numbering and reform notes.
+- Page 186: transitory provisions detected; manual review recommended for numbering and reform notes.
+- Page 187: transitory provisions detected; manual review recommended for numbering and reform notes.
+- Page 188: transitory provisions detected; manual review recommended for numbering and reform notes.
+- Page 189: transitory provisions detected; manual review recommended for numbering and reform notes.
+- Page 190: transitory provisions detected; manual review recommended for numbering and reform notes.
+- Page 191: transitory provisions detected; manual review recommended for numbering and reform notes.
+- Page 192: transitory provisions detected; manual review recommended for numbering and reform notes.
+- Page 194: transitory provisions detected; manual review recommended for numbering and reform notes.
+- Page 195: transitory provisions detected; manual review recommended for numbering and reform notes.
+- Page 197: transitory provisions detected; manual review recommended for numbering and reform notes.
+- Page 199: transitory provisions detected; manual review recommended for numbering and reform notes.
+- Page 200: transitory provisions detected; manual review recommended for numbering and reform notes.
+- Page 201: transitory provisions detected; manual review recommended for numbering and reform notes.
+- Page 202: transitory provisions detected; manual review recommended for numbering and reform notes.
+- Page 203: transitory provisions detected; manual review recommended for numbering and reform notes.
+- Page 205: transitory provisions detected; manual review recommended for numbering and reform notes.
+- Page 206: transitory provisions detected; manual review recommended for numbering and reform notes.
+- Page 207: transitory provisions detected; manual review recommended for numbering and reform notes.
+- Page 208: transitory provisions detected; manual review recommended for numbering and reform notes.
+- Page 209: transitory provisions detected; manual review recommended for numbering and reform notes.
+- Page 210: transitory provisions detected; manual review recommended for numbering and reform notes.
+- Page 211: transitory provisions detected; manual review recommended for numbering and reform notes.
+- Page 212: transitory provisions detected; manual review recommended for numbering and reform notes.
+- Page 213: transitory provisions detected; manual review recommended for numbering and reform notes.
+- Page 214: transitory provisions detected; manual review recommended for numbering and reform notes.
+- Page 216: transitory provisions detected; manual review recommended for numbering and reform notes.
+- Page 217: transitory provisions detected; manual review recommended for numbering and reform notes.
+- Page 218: transitory provisions detected; manual review recommended for numbering and reform notes.
+- Page 220: transitory provisions detected; manual review recommended for numbering and reform notes.
+- Page 221: transitory provisions detected; manual review recommended for numbering and reform notes.
+- Page 222: transitory provisions detected; manual review recommended for numbering and reform notes.
+- Page 223: transitory provisions detected; manual review recommended for numbering and reform notes.
+- Page 224: transitory provisions detected; manual review recommended for numbering and reform notes.
+- Page 225: transitory provisions detected; manual review recommended for numbering and reform notes.
+- Page 226: transitory provisions detected; manual review recommended for numbering and reform notes.
+- Page 227: transitory provisions detected; manual review recommended for numbering and reform notes.
+- Page 228: dense layout or possible table/form alignment detected; manual review recommended.
+- Page 228: transitory provisions detected; manual review recommended for numbering and reform notes.
+- Page 230: transitory provisions detected; manual review recommended for numbering and reform notes.
+- Page 231: transitory provisions detected; manual review recommended for numbering and reform notes.
+- Page 232: transitory provisions detected; manual review recommended for numbering and reform notes.
+- Page 234: transitory provisions detected; manual review recommended for numbering and reform notes.
+- Page 236: transitory provisions detected; manual review recommended for numbering and reform notes.
+- Page 237: transitory provisions detected; manual review recommended for numbering and reform notes.
+- Page 238: transitory provisions detected; manual review recommended for numbering and reform notes.
+- Page 239: transitory provisions detected; manual review recommended for numbering and reform notes.
+- Page 240: transitory provisions detected; manual review recommended for numbering and reform notes.
+- Page 241: transitory provisions detected; manual review recommended for numbering and reform notes.
+- Page 242: transitory provisions detected; manual review recommended for numbering and reform notes.
+- Page 243: transitory provisions detected; manual review recommended for numbering and reform notes.
+- Page 244: transitory provisions detected; manual review recommended for numbering and reform notes.
+- Page 246: transitory provisions detected; manual review recommended for numbering and reform notes.
+- Page 247: transitory provisions detected; manual review recommended for numbering and reform notes.
+- Page 249: transitory provisions detected; manual review recommended for numbering and reform notes.
+- Page 250: transitory provisions detected; manual review recommended for numbering and reform notes.
+- Page 251: transitory provisions detected; manual review recommended for numbering and reform notes.
+- Page 252: transitory provisions detected; manual review recommended for numbering and reform notes.
+- Page 253: transitory provisions detected; manual review recommended for numbering and reform notes.
+- Page 255: transitory provisions detected; manual review recommended for numbering and reform notes.
+- Page 256: transitory provisions detected; manual review recommended for numbering and reform notes.
+- Page 257: transitory provisions detected; manual review recommended for numbering and reform notes.
+- Page 258: transitory provisions detected; manual review recommended for numbering and reform notes.
+- Page 259: transitory provisions detected; manual review recommended for numbering and reform notes.
+- Page 260: transitory provisions detected; manual review recommended for numbering and reform notes.
+- Page 261: transitory provisions detected; manual review recommended for numbering and reform notes.
+- Page 262: transitory provisions detected; manual review recommended for numbering and reform notes.
+- Page 263: transitory provisions detected; manual review recommended for numbering and reform notes.
+- Page 264: transitory provisions detected; manual review recommended for numbering and reform notes.
+- Page 265: transitory provisions detected; manual review recommended for numbering and reform notes.
+- Page 266: transitory provisions detected; manual review recommended for numbering and reform notes.
+- Page 269: transitory provisions detected; manual review recommended for numbering and reform notes.
+- Page 270: transitory provisions detected; manual review recommended for numbering and reform notes.
+- Page 271: transitory provisions detected; manual review recommended for numbering and reform notes.
+- Page 272: transitory provisions detected; manual review recommended for numbering and reform notes.
+- Page 277: transitory provisions detected; manual review recommended for numbering and reform notes.
+- Page 278: transitory provisions detected; manual review recommended for numbering and reform notes.
+- Page 279: transitory provisions detected; manual review recommended for numbering and reform notes.
+- Page 280: transitory provisions detected; manual review recommended for numbering and reform notes.
+- Page 281: transitory provisions detected; manual review recommended for numbering and reform notes.
+- Page 282: transitory provisions detected; manual review recommended for numbering and reform notes.
+- Page 283: transitory provisions detected; manual review recommended for numbering and reform notes.
+- Page 284: transitory provisions detected; manual review recommended for numbering and reform notes.
+- Page 285: transitory provisions detected; manual review recommended for numbering and reform notes.
+- Additional flagged pages omitted from this log excerpt: 97. Review the full PDF around transitory/reform sections.

@@ -1,0 +1,68 @@
+# Stack completo de desarrollo: mongo + redis + api + worker + frontend
+# Uso: docker compose up --build
+# La base arranca vacía: cargar el diccionario con
+#   docker compose exec api python /app/knowledgebase/load_kb.py
+services:
+  mongo:
+    image: mongo:7
+    container_name: mx-mongo
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo-data:/data/db
+
+  redis:
+    image: redis:7
+    container_name: mx-redis
+    ports:
+      - "6379:6379"
+
+  api:
+    build:
+      context: .
+      dockerfile: api/Dockerfile-dev
+    container_name: mx-api
+    depends_on: [mongo, redis]
+    environment:
+      - MONGO_HOST=mongo
+      - MONGO_PORT=27017
+      - MONGO_DB=mx
+      - REDIS_HOST=redis
+      - TAGGER_MAX_WORDS=5000
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./api:/app/api
+      - ./packages:/app/packages
+      - ./knowledgebase:/app/knowledgebase
+
+  worker:
+    build:
+      context: .
+      dockerfile: packages/qhld-tasks/Dockerfile-dev
+    container_name: mx-worker
+    depends_on: [mongo, redis]
+    environment:
+      - MONGO_HOST=mongo
+      - MONGO_PORT=27017
+      - MONGO_DB=mx
+      - REDIS_HOST=redis
+    volumes:
+      - ./packages:/app/packages
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile-es
+    container_name: mx-frontend
+    depends_on: [api]
+    ports:
+      - "8070:80"
+    volumes:
+      - ./frontend/nginx-default.conf:/etc/nginx/conf.d/default.conf
+
+volumes:
+  mongo-data:
+
+# NOTA para Claude Code: los Dockerfile-dev originales asumen repo suelto, no monorepo.
+# Ajustar rutas COPY/WORKDIR es parte de la fase F0 del PLAN (docs/PLAN.md).

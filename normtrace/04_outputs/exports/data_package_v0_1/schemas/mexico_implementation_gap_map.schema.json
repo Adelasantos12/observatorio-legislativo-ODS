@@ -1,0 +1,64 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "MexicoGapMapRow",
+  "description": "Mexico IHR 2005 / RSI 2024 / Pandemic Agreement implementation gap map",
+  "type": "object",
+  "properties": {
+    "area": {
+      "type": "string"
+    },
+    "current_ihr2005_anchoring_pattern": {
+      "type": "string"
+    },
+    "main_mexico_actors": {
+      "type": "string"
+    },
+    "main_gap_type": {
+      "type": "string"
+    },
+    "ihr2024_implication": {
+      "type": "string"
+    },
+    "pandemic_agreement_implication": {
+      "type": "string"
+    },
+    "pabs_dependency": {
+      "type": "string",
+      "enum": [
+        "Yes - provisional only",
+        "No",
+        "TBD after final PABS Annex"
+      ]
+    },
+    "capacity_building_entry_point": {
+      "type": "string"
+    },
+    "confidence_level": {
+      "type": "string",
+      "enum": [
+        "high",
+        "medium",
+        "low",
+        "uncertain"
+      ]
+    },
+    "review_status": {
+      "type": "string",
+      "enum": [
+        "preliminary_ai_assisted",
+        "requires_human_review",
+        "verified"
+      ]
+    },
+    "notes": {
+      "type": "string"
+    }
+  },
+  "additionalProperties": false,
+  "required": [
+    "area",
+    "current_ihr2005_anchoring_pattern",
+    "confidence_level",
+    "review_status"
+  ]
+}

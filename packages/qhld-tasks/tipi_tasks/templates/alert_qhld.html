@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8">
+  </head>
+  <body style="background-color: #f1f1f1;">
+    <table width="600" align="center" cellspacing="0" cellpadding="32" style="background-color: #fff;">
+      <tr>
+        <td style="padding: 0;">
+          <img src="{{banner_url}}" alt="Banner de {{tipi_name}}">
+        </td>
+      </tr>
+      {% for search in alert.searches %} <!-- SEARCHES -->
+      <tr>
+        <td style="padding: 0;">
+          <table cellspacing="0" cellpadding="32">
+            <tr style="vertical-align: top; background: #EFCA53;">
+              <td style="padding-bottom: 0;">
+                <p style="margin: 0; padding-top: 32px; width: 82px; color:#FFF; font-family: Arial; font-size: 64px; font-style: normal; font-weight: 700; line-height: 100%; border-top: 8px solid #fff">{{search.initiatives|length}}</p>
+              </td>
+              <td style="text-align: right;">
+                <a href="{{tipi_backend}}/emails/unsubscribe/{{alert.id}}/{{search.hash}}" style="color: #1D1D1B; font-family: Arial; font-size: 12px; font-style: normal; font-weight: 700; text-decoration: none; border: 4px solid #000; white-space: nowrap; padding: 8px; line-height: 24px; text-transform: uppercase; ">Cancelar Alerta <img style="vertical-align: middle;" src="{{tipi_frontend}}/img/alerts/bell.png"></a>
+              </td>
+            </tr>
+            <tr style="vertical-align: top; background: #EFCA53;">
+              <td colspan="2" style="padding-top: 0;">
+                <p style="margin: 0; color: #1D1D1B; font-family: Arial; font-size: 32px; font-style: normal; font-weight: 700; line-height: 100%;"><span style="font-size: 24px;">Iniciativa{{ 's' if search.initiatives|length > 1 else '' }}</span> <br>{{search.search_sentence}}</p>
+              </td>
+            </tr>
+            <tr>
+              <td colspan="2" style="padding: 0;">
+                <table cellspacing="0" cellpadding="32">
+                  {% set legislative_initiatives = search.initiatives|selectattr('initiative_type', 'in', legislative_type_ids)|list %}
+                  {% for initiative in legislative_initiatives[0:10] %}<!-- LEGISLATIVAS -->
+                  {% if loop.index is odd %}
+                  <tr>
+                  {% endif %}
+                  <td style="padding-bottom: 0; width:50%">
+                    {% if initiative.reason %}
+                    <p style="margin: 0 0 8px 0;"><span style="padding: 2px; background: #f4e4b0; color: #1D1D1B; font-family: Arial; font-size: 14px; font-style: normal; font-weight: 400; line-height: 140%;">{{initiative.reason|upper}}</span></p>
+                    {% endif %}
+                    <p style="margin: 0 0 8px 0;"><a href="{{tipi_frontend}}/iniciativas/{{initiative.id}}?utm_source=alerts&utm_medium=email&utm_campaign=qhld&utm_content=legislative_initiatives" style="color: #1D1D1B; font-family: Arial; font-size: 16px; font-style: normal; font-weight: 700; line-height: 150%; text-decoration: none;">{{initiative.title|truncate(250, True)}}</a></p>
+                    {% if initiative.author_parliamentarygroups %}
+                    {% for parliamentarygroup in initiative.author_parliamentarygroups %}
+                    <p style="margin: 0 0 16px 0; color: #1D1D1B; font-family: Arial; font-size: 14px; font-style: normal; font-weight: 700; line-height: 24px; text-transform: uppercase; "><img src="{{tipi_frontend}}/img/alerts/gp/{{parliamentarygroup|replace(" ", "_")}}.png" style="vertical-align: middle; margin-right: 8px;">{{parliamentarygroup}}</p>
+                    {% endfor %}
+                    {% endif %}
+                    {% if initiative.author_deputies %}
+                    {% for deputy in initiative.author_deputies %}
+                    <p style="margin: 0 0 16px 0; color: #1D1D1B; font-family: Arial; font-size: 14px; font-style: normal; font-weight: 700; line-height: 24px; text-transform: uppercase; ">{{deputy}}</p>
+                    {% endfor %}
+                    {% endif %}
+                    {% if initiative.author_others %}
+                    {% for other in initiative.author_others %}
+                    {% if other == 'Gobierno' %}
+                    <p style="margin: 0 0 16px 0; color: #1D1D1B; font-family: Arial; font-size: 14px; font-style: normal; font-weight: 700; line-height: 24px; text-transform: uppercase; ">{{other}}</p>
+                    {% endif %}
+                    {% endfor %}
+                    {% endif %}
+                    {% if initiative.topics %}
+                    <p style="margin: 0 0 16px 0; line-height: 2.5;">
+                      {% for topic in initiative.topics[0:3] %}
+                      <a href="" style="color: #1D1D1B; font-family: Arial; font-size: 12px; font-style: normal; font-weight: 700; line-height: 16px; text-transform: uppercase; padding: 8px; background:#A3D5C8; text-decoration: none; display: inline-block;">{{topic}}</a>
+                      {% endfor %}
+                      {% if initiative.topics|length > 3 %}
+                      <a href="" style="color: #1D1D1B; font-family: Arial; font-size: 12px; font-style: normal; font-weight: 700; line-height: 16px; text-transform: uppercase; padding: 8px; background:#A3D5C8; text-decoration: none; display: inline-block;">...</a>
+                      {% endif %}
+                    </p>
+                    {% endif %}
+                    <p style="margin: 0; color: #1D1D1B; font-family: Arial; font-size: 14px; font-style: normal; font-weight: 700; line-height: 1; text-transform: uppercase; ">
+                      <img src="{{tipi_frontend}}/img/alerts/status/{{status_mapping[initiative.status]|default('neutral')}}.png" style="vertical-align: middle;"> {{initiative.status}}
+                    </p>
+                  </td>
+                  {% if loop.index is even or loop.index == legislative_initiatives|length %}
+                  </tr>
+                  {% endif %}
+                  {% endfor %}<!-- LEGISLATIVAS -->
+      
+                  {% if legislative_initiatives|length > 0 %}
+                  <!-- Espaciador -->
+                  <tr><td></td></tr>
+                  {% endif %}
+      
+                  {% set political_orientation_initiatives = search.initiatives|selectattr('initiative_type', 'in', political_orientiation_type_ids)|list %}
+                  {% for initiative in political_orientation_initiatives[0:20] %} <!-- ORIENTACION POLITICA -->
+                  <tr>
+                    <td colspan="2" style="padding-bottom: 0;">
+                      {% if initiative.reason %}
+                      <p style="margin: 0 0 8px 0;"><span style="padding: 2px; background: #f4e4b0; color: #1D1D1B; font-family: Arial; font-size: 14px; font-style: normal; font-weight: 400; line-height: 140%;">{{initiative.reason|upper}}</span></p>
+                      {% endif %}
+                      <p style="margin: 0 0 8px 0;"><a href="{{tipi_frontend}}/iniciativas/{{initiative.id}}?utm_source=alerts&utm_medium=email&utm_campaign=qhld&utm_content=political_orientation_initiatives" style="color: #1D1D1B; font-family: Arial; font-size: 16px; font-style: normal; font-weight: 700; line-height: 150%; text-decoration: none;">{{initiative.title|truncate(250, True)}}</a></p>
+                      {% if initiative.author_parliamentarygroups %}
+                      {% for parliamentarygroup in initiative.author_parliamentarygroups %}
+                      <p style="margin: 0 0 16px 0; color: #1D1D1B; font-family: Arial; font-size: 14px; font-style: normal; font-weight: 700; line-height: 24px; text-transform: uppercase; "><img src="{{tipi_frontend}}/img/alerts/gp/{{parliamentarygroup|replace(" ", "_")}}.png" style="vertical-align: middle; margin-right: 8px;">{{parliamentarygroup}}</p>
+                      {% endfor %}
+                      {% endif %}
+                      {% if initiative.author_deputies %}
+                      {% for deputy in initiative.author_deputies %}
+                      <p style="margin: 0 0 16px 0; color: #1D1D1B; font-family: Arial; font-size: 14px; font-style: normal; font-weight: 700; line-height: 24px; text-transform: uppercase; ">{{deputy}}</p>
+                      {% endfor %}
+                      {% endif %}
+                      {% if initiative.author_others %}
+                      {% for other in initiative.author_others %}
+                      {% if other == 'Gobierno' %}
+                      <p style="margin: 0 0 16px 0; color: #1D1D1B; font-family: Arial; font-size: 14px; font-style: normal; font-weight: 700; line-height: 24px; text-transform: uppercase; ">{{other}}</p>
+                      {% endif %}
+                      {% endfor %}
+                      {% endif %}
+                      <p style="margin: 0; color: #1D1D1B; font-family: Arial; font-size: 14px; font-style: normal; font-weight: 700; line-height: 1; text-transform: uppercase; ">
+                        <img src="{{tipi_frontend}}/img/alerts/status/{{status_mapping[initiative.status]|default('neutral')}}.png" style="vertical-align: middle;"> {{initiative.status}}
+                      </p>
+                    </td>
+                  </tr>
+                  {% endfor %} <!-- ORIENTACION POLITICA -->
+      
+                  {% if political_orientation_initiatives|length > 0 %}
+                  <!-- Espaciador -->
+                  <tr><td></td></tr>
+                  {% endif %}
+      
+                  {% set other_initiatives = search.initiatives|selectattr('initiative_type', 'not_in', legislative_type_ids+political_orientiation_type_ids)|list %}
+                  {% for initiative in other_initiatives[0:20] %} <!-- OTRAS -->
+                  <tr>
+                    <td colspan="2" style="padding-bottom: 0;">
+                      <p style="margin: 0 0 8px 0;">
+                        <a href="{{tipi_frontend}}/iniciativas/{{initiative.id}}?utm_source=alerts&utm_medium=email&utm_campaign=qhld&utm_content=other_initiatives" style="color: #1D1D1B; font-family: Arial; font-size: 16px; font-style: normal; font-weight: 700; line-height: 150%; text-decoration: none;">
+                          <img src="{{tipi_frontend}}/img/alerts/status/{{status_mapping[initiative.status]|default('neutral')}}.png" style="vertical-align: middle;"> {{initiative.title|truncate(250, True)}}
+                        </a>
+                      </p>
+                    </td>
+                  </tr>
+                  {% endfor %} <!-- OTRAS -->
+      
+                  {% if other_initiatives|length > 0 %}
+                  <!-- Espaciador -->
+                  <tr><td></td></tr>
+                  {% endif %}
+      
+                  {% if legislative_initiatives|length > 10 or political_orientation_initiatives|length > 20 or other_initiatives|length > 20 %}
+                  <tr>
+                    <td colspan="2" style="text-align: center;">
+                      <a href="{{tipi_frontend}}/resultados/{{search.search_query_params}}?utm_source=alerts&utm_medium=email&utm_campaign=qhld&utm_content=more_initiatives" style="background: #EFCA53; padding: 12px 32px; color: #1D1D1B; font-family: Arial; font-size: 14px; font-style: normal; font-weight: 700; line-height: 24px; text-transform: uppercase; text-decoration: none; ">Consulta el resto de iniciativas</a>
+                    </td>
+                  </tr>
+                  <!-- Espaciador -->
+                  <tr><td></td></tr>
+                  {% endif %}
+                </table>
+              </td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+      {% endfor %} <!-- SEARCHES -->
+      <tr>
+        <td style="border-top: 8px solid #000; padding: 0;">
+          <img src="{{banner_url}}" alt="Banner de {{tipi_name}}">
+        </td>
+      </tr>
+      <tr>
+        <td style="text-align: center;">
+          <p style="color: #1D1D1B; text-align: center; font-family: Arial; font-size: 16px; font-style: normal; font-weight: 400; line-height: 150%;">Con QHLD, cualquier persona u organización, con independencia de su origen, recursos o capacidades, puede conocer lo que ocurre en el Congreso de los Diputados. Lo entendemos como un servicio público y nos comprometemos a ofrecerlo de forma abierta y gratuita.</p>
+          <p style="color: #1D1D1B; font-family: Arial; font-size: 16px; font-style: normal; font-weight: 700; line-height: 150%; text-transform: uppercase;"> Ayúdanos a cumplir nuestro compromiso</p>
+          <p style="margin-top:32px"><a href="https://quehacenlosdiputados.es/colabora#dona?utm_source=alerts&utm_medium=email&utm_campaign=qhld&utm_content=donation_banner" style="background: #EFCA53; padding: 12px 32px; color: #1D1D1B; font-family: Arial; font-size: 14px; font-style: normal; font-weight: 700; line-height: 24px; text-transform: uppercase; text-decoration: none; ">Haz una donación</a></p>
+        </td>
+      </tr>
+      <tr>
+        <td style="color: #1D1D1B; opacity: 0.5; text-align: center; font-family: Arial; font-size: 14px; font-style: normal; font-weight: 400; line-height: 150%;">
+          <p>En cumplimiento del nuevo Reglamento General de Protección de Datos (RGPD) 2016/679 te informamos que tus datos forman parte de un fichero responsabilidad de la Fundación Salvador Soler con el fin exclusivo de enviarte notificaciones sobre la actividad parlamentaria de tus temáticas de interés.</p>
+          <p>Puedes ejercer tus derechos de acceso, rectificación, cancelación y oposición al tratamiento de tus datos personales enviando una solicitud a la atención del Delegado de Protección de Datos de la Fundación Salvador Soler: <br/>
+            Dirección: Avenida Cardenal Herrera Oria 63, 3º Izq. 28034. Madrid. <br/>
+            Email: coordinacion@unmundosalvadorsoler.org<br/>
+            Teléfono: 691 691 810
+            </p>
+            <p>Puede consultar toda la información detallada sobre nuestra <a href="https://quehacenlosdiputados.es/politica-de-privacidad?utm_source=alerts&utm_medium=email&utm_campaign=qhld&utm_content=privacy_policy" target="_blank">Política de Privacidad</a> en nuestra web.</p>
+        </td>
+      </tr>
+    </table>
+  </body>
+</html>

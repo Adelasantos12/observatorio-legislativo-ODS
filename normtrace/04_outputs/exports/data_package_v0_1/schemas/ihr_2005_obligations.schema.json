@@ -1,0 +1,56 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "IHR2005Obligation",
+  "description": "IHR 2005 obligations with domestic anchoring metadata",
+  "type": "object",
+  "properties": {
+    "obligation_id": {
+      "type": "string"
+    },
+    "instrument": {
+      "type": "string"
+    },
+    "article": {
+      "type": "string"
+    },
+    "article_title": {
+      "type": "string"
+    },
+    "obligation_text_short": {
+      "type": "string"
+    },
+    "obligation_type": {
+      "type": "string"
+    },
+    "legal_force": {
+      "type": "string"
+    },
+    "requires_domestic_legal_anchoring": {
+      "type": "string"
+    },
+    "anchoring_reason": {
+      "type": "string"
+    },
+    "minimum_domestic_requirement": {
+      "type": "string"
+    },
+    "implementation_domain": {
+      "type": "string"
+    },
+    "rights_implications": {
+      "type": "string"
+    },
+    "federalism_implications": {
+      "type": "string"
+    },
+    "notes": {
+      "type": "string"
+    }
+  },
+  "additionalProperties": false,
+  "required": [
+    "obligation_id",
+    "article",
+    "obligation_text_short"
+  ]
+}

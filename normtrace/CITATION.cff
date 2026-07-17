@@ -1,0 +1,26 @@
+cff-version: 1.2.0
+message: "If you use this work, please cite it as below."
+title: "NormTrace-IHR: Legal Internalisation Mapping Infrastructure for International Health Regulations"
+version: "0.1.0-pilot"
+date-released: "2026-05-05"
+type: software
+authors:
+  - family-names: "Santos"
+    given-names: "Adela"
+abstract: >
+  NormTrace-IHR is an academic, open-methodology infrastructure for mapping
+  international health law obligations — drawn from the International Health
+  Regulations (IHR) 2005 and the 2024 amendments adopted by WHA77.17 — onto
+  domestic legal and institutional frameworks. This repository contains the
+  methodological pilot for México.
+keywords:
+  - international health regulations
+  - IHR 2005
+  - IHR 2024
+  - legal internalisation
+  - normative mapping
+  - global health law
+  - México
+  - human rights
+license: CC-BY-4.0
+repository-code: "TBD"

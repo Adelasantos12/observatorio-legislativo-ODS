@@ -1,0 +1,53 @@
+{
+  "name": "escaner2030.es",
+  "version": "0.2.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "serve": "vite preview",
+    "test:unit": "vitest --environment jsdom",
+    "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs --fix --ignore-path .gitignore"
+  },
+  "dependencies": {
+    "@politicalwatch/tipi-uikit": "^1.9.25",
+    "axios": "^1.5.1",
+    "core-js": "^3.32.2",
+    "d3": "^7.8.5",
+    "pinia": "^3.0.0",
+    "save-svg-as-png": "^1.4.17",
+    "sweetalert2": "^11.7.31",
+    "vite-svg-loader": "^5.1.0",
+    "vue": "^3.3.4",
+    "vue-cookie-accept-decline": "^6.1.0",
+    "vue-gtag": "^2.1.2",
+    "vue-i18n": "^11.0.0",
+    "vue-json-excel3": "^1.0.30",
+    "vue-multiselect": "^3.0.0-beta.2",
+    "vue-router": "^4.2.5",
+    "vue-scrollto": "^2.15.0"
+  },
+  "devDependencies": {
+    "@rushstack/eslint-patch": "^1.1.0",
+    "@vitejs/plugin-legacy": "^6.0.0",
+    "@vitejs/plugin-vue": "^5.0.0",
+    "@vue/eslint-config-prettier": "^10.0.0",
+    "@vue/test-utils": "^2.4.1",
+    "autoprefixer": "^10.4.16",
+    "eslint": "^9.15.0",
+    "eslint-plugin-vue": "^9.0.0",
+    "jsdom": "^26.0.0",
+    "prettier": "^3.0.3",
+    "sass": "^1.67.0",
+    "stylelint": "^16.1.0",
+    "terser": "^5.14.2",
+    "vite": "^6.0.0",
+    "vitest": "^3.0.0"
+  },
+  "browserslist": [
+    "> 1%",
+    "last 2 versions",
+    "not dead"
+  ]
+}

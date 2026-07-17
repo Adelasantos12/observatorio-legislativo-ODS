@@ -1,0 +1,158 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "MexicoIHR2005MappingRow",
+  "description": "Mapping of IHR 2005 obligations to Mexican domestic provisions",
+  "type": "object",
+  "properties": {
+    "mapping_id": {
+      "type": "string"
+    },
+    "obligation_id": {
+      "type": "string"
+    },
+    "domestic_provision_id": {
+      "type": "string"
+    },
+    "domestic_norm": {
+      "type": "string"
+    },
+    "domestic_article": {
+      "type": "string"
+    },
+    "match_type": {
+      "type": "string",
+      "enum": [
+        "direct statutory",
+        "indirect statutory",
+        "regulatory",
+        "administrative-operational",
+        "contextual constitutional",
+        "actor-only",
+        "procedural",
+        "coordination",
+        "no match identified",
+        "uncertain"
+      ]
+    },
+    "anchoring_level": {
+      "type": "string",
+      "enum": [
+        "0",
+        "1",
+        "2",
+        "3",
+        "4",
+        "5"
+      ]
+    },
+    "actor_fit": {
+      "type": "string",
+      "enum": [
+        "strong",
+        "partial",
+        "weak",
+        "none identified",
+        "uncertain",
+        "not directly implicated"
+      ]
+    },
+    "procedure_fit": {
+      "type": "string",
+      "enum": [
+        "strong",
+        "partial",
+        "weak",
+        "none identified",
+        "uncertain",
+        "not directly implicated"
+      ]
+    },
+    "coordination_fit": {
+      "type": "string",
+      "enum": [
+        "strong",
+        "partial",
+        "weak",
+        "none identified",
+        "uncertain",
+        "not directly implicated"
+      ]
+    },
+    "enforcement_fit": {
+      "type": "string",
+      "enum": [
+        "strong",
+        "partial",
+        "weak",
+        "none identified",
+        "uncertain",
+        "not directly implicated"
+      ]
+    },
+    "rights_safeguard_fit": {
+      "type": "string",
+      "enum": [
+        "strong",
+        "partial",
+        "weak",
+        "none identified",
+        "uncertain",
+        "not directly implicated"
+      ]
+    },
+    "federalism_fit": {
+      "type": "string",
+      "enum": [
+        "strong",
+        "partial",
+        "weak",
+        "none identified",
+        "uncertain",
+        "not directly implicated"
+      ]
+    },
+    "assessment_summary": {
+      "type": "string"
+    },
+    "gap_type": {
+      "type": "string",
+      "enum": [
+        "procedural gap",
+        "regulatory gap",
+        "partial regulatory gap",
+        "rights safeguard gap",
+        "full gap",
+        "coordination gap",
+        "none"
+      ]
+    },
+    "confidence_level": {
+      "type": "string",
+      "enum": [
+        "high",
+        "medium",
+        "low",
+        "uncertain"
+      ]
+    },
+    "review_status": {
+      "type": "string",
+      "enum": [
+        "preliminary_ai_assisted",
+        "requires_human_review",
+        "verified"
+      ]
+    },
+    "reviewer_notes": {
+      "type": "string"
+    }
+  },
+  "additionalProperties": false,
+  "required": [
+    "mapping_id",
+    "obligation_id",
+    "domestic_provision_id",
+    "anchoring_level",
+    "match_type"
+  ]
+}

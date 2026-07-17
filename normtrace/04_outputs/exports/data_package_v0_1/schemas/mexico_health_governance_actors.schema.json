@@ -1,0 +1,55 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "MexicoActor",
+  "description": "Mexico health governance actors relevant to IHR implementation",
+  "type": "object",
+  "properties": {
+    "actor_id": {
+      "type": "string"
+    },
+    "actor_name": {
+      "type": "string"
+    },
+    "legal_nature": {
+      "type": "string"
+    },
+    "government_level": {
+      "type": "string"
+    },
+    "sector": {
+      "type": "string"
+    },
+    "legal_basis": {
+      "type": "string"
+    },
+    "core_functions": {
+      "type": "string"
+    },
+    "ihr_relevance": {
+      "type": "string"
+    },
+    "pandemic_agreement_relevance": {
+      "type": "string"
+    },
+    "instruments_it_can_issue": {
+      "type": "string"
+    },
+    "coordination_role": {
+      "type": "string"
+    },
+    "limitations": {
+      "type": "string"
+    },
+    "source_norm": {
+      "type": "string"
+    },
+    "source_article": {
+      "type": "string"
+    }
+  },
+  "additionalProperties": false,
+  "required": [
+    "actor_id",
+    "actor_name"
+  ]
+}

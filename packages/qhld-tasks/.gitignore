@@ -1,0 +1,15 @@
+*.pyc
+.ash_history
+__pycache__/
+.cache/
+.ipython/
+.venv/
+.env
+Pipfile.lock
+local_config.py
+celerybeat-schedule
+celerybeat-schedule.db
+build/
+dist/
+tipi_tasks.egg-info/
+.DS_Store

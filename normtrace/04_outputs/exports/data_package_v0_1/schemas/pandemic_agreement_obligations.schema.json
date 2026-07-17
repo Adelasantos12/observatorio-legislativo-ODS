@@ -1,0 +1,47 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "PandemicAgreementObligation",
+  "description": "WHO Pandemic Agreement obligations",
+  "type": "object",
+  "properties": {
+    "pa_obligation_id": {
+      "type": "string"
+    },
+    "article": {
+      "type": "string"
+    },
+    "theme": {
+      "type": "string"
+    },
+    "obligation_or_commitment_summary": {
+      "type": "string"
+    },
+    "legal_status": {
+      "type": "string"
+    },
+    "requires_ratification_implementation_review": {
+      "type": "string"
+    },
+    "requires_domestic_legal_anchoring": {
+      "type": "string"
+    },
+    "possible_domestic_actor": {
+      "type": "string"
+    },
+    "implementation_domain": {
+      "type": "string"
+    },
+    "depends_on_pabs_annex": {
+      "type": "string"
+    },
+    "notes": {
+      "type": "string"
+    }
+  },
+  "additionalProperties": false,
+  "required": [
+    "pa_obligation_id",
+    "article",
+    "theme"
+  ]
+}

@@ -1,0 +1,117 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "MexicoCorpusEntry",
+  "description": "Mexico normative corpus index \u2014 instruments surveyed for IHR anchoring analysis",
+  "type": "object",
+  "properties": {
+    "norm_id": {
+      "type": "string"
+    },
+    "norm_title": {
+      "type": "string"
+    },
+    "short_title": {
+      "type": "string"
+    },
+    "instrument_type": {
+      "type": "string",
+      "enum": [
+        "federal_law",
+        "general_law",
+        "constitution",
+        "organic_law",
+        "regulation",
+        "nom_official_mexican_standard",
+        "administrative_agreement",
+        "decree",
+        "internal_regulation"
+      ]
+    },
+    "normative_hierarchy": {
+      "type": "string",
+      "enum": [
+        "constitution",
+        "general_law",
+        "federal_or_national_law",
+        "regulation",
+        "internal_regulation",
+        "nom_or_technical_standard",
+        "administrative_agreement"
+      ]
+    },
+    "sector": {
+      "type": "string"
+    },
+    "subsector": {
+      "type": "string"
+    },
+    "issuing_authority": {
+      "type": "string"
+    },
+    "government_level": {
+      "type": "string"
+    },
+    "territorial_scope": {
+      "type": "string"
+    },
+    "legal_function": {
+      "type": "string"
+    },
+    "publication_date": {
+      "type": "string"
+    },
+    "last_amendment_date": {
+      "type": "string"
+    },
+    "version_date": {
+      "type": "string"
+    },
+    "source_file_md": {
+      "type": "string"
+    },
+    "source_file_metadata": {
+      "type": "string"
+    },
+    "official_source": {
+      "type": "string"
+    },
+    "source_status": {
+      "type": "string",
+      "enum": [
+        "in_force",
+        "superseded"
+      ]
+    },
+    "structure_detected": {
+      "type": "string"
+    },
+    "main_internal_units": {
+      "type": "string"
+    },
+    "relevance_for_ihr": {
+      "type": "string"
+    },
+    "relevance_for_pandemic_agreement": {
+      "type": "string"
+    },
+    "relevance_for_legal_anchoring": {
+      "type": "string"
+    },
+    "requires_manual_review": {
+      "type": "string"
+    },
+    "notes": {
+      "type": "string"
+    },
+    "source_provenance_note": {
+      "type": "string"
+    }
+  },
+  "additionalProperties": false,
+  "required": [
+    "norm_id",
+    "norm_title",
+    "instrument_type",
+    "normative_hierarchy"
+  ]
+}

@@ -1,0 +1,55 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "PABSDraftObligation",
+  "description": "PABS draft obligations (provisional \u2014 IGWG Bureau draft 9 March 2026, not adopted)",
+  "type": "object",
+  "properties": {
+    "pabs_draft_id": {
+      "type": "string"
+    },
+    "draft_source": {
+      "type": "string"
+    },
+    "draft_date": {
+      "type": "string"
+    },
+    "section": {
+      "type": "string"
+    },
+    "draft_element": {
+      "type": "string"
+    },
+    "draft_obligation_or_requirement_summary": {
+      "type": "string"
+    },
+    "provisional_legal_status": {
+      "type": "string"
+    },
+    "related_pandemic_agreement_article": {
+      "type": "string"
+    },
+    "requires_future_validation": {
+      "type": "string"
+    },
+    "potential_domestic_legal_anchoring": {
+      "type": "string"
+    },
+    "possible_domestic_actor": {
+      "type": "string"
+    },
+    "implementation_domain": {
+      "type": "string"
+    },
+    "depends_on_final_pabs_annex": {
+      "type": "string"
+    },
+    "notes": {
+      "type": "string"
+    }
+  },
+  "additionalProperties": false,
+  "required": [
+    "pabs_draft_id",
+    "section"
+  ]
+}

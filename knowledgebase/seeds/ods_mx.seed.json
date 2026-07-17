@@ -1,0 +1,113 @@
+[
+  {
+    "name": "ODS 6 Agua limpia y saneamiento",
+    "shortname": "ODS 6",
+    "description": "Garantizar la disponibilidad y la gestión sostenible del agua y el saneamiento para todos",
+    "knowledgebase": "mx",
+    "public": true,
+    "tags": [
+      {
+        "regex": "derecho humano al agua|derecho al agua( y al saneamiento)?",
+        "tag": "Derecho humano al agua",
+        "subtopic": "6.1 Acceso al agua potable",
+        "shuffle": false
+      },
+      {
+        "regex": "\\bCONAGUA\\b|Comisión Nacional del Agua",
+        "tag": "CONAGUA",
+        "subtopic": "6.5 Gestión integrada de recursos hídricos",
+        "shuffle": false
+      },
+      {
+        "regex": "Ley General de Aguas|Ley de Aguas Nacionales",
+        "tag": "Legislación de aguas",
+        "subtopic": "6.5 Gestión integrada de recursos hídricos",
+        "shuffle": false
+      },
+      {
+        "regex": "concesi(ón|ones).*(agua|hídric|acuífer)",
+        "tag": "Concesiones de agua",
+        "subtopic": "6.4 Uso eficiente de recursos hídricos",
+        "shuffle": true
+      },
+      {
+        "regex": "(tratamiento|saneamiento).*(agua(s)? residual(es)?|drenaje)",
+        "tag": "Saneamiento y aguas residuales",
+        "subtopic": "6.3 Calidad del agua",
+        "shuffle": true
+      }
+    ]
+  },
+  {
+    "name": "ODS 3 Salud y bienestar",
+    "shortname": "ODS 3",
+    "description": "Garantizar una vida sana y promover el bienestar de todos a todas las edades",
+    "knowledgebase": "mx",
+    "public": true,
+    "tags": [
+      {
+        "regex": "\\bIMSS\\b(.Bienestar)?|Instituto Mexicano del Seguro Social",
+        "tag": "IMSS",
+        "subtopic": "3.8 Cobertura sanitaria universal",
+        "shuffle": false
+      },
+      {
+        "regex": "\\bCOFEPRIS\\b|Comisión Federal para la Protección contra Riesgos Sanitarios",
+        "tag": "COFEPRIS",
+        "subtopic": "3.d Gestión de riesgos sanitarios",
+        "shuffle": false
+      },
+      {
+        "regex": "Consejo de Salubridad General",
+        "tag": "Consejo de Salubridad General",
+        "subtopic": "3.d Gestión de riesgos sanitarios",
+        "shuffle": false
+      },
+      {
+        "regex": "Reglamento Sanitario Internacional|\\bRSI\\b",
+        "tag": "Reglamento Sanitario Internacional",
+        "subtopic": "3.d Gestión de riesgos sanitarios",
+        "shuffle": false
+      },
+      {
+        "regex": "salud intercultural|medicina tradicional",
+        "tag": "Salud intercultural",
+        "subtopic": "3.8 Cobertura sanitaria universal",
+        "shuffle": false
+      }
+    ]
+  },
+  {
+    "name": "ODS 5 Igualdad de género",
+    "shortname": "ODS 5",
+    "description": "Lograr la igualdad de género y empoderar a todas las mujeres y las niñas",
+    "knowledgebase": "mx",
+    "public": true,
+    "tags": [
+      {
+        "regex": "vida libre de violencia(s)?|\\bLGAMVLV\\b",
+        "tag": "Vida libre de violencias",
+        "subtopic": "5.2 Eliminación de violencia contra mujeres y niñas",
+        "shuffle": false
+      },
+      {
+        "regex": "igualdad sustantiva",
+        "tag": "Igualdad sustantiva",
+        "subtopic": "5.1 Fin de la discriminación",
+        "shuffle": false
+      },
+      {
+        "regex": "paridad( de género)?( en todo)?",
+        "tag": "Paridad",
+        "subtopic": "5.5 Participación plena de las mujeres",
+        "shuffle": false
+      },
+      {
+        "regex": "\\bCEDAW\\b|Belém do Pará",
+        "tag": "Tratados de derechos de las mujeres",
+        "subtopic": "5.1 Fin de la discriminación",
+        "shuffle": false
+      }
+    ]
+  }
+]

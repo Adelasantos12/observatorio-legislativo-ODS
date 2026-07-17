@@ -1,0 +1,78 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "MexicoLegalProvision",
+  "description": "Mexico domestic legal provisions mapped to IHR 2005 obligations",
+  "type": "object",
+  "properties": {
+    "provision_id": {
+      "type": "string"
+    },
+    "norm_id": {
+      "type": "string"
+    },
+    "norm_title": {
+      "type": "string"
+    },
+    "norm_type": {
+      "type": "string"
+    },
+    "hierarchy_level": {
+      "type": "string"
+    },
+    "jurisdiction": {
+      "type": "string"
+    },
+    "article": {
+      "type": "string"
+    },
+    "provision_text": {
+      "type": "string"
+    },
+    "topic": {
+      "type": "string"
+    },
+    "actor_mentioned": {
+      "type": "string"
+    },
+    "power_granted": {
+      "type": "string"
+    },
+    "duty_created": {
+      "type": "string"
+    },
+    "procedure_created": {
+      "type": "string"
+    },
+    "coordination_mechanism": {
+      "type": "string"
+    },
+    "enforcement_or_sanction": {
+      "type": "string"
+    },
+    "rights_safeguard": {
+      "type": "string"
+    },
+    "budget_or_resource_implication": {
+      "type": "string"
+    },
+    "relevance_to_ihr": {
+      "type": "string"
+    },
+    "relevance_to_pandemic_agreement": {
+      "type": "string"
+    },
+    "source_url": {
+      "type": "string"
+    },
+    "version_date": {
+      "type": "string"
+    }
+  },
+  "additionalProperties": false,
+  "required": [
+    "provision_id",
+    "norm_id",
+    "article",
+    "topic"
+  ]
+}

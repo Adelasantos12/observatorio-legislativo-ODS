@@ -1,0 +1,78 @@
+name: Deploy to Production EN
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  build-and-push:
+    name: Build and Push Docker Image
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Log in to Docker Hub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKER_HUB_USERNAME }}
+          password: ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
+
+      - name: Build Docker Image
+        run: |
+          docker build -t ${{ secrets.DOCKER_HUB_REPO_EN }}:latest -f Dockerfile-en .
+
+      - name: Push Docker Image to Docker Hub
+        run: |
+          docker push ${{ secrets.DOCKER_HUB_REPO_EN }}:latest
+
+  deploy:
+    name: Deploy to Production Server
+    needs: build-and-push
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: SSH into Server and Deploy
+        uses: appleboy/ssh-action@v1.2.1
+        with:
+          host: ${{ secrets.PROD_SERVER_HOST }}
+          username: ${{ secrets.PROD_SERVER_USER }}
+          key: ${{ secrets.PROD_SERVER_SSH_KEY }}
+          script: |
+            cd ${{ secrets.PROD_SERVER_PATH_EN }}
+            docker compose pull
+            docker compose down
+            docker compose up -d --remove-orphans
+
+  notify:
+    name: Send Slack Notification
+    needs: [build-and-push, deploy]
+    runs-on: ubuntu-latest
+    if: always()
+
+    steps:
+      - name: Send success message to Slack on success
+        if: ${{ needs.build-and-push.result == 'success' && needs.deploy.result == 'success' }}
+        uses: slackapi/slack-github-action@v2
+        with:
+          method: chat.postMessage
+          token: ${{ secrets.SLACK_BOT_TOKEN }}
+          payload: |
+            {
+              "channel": "#tech",
+              "text": "🚀 ¡Despliegue de scanner2030 con éxito!"
+            }
+
+      - name: Send failure message to Slack on error
+        if: ${{ needs.build-and-push.result == 'failure' || needs.deploy.result == 'failure' }}
+        uses: slackapi/slack-github-action@v2
+        with:
+          method: chat.postMessage
+          token: ${{ secrets.SLACK_BOT_TOKEN }}
+          payload: |
+            {
+              "channel": "#tech",
+              "text": "❌ ¡Fallo durante el despliegue de scanner2030!"
+            }
