@@ -74,10 +74,10 @@ services:
       dockerfile: Dockerfile-mx
     container_name: mx-frontend
     depends_on: [api]
+    # nginx escucha en $PORT (default 80 vía la plantilla del Dockerfile-mx); no
+    # montamos la conf para no chocar con la plantilla generada al arrancar.
     ports:
       - "8070:80"
-    volumes:
-      - ./frontend/nginx-default.conf:/etc/nginx/conf.d/default.conf
 
 volumes:
   mongo-data:
