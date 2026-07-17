@@ -1,18 +1,32 @@
 FROM python:3.12-slim
 
-RUN apt-get update && apt-get install -y git gcc poppler-utils tesseract-ocr tesseract-ocr-spa tesseract-ocr-cat antiword
+RUN apt-get update && apt-get install -y --no-install-recommends \
+        git gcc poppler-utils tesseract-ocr tesseract-ocr-spa tesseract-ocr-cat antiword \
+    && rm -rf /var/lib/apt/lists/*
 
 COPY --from=ghcr.io/astral-sh/uv:latest /uv /uvx /bin/
 
+# El venv vive en /app/.venv (fuera de /app/api) para que el bind-mount de
+# desarrollo (./api:/app/api en docker-compose) no lo oculte.
 ENV UV_COMPILE_BYTECODE=1 \
     UV_LINK_MODE=copy \
-    UV_PYTHON_DOWNLOADS=0
+    UV_PYTHON_DOWNLOADS=0 \
+    UV_PROJECT_ENVIRONMENT=/app/.venv
 
-WORKDIR /app
+WORKDIR /app/api
+
+# Contexto de build = raíz del monorepo. Los path-deps editables
+# (qhld-data, qhld-tasks) se referencian como ../packages/* desde api/pyproject
+# y deben existir en la imagen para que `uv sync` los instale.
+COPY packages /app/packages
+COPY api/pyproject.toml api/uv.lock ./
 
 RUN --mount=type=cache,target=/root/.cache/uv \
-    --mount=type=bind,source=uv.lock,target=uv.lock \
-    --mount=type=bind,source=pyproject.toml,target=pyproject.toml \
     uv sync --locked --no-install-project
 
-ENV PATH="/app/.venv/bin:$PATH"
+# tipi_backend se sirve desde el código montado en /app/api (PYTHONPATH), no se
+# instala como paquete: así el reload ve los cambios del host al vuelo.
+ENV PATH="/app/.venv/bin:$PATH" \
+    PYTHONPATH=/app/api
+
+CMD ["uvicorn", "tipi_backend.wsgi:app", "--host", "0.0.0.0", "--port", "8080", "--reload"]

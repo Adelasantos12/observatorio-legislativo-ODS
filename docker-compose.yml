@@ -6,6 +6,11 @@ services:
   mongo:
     image: mongo:7
     container_name: mx-mongo
+    # tipi_data siempre conecta con credenciales (usuario/clave qhld, authSource
+    # admin por defecto), así que el servidor debe tener control de acceso activo.
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=qhld
+      - MONGO_INITDB_ROOT_PASSWORD=qhld
     ports:
       - "27017:27017"
     volumes:
@@ -24,10 +29,15 @@ services:
     container_name: mx-api
     depends_on: [mongo, redis]
     environment:
+      # tipi_data lee MONGO_DB_NAME / MONGO_USER / MONGO_PASSWORD (no MONGO_DB).
       - MONGO_HOST=mongo
       - MONGO_PORT=27017
-      - MONGO_DB=mx
-      - REDIS_HOST=redis
+      - MONGO_DB_NAME=mx
+      - MONGO_USER=qhld
+      - MONGO_PASSWORD=qhld
+      - CACHE_REDIS_HOST=redis
+      - BROKER=redis://redis:6379/2
+      - RESULT_BACKEND=redis://redis:6379/3
       - TAGGER_MAX_WORDS=5000
     ports:
       - "8080:8080"
@@ -45,8 +55,12 @@ services:
     environment:
       - MONGO_HOST=mongo
       - MONGO_PORT=27017
-      - MONGO_DB=mx
-      - REDIS_HOST=redis
+      - MONGO_DB_NAME=mx
+      - MONGO_USER=qhld
+      - MONGO_PASSWORD=qhld
+      - CACHE_REDIS_HOST=redis
+      - BROKER=redis://redis:6379/2
+      - RESULT_BACKEND=redis://redis:6379/3
     volumes:
       - ./packages:/app/packages
 
