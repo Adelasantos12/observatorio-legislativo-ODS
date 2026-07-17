@@ -1,0 +1,25 @@
+[project]
+name = "legal-segmenter"
+version = "0.1.0"
+description = "Segmentador determinista de estructura legislativa mexicana (Escáner Legislativo MX / NormTrace)"
+requires-python = ">=3.12"
+# Sin dependencias pesadas: solo la librería estándar (re).
+dependencies = []
+
+[dependency-groups]
+dev = [
+    "pytest==9.1.1",
+]
+
+[tool.pytest.ini_options]
+testpaths = ["tests/unit"]
+markers = [
+    "unit: no-infra tests; sin Mongo/Docker/red.",
+]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["legal_segmenter"]

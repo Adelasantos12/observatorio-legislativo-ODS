@@ -939,6 +939,16 @@ redis = [
 ]
 
 [[package]]
+name = "legal-segmenter"
+version = "0.1.0"
+source = { editable = "../packages/legal-segmenter" }
+
+[package.metadata]
+
+[package.metadata.requires-dev]
+dev = [{ name = "pytest", specifier = "==9.1.1" }]
+
+[[package]]
 name = "limits"
 version = "5.8.0"
 source = { registry = "https://pypi.org/simple" }
@@ -1780,6 +1790,7 @@ source = { editable = "." }
 dependencies = [
     { name = "fastapi" },
     { name = "jinja2" },
+    { name = "legal-segmenter" },
     { name = "natsort" },
     { name = "pdfminer-six" },
     { name = "python-docx" },
@@ -1805,6 +1816,7 @@ dev = [
 requires-dist = [
     { name = "fastapi", specifier = "==0.138.0" },
     { name = "jinja2", specifier = "==3.1.6" },
+    { name = "legal-segmenter", editable = "../packages/legal-segmenter" },
     { name = "natsort", specifier = "==8.4.0" },
     { name = "pdfminer-six", specifier = "==20260107" },
     { name = "python-docx", specifier = "==1.2.0" },

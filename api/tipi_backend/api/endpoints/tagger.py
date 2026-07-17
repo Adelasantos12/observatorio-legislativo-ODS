@@ -12,6 +12,8 @@ from pdfminer.high_level import extract_text as extract_pdf_text
 from docx import Document
 from pptx import Presentation
 
+from legal_segmenter import segment as segment_legal
+
 import tipi_tasks
 from tipi_backend.api import cache
 from tipi_backend.api.business import get_tags, get_kbs
@@ -42,6 +44,42 @@ def remove_fields(result):
     tags = result["result"]["tags"]
     for tag in tags:
         del tag["public"]
+
+
+def segment_and_tag(content, tags, kb):
+    """Etapa 2 (segmentación jurídica): corta el texto en unidades citables y
+    reporta, por unidad con coincidencias, sus tags del knowledgebase pedido.
+
+    Devuelve el bloque `segmentation` con el total de unidades, cuántas tienen
+    tags y la lista de unidades con tags (para no inflar la respuesta con las
+    unidades vacías). Las unidades sin coincidencias no se incluyen en `units`.
+    """
+    units = segment_legal(content)
+    units_with_tags = []
+    for unit in units:
+        unit_result = tipi_tasks.tagger.extract_tags_from_text(unit.text, tags)
+        unit_result = filter_tags(unit_result, kb)
+        remove_fields(unit_result)
+        unit_tags = unit_result["result"]["tags"]
+        if not unit_tags:
+            continue
+        units_with_tags.append(
+            {
+                "unit_id": unit.unit_id,
+                "unit_type": unit.unit_type,
+                "number": unit.number,
+                "heading": unit.heading[:200],
+                "parent_id": unit.parent_id,
+                "topics": unit_result["result"]["topics"],
+                "tags": unit_tags,
+            }
+        )
+    return {
+        "mode": "legal",
+        "units_total": len(units),
+        "units_with_tags": len(units_with_tags),
+        "units": units_with_tags,
+    }
 
 
 def _extract_text_from_file(file: UploadFile) -> str:
@@ -95,8 +133,13 @@ def extract(
     text: Annotated[str, Form()] = "",
     file: Annotated[UploadFile | str | None, File()] = None,
     knowledgebase: Annotated[str, Form()] = "",
+    segment: Annotated[str, Form()] = "",
 ):
-    """Etiqueta el texto y devuelve los temas (ODS) y etiquetas que coinciden."""
+    """Etiqueta el texto y devuelve los temas (ODS) y etiquetas que coinciden.
+
+    Con `segment=legal` añade un bloque `segmentation` con los conteos por unidad
+    jurídica (artículo, fracción, inciso, transitorio) del texto.
+    """
     try:
         # Blank knowledgebase = no filter (all public KBs), matching Flask's default.
         # The empty default also stops Swagger "Try it out" from sending `"string"`.
@@ -130,6 +173,11 @@ def extract(
         result = tipi_tasks.tagger.extract_tags_from_text(content, tags)
         result = filter_tags(result, kb)
         remove_fields(result)
+
+        # Etapa 2 opcional: segmentación jurídica con conteos por unidad.
+        if segment == "legal" and content:
+            result["segmentation"] = segment_and_tag(content, tags, kb)
+
         return result
     except HTTPException:
         raise

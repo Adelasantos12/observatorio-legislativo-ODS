@@ -208,3 +208,24 @@ no es prerequisito del escáner interactivo.
   escaneo de un párrafo tipo iniciativa de la Gaceta produce etiquetas plausibles
   en 5 ODS (3, 5, 10, 13, 15) y demuestra multi-marco al detectar además 2 Títulos
   del RSI. `load_kb` carga cada seed por su knowledgebase (`mx` y `rsi_mx`).
+
+### 2026-07-17 — F3
+
+- **Paquete `packages/legal-segmenter`** (Python puro, sin dependencias): parser
+  determinista de estructura legislativa mexicana. Entrada texto plano o markdown;
+  salida unidades `{unit_id, unit_type, number, heading, text, parent_id}`. Maneja
+  Libro/Título/Capítulo/Sección/Artículo (incl. numeración "3o.", "Bis/Ter/Quáter",
+  "166 Bis 17"), Fracción (romanos, "IV Bis 1"), Inciso, Apartado, artículos
+  nominales ("Artículo Único"), Transitorios, y fallback a párrafos para texto no
+  estructurado. Ids estables y jerárquicos (p. ej. `MX-LGS-art3-fracII`).
+  **Invariante:** cada línea se asigna a una unidad, la concatenación reproduce el
+  documento (sin pérdida de texto).
+- **Tests** (`tests/unit/test_segmenter.py`, 13 casos): fragmento sintético,
+  **fragmento real de la LGS** e iniciativa tipo Gaceta; jerarquía, bis/ter,
+  transitorios, ids estables, preservación y fallback. Verificado además sobre la
+  **LGS completa**: 2334 unidades (653 artículos, 1094 fracciones), texto preservado
+  al 100 % e ids únicos.
+- **Integración `segment=legal`** en `POST /tagger/` (etapa 2): añade el bloque
+  `segmentation` con `units_total`, `units_with_tags` y los conteos de tags por
+  unidad citable. `legal-segmenter` añadido como path-dep editable del api.
+  Cubierto por dos tests de endpoint nuevos. Tests unit del api en verde (11).

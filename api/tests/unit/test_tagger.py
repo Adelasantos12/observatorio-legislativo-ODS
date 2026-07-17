@@ -130,3 +130,41 @@ def test_async_dispatch(client, monkeypatch):
     assert body["status"] == "PROCESSING"
     assert isinstance(body["task_id"], str) and body["task_id"]
     assert "estimated_time" in body
+
+
+def test_segment_legal_reports_units(client, sync_word_limit):
+    """Con segment=legal, la respuesta añade el bloque `segmentation` con conteos
+    por unidad jurídica (etapa 2). Verifica que las unidades citables se detectan
+    y que al menos una acumula tags del knowledgebase."""
+    texto = (
+        "Articulo 1o.- La presente ley tiene por objeto regular las acciones "
+        "frente al cambio climático en el territorio nacional.\n\n"
+        "Articulo 2o.- Las autoridades promoverán la salud de la población.\n"
+    )
+    res = client.post(
+        "/tagger/",
+        data={"text": texto, "knowledgebase": "ods", "segment": "legal"},
+    )
+    assert res.status_code == 200
+    body = res.json()
+    assert body["status"] == "SUCCESS"
+
+    seg = body["segmentation"]
+    assert seg["mode"] == "legal"
+    assert seg["units_total"] >= 2  # dos artículos
+    assert seg["units_with_tags"] >= 1
+    # Las unidades reportadas traen id estable de artículo y sus tags.
+    unit = seg["units"][0]
+    assert unit["unit_id"].startswith("DOC-art")
+    assert unit["unit_type"] == "articulo"
+    assert unit["tags"]
+
+
+def test_segment_absent_by_default(client, sync_word_limit):
+    """Sin segment=legal la respuesta no incluye el bloque `segmentation`."""
+    res = client.post(
+        "/tagger/",
+        data={"text": "Articulo 1o.- Sobre el cambio climático.", "knowledgebase": "ods"},
+    )
+    assert res.status_code == 200
+    assert "segmentation" not in res.json()
