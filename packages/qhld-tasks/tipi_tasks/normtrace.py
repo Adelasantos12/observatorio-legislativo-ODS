@@ -45,10 +45,15 @@ def validate_analysis(data: dict) -> list[str]:
 
 _ACTORS = [
     "el Consejo de Salubridad General", "Consejo de Salubridad General",
-    "la Secretaría de Salud", "Secretaría de Salud", "las autoridades sanitarias",
-    "el Ejecutivo Federal", "la Federación", "las entidades federativas",
-    "los municipios", "COFEPRIS", "IMSS-Bienestar", "IMSS", "ISSSTE", "CONAGUA",
-    "SEMARNAT", "CONAFOR", "PROFEPA", "INMUJERES", "INPI", "CONAPRED", "INEGI",
+    "la Secretaría de Salud", "Secretaría de Salud",
+    "Comisión Nacional del Agua", "Comisión Nacional Forestal",
+    "Comisión Federal de Electricidad", "Instituto Nacional de las Mujeres",
+    "Instituto Nacional de los Pueblos Indígenas",
+    "Comisión Nacional de Áreas Naturales Protegidas",
+    "las autoridades sanitarias", "el Ejecutivo Federal", "la Federación",
+    "las entidades federativas", "los municipios", "COFEPRIS", "IMSS-Bienestar",
+    "IMSS", "ISSSTE", "CONAGUA", "SEMARNAT", "CONAFOR", "CONANP", "PROFEPA",
+    "INMUJERES", "INPI", "CONAPRED", "INEGI", "CONAPESCA", "SEDATU", "SADER",
     "la Secretaría",
 ]
 _DUTY = ["deberá", "deberán", "tienen la obligación de", "tendrá la obligación",

@@ -73,6 +73,28 @@ const messages = {
         body: 'You can re-access the results of your scanned text without downloading the file. When saving the result, a link will be generated that you can keep and visit whenever you need it.',
         button: 'Save',
       },
+      deep: {
+        toggle: 'Structural analysis (NormTrace) by legal unit',
+        hint: 'Codes each legal unit (article, fraction) after the quick scan.',
+      },
+      structural: {
+        title: 'Structural analysis by legal unit',
+        loading: 'Coding the legal units…',
+        empty: 'No coded units to show.',
+        summary: 'Units analysed: {analyzed} · not analysed (budget): {skipped}',
+        export: 'Print / Export PDF',
+        disclaimer:
+          'Preliminary coding assisted by a language model under the NormTrace protocol. It is not a legal opinion or a compliance assessment; it requires specialist review. Each record keeps its source citation for verification.',
+        col: {
+          unit: 'Unit',
+          actor: 'Actor',
+          duty: 'Duty / Power',
+          procedure: 'Procedure',
+          coordination: 'Coordination',
+          gap: 'Gap type',
+          confidence: 'Confidence',
+        },
+      },
     },
     components: {
       scannerSunburst: {
@@ -217,6 +239,28 @@ const messages = {
         title: 'Guarda el resultado',
         body: 'Puedes volver a acceder a los resultados de tu texto escaneado sin necesidad de descargarte el archivo. Al guardar el resutado, se generará un enlace que pudes conservar y visitar siempre que lo necesites.',
         button: 'Guardar',
+      },
+      deep: {
+        toggle: 'Análisis estructural (NormTrace) por unidad jurídica',
+        hint: 'Codifica cada unidad jurídica (artículo, fracción) después del escaneo rápido.',
+      },
+      structural: {
+        title: 'Análisis estructural por unidad jurídica',
+        loading: 'Codificando las unidades jurídicas…',
+        empty: 'No hay unidades codificadas para mostrar.',
+        summary: 'Unidades analizadas: {analyzed} · sin analizar (presupuesto): {skipped}',
+        export: 'Imprimir / Exportar PDF',
+        disclaimer:
+          'Codificación preliminar asistida por modelo de lenguaje bajo el protocolo NormTrace. No constituye dictamen jurídico ni evaluación de cumplimiento; requiere revisión de especialista. Cada registro conserva su cita fuente para verificación.',
+        col: {
+          unit: 'Unidad',
+          actor: 'Actor',
+          duty: 'Deber / Facultad',
+          procedure: 'Procedimiento',
+          coordination: 'Coordinación',
+          gap: 'Tipo de brecha',
+          confidence: 'Confianza',
+        },
       },
     },
     components: {

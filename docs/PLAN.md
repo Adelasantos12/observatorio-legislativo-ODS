@@ -261,3 +261,28 @@ no es prerequisito del escáner interactivo.
   y deber ("deberá") identificados, coordinación y salvaguarda detectadas; **ninguna
   salida sin `review_status`**. Tests: qhld-tasks 24 unit (7 de normtrace), api 12
   unit (deep). Con `LLM_PROVIDER=mock` todo corre sin clave ni tokens.
+
+### 2026-07-17 — F5
+
+- **Componente `frontend/src/components/structural-panel.vue`** (junto a
+  `scanner-table.vue`): tabla por unidad jurídica (unidad → actor → deber/facultad
+  → procedimiento → coordinación → tipo de brecha), badge de `confidence_level`
+  (baja/media/alta con color) y `review_status` visible en cada fila. Aviso fijo con
+  el **descargo exacto** de `docs/TROPICALIZACION.md` §Descargos (análisis
+  estructural). Estado de carga (`tipi-loader`) mientras llega el análisis profundo,
+  y botón **Imprimir / Exportar PDF** (impresión del navegador con hoja de estilos de
+  impresión) para el brief.
+- **Wiring** en `Scanner.vue` + `api/index.js`: toggle "Análisis estructural
+  (NormTrace)"; con deep activo, `annotate` envía `segment=legal` + `deep=true`, y
+  tras el resultado rápido sondea `GET /tagger/deep/{id}` (hasta ~3 min) para pintar
+  el bloque `structural`. i18n es/en.
+- **Mock mejorado:** la lista de actores del codificador heurístico se amplió con
+  nombres institucionales completos (Comisión Nacional del Agua, INMUJERES, INPI…)
+  para una extracción más útil.
+- **Limitación del sandbox:** el build de la SPA no corre aquí (la dependencia
+  `xlsx` se baja de `cdn.sheetjs.com`, bloqueado por egress). Verificado: sintaxis
+  ESM de los archivos, estructura i18n y descargo exacto, y **contrato de datos** del
+  panel calzando con la salida real de `/tagger/deep`. La captura de aceptación
+  (`docs/img/f5_structural.png`) es un **render estático fiel del componente con
+  datos reales** de la codificación; el flujo en navegador se valida en Railway o en
+  un entorno con acceso a npm/cdn.

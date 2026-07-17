@@ -30,11 +30,16 @@ export default {
       return [config.URL, '/topics/', topicId].join('');
     }
   },
-  annotate(text, file) {
+  annotate(text, file, deep = false) {
     let formData = new FormData();
     formData.append('text', text);
     formData.append('file', file);
     formData.append('knowledgebase', kb);
+    if (deep) {
+      // Etapa 2 (segmentación) + etapa 3 (codificación NormTrace asíncrona).
+      formData.append('segment', 'legal');
+      formData.append('deep', 'true');
+    }
 
     return axios.post(getEndpoint(), formData);
 
@@ -47,6 +52,14 @@ export default {
 
     function getEndpoint(taskID) {
       return [config.URL, '/tagger/result/', taskID].join('');
+    }
+  },
+  getNormtraceResult(taskID) {
+    // Bloque `structural` de la codificación NormTrace (etapa 3).
+    return axios.get(getEndpoint(taskID));
+
+    function getEndpoint(taskID) {
+      return [config.URL, '/tagger/deep/', taskID].join('');
     }
   },
   saveScanned(title, expiration, excerpt, result) {
