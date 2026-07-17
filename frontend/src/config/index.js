@@ -1,6 +1,6 @@
 export default {
-  SHORTNAME: import.meta.env.VITE_VUE_APP_SHORTNAME || 'escaner2030',
-  URL: import.meta.env.VITE_VUE_APP_BACKEND_URL || 'http://localhost:5000',
+  SHORTNAME: import.meta.env.VITE_VUE_APP_SHORTNAME || 'escaner-mx',
+  URL: import.meta.env.VITE_VUE_APP_BACKEND_URL || 'http://localhost:8080',
   USE_ALERTS: import.meta.env.VITE_VUE_APP_USE_ALERTS || false,
   KNOWLEDGEBASE: import.meta.env.VITE_KNOWLEDGEBASE || 'ods',
   DEFAULT_LOCALE: import.meta.env.VITE_DEFAULT_LOCALE || 'es',
@@ -28,13 +28,6 @@ export default {
         name: 'About',
         condition: true,
       },
-      {
-        route: 'http://escaner2030.es',
-        name: 'Go to the Spanish version',
-        condition: true,
-        icon: 'open_blank',
-        external: true,
-      },
     ],
   },
   DISCLAIMER: {
@@ -47,145 +40,113 @@ export default {
       external: false,
     },
   },
-  LOGO: `/img/logo_${import.meta.env.VITE_DEFAULT_LOCALE || 'es'}.png`,
+  // Logo PLACEHOLDER textual del despliegue mexicano (SVG con el nombre de
+  // marca). Sustituir por el arte definitivo cuando esté disponible (fase F1).
+  LOGO: '/img/logo-mx.svg',
 
   DEFAULT_PAGE_TITLE: {
-    es: 'Escáner2030 - Escanea cualquier texto en clave ODS',
-    en: 'Scanner 2030 - Scan any text and discover its relation to the 2030 Agenda',
+    es: 'Escáner Legislativo MX — Escanea cualquier texto legislativo en clave ODS',
+    en: 'Escáner Legislativo MX — Scan any Mexican legislative text against the 2030 Agenda',
   },
   DEFAULT_METATAGS: {
     es: [
       {
         name: 'description',
         content:
-          'Escáner2030 analiza y etiqueta en segundos cualquier texto que le proporciones en clave de Agenda 2030, ofreciendo visualizaciones sobre la presencia de los diferentes Objetivos de Desarrollo Sostenible (ODS).',
+          'Escáner Legislativo MX etiqueta y visualiza en segundos cualquier texto legislativo mexicano en clave de Agenda 2030 y sus Objetivos de Desarrollo Sostenible (ODS), y traza su relación con marcos jurídicos e internacionales.',
       },
       {
         name: 'keywords',
         content:
-          'Agenda 2030, ODS, Objetivos de Desarrollo Sostenible, Escáner2030, Naciones Unidas',
+          'Agenda 2030, ODS, Objetivos de Desarrollo Sostenible, legislación mexicana, Cámara de Diputados, Congreso de la Unión, DOF, iniciativa, dictamen',
       },
       {
         itemprop: 'image',
-        content: 'http://escaner2030.es/img/logo_es.png',
+        content: '/img/logo-mx.svg',
       },
       {
         name: 'twitter:card',
         content: 'summary_large_image',
       },
       {
-        name: 'twitter:url',
-        content: 'http://escaner2030.es',
-      },
-      {
         name: 'twitter:title',
-        content: 'Escáner2030 - Escanea cualquier texto en clave ODS',
+        content: 'Escáner Legislativo MX',
       },
       {
         name: 'twitter:description',
         content:
-          'Escáner2030 analiza y etiqueta en segundos cualquier texto que le proporciones en clave de Agenda 2030, ofreciendo visualizaciones sobre la presencia de los diferentes Objetivos de Desarrollo Sostenible (ODS).',
-      },
-      {
-        name: 'twitter:creator',
-        content: '@_PoliticalWatch',
-      },
-      {
-        name: 'twitter:image:src',
-        content: 'http://escaner2030.es/img/logo_es.png',
+          'Etiqueta y visualiza cualquier texto legislativo mexicano en clave de Agenda 2030 y traza su relación con marcos jurídicos e internacionales.',
       },
       {
         property: 'og:title',
-        content: 'Escáner2030 - Escanea cualquier texto en clave ODS',
+        content: 'Escáner Legislativo MX',
       },
       {
         property: 'og:type',
         content: 'website',
       },
       {
-        property: 'og:url',
-        content: 'https://www.escaner2030.es',
-      },
-      {
         property: 'og:image',
-        content: 'http://escaner2030.es/img/logo_es.png',
+        content: '/img/logo-mx.svg',
       },
       {
         property: 'og:description',
         content:
-          'Escáner2030 analiza y etiqueta en segundos cualquier texto que le proporciones en clave de Agenda 2030, ofreciendo visualizaciones sobre la presencia de los diferentes Objetivos de Desarrollo Sostenible (ODS).',
+          'Etiqueta y visualiza cualquier texto legislativo mexicano en clave de Agenda 2030 y traza su relación con marcos jurídicos e internacionales.',
       },
       {
         property: 'og:site_name',
-        content: 'Escáner2030',
+        content: 'Escáner Legislativo MX',
       },
     ],
     en: [
       {
         name: 'description',
         content:
-          'Scanner 2030 analyses and labels in seconds any text you provide in Agenda 2030 key, offering visualisations about the presence of the different Sustainable Development Goals in your text.',
+          'Escáner Legislativo MX tags and visualises any Mexican legislative text against the 2030 Agenda and its Sustainable Development Goals, and traces its relation to legal and international frameworks.',
       },
       {
         name: 'keywords',
         content:
-          '2030 Agenda, UN, SDG, Sustainable Development Goals, United Nations',
+          '2030 Agenda, SDG, Sustainable Development Goals, Mexican legislation, Chamber of Deputies, Congress of the Union, DOF, bill',
       },
       {
         itemprop: 'image',
-        content: 'http://scaner2030.com/img/logo_en.png',
+        content: '/img/logo-mx.svg',
       },
       {
         name: 'twitter:card',
         content: 'summary_large_image',
       },
       {
-        name: 'twitter:url',
-        content: 'http://scaner2030.com',
-      },
-      {
         name: 'twitter:title',
-        content:
-          'Scanner 2030 - Scan any text and discover its relation to the 2030 Agenda',
+        content: 'Escáner Legislativo MX',
       },
       {
         name: 'twitter:description',
         content:
-          'Scanner 2030 analyses and labels in seconds any text you provide in Agenda 2030 key, offering visualisations about the presence of the different Sustainable Development Goals in your text.',
-      },
-      {
-        name: 'twitter:creator',
-        content: '@_PoliticalWatch',
-      },
-      {
-        name: 'twitter:image:src',
-        content: 'http://scaner2030.com/img/logo_en.png',
+          'Tag and visualise any Mexican legislative text against the 2030 Agenda and trace its relation to legal and international frameworks.',
       },
       {
         property: 'og:title',
-        content:
-          'Scanner 2030 - Scan any text and discover its relation to the 2030 Agenda',
+        content: 'Escáner Legislativo MX',
       },
       {
         property: 'og:type',
         content: 'website',
       },
       {
-        property: 'og:url',
-        content: 'https://scanner2030.com',
-      },
-      {
         property: 'og:image',
-        content: 'http://scaner2030.com/img/logo_en.png',
+        content: '/img/logo-mx.svg',
       },
       {
         property: 'og:description',
         content:
-          'Scanner 2030 analyses and labels in seconds any text you provide in Agenda 2030 key, offering visualisations about the presence of the different Sustainable Development Goals in your text.',
+          'Tag and visualise any Mexican legislative text against the 2030 Agenda and trace its relation to legal and international frameworks.',
       },
       {
         property: 'og:site_name',
-        content: 'Scanner 2030',
+        content: 'Escáner Legislativo MX',
       },
     ],
   },

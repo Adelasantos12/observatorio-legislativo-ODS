@@ -96,7 +96,7 @@ def extract(
     file: Annotated[UploadFile | str | None, File()] = None,
     knowledgebase: Annotated[str, Form()] = "",
 ):
-    """Returns a list of topics and tags matching the text."""
+    """Etiqueta el texto y devuelve los temas (ODS) y etiquetas que coinciden."""
     try:
         # Blank knowledgebase = no filter (all public KBs), matching Flask's default.
         # The empty default also stops Swagger "Try it out" from sending `"string"`.
@@ -140,7 +140,7 @@ def extract(
 
 @router.get("/result/{id}")
 def tagger_result(id: str, query: Annotated[KbQuery, Query()]):
-    """Returns tagging task's result."""
+    """Devuelve el resultado de la tarea de etiquetado asíncrona."""
     try:
         tipi_tasks.init()
         result = tipi_tasks.tagger.check_status_task(id)

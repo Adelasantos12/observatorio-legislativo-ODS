@@ -1,5 +1,6 @@
 [
   {
+    "_id": "ods-6-agua-limpia-y-saneamiento",
     "name": "ODS 6 Agua limpia y saneamiento",
     "shortname": "ODS 6",
     "description": "Garantizar la disponibilidad y la gestión sostenible del agua y el saneamiento para todos",
@@ -39,6 +40,7 @@
     ]
   },
   {
+    "_id": "ods-3-salud-y-bienestar",
     "name": "ODS 3 Salud y bienestar",
     "shortname": "ODS 3",
     "description": "Garantizar una vida sana y promover el bienestar de todos a todas las edades",
@@ -78,6 +80,7 @@
     ]
   },
   {
+    "_id": "ods-5-igualdad-de-genero",
     "name": "ODS 5 Igualdad de género",
     "shortname": "ODS 5",
     "description": "Lograr la igualdad de género y empoderar a todas las mujeres y las niñas",

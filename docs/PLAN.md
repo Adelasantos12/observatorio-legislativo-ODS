@@ -127,4 +127,61 @@ no es prerequisito del escáner interactivo.
 
 ## Bitácora de decisiones
 
-(vacía; Claude Code documenta aquí desviaciones del plan con fecha y razón)
+### 2026-07-17 — F0
+
+- **Locks regenerados** (`uv lock`) en `packages/qhld-data`, `packages/qhld-tasks`,
+  `api` y `engine`: resueltos sin conflictos con CPython 3.12.
+- **`api/tipi_backend/settings.py` creado y versionado.** El stack tipi lo tenía
+  en `.gitignore` (config por-despliegue), pero sin él ni la API ni sus tests
+  arrancan. Se reescribió dirigido por variables de entorno (12-factor, sin
+  secretos) con defaults que coinciden con `docker-compose.yml`, y se quitó del
+  `.gitignore`. Incluye `MAX_CONTENT_LENGTH` (lo exige el middleware de subida).
+- **Bug del `_id` en los seeds.** `Topic` (MongoModel) exige un `_id` **string**;
+  el seed no lo traía, así que Mongo asignaba un ObjectId y `GET /topics` fallaba
+  al validar. Se añadió `_id` (slug estable) a `ods_mx.seed.json` y `load_kb.py`
+  lo genera por defecto con `generate_slug(name)` si falta.
+- **Consistencia de variables Mongo.** `tipi_data` lee `MONGO_DB_NAME` /
+  `MONGO_USER` / `MONGO_PASSWORD`, pero el compose usaba `MONGO_DB` y no pasaba
+  credenciales. Corregido en `docker-compose.yml` (+ credenciales root en el
+  servicio `mongo`) y en `load_kb.py` (conecta con auth y respeta `MONGO_DB_NAME`).
+- **Dockerfiles al layout monorepo.** `Dockerfile-dev` (api y qhld-tasks) y los
+  `Dockerfile` de producción reescritos con contexto de build = raíz, path-deps
+  copiados desde `packages/`, y venv en `/app/.venv` (fuera de los bind-mounts).
+- **Despliegue en Railway** (decisión del usuario: todo el stack en Railway, no
+  Vercel — Vercel no corre Celery ni bases de datos). Añadidos
+  `deploy/railway/{api,worker,frontend}.json`, `frontend/Dockerfile-mx` y
+  `docs/DEPLOY_RAILWAY.md`.
+- **Limitación del sandbox (no del código).** La política de egress de este
+  entorno bloquea el registry de Docker (403 al bajar `mongo:7`, `python:3.12`,
+  `testcontainers/ryuk`). Por eso **no** se pudo ejecutar `docker compose up`
+  (F0.3) ni los tests de integración (testcontainers) aquí. Verificado en su
+  lugar: `docker compose config` válido; tests **unit** verdes en qhld-data (11),
+  qhld-tasks (17) y api (9); el motor de tagging real produce los tags del ODS 6
+  para el párrafo CONAGUA/derecho al agua (F0.5); y `load_kb` + `GET /topics?knowledgebase=mx`
+  devuelven los 3 ODS mexicanos con un Mongo en memoria (mongomock). En Railway,
+  donde el registry no está bloqueado, F0.3 corre sin cambios.
+
+### 2026-07-17 — F1
+
+- **Managers México** (`api/tipi_backend/api/managers/mexico/`): tipos y estados
+  de iniciativa según el trámite mexicano (docs/TROPICALIZACION.md), sobre la
+  plantilla de `paraguay/`. `COUNTRY=mexico` en compose y guía de Railway.
+- **Tropicalización del frontend:** rebrand a "Escáner Legislativo MX" (i18n es/en,
+  index.html, config, metatags), "Acerca" reescrito (herramienta + método
+  NormTrace), OpenAPI y docstrings del escáner en español mexicano.
+- **Rastro español eliminado:** enlace a la versión española, URLs
+  escaner2030.es/scanner2030.com, @_PoliticalWatch, logos de Political Watch y del
+  Ministerio de Exteriores español, y el Google Analytics español hardcodeado
+  (ahora vía `VITE_GA_ID`, vacío por defecto).
+- **Decisiones del usuario:** (a) *sin atribución institucional* — el "Acerca" y el
+  footer describen la herramienta y el método, con crédito técnico neutral a la
+  tecnología abierta (tipi/escáner2030) y a NormTrace, sin inventar una
+  organización mexicana; (b) *logo placeholder textual* — `public/img/logo-mx.svg`
+  con el nombre de marca hasta tener arte definitivo.
+- **Limitación del sandbox:** el build del frontend no se pudo ejecutar aquí porque
+  la dependencia `xlsx` se descarga de `cdn.sheetjs.com` (fuera de npm) y la
+  política de egress la bloquea (403), igual que el registry Docker. Por eso **no**
+  se adjunta la captura de pantalla de F1 en este entorno. Verificado en su lugar:
+  sintaxis ESM de los archivos tocados, estructura de `messages.js` sin rastro
+  español, y tests unit de la api en verde. La captura debe generarse en un entorno
+  con acceso a npm/cdn (o en el propio Railway).

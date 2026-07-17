@@ -6,36 +6,13 @@
     >
       <div class="o-container">
         <div class="o-grid">
-          <div class="o-grid__col u-3@sm u-margin-top-4">
-            <p class="u-text-overline">{{ $t('common.footer.developedBy') }}</p>
-            <a href="http://politicalwatch.es" target="_blank"
-              ><img
-                src="/img/logo-politicalwatch.png"
-                class="big"
-                alt="Logo de Political Watch"
-            /></a>
-          </div>
-          <div class="o-grid__col u-8@sm u-offset-1@sm u-margin-top-4">
-            <p class="u-text-overline">{{ $t('common.footer.supportedBy') }}</p>
-            <div class="o-grid">
-              <div class="o-grid__col u-7@sm">
-                <a
-                  href="http://www.exteriores.gob.es/Portal/es/Ministerio/SecretariosDeEstado/SecretariaDeEstadoCooperacionInternacional/Paginas/Inicio.aspx"
-                  target="_blank"
-                  ><img
-                    src="/img/maeuec-seci.jpg"
-                    class="big"
-                    alt="Logo de la Secretaria de Estado de Cooperación (Ministerio de Asuntos Exteriores, Unión Europea y Cooperación) del Gobierno de España"
-                /></a>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="o-grid">
           <div class="o-grid__col u-12@sm u-margin-top-4">
+            <p class="u-text-tbody2">{{ $t('common.footer.disclaimer') }}</p>
+            <p class="u-color-secondary-dark u-text-tbody2 u-margin-top-2">
+              {{ new Date().getFullYear() }} · {{ $t('common.footer.copy') }}
+            </p>
             <p class="u-color-secondary-dark u-text-tbody2">
-              {{ new Date().getFullYear() }} Political Watch -
-              {{ $t('common.footer.copy') }}
+              {{ $t('common.footer.tech') }}
             </p>
           </div>
         </div>

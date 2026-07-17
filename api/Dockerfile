@@ -1,27 +1,33 @@
 FROM python:3.12-slim
 
-RUN apt-get update && apt-get install -y git gcc poppler-utils tesseract-ocr tesseract-ocr-spa tesseract-ocr-cat antiword
+RUN apt-get update && apt-get install -y --no-install-recommends \
+        git gcc poppler-utils tesseract-ocr tesseract-ocr-spa tesseract-ocr-cat antiword \
+    && rm -rf /var/lib/apt/lists/*
 
 COPY --from=ghcr.io/astral-sh/uv:latest /uv /uvx /bin/
 
 ENV UV_COMPILE_BYTECODE=1 \
     UV_LINK_MODE=copy \
-    UV_PYTHON_DOWNLOADS=0
+    UV_PYTHON_DOWNLOADS=0 \
+    UV_PROJECT_ENVIRONMENT=/app/.venv
 
-WORKDIR /app
+WORKDIR /app/api
 
+# --- Contexto de build = raíz del monorepo (Railway: root dir "/") ---
+# 1) Path-deps editables (qhld-data, qhld-tasks) referenciados como ../packages/*.
+COPY packages /app/packages
+# 2) Manifiesto + lock del api primero, para cachear la capa de dependencias.
+COPY api/pyproject.toml api/uv.lock ./
 RUN --mount=type=cache,target=/root/.cache/uv \
-    --mount=type=bind,source=uv.lock,target=uv.lock \
-    --mount=type=bind,source=pyproject.toml,target=pyproject.toml \
     uv sync --locked --no-install-project --no-dev
-
-COPY . /app
-
+# 3) Código del backend y sync final (instala el propio qhld-backend).
+COPY api/ /app/api/
 RUN --mount=type=cache,target=/root/.cache/uv \
     uv sync --locked --no-dev
 
 ENV PATH="/app/.venv/bin:$PATH"
 
-# Run via uvicorn --proxy-headers/--forwarded-allow-ips replace Flask's ProxyFix.
-# Add `--workers N` here for multi-core in one container.
-CMD ["uvicorn", "tipi_backend.wsgi:app", "--host", "0.0.0.0", "--port", "5000", "--proxy-headers", "--forwarded-allow-ips", "*"]
+EXPOSE 8080
+# Railway inyecta $PORT; caemos a 8080 en local. --proxy-headers para ir tras el
+# proxy de Railway (sustituye a ProxyFix de Flask).
+CMD ["sh", "-c", "uvicorn tipi_backend.wsgi:app --host 0.0.0.0 --port ${PORT:-8080} --proxy-headers --forwarded-allow-ips '*'"]

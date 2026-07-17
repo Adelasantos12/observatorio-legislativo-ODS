@@ -4,17 +4,17 @@
     <title>%VITE_VUE_APP_TITLE%</title>
     <meta
       name="description"
-      content="Escáner2030 analiza y etiqueta en segundos cualquier texto que le proporciones en clave de Agenda 2030, ofreciendo visualizaciones sobre la presencia de los diferentes Objetivos de Desarrollo Sostenible (ODS)."
+      content="Escáner Legislativo MX etiqueta y visualiza en segundos cualquier texto legislativo mexicano en clave de Agenda 2030 y sus 17 Objetivos de Desarrollo Sostenible, y traza su relación con marcos jurídicos e internacionales."
       data-vue-router-controlled
     />
     <meta
       name="keywords"
-      content="Agenda 2030, ODS, Objetivos de Desarrollo Sostenible, Escáner2030, Naciones Unidas"
+      content="Agenda 2030, ODS, Objetivos de Desarrollo Sostenible, legislación mexicana, Cámara de Diputados, Congreso de la Unión, DOF, iniciativa, dictamen"
       data-vue-router-controlled
     />
     <meta
       itemprop="image"
-      content="/img/logo_es.png"
+      content="/img/logo-mx.svg"
       data-vue-router-controlled
     />
 
@@ -25,57 +25,36 @@
       data-vue-router-controlled
     />
     <meta
-      name="twitter:url"
-      content="http://escaner2030.es"
-      data-vue-router-controlled
-    />
-    <meta
       name="twitter:title"
-      content="Escáner2030 - Escanea cualquier texto en clave ODS"
+      content="Escáner Legislativo MX"
       data-vue-router-controlled
     />
     <meta
       name="twitter:description"
-      content="Escáner2030 analiza y etiqueta en segundos cualquier texto que le proporciones en clave de Agenda 2030, ofreciendo visualizaciones sobre la presencia de los diferentes Objetivos de Desarrollo Sostenible (ODS)."
-      data-vue-router-controlled
-    />
-    <meta
-      name="twitter:creator"
-      content="@_PoliticalWatch"
-      data-vue-router-controlled
-    />
-    <!-- Twitter summary card with large image must be at least 280x150px -->
-    <meta
-      name="twitter:image:src"
-      content="http://escaner2030.es/img/logo.png"
+      content="Etiqueta y visualiza cualquier texto legislativo mexicano en clave de Agenda 2030 y traza su relación con marcos jurídicos e internacionales."
       data-vue-router-controlled
     />
 
     <!-- Open Graph data -->
     <meta
       property="og:title"
-      content="Escáner2030 - Escanea cualquier texto en clave ODS"
+      content="Escáner Legislativo MX"
       data-vue-router-controlled
     />
     <meta property="og:type" content="website" data-vue-router-controlled />
     <meta
-      property="og:url"
-      content="http://www.escaner2030.es"
-      data-vue-router-controlled
-    />
-    <meta
       property="og:image"
-      content="http://escaner2030.es/img/logo.png"
+      content="/img/logo-mx.svg"
       data-vue-router-controlled
     />
     <meta
       property="og:description"
-      content="Escáner2030 analiza y etiqueta en segundos cualquier texto que le proporciones en clave de Agenda 2030, ofreciendo visualizaciones sobre la presencia de los diferentes Objetivos de Desarrollo Sostenible (ODS)."
+      content="Etiqueta y visualiza cualquier texto legislativo mexicano en clave de Agenda 2030 y traza su relación con marcos jurídicos e internacionales."
       data-vue-router-controlled
     />
     <meta
       property="og:site_name"
-      content="Escáner2030"
+      content="Escáner Legislativo MX"
       data-vue-router-controlled
     />
 
@@ -164,25 +143,16 @@
   <body>
     <noscript>
       <strong
-        >We're sorry but tipi-frontend doesn't work properly without JavaScript
-        enabled. Please enable it to continue.</strong
+        >El Escáner Legislativo MX necesita JavaScript para funcionar
+        correctamente. Por favor, actívalo para continuar.</strong
       >
     </noscript>
     <div id="app"></div>
     <!-- built files will be auto injected -->
-    <!-- Google tag (gtag.js) -->
-    <script
-      async
-      src="https://www.googletagmanager.com/gtag/js?id=G-ZSVLWSY6F0"
-    ></script>
-    <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag() {
-        dataLayer.push(arguments);
-      }
-      gtag('js', new Date());
-
-      gtag('config', 'G-ZSVLWSY6F0');
-    </script>
+    <!--
+      La analítica (Google Analytics) se carga vía vue-gtag con el id de
+      VITE_GA_ID (ver src/main.js) y solo si el usuario acepta cookies. En el
+      despliegue mexicano VITE_GA_ID está vacío por defecto: sin id, sin rastreo.
+    -->
   </body>
 </html>

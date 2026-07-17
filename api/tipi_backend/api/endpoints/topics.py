@@ -16,7 +16,7 @@ router = APIRouter(prefix="/topics", tags=["topics"])
 
 @router.get("/")
 def list_topics(query: Annotated[KbQuery, Query()]):
-    """Returns list of topics."""
+    """Devuelve la lista de temas (ODS) del diccionario."""
     if query.knowledgebase is not None:
         return serialize(get_topics(query.knowledgebase.split(",")))
     return serialize(get_topics())
@@ -24,7 +24,7 @@ def list_topics(query: Annotated[KbQuery, Query()]):
 
 @router.get("/{id}")
 def get_topic_item(id: str):
-    """Returns details of a topic."""
+    """Devuelve el detalle de un tema."""
     try:
         return serialize(get_topic(id))
     except Exception as e:
