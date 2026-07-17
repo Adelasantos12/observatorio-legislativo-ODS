@@ -23,6 +23,10 @@ RUN uv sync --locked --no-install-project --no-dev
 COPY api/ /app/api/
 RUN uv sync --locked --no-dev
 
+# 4) Diccionario (seeds + load_kb.py): lo usa el paso de carga en Railway
+#    (`python /app/knowledgebase/load_kb.py`). En local va por volumen (compose).
+COPY knowledgebase /app/knowledgebase
+
 ENV PATH="/app/.venv/bin:$PATH"
 
 EXPOSE 8080
