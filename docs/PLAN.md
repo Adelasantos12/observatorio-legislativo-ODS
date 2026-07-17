@@ -185,3 +185,26 @@ no es prerequisito del escáner interactivo.
   sintaxis ESM de los archivos tocados, estructura de `messages.js` sin rastro
   español, y tests unit de la api en verde. La captura debe generarse en un entorno
   con acceso a npm/cdn (o en el propio Railway).
+
+### 2026-07-17 — F2
+
+- **Validador** `knowledgebase/validate_seeds.py`: valida el JSON, compila cada
+  regex con el `compile_tag()` real y avisa de `shuffle` con explosión de
+  permutaciones. Sale con código != 0 ante errores.
+- **Diccionario 17 ODS** (`seeds/ods_mx.seed.json`): ampliado de 3 a 17 topics
+  (74 tags) con vocabulario institucional mexicano (CONEVAL, SEGALMEX, SEP,
+  INMUJERES, CFE/SENER, STPS/LFT, CONAHCYT, CONAPRED/INPI/INM, SEDATU/CONAVI,
+  PROFECO/LGPGIR, LGCC/INECC, CONAPESCA, CONAFOR/CONANP/SEMARNAT, FGR/SNA/CNDH/INAI,
+  AMEXCID/INEGI/SHCP). Nombres de topic alineados con las claves de `config/index.js`
+  del frontend para que hereden color e icono ODS.
+- **Segundo marco (RSI)** `seeds/rsi_mx.seed.json`, generado de forma reproducible
+  por `knowledgebase/gen_rsi_seed.py` desde
+  `normtrace/03_tables/international_obligations/IHR-2005_obligations_domestic-anchoring.csv`
+  (se lee, no se muta): 8 topics = Títulos del RSI, 45 subtopics = artículos,
+  45 tags = obligaciones con regex **en español** (el CSV está en inglés) para
+  detectar menciones en textos mexicanos (Centro Nacional de Enlace, vigilancia
+  epidemiológica/SINAVE, notificación a la OMS, capacidades básicas, etc.).
+- **Aceptación verificada:** validador en verde (0 errores/avisos en ambos seeds);
+  escaneo de un párrafo tipo iniciativa de la Gaceta produce etiquetas plausibles
+  en 5 ODS (3, 5, 10, 13, 15) y demuestra multi-marco al detectar además 2 Títulos
+  del RSI. `load_kb` carga cada seed por su knowledgebase (`mx` y `rsi_mx`).

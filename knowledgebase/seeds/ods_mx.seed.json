@@ -1,5 +1,211 @@
 [
   {
+    "_id": "ods-1-fin-de-la-pobreza",
+    "name": "ODS 1 Fin de la pobreza",
+    "shortname": "ODS 1",
+    "description": "Poner fin a la pobreza en todas sus formas en todo el mundo",
+    "knowledgebase": "mx",
+    "public": true,
+    "tags": [
+      {
+        "regex": "\\bCONEVAL\\b|Consejo Nacional de Evaluación de la Política de Desarrollo Social",
+        "tag": "CONEVAL",
+        "subtopic": "1.2 Reducir la pobreza en todas sus dimensiones",
+        "shuffle": false
+      },
+      {
+        "regex": "pobreza multidimensional|medición de la pobreza|carencias? sociales?",
+        "tag": "Pobreza multidimensional",
+        "subtopic": "1.2 Reducir la pobreza en todas sus dimensiones",
+        "shuffle": false
+      },
+      {
+        "regex": "pensión (para el|del)? ?[Bb]ienestar|pensión (de|para)( las)? personas adultas mayores|programas? del? Bienestar",
+        "tag": "Programas de Bienestar",
+        "subtopic": "1.3 Sistemas de protección social",
+        "shuffle": false
+      },
+      {
+        "regex": "Ley General de Desarrollo Social|\\bLGDS\\b",
+        "tag": "Ley General de Desarrollo Social",
+        "subtopic": "1.3 Sistemas de protección social",
+        "shuffle": false
+      },
+      {
+        "regex": "salario mínimo|Unidad de Medida y Actualización|\\bUMA\\b",
+        "tag": "Salario mínimo y UMA",
+        "subtopic": "1.4 Acceso a recursos y servicios básicos",
+        "shuffle": false
+      }
+    ]
+  },
+  {
+    "_id": "ods-2-hambre-cero",
+    "name": "ODS 2 Hambre cero",
+    "shortname": "ODS 2",
+    "description": "Poner fin al hambre, lograr la seguridad alimentaria y la mejora de la nutrición y promover la agricultura sostenible",
+    "knowledgebase": "mx",
+    "public": true,
+    "tags": [
+      {
+        "regex": "derecho a la alimentación( nutritiva,? suficiente y de calidad)?|seguridad alimentaria",
+        "tag": "Derecho a la alimentación",
+        "subtopic": "2.1 Acceso a una alimentación adecuada",
+        "shuffle": false
+      },
+      {
+        "regex": "\\bSEGALMEX\\b|\\bDICONSA\\b|\\bLICONSA\\b|abasto (social|rural)|precios de garantía",
+        "tag": "Abasto y precios de garantía",
+        "subtopic": "2.1 Acceso a una alimentación adecuada",
+        "shuffle": false
+      },
+      {
+        "regex": "desnutrición|malnutrición|obesidad|sobrepeso|etiquetado (frontal|de advertencia)",
+        "tag": "Malnutrición",
+        "subtopic": "2.2 Poner fin a la malnutrición",
+        "shuffle": false
+      },
+      {
+        "regex": "Sembrando Vida",
+        "tag": "Sembrando Vida",
+        "subtopic": "2.3 Productividad de pequeños productores",
+        "shuffle": false
+      },
+      {
+        "regex": "(agricultura|producción).*(familiar|campesina|de pequeña escala)",
+        "tag": "Agricultura familiar",
+        "subtopic": "2.3 Productividad de pequeños productores",
+        "shuffle": true
+      },
+      {
+        "regex": "\\bSADER\\b|Secretaría de Agricultura( y Desarrollo Rural)?",
+        "tag": "SADER",
+        "subtopic": "2.4 Sistemas de producción sostenibles",
+        "shuffle": false
+      }
+    ]
+  },
+  {
+    "_id": "ods-3-salud-y-bienestar",
+    "name": "ODS 3 Salud y bienestar",
+    "shortname": "ODS 3",
+    "description": "Garantizar una vida sana y promover el bienestar de todos a todas las edades",
+    "knowledgebase": "mx",
+    "public": true,
+    "tags": [
+      {
+        "regex": "\\bIMSS\\b(.?Bienestar)?|Instituto Mexicano del Seguro Social",
+        "tag": "IMSS",
+        "subtopic": "3.8 Cobertura sanitaria universal",
+        "shuffle": false
+      },
+      {
+        "regex": "\\bISSSTE\\b|Instituto de Seguridad y Servicios Sociales de los Trabajadores del Estado",
+        "tag": "ISSSTE",
+        "subtopic": "3.8 Cobertura sanitaria universal",
+        "shuffle": false
+      },
+      {
+        "regex": "\\bCOFEPRIS\\b|Comisión Federal para la Protección contra Riesgos Sanitarios",
+        "tag": "COFEPRIS",
+        "subtopic": "3.d Gestión de riesgos sanitarios",
+        "shuffle": false
+      },
+      {
+        "regex": "Consejo de Salubridad General",
+        "tag": "Consejo de Salubridad General",
+        "subtopic": "3.d Gestión de riesgos sanitarios",
+        "shuffle": false
+      },
+      {
+        "regex": "Reglamento Sanitario Internacional|\\bRSI\\b",
+        "tag": "Reglamento Sanitario Internacional",
+        "subtopic": "3.d Gestión de riesgos sanitarios",
+        "shuffle": false
+      },
+      {
+        "regex": "salud intercultural|medicina tradicional",
+        "tag": "Salud intercultural",
+        "subtopic": "3.8 Cobertura sanitaria universal",
+        "shuffle": false
+      }
+    ]
+  },
+  {
+    "_id": "ods-4-educacion-de-calidad",
+    "name": "ODS 4 Educación de calidad",
+    "shortname": "ODS 4",
+    "description": "Garantizar una educación inclusiva, equitativa y de calidad y promover oportunidades de aprendizaje durante toda la vida para todos",
+    "knowledgebase": "mx",
+    "public": true,
+    "tags": [
+      {
+        "regex": "\\bSEP\\b|Secretaría de Educación Pública|Ley General de Educación",
+        "tag": "SEP y Ley General de Educación",
+        "subtopic": "4.1 Enseñanza primaria y secundaria",
+        "shuffle": false
+      },
+      {
+        "regex": "Nueva Escuela Mexicana|\\bNEM\\b",
+        "tag": "Nueva Escuela Mexicana",
+        "subtopic": "4.1 Enseñanza primaria y secundaria",
+        "shuffle": false
+      },
+      {
+        "regex": "Beca[s]? (Benito Juárez|para el Bienestar|Universal)",
+        "tag": "Becas para el Bienestar",
+        "subtopic": "4.5 Eliminar disparidades en la educación",
+        "shuffle": false
+      },
+      {
+        "regex": "Jóvenes Construyendo el Futuro|formación (técnica|profesional)|educación (superior|dual)",
+        "tag": "Formación técnica y superior",
+        "subtopic": "4.3 Acceso a formación técnica y superior",
+        "shuffle": false
+      }
+    ]
+  },
+  {
+    "_id": "ods-5-igualdad-de-genero",
+    "name": "ODS 5 Igualdad de género",
+    "shortname": "ODS 5",
+    "description": "Lograr la igualdad de género y empoderar a todas las mujeres y las niñas",
+    "knowledgebase": "mx",
+    "public": true,
+    "tags": [
+      {
+        "regex": "vida libre de violencia(s)?|\\bLGAMVLV\\b",
+        "tag": "Vida libre de violencias",
+        "subtopic": "5.2 Eliminación de violencia contra mujeres y niñas",
+        "shuffle": false
+      },
+      {
+        "regex": "\\bINMUJERES\\b|Instituto Nacional de las Mujeres",
+        "tag": "INMUJERES",
+        "subtopic": "5.1 Fin de la discriminación",
+        "shuffle": false
+      },
+      {
+        "regex": "igualdad sustantiva",
+        "tag": "Igualdad sustantiva",
+        "subtopic": "5.1 Fin de la discriminación",
+        "shuffle": false
+      },
+      {
+        "regex": "paridad( de género)?( en todo)?",
+        "tag": "Paridad",
+        "subtopic": "5.5 Participación plena de las mujeres",
+        "shuffle": false
+      },
+      {
+        "regex": "\\bCEDAW\\b|Belém do Pará",
+        "tag": "Tratados de derechos de las mujeres",
+        "subtopic": "5.1 Fin de la discriminación",
+        "shuffle": false
+      }
+    ]
+  },
+  {
     "_id": "ods-6-agua-limpia-y-saneamiento",
     "name": "ODS 6 Agua limpia y saneamiento",
     "shortname": "ODS 6",
@@ -40,75 +246,369 @@
     ]
   },
   {
-    "_id": "ods-3-salud-y-bienestar",
-    "name": "ODS 3 Salud y bienestar",
-    "shortname": "ODS 3",
-    "description": "Garantizar una vida sana y promover el bienestar de todos a todas las edades",
+    "_id": "ods-7-energia-asequible-y-no-contaminante",
+    "name": "ODS 7 Energía asequible y no contaminante",
+    "shortname": "ODS 7",
+    "description": "Garantizar el acceso a una energía asequible, segura, sostenible y moderna para todos",
     "knowledgebase": "mx",
     "public": true,
     "tags": [
       {
-        "regex": "\\bIMSS\\b(.Bienestar)?|Instituto Mexicano del Seguro Social",
-        "tag": "IMSS",
-        "subtopic": "3.8 Cobertura sanitaria universal",
+        "regex": "\\bCFE\\b|Comisión Federal de Electricidad",
+        "tag": "CFE",
+        "subtopic": "7.1 Acceso a servicios energéticos",
         "shuffle": false
       },
       {
-        "regex": "\\bCOFEPRIS\\b|Comisión Federal para la Protección contra Riesgos Sanitarios",
-        "tag": "COFEPRIS",
-        "subtopic": "3.d Gestión de riesgos sanitarios",
+        "regex": "\\bSENER\\b|Secretaría de Energía|\\bCRE\\b|Comisión Reguladora de Energía",
+        "tag": "SENER y CRE",
+        "subtopic": "7.1 Acceso a servicios energéticos",
         "shuffle": false
       },
       {
-        "regex": "Consejo de Salubridad General",
-        "tag": "Consejo de Salubridad General",
-        "subtopic": "3.d Gestión de riesgos sanitarios",
+        "regex": "energías? renovable[s]?|transición energética|Ley de Transición Energética|energía (limpia|solar|eólica)",
+        "tag": "Energías renovables",
+        "subtopic": "7.2 Aumentar las energías renovables",
         "shuffle": false
       },
       {
-        "regex": "Reglamento Sanitario Internacional|\\bRSI\\b",
-        "tag": "Reglamento Sanitario Internacional",
-        "subtopic": "3.d Gestión de riesgos sanitarios",
-        "shuffle": false
-      },
-      {
-        "regex": "salud intercultural|medicina tradicional",
-        "tag": "Salud intercultural",
-        "subtopic": "3.8 Cobertura sanitaria universal",
+        "regex": "eficiencia energética|\\bCONUEE\\b",
+        "tag": "Eficiencia energética",
+        "subtopic": "7.3 Eficiencia energética",
         "shuffle": false
       }
     ]
   },
   {
-    "_id": "ods-5-igualdad-de-genero",
-    "name": "ODS 5 Igualdad de género",
-    "shortname": "ODS 5",
-    "description": "Lograr la igualdad de género y empoderar a todas las mujeres y las niñas",
+    "_id": "ods-8-trabajo-decente-y-crecimiento-economico",
+    "name": "ODS 8 Trabajo decente y crecimiento económico",
+    "shortname": "ODS 8",
+    "description": "Promover el crecimiento económico sostenido, inclusivo y sostenible, el empleo pleno y productivo y el trabajo decente para todos",
     "knowledgebase": "mx",
     "public": true,
     "tags": [
       {
-        "regex": "vida libre de violencia(s)?|\\bLGAMVLV\\b",
-        "tag": "Vida libre de violencias",
-        "subtopic": "5.2 Eliminación de violencia contra mujeres y niñas",
+        "regex": "\\bSTPS\\b|Secretaría del Trabajo( y Previsión Social)?",
+        "tag": "STPS",
+        "subtopic": "8.5 Empleo pleno y trabajo decente",
         "shuffle": false
       },
       {
-        "regex": "igualdad sustantiva",
-        "tag": "Igualdad sustantiva",
-        "subtopic": "5.1 Fin de la discriminación",
+        "regex": "Ley Federal del Trabajo|\\bLFT\\b",
+        "tag": "Ley Federal del Trabajo",
+        "subtopic": "8.5 Empleo pleno y trabajo decente",
         "shuffle": false
       },
       {
-        "regex": "paridad( de género)?( en todo)?",
-        "tag": "Paridad",
-        "subtopic": "5.5 Participación plena de las mujeres",
+        "regex": "trabajo (digno|decente)|derechos laborales",
+        "tag": "Trabajo digno",
+        "subtopic": "8.5 Empleo pleno y trabajo decente",
         "shuffle": false
       },
       {
-        "regex": "\\bCEDAW\\b|Belém do Pará",
-        "tag": "Tratados de derechos de las mujeres",
-        "subtopic": "5.1 Fin de la discriminación",
+        "regex": "subcontratación|outsourcing|reforma laboral",
+        "tag": "Subcontratación y reforma laboral",
+        "subtopic": "8.3 Empleo y emprendimiento",
+        "shuffle": false
+      },
+      {
+        "regex": "trabajo infantil|trabajo forzoso|explotación laboral",
+        "tag": "Trabajo infantil y forzoso",
+        "subtopic": "8.7 Erradicar el trabajo infantil y forzoso",
+        "shuffle": false
+      }
+    ]
+  },
+  {
+    "_id": "ods-9-industria-innovacion-e-infraestructura",
+    "name": "ODS 9 Industria, innovación e infraestructura",
+    "shortname": "ODS 9",
+    "description": "Construir infraestructuras resilientes, promover la industrialización inclusiva y sostenible y fomentar la innovación",
+    "knowledgebase": "mx",
+    "public": true,
+    "tags": [
+      {
+        "regex": "\\bSICT\\b|\\bSCT\\b|Secretaría de Infraestructura, Comunicaciones y Transportes",
+        "tag": "Infraestructura y transportes",
+        "subtopic": "9.1 Infraestructura sostenible",
+        "shuffle": false
+      },
+      {
+        "regex": "\\bCONAHCYT\\b|\\bCONACYT\\b|Consejo Nacional de Humanidades, Ciencias y Tecnologías|investigación (científica|y desarrollo)",
+        "tag": "Ciencia e innovación",
+        "subtopic": "9.5 Investigación e innovación",
+        "shuffle": false
+      },
+      {
+        "regex": "\\bMIPYMES?\\b|micro,? pequeñas y medianas empresas",
+        "tag": "MIPYMES",
+        "subtopic": "9.2 Industrialización inclusiva",
+        "shuffle": false
+      },
+      {
+        "regex": "cobertura (universal|de internet)|banda ancha|conectividad|CFE Telecomunicaciones",
+        "tag": "Conectividad y TIC",
+        "subtopic": "9.c Acceso a las TIC",
+        "shuffle": false
+      }
+    ]
+  },
+  {
+    "_id": "ods-10-reduccion-de-las-desigualdades",
+    "name": "ODS 10 Reducción de las desigualdades",
+    "shortname": "ODS 10",
+    "description": "Reducir la desigualdad en los países y entre ellos",
+    "knowledgebase": "mx",
+    "public": true,
+    "tags": [
+      {
+        "regex": "\\bCONAPRED\\b|Consejo Nacional para Prevenir la Discriminación|no discriminación",
+        "tag": "No discriminación",
+        "subtopic": "10.3 Igualdad de oportunidades",
+        "shuffle": false
+      },
+      {
+        "regex": "\\bINPI\\b|Instituto Nacional de los Pueblos Indígenas|pueblos (y comunidades )?(indígenas|afromexicanos)|consulta indígena",
+        "tag": "Pueblos indígenas y afromexicanos",
+        "subtopic": "10.2 Inclusión social, económica y política",
+        "shuffle": false
+      },
+      {
+        "regex": "\\bINM\\b|Instituto Nacional de Migración|personas migrantes|movilidad humana|población migrante",
+        "tag": "Migración",
+        "subtopic": "10.7 Migración ordenada y segura",
+        "shuffle": false
+      },
+      {
+        "regex": "\\bCONADIS\\b|personas con discapacidad|inclusión (social|de las personas con discapacidad)",
+        "tag": "Personas con discapacidad",
+        "subtopic": "10.2 Inclusión social, económica y política",
+        "shuffle": false
+      }
+    ]
+  },
+  {
+    "_id": "ods-11-ciudades-y-comunidades-sostenibles",
+    "name": "ODS 11 Ciudades y comunidades sostenibles",
+    "shortname": "ODS 11",
+    "description": "Lograr que las ciudades y los asentamientos humanos sean inclusivos, seguros, resilientes y sostenibles",
+    "knowledgebase": "mx",
+    "public": true,
+    "tags": [
+      {
+        "regex": "\\bCONAVI\\b|\\bINFONAVIT\\b|\\bFOVISSSTE\\b|vivienda (adecuada|social|digna)",
+        "tag": "Vivienda adecuada",
+        "subtopic": "11.1 Vivienda adecuada",
+        "shuffle": false
+      },
+      {
+        "regex": "\\bSEDATU\\b|Secretaría de Desarrollo Agrario, Territorial y Urbano|Ley General de Asentamientos Humanos|ordenamiento territorial",
+        "tag": "Desarrollo urbano y territorial",
+        "subtopic": "11.1 Vivienda adecuada",
+        "shuffle": false
+      },
+      {
+        "regex": "movilidad (urbana|sostenible)|Ley General de Movilidad( y Seguridad Vial)?|transporte público",
+        "tag": "Movilidad sostenible",
+        "subtopic": "11.2 Transporte sostenible",
+        "shuffle": false
+      },
+      {
+        "regex": "\\bCENAPRED\\b|protección civil|gestión integral (de|del) riesgo[s]?( de desastres)?",
+        "tag": "Gestión del riesgo de desastres",
+        "subtopic": "11.5 Reducción del impacto de los desastres",
+        "shuffle": false
+      }
+    ]
+  },
+  {
+    "_id": "ods-12-produccion-y-consumo-responsables",
+    "name": "ODS 12 Producción y consumo responsables",
+    "shortname": "ODS 12",
+    "description": "Garantizar modalidades de consumo y producción sostenibles",
+    "knowledgebase": "mx",
+    "public": true,
+    "tags": [
+      {
+        "regex": "economía circular|Ley General para la Prevención y Gestión Integral de los Residuos|\\bLGPGIR\\b",
+        "tag": "Economía circular y residuos",
+        "subtopic": "12.5 Reducción de la generación de residuos",
+        "shuffle": false
+      },
+      {
+        "regex": "\\bPROFECO\\b|Procuraduría Federal del Consumidor|consumo responsable",
+        "tag": "Consumo responsable",
+        "subtopic": "12.8 Información y sensibilización",
+        "shuffle": false
+      },
+      {
+        "regex": "NOM-\\d+-SEMARNAT|residuos (peligrosos|sólidos|de manejo especial)|manejo (integral )?de residuos",
+        "tag": "Gestión de residuos y químicos",
+        "subtopic": "12.4 Gestión de productos químicos y residuos",
+        "shuffle": false
+      }
+    ]
+  },
+  {
+    "_id": "ods-13-accion-por-el-clima",
+    "name": "ODS 13 Acción por el clima",
+    "shortname": "ODS 13",
+    "description": "Adoptar medidas urgentes para combatir el cambio climático y sus efectos",
+    "knowledgebase": "mx",
+    "public": true,
+    "tags": [
+      {
+        "regex": "Ley General de Cambio Climático|\\bLGCC\\b|cambio climático",
+        "tag": "Ley General de Cambio Climático",
+        "subtopic": "13.2 Políticas y planeación climática",
+        "shuffle": false
+      },
+      {
+        "regex": "\\bINECC\\b|Instituto Nacional de Ecología y Cambio Climático",
+        "tag": "INECC",
+        "subtopic": "13.2 Políticas y planeación climática",
+        "shuffle": false
+      },
+      {
+        "regex": "(mitigación).*(adaptación)",
+        "tag": "Mitigación y adaptación",
+        "subtopic": "13.1 Resiliencia y adaptación",
+        "shuffle": true
+      },
+      {
+        "regex": "contribuciones? (determinadas a nivel nacional|nacionalmente determinadas)|\\bNDC\\b|bonos? de carbono|mercado[s]? de carbono",
+        "tag": "Compromisos climáticos y carbono",
+        "subtopic": "13.2 Políticas y planeación climática",
+        "shuffle": false
+      }
+    ]
+  },
+  {
+    "_id": "ods-14-vida-submarina",
+    "name": "ODS 14 Vida submarina",
+    "shortname": "ODS 14",
+    "description": "Conservar y utilizar sosteniblemente los océanos, los mares y los recursos marinos para el desarrollo sostenible",
+    "knowledgebase": "mx",
+    "public": true,
+    "tags": [
+      {
+        "regex": "\\bCONAPESCA\\b|pesca (sostenible|responsable)|Ley General de Pesca( y Acuacultura Sustentables)?",
+        "tag": "Pesca sostenible",
+        "subtopic": "14.4 Pesca sostenible",
+        "shuffle": false
+      },
+      {
+        "regex": "área[s]? (natural(es)? protegida[s]?|marina[s]? protegida[s]?)|arrecife[s]?",
+        "tag": "Áreas marinas protegidas",
+        "subtopic": "14.5 Áreas marinas protegidas",
+        "shuffle": false
+      },
+      {
+        "regex": "zona[s]? costera[s]?|ecosistemas? marino[s]?|manglar(es)?|contaminación marina",
+        "tag": "Ecosistemas marinos y costeros",
+        "subtopic": "14.2 Ecosistemas marinos y costeros",
+        "shuffle": false
+      }
+    ]
+  },
+  {
+    "_id": "ods-15-vida-de-ecosistemas-terrestres",
+    "name": "ODS 15 Vida de ecosistemas terrestres",
+    "shortname": "ODS 15",
+    "description": "Proteger, restablecer y promover el uso sostenible de los ecosistemas terrestres, gestionar sosteniblemente los bosques, luchar contra la desertificación, detener e invertir la degradación de las tierras y detener la pérdida de biodiversidad",
+    "knowledgebase": "mx",
+    "public": true,
+    "tags": [
+      {
+        "regex": "\\bCONAFOR\\b|Comisión Nacional Forestal|deforestación|Ley General de Desarrollo Forestal( Sustentable)?",
+        "tag": "Gestión forestal",
+        "subtopic": "15.2 Gestión sostenible de los bosques",
+        "shuffle": false
+      },
+      {
+        "regex": "\\bCONANP\\b|Comisión Nacional de Áreas Naturales Protegidas|área[s]? natural(es)? protegida[s]?",
+        "tag": "Áreas naturales protegidas",
+        "subtopic": "15.1 Conservar los ecosistemas terrestres",
+        "shuffle": false
+      },
+      {
+        "regex": "\\bPROFEPA\\b|\\bSEMARNAT\\b|Secretaría de Medio Ambiente",
+        "tag": "SEMARNAT y PROFEPA",
+        "subtopic": "15.5 Proteger la biodiversidad",
+        "shuffle": false
+      },
+      {
+        "regex": "\\bCONABIO\\b|biodiversidad|especies en (riesgo|peligro)",
+        "tag": "Biodiversidad",
+        "subtopic": "15.5 Proteger la biodiversidad",
+        "shuffle": false
+      }
+    ]
+  },
+  {
+    "_id": "ods-16-paz-justicia-e-instituciones-solidas",
+    "name": "ODS 16 Paz, justicia e instituciones sólidas",
+    "shortname": "ODS 16",
+    "description": "Promover sociedades pacíficas e inclusivas para el desarrollo sostenible, facilitar el acceso a la justicia para todos y construir a todos los niveles instituciones eficaces e inclusivas que rindan cuentas",
+    "knowledgebase": "mx",
+    "public": true,
+    "tags": [
+      {
+        "regex": "\\bFGR\\b|Fiscalía General( de la República)?|acceso a la justicia|Estado de [dD]erecho",
+        "tag": "Acceso a la justicia",
+        "subtopic": "16.3 Estado de derecho y acceso a la justicia",
+        "shuffle": false
+      },
+      {
+        "regex": "Sistema Nacional Anticorrupción|\\bSNA\\b|combate a la corrupción|corrupción",
+        "tag": "Anticorrupción",
+        "subtopic": "16.5 Reducir la corrupción y el soborno",
+        "shuffle": false
+      },
+      {
+        "regex": "\\bCNDH\\b|Comisión Nacional de los Derechos Humanos|derechos humanos",
+        "tag": "Derechos humanos",
+        "subtopic": "16.1 Reducción de la violencia",
+        "shuffle": false
+      },
+      {
+        "regex": "\\bINAI\\b|transparencia|acceso a la información( pública)?|datos personales",
+        "tag": "Transparencia y acceso a la información",
+        "subtopic": "16.10 Acceso a la información",
+        "shuffle": false
+      },
+      {
+        "regex": "Guardia Nacional|seguridad pública|\\bSESNSP\\b",
+        "tag": "Seguridad pública",
+        "subtopic": "16.1 Reducción de la violencia",
+        "shuffle": false
+      }
+    ]
+  },
+  {
+    "_id": "ods-17-alianzas-para-lograr-los-objetivos",
+    "name": "ODS 17 Alianzas para lograr los objetivos",
+    "shortname": "ODS 17",
+    "description": "Fortalecer los medios de implementación y revitalizar la Alianza Mundial para el Desarrollo Sostenible",
+    "knowledgebase": "mx",
+    "public": true,
+    "tags": [
+      {
+        "regex": "\\bAMEXCID\\b|cooperación internacional para el desarrollo|cooperación (Sur-Sur|triangular)",
+        "tag": "Cooperación internacional",
+        "subtopic": "17.6 Cooperación en ciencia y tecnología",
+        "shuffle": false
+      },
+      {
+        "regex": "\\bINEGI\\b|Sistema Nacional de Información Estadística( y Geográfica)?|datos (abiertos|desagregados)",
+        "tag": "Datos y estadísticas",
+        "subtopic": "17.18 Datos y estadísticas",
+        "shuffle": false
+      },
+      {
+        "regex": "\\bSHCP\\b|Secretaría de Hacienda( y Crédito Público)?|política fiscal|movilización de recursos|financiamiento para el desarrollo",
+        "tag": "Financiamiento para el desarrollo",
+        "subtopic": "17.1 Movilización de recursos",
         "shuffle": false
       }
     ]

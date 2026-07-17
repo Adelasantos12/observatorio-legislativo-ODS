@@ -1,0 +1,352 @@
+[
+  {
+    "_id": "rsi-anexo-1-capacidades-basicas",
+    "name": "RSI · Anexo 1 Capacidades básicas",
+    "shortname": "Anexo 1 Capacidades bási",
+    "description": "Obligaciones del Reglamento Sanitario Internacional (2005) con anclaje jurídico interno. Fuente: piloto RSI de NormTrace.",
+    "knowledgebase": "rsi_mx",
+    "public": true,
+    "tags": [
+      {
+        "regex": "autoevaluación( de capacidades)?|plan de acción( nacional)?",
+        "tag": "Autoevaluación de capacidades",
+        "subtopic": "Annex 1A, par.2 — Autoevaluación y plan de acción",
+        "shuffle": false
+      },
+      {
+        "regex": "capacidades? básicas?.*(comunitario|local|primer nivel de atención)",
+        "tag": "Capacidades básicas: nivel local",
+        "subtopic": "Annex 1A, par.4 — Capacidad — nivel comunitario y primer nivel",
+        "shuffle": false
+      },
+      {
+        "regex": "capacidades? básicas?.*(intermedio|estatal|jurisdiccional)",
+        "tag": "Capacidades básicas: nivel intermedio",
+        "subtopic": "Annex 1A, par.5 — Capacidad — nivel intermedio",
+        "shuffle": false
+      },
+      {
+        "regex": "capacidades? básicas?.*nacional",
+        "tag": "Capacidades básicas: nivel nacional",
+        "subtopic": "Annex 1A, par.6 (assessment) — Capacidad — evaluación nivel nacional",
+        "shuffle": false
+      },
+      {
+        "regex": "respuesta (nacional )?de salud pública.*(nivel nacional|coordinación)",
+        "tag": "Respuesta nacional de salud pública",
+        "subtopic": "Annex 1A, par.6 (response) — Capacidad — respuesta nivel nacional",
+        "shuffle": false
+      },
+      {
+        "regex": "punto[s]? de entrada.*capacidad(es)?|capacidad(es)?.*punto[s]? de entrada",
+        "tag": "Capacidades en puntos de entrada",
+        "subtopic": "Annex 1B, par.1 — Capacidad básica en puntos de entrada",
+        "shuffle": false
+      },
+      {
+        "regex": "punto[s]? de entrada.*(emergencia|\\bESPII\\b|importancia internacional)",
+        "tag": "Respuesta ante emergencia en PoE",
+        "subtopic": "Annex 1B, par.2 — Respuesta en puntos de entrada ante ESPII",
+        "shuffle": false
+      }
+    ]
+  },
+  {
+    "_id": "rsi-titulo-1-autoridades",
+    "name": "RSI · Título I Autoridades responsables",
+    "shortname": "Título I Autoridades res",
+    "description": "Obligaciones del Reglamento Sanitario Internacional (2005) con anclaje jurídico interno. Fuente: piloto RSI de NormTrace.",
+    "knowledgebase": "rsi_mx",
+    "public": true,
+    "tags": [
+      {
+        "regex": "Centro Nacional de Enlace|punto de contacto (nacional )?para el RSI|autoridad(es)? sanitaria(s)? responsable(s)?",
+        "tag": "Centro Nacional de Enlace",
+        "subtopic": "Art. 4 — Autoridades responsables",
+        "shuffle": false
+      }
+    ]
+  },
+  {
+    "_id": "rsi-titulo-2-informacion-respuesta",
+    "name": "RSI · Título II Información y respuesta de salud pública",
+    "shortname": "Título II Información y ",
+    "description": "Obligaciones del Reglamento Sanitario Internacional (2005) con anclaje jurídico interno. Fuente: piloto RSI de NormTrace.",
+    "knowledgebase": "rsi_mx",
+    "public": true,
+    "tags": [
+      {
+        "regex": "vigilancia (epidemiológica|en salud pública|sanitaria)|\\bSINAVE\\b|Sistema Nacional de Vigilancia Epidemiológica",
+        "tag": "Vigilancia epidemiológica",
+        "subtopic": "Art. 5(1) — Vigilancia",
+        "shuffle": false
+      },
+      {
+        "regex": "plan de (implementación|acción) (del|para el) RSI|prórroga.*capacidades básicas",
+        "tag": "Plan de implementación del RSI",
+        "subtopic": "Art. 5(2) — Vigilancia — prórroga",
+        "shuffle": false
+      },
+      {
+        "regex": "notificaci(ón|ar).*(OMS|Organización Mundial de la Salud)|notificación de eventos( de salud pública)?",
+        "tag": "Notificación a la OMS",
+        "subtopic": "Art. 6(1) — Notificación",
+        "shuffle": false
+      },
+      {
+        "regex": "información (continua|oportuna).*(OMS|evento notificado)",
+        "tag": "Información continua a la OMS",
+        "subtopic": "Art. 6(2) — Notificación — información continua",
+        "shuffle": false
+      },
+      {
+        "regex": "eventos? (inusuales?|inesperados?)|intercambio de información sanitaria",
+        "tag": "Eventos inusuales o inesperados",
+        "subtopic": "Art. 7 — Intercambio de información en eventos inusuales",
+        "shuffle": false
+      },
+      {
+        "regex": "consulta (a|con) la (OMS|Organización Mundial de la Salud)",
+        "tag": "Consulta a la OMS",
+        "subtopic": "Art. 8 — Consulta",
+        "shuffle": false
+      },
+      {
+        "regex": "otros informes|fuentes distintas de la notificación",
+        "tag": "Otros informes a la OMS",
+        "subtopic": "Art. 9(2) — Otros informes",
+        "shuffle": false
+      },
+      {
+        "regex": "verificaci(ón|ar)( de eventos)?|solicitud de verificación",
+        "tag": "Verificación de eventos",
+        "subtopic": "Art. 10(2) — Verificación",
+        "shuffle": false
+      },
+      {
+        "regex": "respuesta de salud pública|capacidad de respuesta( rápida)?",
+        "tag": "Capacidad de respuesta",
+        "subtopic": "Art. 13(1) — Respuesta de salud pública",
+        "shuffle": false
+      }
+    ]
+  },
+  {
+    "_id": "rsi-titulo-4-puntos-de-entrada",
+    "name": "RSI · Título IV Puntos de entrada",
+    "shortname": "Título IV Puntos de entr",
+    "description": "Obligaciones del Reglamento Sanitario Internacional (2005) con anclaje jurídico interno. Fuente: piloto RSI de NormTrace.",
+    "knowledgebase": "rsi_mx",
+    "public": true,
+    "tags": [
+      {
+        "regex": "puntos? de entrada",
+        "tag": "Puntos de entrada",
+        "subtopic": "Art. 19 — Obligaciones generales en puntos de entrada",
+        "shuffle": false
+      },
+      {
+        "regex": "aeropuertos? y puertos?|puertos? (designados?|autorizados?)",
+        "tag": "Aeropuertos y puertos designados",
+        "subtopic": "Art. 20(1) — Aeropuertos y puertos — designación",
+        "shuffle": false
+      },
+      {
+        "regex": "certificado[s]? de (control de )?sanidad (a bordo|del buque)",
+        "tag": "Certificado de sanidad a bordo",
+        "subtopic": "Art. 20(2) — Certificados de sanidad a bordo",
+        "shuffle": false
+      },
+      {
+        "regex": "puertos? autorizados?.*(OMS|lista)",
+        "tag": "Puertos autorizados",
+        "subtopic": "Art. 20(3) — Notificación de puertos autorizados a la OMS",
+        "shuffle": false
+      },
+      {
+        "regex": "cruces? terrestres?|pasos? fronterizos?",
+        "tag": "Cruces terrestres",
+        "subtopic": "Art. 21 — Cruces terrestres — designación y acuerdos",
+        "shuffle": false
+      },
+      {
+        "regex": "autoridad(es)? competente[s]? en (los )?puntos? de entrada",
+        "tag": "Autoridades competentes en PoE",
+        "subtopic": "Art. 22(1) — Función de las autoridades competentes en PoE",
+        "shuffle": false
+      }
+    ]
+  },
+  {
+    "_id": "rsi-titulo-5-medidas-salud-publica",
+    "name": "RSI · Título V Medidas de salud pública",
+    "shortname": "Título V Medidas de salu",
+    "description": "Obligaciones del Reglamento Sanitario Internacional (2005) con anclaje jurídico interno. Fuente: piloto RSI de NormTrace.",
+    "knowledgebase": "rsi_mx",
+    "public": true,
+    "tags": [
+      {
+        "regex": "consentimiento informado",
+        "tag": "Consentimiento informado",
+        "subtopic": "Art. 23(3) — Medidas a la llegada/salida — consentimiento informado",
+        "shuffle": false
+      },
+      {
+        "regex": "información sobre (los )?riesgos.*vacunación",
+        "tag": "Información de riesgos de vacunación",
+        "subtopic": "Art. 23(4) — Información de riesgos de vacunación",
+        "shuffle": false
+      },
+      {
+        "regex": "operadores? de medios de transporte|medios de transporte",
+        "tag": "Operadores de transporte",
+        "subtopic": "Art. 24(1) — Operadores de medios de transporte",
+        "shuffle": false
+      },
+      {
+        "regex": "medios de transporte afectados",
+        "tag": "Medios de transporte afectados",
+        "subtopic": "Art. 27(1) — Medios de transporte afectados",
+        "shuffle": false
+      },
+      {
+        "regex": "viajeros? (bajo|en) (observación|vigilancia)( de salud pública)?",
+        "tag": "Viajeros bajo observación",
+        "subtopic": "Art. 30 — Viajeros bajo observación de salud pública",
+        "shuffle": false
+      },
+      {
+        "regex": "examen médico (invasivo|obligatorio)|condiciones? para (la )?entrada",
+        "tag": "Examen médico invasivo",
+        "subtopic": "Art. 31(1) — Prohibición de condiciones invasivas de entrada",
+        "shuffle": false
+      },
+      {
+        "regex": "medidas? (sanitarias )?obligatorias?|aislamiento|cuarentena",
+        "tag": "Medidas obligatorias",
+        "subtopic": "Art. 31(2) — Medidas obligatorias en circunstancias excepcionales",
+        "shuffle": false
+      },
+      {
+        "regex": "trato (digno )?(a|de) (los )?viajeros?|respeto (a la )?dignidad",
+        "tag": "Trato digno a viajeros",
+        "subtopic": "Art. 32 — Trato a los viajeros",
+        "shuffle": false
+      }
+    ]
+  },
+  {
+    "_id": "rsi-titulo-6-documentos-sanitarios",
+    "name": "RSI · Título VI Documentos sanitarios",
+    "shortname": "Título VI Documentos san",
+    "description": "Obligaciones del Reglamento Sanitario Internacional (2005) con anclaje jurídico interno. Fuente: piloto RSI de NormTrace.",
+    "knowledgebase": "rsi_mx",
+    "public": true,
+    "tags": [
+      {
+        "regex": "documentos? sanitarios?( adicionales?)?",
+        "tag": "Documentos sanitarios",
+        "subtopic": "Art. 35 — Regla general — sin documentos sanitarios adicionales",
+        "shuffle": false
+      },
+      {
+        "regex": "certificado[s]? (internacional(es)? )?de vacunación( o profilaxis)?",
+        "tag": "Certificado de vacunación",
+        "subtopic": "Art. 36 — Certificados de vacunación o profilaxis",
+        "shuffle": false
+      },
+      {
+        "regex": "declaración marítima de sanidad",
+        "tag": "Declaración marítima de sanidad",
+        "subtopic": "Art. 37 — Declaración marítima de sanidad",
+        "shuffle": false
+      },
+      {
+        "regex": "declaración general de (la )?aeronave",
+        "tag": "Declaración general de aeronave",
+        "subtopic": "Art. 38 — Parte sanitaria de la declaración general de aeronave",
+        "shuffle": false
+      },
+      {
+        "regex": "certificado[s]? de sanidad (del|de) buque",
+        "tag": "Certificado de sanidad del buque",
+        "subtopic": "Art. 39 — Certificados de sanidad del buque",
+        "shuffle": false
+      }
+    ]
+  },
+  {
+    "_id": "rsi-titulo-7-cargos",
+    "name": "RSI · Título VII Cargos",
+    "shortname": "Título VII Cargos",
+    "description": "Obligaciones del Reglamento Sanitario Internacional (2005) con anclaje jurídico interno. Fuente: piloto RSI de NormTrace.",
+    "knowledgebase": "rsi_mx",
+    "public": true,
+    "tags": [
+      {
+        "regex": "gratuidad de (las )?medidas sanitarias|cobro[s]?.*viajeros?",
+        "tag": "Cargos a viajeros",
+        "subtopic": "Art. 40 — Cargos por medidas a viajeros",
+        "shuffle": false
+      },
+      {
+        "regex": "cobro[s]?.*(mercancías?|carga|contenedores?)",
+        "tag": "Cargos a mercancías",
+        "subtopic": "Art. 41 — Cargos por medidas a mercancías",
+        "shuffle": false
+      }
+    ]
+  },
+  {
+    "_id": "rsi-titulo-8-disposiciones-generales",
+    "name": "RSI · Título VIII Disposiciones generales",
+    "shortname": "Título VIII Disposicione",
+    "description": "Obligaciones del Reglamento Sanitario Internacional (2005) con anclaje jurídico interno. Fuente: piloto RSI de NormTrace.",
+    "knowledgebase": "rsi_mx",
+    "public": true,
+    "tags": [
+      {
+        "regex": "no discriminación|sin distinción.*medidas sanitarias|aplicación transparente",
+        "tag": "Transparencia y no discriminación",
+        "subtopic": "Art. 42 — Aplicación — transparencia y no discriminación",
+        "shuffle": false
+      },
+      {
+        "regex": "medidas? sanitarias? adicionales?|base científica|proporcionalidad",
+        "tag": "Medidas adicionales: base científica",
+        "subtopic": "Art. 43(1)-(2) — Medidas adicionales — base científica y proporcionalidad",
+        "shuffle": false
+      },
+      {
+        "regex": "medidas? adicionales?.*notificaci(ón|ar)",
+        "tag": "Medidas adicionales: notificación",
+        "subtopic": "Art. 43(3) and (5) — Medidas adicionales — notificación a la OMS",
+        "shuffle": false
+      },
+      {
+        "regex": "revisión periódica.*medidas",
+        "tag": "Medidas adicionales: revisión",
+        "subtopic": "Art. 43(6) — Medidas adicionales — revisión periódica",
+        "shuffle": false
+      },
+      {
+        "regex": "colaboración( y asistencia)? entre (los )?Estados( Partes)?|asistencia (técnica|internacional)",
+        "tag": "Colaboración entre Estados",
+        "subtopic": "Art. 44(1) — Colaboración y asistencia entre Estados Partes",
+        "shuffle": false
+      },
+      {
+        "regex": "datos personales|protección de datos( personales)?|confidencialidad de la información",
+        "tag": "Datos personales",
+        "subtopic": "Art. 45 — Tratamiento de datos personales",
+        "shuffle": false
+      },
+      {
+        "regex": "sustancias biológicas|muestras? (biológicas?|para diagnóstico)|transporte de material biológico",
+        "tag": "Sustancias biológicas y muestras",
+        "subtopic": "Art. 46 — Transporte de sustancias biológicas y muestras",
+        "shuffle": false
+      }
+    ]
+  }
+]

@@ -91,7 +91,8 @@ Tras el primer deploy del `api`, carga el seed mexicano en Mongo. Desde la
 consola del servicio `api` (o un job one-off con la misma imagen y variables):
 
 ```bash
-python /app/knowledgebase/load_kb.py
+python /app/knowledgebase/load_kb.py                                  # 17 ODS (kb "mx")
+python /app/knowledgebase/load_kb.py /app/knowledgebase/seeds/rsi_mx.seed.json  # marco RSI (kb "rsi_mx")
 ```
 
 Verifica:
