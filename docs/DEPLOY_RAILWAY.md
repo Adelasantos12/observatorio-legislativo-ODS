@@ -59,7 +59,7 @@ CACHE_REDIS_PORT=6379
 BROKER=redis://<host redis>:6379/2
 RESULT_BACKEND=redis://<host redis>:6379/3
 TAGGER_MAX_WORDS=5000
-COUNTRY=spain            # cambia a "mexico" cuando existan los managers (F1)
+COUNTRY=mexico           # managers de tipo/estatus de iniciativa mexicanos (F1)
 USE_ALERTS=False
 ```
 

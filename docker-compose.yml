@@ -39,6 +39,7 @@ services:
       - BROKER=redis://redis:6379/2
       - RESULT_BACKEND=redis://redis:6379/3
       - TAGGER_MAX_WORDS=5000
+      - COUNTRY=mexico
     ports:
       - "8080:8080"
     volumes:
@@ -67,7 +68,7 @@ services:
   frontend:
     build:
       context: ./frontend
-      dockerfile: Dockerfile-es
+      dockerfile: Dockerfile-mx
     container_name: mx-frontend
     depends_on: [api]
     ports:
