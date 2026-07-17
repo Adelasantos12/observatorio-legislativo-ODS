@@ -18,8 +18,7 @@ WORKDIR /app/packages/qhld-tasks
 # path-dep editable qhld-data (../qhld-data) resuelva al instalar.
 COPY packages /app/packages
 
-RUN --mount=type=cache,target=/root/.cache/uv \
-    uv sync --locked --no-install-project
+RUN uv sync --locked --no-install-project
 
 # tipi_tasks se sirve desde el código montado (PYTHONPATH), no como paquete
 # instalado, para que el worker recoja cambios del host.

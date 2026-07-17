@@ -21,8 +21,7 @@ WORKDIR /app/api
 COPY packages /app/packages
 COPY api/pyproject.toml api/uv.lock ./
 
-RUN --mount=type=cache,target=/root/.cache/uv \
-    uv sync --locked --no-install-project
+RUN uv sync --locked --no-install-project
 
 # tipi_backend se sirve desde el código montado en /app/api (PYTHONPATH), no se
 # instala como paquete: así el reload ve los cambios del host al vuelo.

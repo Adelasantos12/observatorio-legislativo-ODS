@@ -18,12 +18,10 @@ WORKDIR /app/api
 COPY packages /app/packages
 # 2) Manifiesto + lock del api primero, para cachear la capa de dependencias.
 COPY api/pyproject.toml api/uv.lock ./
-RUN --mount=type=cache,target=/root/.cache/uv \
-    uv sync --locked --no-install-project --no-dev
+RUN uv sync --locked --no-install-project --no-dev
 # 3) Código del backend y sync final (instala el propio qhld-backend).
 COPY api/ /app/api/
-RUN --mount=type=cache,target=/root/.cache/uv \
-    uv sync --locked --no-dev
+RUN uv sync --locked --no-dev
 
 ENV PATH="/app/.venv/bin:$PATH"
 

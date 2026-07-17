@@ -17,10 +17,8 @@ WORKDIR /app/packages/qhld-tasks
 COPY packages /app/packages
 
 # Sync en dos pasos para cachear dependencias; el segundo instala tipi_tasks.
-RUN --mount=type=cache,target=/root/.cache/uv \
-    uv sync --locked --no-install-project --no-dev
-RUN --mount=type=cache,target=/root/.cache/uv \
-    uv sync --locked --no-dev
+RUN uv sync --locked --no-install-project --no-dev
+RUN uv sync --locked --no-dev
 
 # El cerebro jurídico y el esquema NormTrace deben estar en la imagen: la
 # codificación (etapa 3) lee extractos del cerebro y valida contra el esquema.
