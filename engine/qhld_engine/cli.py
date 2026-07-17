@@ -57,5 +57,31 @@ def topic_alignment(
     calculate_topic_alignment(id)
 
 
+@app.command("sil-ejecutivo")
+def sil_ejecutivo(
+    legislatura: str = typer.Option("66", help="Legislatura vigente en el SIL."),
+    html_file: str | None = typer.Option(
+        None, "--html-file", help="Ruta a un HTML del SIL (offline); omite la descarga."
+    ),
+):
+    """Sincroniza iniciativas del Ejecutivo Federal desde el SIL (Huella 2030).
+
+    Alimenta la colección `executive_initiatives` preservando la codificación
+    ODS/metas existente. Reporta el desglose por sección
+    (Aprobadas/Pendientes/Desechadas/Retiradas).
+    """
+    from qhld_engine.extractors.mexico.sil_ejecutivo import SECCIONES, sync_sil_ejecutivo
+
+    html = None
+    if html_file:
+        with open(html_file, encoding="latin-1") as fh:
+            html = fh.read()
+
+    res = sync_sil_ejecutivo(legislatura=legislatura, html=html)
+    typer.echo(f"SIL Ejecutivo — corte {res['corte']} — total {res['total']}")
+    for seccion in SECCIONES:
+        typer.echo(f"  {res['por_seccion'].get(seccion, 0):>3}  {seccion}")
+
+
 if __name__ == "__main__":
     app()
