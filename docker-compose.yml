@@ -62,8 +62,11 @@ services:
       - CACHE_REDIS_HOST=redis
       - BROKER=redis://redis:6379/2
       - RESULT_BACKEND=redis://redis:6379/3
+      - LLM_PROVIDER=mock
+      - NORMTRACE_MAX_UNITS=50
     volumes:
       - ./packages:/app/packages
+      - ./normtrace:/app/normtrace
 
   frontend:
     build:

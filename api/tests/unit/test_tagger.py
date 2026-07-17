@@ -168,3 +168,22 @@ def test_segment_absent_by_default(client, sync_word_limit):
     )
     assert res.status_code == 200
     assert "segmentation" not in res.json()
+
+
+def test_deep_enqueues_normtrace_and_returns_task_id(client, sync_word_limit):
+    """Con deep=true, la respuesta trae `segmentation` y encola la codificación
+    NormTrace devolviendo `normtrace_task_id` (broker memory:// del conftest)."""
+    texto = (
+        "Articulo Unico.- La Secretaría de Salud deberá garantizar el acceso a la "
+        "salud intercultural, en coordinación con las entidades federativas frente "
+        "al cambio climático.\n"
+    )
+    res = client.post(
+        "/tagger/",
+        data={"text": texto, "knowledgebase": "ods", "deep": "true"},
+    )
+    assert res.status_code == 200
+    body = res.json()
+    assert body["status"] == "SUCCESS"
+    assert body["segmentation"]["units_with_tags"] >= 1
+    assert isinstance(body.get("normtrace_task_id"), str) and body["normtrace_task_id"]

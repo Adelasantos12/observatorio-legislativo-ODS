@@ -75,8 +75,17 @@ BROKER=redis://<host redis>:6379/2
 RESULT_BACKEND=redis://<host redis>:6379/3
 ```
 
-Cuando exista la etapa NormTrace (F4), el worker necesitará además
-`LLM_PROVIDER`, `LLM_MODEL`, `LLM_API_KEY` (nunca commitear la clave).
+Codificación NormTrace (etapa 3) — el worker consume también la cola `normtrace`
+(ya incluido en el `CMD` del Dockerfile: `-Q celery,normtrace`). Variables:
+```
+LLM_PROVIDER=mock          # mock (heurístico local, sin clave) | anthropic | openai
+LLM_MODEL=                 # p. ej. claude-sonnet-5 o gpt-4o-mini
+LLM_API_KEY=               # SOLO si LLM_PROVIDER != mock; nunca commitear
+NORMTRACE_MAX_UNITS=50     # presupuesto de unidades por documento
+```
+Con `LLM_PROVIDER=mock` (por defecto) el escáner deep funciona sin clave ni costo
+(codificación heurística marcada `needs_human_review`). El cerebro jurídico y el
+esquema van horneados en la imagen del worker (`COPY normtrace`).
 
 ### frontend
 La URL del backend se **hornea en build** (Vite). Define como *build variable*:

@@ -27,15 +27,20 @@ beat_schedule = {
 }
 
 app.conf.beat_schedule = beat_schedule
+# La codificación NormTrace va a su propia cola para no bloquear el tagger.
+_TASK_ROUTES = {"normtrace.analyze_units": {"queue": "normtrace"}}
+app.conf.task_routes = _TASK_ROUTES
 
 
 def init():
     global app
     app = Celery("tasks", broker=config.BROKER, backend=config.RESULT_BACKEND)
     app.conf.beat_schedule = beat_schedule
+    app.conf.task_routes = _TASK_ROUTES
 
 
 from .alerts import *
 from .tagger import *
 from .validate import *
 from .scanned import *
+from . import normtrace

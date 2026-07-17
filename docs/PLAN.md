@@ -229,3 +229,35 @@ no es prerequisito del escáner interactivo.
   `segmentation` con `units_total`, `units_with_tags` y los conteos de tags por
   unidad citable. `legal-segmenter` añadido como path-dep editable del api.
   Cubierto por dos tests de endpoint nuevos. Tests unit del api en verde (11).
+
+### 2026-07-17 — F4
+
+- **Esquema** `normtrace/schemas_runtime/unit_analysis.schema.json` (draft-07),
+  derivado de `mexico_legal_provisions.schema.json` y las reglas de razonamiento:
+  campos del pipeline (actor, deber/facultad, procedimiento, coordinación,
+  sanción, salvaguarda) + `source_level` (anclaje A–D), `gap_type` (10 tipos),
+  `anchoring_score` (0–5) y, obligatorios, `confidence_level` y `review_status`.
+- **Abstracción LLM** `tipi_tasks/llm.py`: proveedores reales anthropic/openai por
+  HTTP con la librería estándar (sin SDKs de pago). Proveedor por defecto `mock`.
+- **Codificador** `tipi_tasks/normtrace.py`: tarea Celery `normtrace.analyze_units`
+  en cola `normtrace`. Modo `mock` = codificador heurístico determinista basado en
+  los marcadores lingüísticos del cerebro (§5): extrae actor/deber/facultad/
+  coordinación/sanción/salvaguarda sin llamar a ningún LLM ni requerir clave
+  (queda `confidence_level=low`, `review_status=needs_human_review`). Modo real:
+  prompt con extractos del cerebro jurídico (leídos de los .md, no parafraseados),
+  parseo de JSON, **validación contra esquema con un reintento** y, si nada valida,
+  `needs_human_review`. **Caché** por hash(unidad+versión de prompt) en Mongo con
+  cliente de timeout corto (se autodesactiva sin Mongo). **Presupuesto**
+  `NORMTRACE_MAX_UNITS` (default 50) → reporta `units_analyzed`/`units_skipped`.
+- **Endpoint**: `POST /tagger/` acepta `deep=true` → añade `segmentation` y encola
+  la codificación devolviendo `normtrace_task_id`; `GET /tagger/deep/{id}` devuelve
+  el bloque `structural`. El worker consume `-Q celery,normtrace`; el cerebro y el
+  esquema se hornean en la imagen (`COPY normtrace`).
+- **Decisión / desviación:** el resultado deep se recupera en `GET /tagger/deep/{id}`
+  (endpoint propio) en lugar de reutilizar `/tagger/result/{id}` del tagger, para no
+  mezclar dos formas de resultado; el contrato de polling es equivalente.
+- **Aceptación verificada:** escaneo deep de una iniciativa de salud intercultural
+  → unidad codificada **válida contra esquema**, con actor ("la Secretaría de Salud")
+  y deber ("deberá") identificados, coordinación y salvaguarda detectadas; **ninguna
+  salida sin `review_status`**. Tests: qhld-tasks 24 unit (7 de normtrace), api 12
+  unit (deep). Con `LLM_PROVIDER=mock` todo corre sin clave ni tokens.

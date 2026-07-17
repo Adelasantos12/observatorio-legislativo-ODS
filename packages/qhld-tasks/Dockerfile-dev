@@ -23,7 +23,12 @@ RUN --mount=type=cache,target=/root/.cache/uv \
 
 # tipi_tasks se sirve desde el código montado (PYTHONPATH), no como paquete
 # instalado, para que el worker recoja cambios del host.
+# Cerebro jurídico + esquema NormTrace (etapa 3) en la imagen; sus defaults se
+# resuelven en /app/normtrace.
+COPY normtrace /app/normtrace
+
 ENV PATH="/app/.venv/bin:$PATH" \
     PYTHONPATH=/app/packages/qhld-tasks
 
-CMD ["celery", "-A", "tipi_tasks", "worker", "-B", "-l", "info"]
+# Consume la cola por defecto y la de codificación NormTrace.
+CMD ["celery", "-A", "tipi_tasks", "worker", "-Q", "celery,normtrace", "-B", "-l", "info"]
