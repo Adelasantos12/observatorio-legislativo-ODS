@@ -60,14 +60,20 @@ def _configure_logging():
 def create_app(config=Config):
     _configure_logging()
 
-    name = env.get("NAME", "test")
+    name = env.get("NAME", "Escáner Legislativo MX")
     description = env.get(
         "DESCRIPTION",
-        "This document includes all the methods that the {} API offers its users.",
+        "API del {}: etiquetado temático de textos legislativos mexicanos en "
+        "clave de Agenda 2030 (ODS) y análisis estructural por unidad jurídica "
+        "bajo el protocolo NormTrace.",
     ).format(name)
     version = env.get("VERSION", "1.0")
 
-    app = FastAPI(title="{} API Documentation".format(name), description=description, version=version)
+    app = FastAPI(
+        title="{} — Documentación de la API".format(name),
+        description=description,
+        version=version,
+    )
 
     # --- Middleware (CORS mirrors the previous allow-all default; GZip mirrors Flask-Compress) ---
     app.add_middleware(GZipMiddleware, minimum_size=500)
