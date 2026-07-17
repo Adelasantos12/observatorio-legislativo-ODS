@@ -3,6 +3,8 @@ import Scanner from '@/views/Scanner.vue';
 import Scanned from '@/views/Scanned.vue';
 import About from '@/views/About.vue';
 import Page404 from '@/views/Page404.vue';
+import HuellaView from '@/views/HuellaView.vue';
+import ExpedienteView from '@/views/ExpedienteView.vue';
 import config from '@/config';
 
 const routes = [
@@ -10,6 +12,16 @@ const routes = [
     path: '/',
     name: 'scanner',
     component: Scanner,
+  },
+  {
+    path: '/huella',
+    name: 'huella',
+    component: HuellaView,
+  },
+  {
+    path: '/expedientes/:id',
+    name: 'expediente',
+    component: ExpedienteView,
   },
   {
     path: '/scanner/:id',

@@ -5,7 +5,10 @@ preliminar y revisable (protocolo NormTrace): cada iniciativa lleva `confianza`;
 las no codificadas aparecen como pendientes, nunca ocultas.
 """
 
+import json
 import logging
+import os
+from pathlib import Path
 from typing import Annotated
 
 from fastapi import APIRouter, Query
@@ -21,6 +24,29 @@ log = logging.getLogger(__name__)
 router = APIRouter(prefix="/huella", tags=["huella"])
 
 _CACHE_KEY = "huella_ejecutivo_agg"
+
+
+def _catalogos_dir():
+    candidates = [
+        os.environ.get("CATALOGOS_DIR"),
+        "/app/normtrace/03_tables/catalogos",
+        str(Path(__file__).resolve().parents[3] / "normtrace/03_tables/catalogos"),
+    ]
+    for c in candidates:
+        if c and Path(c).is_dir():
+            return Path(c)
+    return None
+
+
+@router.get("/catalogos")
+def catalogos():
+    """Catálogos ODS (nombre + color) y metas (código, ods, nombre corto/oficial)."""
+    d = _catalogos_dir()
+    if d is None:
+        return JSONResponse(status_code=404, content={"Error": "Catálogos no disponibles"})
+    ods = json.loads((d / "ods.json").read_text(encoding="utf-8"))
+    metas = json.loads((d / "metas.json").read_text(encoding="utf-8"))
+    return {"ods": ods, "metas": metas}
 
 
 @router.get("/ejecutivo")

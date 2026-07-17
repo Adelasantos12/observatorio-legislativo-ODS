@@ -7,6 +7,11 @@ export default {
   MENU: {
     es: [
       {
+        route: 'huella',
+        name: 'Huella 2030',
+        condition: true,
+      },
+      {
         route: 'scanner',
         name: 'Escáner',
         condition: true,
@@ -18,6 +23,11 @@ export default {
       },
     ],
     en: [
+      {
+        route: 'huella',
+        name: 'Huella 2030',
+        condition: true,
+      },
       {
         route: 'scanner',
         name: 'Scanner',

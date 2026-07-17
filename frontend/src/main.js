@@ -5,6 +5,7 @@ import { createPinia } from 'pinia';
 import { createI18n } from 'vue-i18n';
 import VueGtag from 'vue-gtag';
 import messages from '@/i18n/messages';
+import '@/styles/identity.css';
 
 const i18n = createI18n({
   locale: import.meta.env.VITE_DEFAULT_LOCALE,

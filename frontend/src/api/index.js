@@ -99,4 +99,26 @@ export default {
       return [config.URL, '/scanned/search/', query].join('');
     }
   },
+
+  // --- Huella 2030 (fase H) ---
+  getHuellaCatalogos() {
+    return axios
+      .get([config.URL, '/huella/catalogos'].join(''))
+      .then((r) => r.data);
+  },
+  getHuellaEjecutivo() {
+    return axios
+      .get([config.URL, '/huella/ejecutivo'].join(''))
+      .then((r) => r.data);
+  },
+  getHuellaIniciativas(params = {}) {
+    return axios
+      .get([config.URL, '/huella/ejecutivo/iniciativas'].join(''), { params })
+      .then((r) => r.data);
+  },
+  getHuellaIniciativa(id) {
+    return axios
+      .get([config.URL, '/huella/ejecutivo/iniciativas/', id].join(''))
+      .then((r) => r.data);
+  },
 };
