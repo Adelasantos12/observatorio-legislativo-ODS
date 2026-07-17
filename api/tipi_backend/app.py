@@ -51,10 +51,26 @@ ROUTERS = [
 
 
 def _configure_logging():
-    logging_conf_path = os.path.normpath(
-        os.path.join(os.path.dirname(__file__), "../logging.conf")
-    )
-    logging.config.fileConfig(logging_conf_path, disable_existing_loggers=False)
+    """Configura el logging desde logging.conf si está disponible.
+
+    `logging.conf` vive junto al paquete (no se empaqueta en el wheel), así que en
+    algunos despliegues no está en la ruta esperada. Si no se encuentra o falla al
+    parsearse, se cae a una configuración básica en vez de tumbar el arranque de la
+    app (evita un crash-loop del contenedor)."""
+    candidates = [
+        os.environ.get("LOGGING_CONF"),
+        os.path.normpath(os.path.join(os.path.dirname(__file__), "../logging.conf")),
+        os.path.normpath(os.path.join(os.path.dirname(__file__), "logging.conf")),
+        "/app/api/logging.conf",
+    ]
+    for path in candidates:
+        if path and os.path.exists(path):
+            try:
+                logging.config.fileConfig(path, disable_existing_loggers=False)
+                return
+            except Exception:  # noqa: BLE001 — config inválida: cae a básico
+                break
+    logging.basicConfig(level=logging.INFO)
 
 
 def create_app(config=Config):
