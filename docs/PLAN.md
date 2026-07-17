@@ -286,3 +286,27 @@ no es prerequisito del escáner interactivo.
   (`docs/img/f5_structural.png`) es un **render estático fiel del componente con
   datos reales** de la codificación; el flujo en navegador se valida en Railway o en
   un entorno con acceso a npm/cdn.
+
+### 2026-07-17 — F6
+
+- **Parser de la Gaceta** `engine/qhld_engine/extractors/mexico/gaceta.py`
+  (determinista, sin red): `build_url` (rutas `/Gaceta/{leg}/{año}/{mes3}/{YYYYMMDD}[-anexo].html`),
+  `parse_gaceta` (índice `a.Indice` → `#IniciativaN`, texto inline por ancla) y
+  `parse_title` (regex autor/partido). `fetch_gaceta` aísla la descarga (Latin-1).
+- **Módulo extractor `mexico/`** modelado sobre `paraguay/`: `InitiativesExtractor`
+  recorre la página del día y anexos, parsea y crea/actualiza `Initiative`;
+  `members`/`groups` no-op (la Gaceta no expone esos feeds; la autoría sale del
+  título); `initiatives_status` alineado con el manager de la API. Se activa con
+  `MODULE_EXTRACTOR=mexico` + `GACETA_DATE`/`GACETA_LEGISLATURA`.
+- **Hook NormTrace batch** en `tagger/tag_initiatives.py`: tras etiquetar, si
+  `NORMTRACE_DEEP=true` y la iniciativa tiene tags, segmenta su cuerpo, codifica las
+  unidades con tags y guarda el bloque `structural` en `extra['analysis']`.
+  **Desactivado por defecto** (el etiquetado no requiere LLM salvo que se active).
+- **Mejora del mock:** el emparejamiento de marcadores des-acentúa ambos lados
+  ("Secretaría" vs "Secretaria"), robusto para el texto Latin-1/OCR de la Gaceta.
+- **Tests** `tests/unit/test_mexico_gaceta.py` (7): `build_url`, `parse_title`,
+  parseo de índice+cuerpo con autor/partido, fallback sin índice, e ingesta con el
+  repositorio mockeado. Suite unit del engine en verde (111).
+- **Limitación del sandbox:** el scraping en vivo de gaceta.diputados.gob.mx no se
+  ejecuta aquí (egress/Mongo); el parser y la ingesta se verifican con fixtures. F6
+  es opcional y no es prerequisito del escáner interactivo.

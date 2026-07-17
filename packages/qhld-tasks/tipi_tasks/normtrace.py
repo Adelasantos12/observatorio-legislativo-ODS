@@ -76,9 +76,19 @@ _RIGHTS = ["derecho", "garantía", "consentimiento", "debido proceso",
            "acceso a la salud", "pueblos indígenas"]
 
 
+_ACCENTS = str.maketrans("áéíóúüñ", "aeiouun")
+
+
+def _unaccent(s: str) -> str:
+    return s.translate(_ACCENTS)
+
+
 def _first_marker(text_low: str, markers: list[str]) -> str | None:
+    # Des-acentúa ambos lados: el corpus real (Gaceta en Latin-1, OCR) fluctúa en
+    # acentos ("Secretaría" vs "Secretaria").
+    text_u = _unaccent(text_low)
     for m in markers:
-        if m.lower() in text_low:
+        if _unaccent(m.lower()) in text_u:
             return m
     return None
 

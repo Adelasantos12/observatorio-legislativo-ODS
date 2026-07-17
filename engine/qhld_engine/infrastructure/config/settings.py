@@ -15,6 +15,14 @@ class Settings(BaseSettings):
     limit_date_to_sync: str = "2000-01-01"  # str: consumer parses with strptime()
     amendments_feature: bool = False
 
+    # México — Gaceta Parlamentaria
+    gaceta_legislatura: str = "66"
+    gaceta_date: str = ""  # YYYYMMDD; vacío = día de hoy
+
+    # NormTrace — codificación estructural en el etiquetado batch (opcional).
+    # Desactivada por defecto: el etiquetado no requiere LLM salvo que se active.
+    normtrace_deep: bool = False
+
     # Alerts
     use_alerts: bool = False
 

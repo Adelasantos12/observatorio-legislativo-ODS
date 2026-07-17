@@ -20,6 +20,7 @@ dependencies = [
     "typer>=0.16.0",
     "qhld-data",
     "qhld-tasks",
+    "legal-segmenter",
 ]
 
 [project.scripts]
@@ -48,8 +49,9 @@ markers = [
 ]
 
 [tool.uv.sources]
-qhld-data  = { path = "../packages/qhld-data", editable = true }
-qhld-tasks = { path = "../packages/qhld-tasks", editable = true }
+qhld-data       = { path = "../packages/qhld-data", editable = true }
+qhld-tasks      = { path = "../packages/qhld-tasks", editable = true }
+legal-segmenter = { path = "../packages/legal-segmenter", editable = true }
 
 [tool.uv]
 package = true
