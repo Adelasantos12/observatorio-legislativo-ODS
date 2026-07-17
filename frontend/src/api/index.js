@@ -121,4 +121,17 @@ export default {
       .get([config.URL, '/huella/ejecutivo/iniciativas/', id].join(''))
       .then((r) => r.data);
   },
+
+  // --- Minutas (fase H, módulo B) ---
+  getMinutasResumen() {
+    return axios.get([config.URL, '/minutas/'].join('')).then((r) => r.data);
+  },
+  getMinutasLista(params = {}) {
+    return axios
+      .get([config.URL, '/minutas/lista'].join(''), { params })
+      .then((r) => r.data);
+  },
+  getMinuta(id) {
+    return axios.get([config.URL, '/minutas/', id].join('')).then((r) => r.data);
+  },
 };

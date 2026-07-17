@@ -5,6 +5,7 @@ import About from '@/views/About.vue';
 import Page404 from '@/views/Page404.vue';
 import HuellaView from '@/views/HuellaView.vue';
 import ExpedienteView from '@/views/ExpedienteView.vue';
+import MinutasView from '@/views/MinutasView.vue';
 import config from '@/config';
 
 const routes = [
@@ -22,6 +23,11 @@ const routes = [
     path: '/expedientes/:id',
     name: 'expediente',
     component: ExpedienteView,
+  },
+  {
+    path: '/minutas',
+    name: 'minutas',
+    component: MinutasView,
   },
   {
     path: '/scanner/:id',

@@ -12,6 +12,11 @@ export default {
         condition: true,
       },
       {
+        route: 'minutas',
+        name: 'Minutas',
+        condition: true,
+      },
+      {
         route: 'scanner',
         name: 'Escáner',
         condition: true,
@@ -26,6 +31,11 @@ export default {
       {
         route: 'huella',
         name: 'Huella 2030',
+        condition: true,
+      },
+      {
+        route: 'minutas',
+        name: 'Minutas',
         condition: true,
       },
       {

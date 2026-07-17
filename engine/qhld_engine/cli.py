@@ -83,5 +83,25 @@ def sil_ejecutivo(
         typer.echo(f"  {res['por_seccion'].get(seccion, 0):>3}  {seccion}")
 
 
+@app.command("minutas")
+def minutas(
+    legislatura: str = typer.Option("LXVI", help="Legislatura vigente."),
+):
+    """Sincroniza minutas de la Cámara de Diputados desde el iniclave (Huella).
+
+    Alimenta la colección `minutas` preservando codificación y origen ya
+    documentados. Atribuye "Ejecutivo Federal" cuando la denominación coincide
+    con una iniciativa del Ejecutivo; el resto queda "por documentar" (nunca se
+    inventa la bancada de origen). No es un ranking competitivo entre grupos.
+    """
+    from qhld_engine.extractors.mexico.iniclave_minutas import sync_minutas
+
+    res = sync_minutas(legislatura=legislatura)
+    typer.echo(f"Minutas — corte {res['corte']} — total {res['total']}")
+    for anio, n in res["por_anio"].items():
+        typer.echo(f"  año {anio}: {n}")
+    typer.echo(f"  atribuidas al Ejecutivo Federal: {res['atribuidas_ejecutivo']}")
+
+
 if __name__ == "__main__":
     app()
