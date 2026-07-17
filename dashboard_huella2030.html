@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Huella 2030 · Iniciativas del Ejecutivo Federal</title>
+<style>
+  :root{
+    color-scheme: light;
+    --paper:#faf7f2; --card:#ffffff; --ink:#211d1a; --ink2:#5c554e; --ink3:#8a8177;
+    --line:#e7e0d6; --accent:#9f2241; --accent-2:#c9a06a; --accent-soft:#e5c6cf;
+    --good:#1e7a3c; --warn:#a86a00; --bad:#8a8177;
+    --chipink:#fff;
+  }
+  @media (prefers-color-scheme: dark){
+    :root:where(:not([data-theme="light"])){
+      color-scheme: dark;
+      --paper:#171412; --card:#211d1a; --ink:#f2ede6; --ink2:#c9c1b6; --ink3:#948b80;
+      --line:#39332c; --accent:#d6607f; --accent-2:#c9a06a; --accent-soft:#5a2f3c;
+      --good:#5cc17e; --warn:#e0a53f; --bad:#948b80;
+    }
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--paper);color:var(--ink);
+       font:15px/1.55 "Avenir Next","Segoe UI",system-ui,sans-serif}
+  .wrap{max-width:1080px;margin:0 auto;padding:28px 22px 60px}
+  header{border-bottom:3px solid var(--accent);padding-bottom:18px;margin-bottom:26px}
+  .kicker{letter-spacing:.14em;text-transform:uppercase;font-size:11.5px;color:var(--accent);font-weight:700}
+  h1{font-family:Georgia,"Times New Roman",serif;font-weight:600;font-size:31px;margin:6px 0 4px;line-height:1.2}
+  .sub{color:var(--ink2);max-width:760px;margin:0}
+  .corte{font-size:12.5px;color:var(--ink3);margin-top:8px}
+  .kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;margin:26px 0}
+  .kpi{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:14px 16px}
+  .kpi .v{font-family:Georgia,serif;font-size:34px;line-height:1.1;color:var(--accent)}
+  .kpi .l{font-size:12.5px;color:var(--ink2);margin-top:3px}
+  section{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:20px 22px;margin:18px 0}
+  h2{font-family:Georgia,serif;font-weight:600;font-size:19px;margin:0 0 2px}
+  .note{font-size:12.5px;color:var(--ink3);margin:0 0 14px}
+  .legend{display:flex;gap:16px;font-size:12.5px;color:var(--ink2);margin:0 0 10px;flex-wrap:wrap}
+  .legend i{display:inline-block;width:11px;height:11px;border-radius:3px;margin-right:5px;vertical-align:-1px}
+  svg text{font:12px "Avenir Next","Segoe UI",system-ui,sans-serif;fill:var(--ink2)}
+  svg .val{fill:var(--ink);font-weight:600}
+  svg .axis{stroke:var(--line)}
+  .bar-p{fill:var(--accent)} .bar-s{fill:var(--accent-soft)} .bar-n{fill:var(--ink3);opacity:.45}
+  .col{fill:var(--accent)}
+  .row-hit{cursor:pointer}
+  .row-hit:hover .bar-p{opacity:.85}
+  /* filtros y tabla */
+  .filters{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:14px}
+  .filters input,.filters select{background:var(--paper);color:var(--ink);border:1px solid var(--line);
+    border-radius:8px;padding:8px 10px;font:inherit;font-size:13.5px}
+  .filters input{flex:1;min-width:210px}
+  table{width:100%;border-collapse:collapse;font-size:13.5px}
+  th{font-size:11.5px;text-transform:uppercase;letter-spacing:.06em;color:var(--ink3);
+     text-align:left;padding:8px 8px;border-bottom:2px solid var(--line)}
+  td{padding:9px 8px;border-bottom:1px solid var(--line);vertical-align:top}
+  tr.item{cursor:pointer} tr.item:hover td{background:color-mix(in srgb,var(--accent) 5%,transparent)}
+  .chip{display:inline-flex;align-items:center;justify-content:center;min-width:24px;height:20px;
+    padding:0 5px;border-radius:5px;color:var(--chipink);font-size:11.5px;font-weight:700;margin:1px 3px 1px 0}
+  .chip.sec{opacity:.55}
+  .est{display:inline-block;font-size:11.5px;font-weight:600;padding:2px 8px;border-radius:20px;border:1px solid}
+  .est.ok{color:var(--good);border-color:var(--good)}
+  .est.pe{color:var(--warn);border-color:var(--warn)}
+  .est.no{color:var(--bad);border-color:var(--bad)}
+  .conf{font-size:11px;color:var(--ink3)}
+  /* ficha */
+  dialog{border:none;border-radius:14px;max-width:640px;width:92vw;padding:0;
+    background:var(--card);color:var(--ink);box-shadow:0 24px 70px rgba(0,0,0,.35)}
+  dialog::backdrop{background:rgba(20,15,12,.55)}
+  .ficha{padding:24px 26px}
+  .ficha .kicker{font-size:10.5px}
+  .ficha h3{font-family:Georgia,serif;font-size:18px;line-height:1.4;margin:6px 0 14px;font-weight:600}
+  .fgrid{display:grid;grid-template-columns:1fr 1fr;gap:10px 18px;font-size:13.5px;margin-bottom:14px}
+  .fgrid b{display:block;font-size:11px;text-transform:uppercase;letter-spacing:.07em;color:var(--ink3);font-weight:700}
+  .ods-line{display:flex;align-items:center;gap:8px;margin:6px 0;font-size:13.5px}
+  .ficha .close{position:absolute;top:12px;right:14px;background:none;border:none;font-size:22px;
+    color:var(--ink3);cursor:pointer}
+  .src{font-size:12px;color:var(--ink3);border-top:1px solid var(--line);padding-top:10px;margin-top:14px}
+  footer{font-size:12.5px;color:var(--ink3);margin-top:26px;line-height:1.6}
+  footer a{color:var(--accent)}
+  .tooltip{position:fixed;pointer-events:none;background:var(--ink);color:var(--paper);
+    font-size:12.5px;padding:6px 10px;border-radius:7px;opacity:0;transition:opacity .12s;z-index:50;max-width:300px}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header>
+  <div class="kicker">Observatorio Legislativo MX · análisis preliminar</div>
+  <h1>La huella 2030 de las iniciativas del Ejecutivo Federal</h1>
+  <p class="sub">Correspondencia entre las iniciativas presentadas por la titular del Ejecutivo
+  (administración 2024–2030) y los Objetivos de Desarrollo Sostenible. Codificación por materia
+  de cada iniciativa, asistida por modelo y en estatus revisable.</p>
+  <div class="corte">Fuente: SIL, Secretaría de Gobernación · Reporte de Iniciativas del Poder Ejecutivo
+  Federal, periodo 01/10/2024–30/09/2030 · Corte: 17 de julio de 2026</div>
+</header>
+
+<div class="kpis" id="kpis"></div>
+
+<section>
+  <h2>¿A qué objetivos le pegan las iniciativas aprobadas?</h2>
+  <p class="note">76 iniciativas aprobadas y/o publicadas en el DOF. Cada barra suma las menciones del
+  objetivo como materia principal y como materia secundaria. Clic en una barra filtra la tabla.</p>
+  <div class="legend"><span><i style="background:var(--accent)"></i>ODS principal</span>
+  <span><i style="background:var(--accent-soft)"></i>ODS secundario</span>
+  <span><i style="background:var(--ink3);opacity:.45"></i>Sin correspondencia ODS</span></div>
+  <div id="chart-ods"></div>
+</section>
+
+<section>
+  <h2>Ritmo de aprobación</h2>
+  <p class="note">Iniciativas del Ejecutivo publicadas en el DOF por trimestre.</p>
+  <div id="chart-tri"></div>
+</section>
+
+<section>
+  <h2>Expedientes</h2>
+  <div class="filters">
+    <input id="q" type="search" placeholder="Buscar en la denominación o el tema…">
+    <select id="f-ods"><option value="">Todos los ODS</option></select>
+    <select id="f-sec"><option value="">Todas las secciones</option></select>
+  </div>
+  <table>
+    <thead><tr><th style="width:46%">Iniciativa</th><th>ODS</th><th>Presentación</th><th>DOF</th><th>Estatus</th></tr></thead>
+    <tbody id="tbody"></tbody>
+  </table>
+</section>
+
+<footer>
+  <b>Método y descargos.</b> Codificación preliminar por denominación y materia de cada iniciativa,
+  asistida por modelo de lenguaje bajo el protocolo NormTrace, sin análisis del texto articulado y
+  sin validación de segundo codificador: los resultados indican correspondencia temática a nivel de objetivo y de meta, no
+  evaluación de contenido ni de cumplimiento. Cuatro iniciativas (características de monedas) se
+  reportan sin correspondencia ODS. Datos: <a href="http://sil.gobernacion.gob.mx/Reportes/GeneracionReportes/reporteAutomatico1.php?TipoReporte=1&amp;Periodo=5">SIL, reporte de iniciativas del Ejecutivo Federal</a>.
+</footer>
+</div>
+
+<dialog id="dlg"><div class="ficha" id="ficha"></div></dialog>
+<div class="tooltip" id="tip"></div>
+
+<script>
+const DATA = [{"n":0,"sec":"Aprobadas y/o publicadas en DOF","den":"Que reforma y adiciona diversas disposiciones de la Ley General de Instituciones y Procedimientos Electorales, en materia de elección de personas juzgadoras del Poder Judicial de la Federación.","fp":"08/10/2024","fd":"14/10/2024","est":"Publicado en DOF el 14/10/2024","op":"16","os":"","tema":"Reforma judicial: elección de juzgadores","conf":"alta","m":"16.3;16.6"},{"n":1,"sec":"Aprobadas y/o publicadas en DOF","den":"Que reforma y adiciona diversas disposiciones de la Ley General del Sistema de Medios de Impugnación en Materia Electoral, relativa a la actualización de los medios de impugnación en el proceso de elección de los integrantes del Poder Judicial de la Federación.","fp":"08/10/2024","fd":"15/10/2024","est":"Publicado en DOF el 15/10/2024","op":"16","os":"","tema":"Reforma judicial: medios de impugnación","conf":"alta","m":"16.3;16.6"},{"n":2,"sec":"Aprobadas y/o publicadas en DOF","den":"Que reforma y adiciona diversas disposiciones de la Ley General para la Igualdad entre Mujeres y Hombres, de la Ley General de Acceso de las Mujeres a una Vida Libre de Violencia y del Código Nacional de Procedimientos Civiles y Familiares.","fp":"09/10/2024","fd":"16/12/2024","est":"Publicado en DOF el 16/12/2024","op":"5","os":"16","tema":"Igualdad y vida libre de violencia (secundarias)","conf":"alta","m":"5.1;5.2;5.c"},{"n":3,"sec":"Aprobadas y/o publicadas en DOF","den":"Que reforma y adiciona diversas disposiciones del Código Nacional de Procedimientos Penales y de la Ley General del Sistema Nacional de Seguridad Pública.","fp":"09/10/2024","fd":"16/12/2024","est":"Publicado en DOF el 16/12/2024","op":"16","os":"","tema":"Procedimientos penales y seguridad","conf":"alta","m":"16.3"},{"n":4,"sec":"Aprobadas y/o publicadas en DOF","den":"Que reforma y adiciona diversas disposiciones de la Ley Federal del Trabajo y de la Ley Federal de los Trabajadores al Servicio del Estado, Reglamentaria del Apartado B, del Artículo 123 Constitucional.","fp":"09/10/2024","fd":"16/12/2024","est":"Publicado en DOF el 16/12/2024","op":"5","os":"8","tema":"Igualdad sustantiva en el ámbito laboral","conf":"media","m":"5.1;8.5"},{"n":5,"sec":"Aprobadas y/o publicadas en DOF","den":"Que reforma los artículos 4°, párrafo primero; 21, párrafo noveno; 41, párrafo segundo; 73, fracción XXI, penúltimo párrafo; 123, apartados A, fracción VII y B, fracción V y se adiciona un último párrafo al artículo 4° y un segundo párrafo de la fracción IX del artículo 116, todos de la Constitución Política de los Estados Unidos Mexicanos, en materia de igualdad sustantiva, perspectiva de género, derecho de las mujeres a una vida libre de violencia y erradicación de la brecha salarial por razones de género.","fp":"09/10/2024","fd":"15/11/2024","est":"Publicado en DOF el 15/11/2024","op":"5","os":"8;16","tema":"Igualdad sustantiva y brecha salarial (constitucional)","conf":"alta","m":"5.1;5.5;8.5"},{"n":6,"sec":"Aprobadas y/o publicadas en DOF","den":"Que reforma, adiciona y deroga diversas disposiciones de la Ley Orgánica de la Administración Pública Federal.","fp":"05/11/2024","fd":"28/11/2024","est":"Publicado en DOF el 28/11/2024","op":"16","os":"","tema":"Reorganización de la Administración Pública Federal","conf":"alta","m":"16.6"},{"n":7,"sec":"Aprobadas y/o publicadas en DOF","den":"Que reforma y adiciona el artículo 21 de la Constitución Política de los Estados Unidos Mexicanos, en materia de seguridad pública.","fp":"06/11/2024","fd":"31/12/2024","est":"Publicado en DOF el 31/12/2024","op":"16","os":"","tema":"Seguridad pública (art. 21 constitucional)","conf":"alta","m":"16.1;16.6"},{"n":8,"sec":"Aprobadas y/o publicadas en DOF","den":"Que expide la Ley de Ingresos de la Federación para el Ejercicio Fiscal 2025.","fp":"20/11/2024","fd":"19/12/2024","est":"Publicado en DOF el 19/12/2024","op":"17","os":"","tema":"Ley de Ingresos 2025","conf":"alta","m":"17.1"},{"n":9,"sec":"Aprobadas y/o publicadas en DOF","den":"Proyecto de Presupuesto de Egresos de la Federación para el Ejercicio Fiscal 2025.","fp":"20/11/2024","fd":"24/12/2024","est":"Publicado en DOF el 24/12/2024","op":"17","os":"","tema":"Presupuesto de Egresos 2025","conf":"alta","m":"17.1"},{"n":10,"sec":"Aprobadas y/o publicadas en DOF","den":"Que reforma, adiciona y deroga diversas disposiciones de la Ley Federal de Derechos.","fp":"20/11/2024","fd":"19/12/2024","est":"Publicado en DOF el 19/12/2024","op":"17","os":"","tema":"Ley Federal de Derechos 2025","conf":"alta","m":"17.1"},{"n":11,"sec":"Aprobadas y/o publicadas en DOF","den":"Que expide la Ley Orgánica del Poder Judicial de la Federación.","fp":"20/11/2024","fd":"20/12/2024","est":"Publicado en DOF el 20/12/2024","op":"16","os":"","tema":"Ley Orgánica del Poder Judicial","conf":"alta","m":"16.3;16.6"},{"n":12,"sec":"Aprobadas y/o publicadas en DOF","den":"Que expide la Ley de Carrera Judicial del Poder Judicial de la Federación.","fp":"20/11/2024","fd":"02/01/2025","est":"Publicado en DOF el 02/01/2025","op":"16","os":"","tema":"Carrera judicial","conf":"alta","m":"16.6"},{"n":13,"sec":"Aprobadas y/o publicadas en DOF","den":"Que reforma, adiciona y deroga diversas disposiciones de la Ley General de Responsabilidades Administrativas.","fp":"20/11/2024","fd":"02/01/2025","est":"Publicado en DOF el 02/01/2025","op":"16","os":"","tema":"Responsabilidades administrativas (anticorrupción)","conf":"alta","m":"16.5;16.6"},{"n":14,"sec":"Aprobadas y/o publicadas en DOF","den":"Que adiciona la fracción VI al artículo 49; la fracción IV al artículo 50; la fracción IX al artículo 127; el capítulo IX Bis y el artículo 997-B de la Ley Federal del Trabajo, en materia de trabajo en plataformas digitales.","fp":"05/12/2024","fd":"24/12/2024","est":"Publicado en DOF el 24/12/2024","op":"8","os":"9","tema":"Trabajo en plataformas digitales","conf":"alta","m":"8.5;8.8"},{"n":15,"sec":"Aprobadas y/o publicadas en DOF","den":"Que reforma y adiciona disposiciones de la Ley Reglamentaria de las fracciones I y II del artículo 105 de la Constitución Política de los Estados Unidos Mexicanos, para adecuar la normativa respecto de la reforma constitucional en materia de reforma al Poder Judicial.","fp":"10/12/2024","fd":"03/04/2025","est":"Publicado en DOF el 03/04/2025","op":"16","os":"","tema":"Ley reglamentaria art. 105 (justicia constitucional)","conf":"alta","m":"16.3;16.6"},{"n":16,"sec":"Aprobadas y/o publicadas en DOF","den":"Que reforma y deroga diversas disposiciones de la Ley de Amparo, reglamentaria de los artículos 103 y 107 de la Constitución Política de los Estados Unidos Mexicanos, para sentar las bases legales para una administración de justicia constitucional pronta, expedita, oportuna y, como valor de guía el carácter supremo de la Constitución Nacional y los derechos de las personas y el interés social.","fp":"10/12/2024","fd":"13/03/2025","est":"Publicado en DOF el 13/03/2025","op":"16","os":"","tema":"Reforma a la Ley de Amparo","conf":"alta","m":"16.3"},{"n":17,"sec":"Aprobadas y/o publicadas en DOF","den":"Que reforma y adiciona diversas disposiciones de la Ley de Ascensos y Recompensas del Ejército y Fuerza Aérea.","fp":"11/12/2024","fd":"15/04/2025","est":"Publicado en DOF el 15/04/2025","op":"16","os":"","tema":"Ascensos y recompensas del Ejército","conf":"alta","m":"16.6"},{"n":18,"sec":"Aprobadas y/o publicadas en DOF","den":"Que reforma, adiciona y deroga diversas disposiciones a la Ley del Instituto del Fondo Nacional de la Vivienda para los Trabajadores y de la Ley Federal del Trabajo, en materia de vivienda con orientación social.","fp":"12/12/2024","fd":"21/02/2025","est":"Publicado en DOF el 21/02/2025","op":"11","os":"1;10","tema":"Vivienda social (INFONAVIT)","conf":"alta","m":"11.1;1.4"},{"n":19,"sec":"Aprobadas y/o publicadas en DOF","den":"Que el Honorable Congreso de la Unión declara al año 2025 como: 2025, Año de la Mujer Indígena.","fp":"08/01/2025","fd":"21/02/2025","est":"Publicado en DOF el 21/02/2025","op":"5","os":"10","tema":"2025, Año de la Mujer Indígena","conf":"alta","m":"5.1;10.2"},{"n":20,"sec":"Aprobadas y/o publicadas en DOF","den":"Que reforma los artículos 4o. y 27 de la Constitución Política de los Estados Unidos Mexicanos, en materia de conservación y protección de los maíces nativos.","fp":"29/01/2025","fd":"17/03/2025","est":"Publicado en DOF el 17/03/2025","op":"2","os":"15","tema":"Protección de maíces nativos","conf":"alta","m":"2.5"},{"n":21,"sec":"Aprobadas y/o publicadas en DOF","den":"Que expide la Ley de la Empresa Pública del Estado, Comisión Federal de Electricidad; la Ley de la Empresa Pública del Estado, Petróleos Mexicanos; la Ley del Sector Eléctrico; la Ley del Sector Hidrocarburos; la Ley de Planeación y Transición Energética; la Ley de Biocombustibles; la Ley de Geotermia y, la Ley de la Comisión Nacional de Energía; reforma diversas disposiciones de la Ley del Fondo Mexicano del Petróleo para la Estabilización y el Desarrollo y, reforma, adiciona y deroga diversas disposiciones de la Ley de Ingresos Sobre Hidrocarburos y de la Ley Orgánica de la Administración Pública Federal.","fp":"05/02/2025","fd":"18/03/2025","est":"Publicado en DOF el 18/03/2025","op":"7","os":"9;13","tema":"Paquete energético (CFE, Pemex, transición)","conf":"alta","m":"7.1;7.2;7.b"},{"n":22,"sec":"Aprobadas y/o publicadas en DOF","den":"Que reforma y adiciona diversas disposiciones de la Constitución Política de los Estados Unidos Mexicanos, en materia de no reelección y nepotismo electoral.","fp":"11/02/2025","fd":"01/04/2025","est":"Publicado en DOF el 01/04/2025","op":"16","os":"","tema":"No reelección y nepotismo electoral","conf":"alta","m":"16.5;16.6"},{"n":23,"sec":"Aprobadas y/o publicadas en DOF","den":"Remite la parte correspondiente a la Ley de Ingresos Sobre Hidrocarburos de la iniciativa con proyecto de decreto por el que se expiden la Ley de la Empresa Pública del Estado, Comisión Federal de Electricidad; la Ley de la Empresa Pública del Estado, Petróleos Mexicanos; la Ley del Sector Eléctrico; la Ley del Sector Hidrocarburos; la Ley de Planeación y Transición Energética; la Ley de Biocombustibles; la Ley de Geotermia, y la Ley de la Comisión Nacional de Energía; se reforman diversas disposiciones de la Ley del Fondo Mexicano del Petróleo para la Estabilización y el Desarrollo; y se reforman, adicionan y derogan diversas disposiciones de la Ley de Ingresos Sobre Hidrocarburos y de la Ley Orgánica de la Administración Pública Federal, presentada por la Titular del Ejecutivo Federal.","fp":"11/02/2025","fd":"18/03/2025","est":"Publicado en DOF el 18/03/2025","op":"7","os":"17","tema":"Ingresos sobre hidrocarburos (paquete energético)","conf":"alta","m":"7.1;17.1"},{"n":24,"sec":"Aprobadas y/o publicadas en DOF","den":"Que expide la Ley del Sistema Nacional de Investigación e Inteligencia en Materia de Seguridad Pública.","fp":"18/02/2025","fd":"16/07/2025","est":"Publicado en DOF el 16/07/2025","op":"16","os":"","tema":"Sistema de investigación e inteligencia","conf":"alta","m":"16.1;16.a"},{"n":25,"sec":"Aprobadas y/o publicadas en DOF","den":"Que expide la Ley General del Sistema Nacional de Seguridad Pública.","fp":"18/02/2025","fd":"16/07/2025","est":"Publicado en DOF el 16/07/2025","op":"16","os":"","tema":"Sistema Nacional de Seguridad Pública","conf":"alta","m":"16.1;16.a"},{"n":26,"sec":"Aprobadas y/o publicadas en DOF","den":"Que reforma el párrafo décimo del artículo 25 y la fracción XXIX-Y del artículo 73 de la Constitución Política de los Estados Unidos Mexicanos, en materia de simplificación administrativa y digitalización.","fp":"19/02/2025","fd":"15/04/2025","est":"Publicado en DOF el 15/04/2025","op":"16","os":"9","tema":"Simplificación administrativa y digitalización","conf":"alta","m":"16.6;9.c"},{"n":27,"sec":"Aprobadas y/o publicadas en DOF","den":"Que reforma el artículo 19 y adiciona dos párrafos al artículo 40 de la Constitución Política de los Estados Unidos Mexicanos, en materia de fortalecimiento de la soberanía nacional.","fp":"25/02/2025","fd":"01/04/2025","est":"Publicado en DOF el 01/04/2025","op":"16","os":"","tema":"Soberanía nacional (arts. 19 y 40)","conf":"alta","m":"16.6"},{"n":28,"sec":"Aprobadas y/o publicadas en DOF","den":"Que expide la Ley General de Transparencia y Acceso a la Información Pública, la Ley General de Protección de Datos Personales en Posesión de Sujetos Obligados y la Ley Federal de Protección de Datos Personales en Posesión de los Particulares y reforma la fracción XV del artículo 37 de la Ley Orgánica de la Administración Pública Federal.","fp":"25/02/2025","fd":"20/03/2025","est":"Publicado en DOF el 20/03/2025","op":"16","os":"","tema":"Transparencia y datos personales (nueva arquitectura)","conf":"alta","m":"16.6;16.10"},{"n":29,"sec":"Aprobadas y/o publicadas en DOF","den":"Que expide la Ley de Adquisiciones, Arrendamientos y Servicios del Sector Público y se reforman, adicionan y derogan diversas disposiciones de la Ley Federal de Austeridad Republicana, de la Ley de la Economía Social y Solidaria y de la Ley General de Sociedades Cooperativas.","fp":"19/03/2025","fd":"16/04/2025","est":"Publicado en DOF el 16/04/2025","op":"16","os":"12","tema":"Adquisiciones públicas y economía social","conf":"alta","m":"16.6;12.7"},{"n":30,"sec":"Aprobadas y/o publicadas en DOF","den":"Que reforma, adiciona y deroga diversas disposiciones de la Ley de Obras Públicas y Servicios Relacionados con las Mismas.","fp":"19/03/2025","fd":"16/04/2025","est":"Publicado en DOF el 16/04/2025","op":"9","os":"16","tema":"Obras públicas","conf":"alta","m":"9.1;16.6"},{"n":31,"sec":"Aprobadas y/o publicadas en DOF","den":"Que reforma, adiciona y deroga diversas disposiciones de la Ley General en Materia de Desaparición Forzada de Personas, Desaparición Cometida por Particulares y del Sistema Nacional de Búsqueda de Personas, así como de la Ley General de Población, en materia de fortalecimiento de búsqueda, localización e identificación de personas desaparecidas.","fp":"01/04/2025","fd":"16/07/2025","est":"Publicado en DOF el 16/07/2025","op":"16","os":"","tema":"Desaparición forzada y búsqueda de personas","conf":"alta","m":"16.1;16.3"},{"n":32,"sec":"Aprobadas y/o publicadas en DOF","den":"Que reforma la Ley que establece Bases para la Ejecución en México, por el Poder Ejecutivo Federal, del Convenio Constitutivo de la Asociación Internacional de Fomento.","fp":"22/04/2025","fd":"06/06/2025","est":"Publicado en DOF el 06/06/2025","op":"17","os":"","tema":"Asociación Internacional de Fomento (Banco Mundial)","conf":"alta","m":"17.3"},{"n":33,"sec":"Aprobadas y/o publicadas en DOF","den":"Que expide la Ley Nacional para Eliminar Trámites Burocráticos.","fp":"23/04/2025","fd":"16/07/2025","est":"Publicado en DOF el 16/07/2025","op":"16","os":"","tema":"Eliminación de trámites burocráticos","conf":"alta","m":"16.6"},{"n":34,"sec":"Aprobadas y/o publicadas en DOF","den":"Que expide la Ley en Materia de Telecomunicaciones y Radiodifusión.","fp":"23/04/2025","fd":"16/07/2025","est":"Publicado en DOF el 16/07/2025","op":"9","os":"16","tema":"Telecomunicaciones y radiodifusión","conf":"alta","m":"9.c;16.10"},{"n":35,"sec":"Aprobadas y/o publicadas en DOF","den":"Que reforma el artículo 18 de la Ley sobre el Escudo, la Bandera y el Himno Nacionales, en materia de reconocimiento a las mujeres que han transformado nuestra Patria.","fp":"24/04/2025","fd":"21/07/2025","est":"Publicado en DOF el 21/07/2025","op":"5","os":"","tema":"Reconocimiento a las mujeres (símbolos patrios)","conf":"alta","m":"5.1"},{"n":36,"sec":"Aprobadas y/o publicadas en DOF","den":"Que reforma, adiciona y deroga diversas disposiciones de la Ley Reglamentaria del Servicio Ferroviario; de la Ley Orgánica de la Administración Pública Federal; de la Ley de Caminos, Puentes y Autotransporte Federal; de la Ley de Vías Generales de Comunicación, y de la Ley General de Bienes Nacionales, en materia ferroviaria y de armonización normativa.","fp":"24/04/2025","fd":"16/07/2025","est":"Publicado en DOF el 16/07/2025","op":"9","os":"11","tema":"Sistema ferroviario","conf":"alta","m":"9.1;11.2"},{"n":37,"sec":"Aprobadas y/o publicadas en DOF","den":"Que reforma adiciona y deroga diversas disposiciones de la Ley Federal de Competencia Económica y de la Ley Federal de las Entidades Paraestatales.","fp":"28/04/2025","fd":"16/07/2025","est":"Publicado en DOF el 16/07/2025","op":"8","os":"16","tema":"Competencia económica","conf":"media","m":"8.3"},{"n":38,"sec":"Aprobadas y/o publicadas en DOF","den":"Que reforma, adiciona y deroga diversas disposiciones de la Ley General de Desarrollo Social, de la Ley Federal de Presupuesto y Responsabilidad Hacendaria y de la Ley de Contabilidad Gubernamental.","fp":"27/05/2025","fd":"16/07/2025","est":"Publicado en DOF el 16/07/2025","op":"1","os":"10","tema":"Desarrollo social y programas de bienestar","conf":"alta","m":"1.3;10.4"},{"n":39,"sec":"Aprobadas y/o publicadas en DOF","den":"Que expide la Ley de la Guardia Nacional; y reforma, adiciona y deroga diversas disposiciones de la Ley Orgánica de la Administración Pública Federal; de la Ley Orgánica del Ejército y Fuerza Aérea Mexicanos; de la Ley de Educación Militar del Ejército y Fuerza Aérea Mexicanos; de la Ley de Ascensos y Recompensas del Ejército y Fuerza Aérea Mexicanos; de la Ley del Instituto de Seguridad Social para las Fuerzas Armadas Mexicanas; de la Ley de Disciplina del Ejército y Fuerza Aérea Mexicanos; del Código de Justicia Militar y del Código Militar de Procedimientos Penales.","fp":"11/06/2025","fd":"16/07/2025","est":"Publicado en DOF el 16/07/2025","op":"16","os":"","tema":"Ley de la Guardia Nacional","conf":"alta","m":"16.1;16.a"},{"n":40,"sec":"Aprobadas y/o publicadas en DOF","den":"Que reforma, adiciona y deroga diversas disposiciones de la Ley Federal de Procedimiento Contencioso Administrativo.","fp":"25/06/2025","fd":"09/06/2026","est":"Publicado en DOF el 09/06/2026","op":"16","os":"","tema":"Justicia contencioso-administrativa","conf":"alta","m":"16.3;16.6"},{"n":41,"sec":"Aprobadas y/o publicadas en DOF","den":"Que reforma el inciso a) de la fracción XXI del artículo 73 de la Constitución Política de los Estados Unidos Mexicano, en materia de extorsión.","fp":"16/07/2025","fd":"09/10/2025","est":"Publicado en DOF el 09/10/2025","op":"16","os":"","tema":"Extorsión (constitucional)","conf":"alta","m":"16.1;16.3"},{"n":42,"sec":"Aprobadas y/o publicadas en DOF","den":"Que expide la Ley de Ingresos de la Federación para el Ejercicio Fiscal 2026.","fp":"09/09/2025","fd":"07/11/2025","est":"Publicado en DOF el 07/11/2025","op":"17","os":"","tema":"Ley de Ingresos 2026","conf":"alta","m":"17.1"},{"n":43,"sec":"Aprobadas y/o publicadas en DOF","den":"Proyecto de Presupuesto de Egresos de la Federación para el Ejercicio Fiscal 2026.","fp":"09/09/2025","fd":"21/11/2025","est":"Publicado en DOF el 21/11/2025","op":"17","os":"","tema":"Presupuesto de Egresos 2026","conf":"alta","m":"17.1"},{"n":44,"sec":"Aprobadas y/o publicadas en DOF","den":"Que reforma, adiciona y deroga diversas disposiciones de la Ley Federal de Derechos.","fp":"09/09/2025","fd":"07/11/2025","est":"Publicado en DOF el 07/11/2025","op":"17","os":"","tema":"Ley Federal de Derechos 2026","conf":"alta","m":"17.1"},{"n":45,"sec":"Aprobadas y/o publicadas en DOF","den":"Que reforma, adiciona y deroga diversas disposiciones de la Ley del Impuesto Especial sobre Producción y Servicios.","fp":"09/09/2025","fd":"07/11/2025","est":"Publicado en DOF el 07/11/2025","op":"3","os":"17","tema":"IEPS: impuestos saludables","conf":"media","m":"3.4;3.a;17.1"},{"n":46,"sec":"Aprobadas y/o publicadas en DOF","den":"Que reforma, adiciona y deroga diversas disposiciones del Código Fiscal de la Federación.","fp":"09/09/2025","fd":"07/11/2025","est":"Publicado en DOF el 07/11/2025","op":"17","os":"16","tema":"Código Fiscal de la Federación","conf":"media","m":"17.1;16.5"},{"n":47,"sec":"Aprobadas y/o publicadas en DOF","den":"Que reforma diversas fracciones arancelarias de la tarifa de la Ley de los Impuestos Generales de Importación y Exportación.","fp":"09/09/2025","fd":"29/12/2025","est":"Publicado en DOF el 29/12/2025","op":"9","os":"17","tema":"Aranceles (fracciones arancelarias)","conf":"media","m":"9.2"},{"n":48,"sec":"Aprobadas y/o publicadas en DOF","den":"Que reforma, adiciona y deroga diversas disposiciones de la Ley Aduanera.","fp":"09/09/2025","fd":"19/11/2025","est":"Publicado en DOF el 19/11/2025","op":"16","os":"17","tema":"Reforma aduanera","conf":"alta","m":"16.5"},{"n":49,"sec":"Aprobadas y/o publicadas en DOF","den":"Con proyecto de decreto por el que se reforma y adiciona diversas disposiciones a la Ley de Amparo, Reglamentaria de los artículos 103 y 107 de la Constitución Política de los Estados Unidos Mexicanos, al Código Fiscal de la Federación y a la Ley Orgánica del Tribunal Federal de Justicia Administrativa.","fp":"17/09/2025","fd":"16/10/2025","est":"Publicado en DOF el 16/10/2025","op":"16","os":"","tema":"Amparo, fiscal y justicia administrativa","conf":"alta","m":"16.3"},{"n":50,"sec":"Aprobadas y/o publicadas en DOF","den":"Con proyecto de decreto por el que reforma y adiciona diversas disposiciones a la Ley Federal de Protección a la Propiedad Industrial, en Materia de Transferencia de Tecnología y para Simplificar el Proceso de Protección de Patentes y Registros.","fp":"17/09/2025","fd":"03/04/2026","est":"Publicado en DOF el 03/04/2026","op":"9","os":"","tema":"Propiedad industrial y transferencia de tecnología","conf":"alta","m":"9.5;9.b"},{"n":51,"sec":"Aprobadas y/o publicadas en DOF","den":"Que reforma adiciona y deroga diversas disposiciones de la Ley General de Salud, en materia de prohibición de cigarrillos electrónicos, vapeadores y otros sistemas o dispositivos análogos, y otras materias que fortalecen la atención de la salud de la población.","fp":"30/09/2025","fd":"15/01/2026","est":"Publicado en DOF el 15/01/2026","op":"3","os":"","tema":"Salud: prohibición de vapeadores","conf":"alta","m":"3.4;3.a"},{"n":52,"sec":"Aprobadas y/o publicadas en DOF","den":"Que expide la Ley Orgánica de la Armada de México.","fp":"07/10/2025","fd":"07/11/2025","est":"Publicado en DOF el 07/11/2025","op":"16","os":"","tema":"Ley Orgánica de la Armada","conf":"alta","m":"16.6"},{"n":53,"sec":"Aprobadas y/o publicadas en DOF","den":"Que expide la Ley General de Aguas; y se reforman, adicionan y derogan diversas disposiciones de la Ley de Aguas Nacionales.","fp":"14/10/2025","fd":"11/12/2025","est":"Publicado en DOF el 11/12/2025","op":"6","os":"","tema":"Ley General de Aguas","conf":"alta","m":"6.1;6.2;6.4;6.5;6.b"},{"n":54,"sec":"Aprobadas y/o publicadas en DOF","den":"Que expide la Ley General para Prevenir, Investigar y Sancionar los Delitos en materia de Extorsión, Reglamentaria de la fracción XXI del artículo 73 de la Constitución Política de los Estados Unidos Mexicanos; y se reforman, adicionan y derogan diversas disposiciones del Código Penal Federal, del Código Nacional de Procedimientos Penales, de la Ley Federal contra la Delincuencia Organizada, de la Ley Nacional de Extinción de Dominio y de la Ley Orgánica del Poder Judicial de la Federación.","fp":"21/10/2025","fd":"28/11/2025","est":"Publicado en DOF el 28/11/2025","op":"16","os":"","tema":"Ley General contra la Extorsión","conf":"alta","m":"16.1;16.3;16.4"},{"n":55,"sec":"Aprobadas y/o publicadas en DOF","den":"Que reforma, adiciona y deroga diversas disposiciones de la Ley General para la Igualdad entre Mujeres y Hombres; de la Ley General de Acceso de las Mujeres a una Vida Libre de Violencia; del Código Nacional de Procedimientos Civiles y Familiares; de la Ley Federal de los Trabajadores al Servicio del Estado, Reglamentaria del Apartado B) del artículo 123 Constitucional; de la Ley General de Desarrollo Social, de la Ley General de Salud; de la Ley General de Educación; de la Ley del Seguro Social; de la Ley de Migración; de la Ley General de los Derechos de Niñas, Niños y Adolescentes; de la Ley del Instituto de Seguridad y Servicios Sociales de los Trabajadores del Estado; de la Ley de Planeación; de la Ley de Vivienda; de la Ley Federal del Trabajo; de la Ley Federal del Derecho de Autor; de la Ley Federal de Protección a la Propiedad Industrial y de la Ley General de Cultura y Derechos Culturales.","fp":"25/11/2025","fd":"15/01/2026","est":"Publicado en DOF el 15/01/2026","op":"5","os":"8;4;3;10","tema":"Igualdad sustantiva: reforma a 17 leyes","conf":"alta","m":"5.1;5.2;5.4;5.5;5.c"},{"n":56,"sec":"Aprobadas y/o publicadas en DOF","den":"Que reforma y adiciona diversas disposiciones de la Ley de Ascensos de la Armada de México.","fp":"25/11/2025","fd":"17/12/2025","est":"Publicado en DOF el 17/12/2025","op":"16","os":"","tema":"Ascensos de la Armada","conf":"alta","m":"16.6"},{"n":57,"sec":"Aprobadas y/o publicadas en DOF","den":"Que declara al año 2026 como -2026, Año de Margarita Maza Parada-.","fp":"25/11/2025","fd":"29/12/2025","est":"Publicado en DOF el 29/12/2025","op":"5","os":"","tema":"2026, Año de Margarita Maza","conf":"media","m":"5.1"},{"n":58,"sec":"Aprobadas y/o publicadas en DOF","den":"Que establecen las características de una Moneda Conmemorativa alusiva al 200 Aniversario de la Consolidación de la Independencia de México en la Mar.","fp":"25/11/2025","fd":"17/12/2025","est":"Publicado en DOF el 17/12/2025","op":"","os":"","tema":"Moneda conmemorativa (Independencia en la mar)","conf":"alta","m":""},{"n":59,"sec":"Aprobadas y/o publicadas en DOF","den":"Que reforma el Artículo Segundo del diverso por el que se reforma el inciso b) del artículo 2º de la Ley Monetaria de los Estados Unidos Mexicanos, y se señalan las características de la Moneda de veinte pesos, publicado en el Diario Oficial de la Federación el 8 de diciembre de 1992.","fp":"02/12/2025","fd":"19/01/2026","est":"Publicado en DOF el 19/01/2026","op":"","os":"","tema":"Moneda de veinte pesos","conf":"alta","m":""},{"n":60,"sec":"Aprobadas y/o publicadas en DOF","den":"Que reforman y adicionan diversas disposiciones de la Ley Monetaria de los Estados Unidos Mexicanos, y se señalan las características de las monedas de cinco, diez, veinte y cincuenta centavos y de uno, dos, cinco y diez pesos, publicado el 22 de junio de 1992, en el Diario Oficial de la Federación, únicamente por lo que hace a la moneda de diez pesos.","fp":"02/12/2025","fd":"19/01/2026","est":"Publicado en DOF el 19/01/2026","op":"","os":"","tema":"Moneda de diez pesos","conf":"alta","m":""},{"n":61,"sec":"Aprobadas y/o publicadas en DOF","den":"Por el que se reforma y adiciona diversas disposiciones del artículo 123, apartado A de la Constitución Política de los Estados Unidos Mexicanos, en materia de reducción de la jornada laboral.","fp":"03/12/2025","fd":"03/03/2026","est":"Publicado en DOF el 03/03/2026","op":"8","os":"","tema":"Reducción de jornada laboral (constitucional)","conf":"alta","m":"8.5;8.8"},{"n":62,"sec":"Aprobadas y/o publicadas en DOF","den":"Por el que se reforma, adiciona y deroga diversas disposiciones de la Ley Federal del Trabajo, en materia de reducción de la jornada laboral.","fp":"03/12/2025","fd":"01/05/2026","est":"Publicado en DOF el 01/05/2026","op":"8","os":"","tema":"Reducción de jornada laboral (LFT)","conf":"alta","m":"8.5;8.8"},{"n":63,"sec":"Aprobadas y/o publicadas en DOF","den":"Que establecen las características de tres monedas conmemorativas de la Copa Mundial de la FIFA 2026, organizada por México-Estados Unidos-Canadá.","fp":"21/01/2026","fd":"10/03/2026","est":"Publicado en DOF el 10/03/2026","op":"","os":"","tema":"Monedas conmemorativas Mundial FIFA 2026","conf":"alta","m":""},{"n":64,"sec":"Aprobadas y/o publicadas en DOF","den":"Que reforma y adiciona diversas disposiciones de la Ley Federal del Trabajo y de la Ley Federal del Derecho de Autor, en materia de derechos de las personas trabajadores artistas intérpretes o ejecutantes.","fp":"24/02/2026","fd":"14/05/2026","est":"Publicado en DOF el 14/05/2026","op":"8","os":"","tema":"Derechos de personas trabajadoras artistas","conf":"alta","m":"8.3;8.5"},{"n":65,"sec":"Aprobadas y/o publicadas en DOF","den":"Que expide la Ley Federal de Cine y el Audiovisual, y se abroga la Ley Federal de Cinematografía.","fp":"24/02/2026","fd":"22/05/2026","est":"Publicado en DOF el 22/05/2026","op":"8","os":"9","tema":"Ley Federal de Cine y el Audiovisual","conf":"media","m":"8.3"},{"n":66,"sec":"Aprobadas y/o publicadas en DOF","den":"Que reforma el artículo 127 de la Constitución Política de los Estados Unidos Mexicanos, en materia de límite a las jubilaciones y pensiones de las entidades públicas.","fp":"04/03/2026","fd":"10/04/2026","est":"Publicado en DOF el 10/04/2026","op":"16","os":"10","tema":"Límite a jubilaciones y pensiones públicas","conf":"alta","m":"16.6;10.4"},{"n":67,"sec":"Aprobadas y/o publicadas en DOF","den":"Con proyecto de decreto por el que se reforman los artículos 40, fracción I, de la Ley Orgánica de la Administración Pública Federal; 15, fracciones IV y VI, de la Ley de Comercio Exterior y se adiciona el artículo 283 Quater a la Ley Federal del Trabajo.","fp":"11/03/2026","fd":"01/05/2026","est":"Publicado en DOF el 01/05/2026","op":"8","os":"17","tema":"Comercio exterior y trabajo (art. 283 LFT)","conf":"baja","m":"8.7;8.8"},{"n":68,"sec":"Aprobadas y/o publicadas en DOF","den":"Que reforma diversas disposiciones de la Ley de Vivienda.","fp":"11/03/2026","fd":"29/04/2026","est":"Publicado en DOF el 29/04/2026","op":"11","os":"","tema":"Reforma a la Ley de Vivienda","conf":"alta","m":"11.1"},{"n":69,"sec":"Aprobadas y/o publicadas en DOF","den":"Que reforma y adiciona diversas disposiciones de la Constitución Política de los Estados Unidos Mexicanos con el objeto de reducir privilegios y fortalecer la revocación de mandato.","fp":"18/03/2026","fd":"23/04/2026","est":"Publicado en DOF el 23/04/2026","op":"16","os":"","tema":"Revocación de mandato y reducción de privilegios","conf":"alta","m":"16.6;16.7"},{"n":70,"sec":"Aprobadas y/o publicadas en DOF","den":"Que adiciona la fracción I Sexies al artículo 36 de la Ley Orgánica de la Administración Pública Federal.","fp":"18/03/2026","fd":"07/05/2026","est":"Publicado en DOF el 07/05/2026","op":"9","os":"16","tema":"Atribuciones SICT (LOAPF art. 36)","conf":"baja","m":"9.1"},{"n":71,"sec":"Aprobadas y/o publicadas en DOF","den":"Que expide la Ley para el Fomento de la Inversión en Infraestructura Estratégica para el Desarrollo con Bienestar, y se reforman y adicionan diversas disposiciones de la Ley Federal de Presupuesto y Responsabilidad Hacendaria.","fp":"19/03/2026","fd":"09/04/2026","est":"Publicado en DOF el 09/04/2026","op":"9","os":"8;17","tema":"Inversión en infraestructura estratégica","conf":"alta","m":"9.1;8.2"},{"n":72,"sec":"Aprobadas y/o publicadas en DOF","den":"Que reforma el artículo 141 del Código Fiscal de la Federación.","fp":"19/03/2026","fd":"09/04/2026","est":"Publicado en DOF el 09/04/2026","op":"17","os":"","tema":"Garantías fiscales (CFF art. 141)","conf":"baja","m":"17.1"},{"n":73,"sec":"Aprobadas y/o publicadas en DOF","den":"Que se reforma el artículo 73, fracción XXI, inciso a), de la Constitución Política de los Estados Unidos Mexicanos, en materia de feminicidio.","fp":"07/04/2026","fd":"06/05/2026","est":"Publicado en DOF el 06/05/2026","op":"5","os":"16","tema":"Feminicidio (constitucional)","conf":"alta","m":"5.2;16.1"},{"n":74,"sec":"Aprobadas y/o publicadas en DOF","den":"Que reforma y adiciona diversas disposiciones de la Constitución Política de los Estados Unidos Mexicanos, en materia de Reforma al Poder Judicial.","fp":"21/05/2026","fd":"02/06/2026","est":"Publicado en DOF el 02/06/2026","op":"16","os":"","tema":"Reforma al Poder Judicial (elección 2028)","conf":"alta","m":"16.3;16.6"},{"n":75,"sec":"Aprobadas y/o publicadas en DOF","den":"Que reforma y adiciona diversas disposiciones de la Ley General de Instituciones y Procedimientos Electorales, en materia de integridad en candidaturas.","fp":"25/05/2026","fd":"02/06/2026","est":"Publicado en DOF el 02/06/2026","op":"16","os":"","tema":"Integridad en candidaturas","conf":"alta","m":"16.5"},{"n":76,"sec":"Pendientes en Comisiones","den":"Que reforma, adiciona y deroga diversas disposiciones del Código Nacional de Procedimientos Penales y de la Ley Federal Contra la Delincuencia Organizada.","fp":"25/06/2025","fd":"","est":"Pendiente en comisión(es) de origen el 25/06/2025","op":"16","os":"","tema":"Procedimientos penales y delincuencia organizada","conf":"alta","m":"16.3;16.4"},{"n":77,"sec":"Pendientes en Comisiones","den":"Que se reforma el artículo 32 Bis, fracciones XXXIX y XLIII de la Ley Orgánica de la Administración Pública Federal y se adicionan a los artículos 7, la fracción XVII Bis; al 10, la fracción XXXIX Bis; al artículo 14, la fracción XIII Bis; y al 68, la fracción VI Bis de la Ley General de Desarrollo Forestal Sustentable.","fp":"21/05/2026","fd":"","est":"Pendiente en comisión(es) de origen el 21/05/2026","op":"15","os":"","tema":"Desarrollo forestal sustentable","conf":"alta","m":"15.1;15.2"},{"n":78,"sec":"Pendientes en Comisiones","den":"Que reforma, adiciona y deroga diversas disposiciones del Código Penal y de la Ley Federal de Protección a la Propiedad Industrial.","fp":"01/06/2026","fd":"","est":"Pendiente en comisión(es) de origen el 01/06/2026","op":"16","os":"9","tema":"Delitos contra la propiedad industrial","conf":"media","m":"16.3"},{"n":79,"sec":"Pendientes en Comisiones","den":"Que reforma el artículo 144 Octies y se adicionan los artículos 114 Nonies y 232 Septies de la Ley Federal del Derecho de Autor, en materia de responsabilidad secundaria para proveedores de servicios de internet.","fp":"01/06/2026","fd":"","est":"Pendiente en comisión(es) de origen el 01/06/2026","op":"9","os":"16","tema":"Derecho de autor y proveedores de internet","conf":"media","m":"9.c"},{"n":80,"sec":"Desechadas","den":"Que reforma, adiciona y deroga diversas disposiciones de la Constitución Política de los Estados Unidos Mexicanos, en materia electoral.","fp":"04/03/2026","fd":"","est":"Desechado en pleno origen el 11/03/2026","op":"16","os":"","tema":"Reforma electoral (constitucional)","conf":"alta","m":"16.6;16.7"},{"n":81,"sec":"Retiradas","den":"Que reforma y adiciona diversas disposiciones de la Ley del Instituto de Seguridad y Servicios Sociales de los Trabajadores del Estado, en materia de fortalecimiento del financiamiento de la Institución y derecho a la vivienda para las personas trabajadoras al servicio del Estado.","fp":"11/02/2025","fd":"","est":"Retirada el 19/03/2025","op":"11","os":"8","tema":"Vivienda para trabajadores del Estado (ISSSTE)","conf":"alta","m":"11.1;8.5"}];
+const ODS = {1:["Fin de la pobreza","#e5243b"],2:["Hambre cero","#dda63a"],3:["Salud y bienestar","#4c9f38"],
+4:["Educación de calidad","#c5192d"],5:["Igualdad de género","#ff3a21"],6:["Agua limpia y saneamiento","#26bde2"],
+7:["Energía asequible y no contaminante","#fcc30b"],8:["Trabajo decente y crecimiento económico","#a21942"],
+9:["Industria, innovación e infraestructura","#fd6925"],10:["Reducción de las desigualdades","#dd1367"],
+11:["Ciudades y comunidades sostenibles","#fd9d24"],12:["Producción y consumo responsables","#bf8b2e"],
+13:["Acción por el clima","#3f7e44"],14:["Vida submarina","#0a97d9"],15:["Vida de ecosistemas terrestres","#56c02b"],
+16:["Paz, justicia e instituciones sólidas","#00689d"],17:["Alianzas para lograr los objetivos","#19486a"]};
+
+const METAS = {"1.3": "Sistemas de protección social", "1.4": "Acceso a servicios básicos y vivienda", "2.5": "Diversidad genética de semillas y cultivos", "3.4": "Enfermedades no transmisibles", "3.a": "Control del tabaco (CMCT)", "5.1": "Fin de la discriminación contra las mujeres", "5.2": "Eliminación de la violencia de género", "5.4": "Cuidados y trabajo doméstico no remunerado", "5.5": "Participación plena y paridad", "5.c": "Políticas y leyes para la igualdad", "6.1": "Agua potable segura y asequible", "6.2": "Saneamiento e higiene", "6.4": "Uso eficiente del agua", "6.5": "Gestión integrada de recursos hídricos", "6.b": "Participación local en la gestión del agua", "7.1": "Acceso a energía asequible", "7.2": "Energías renovables", "7.b": "Infraestructura energética", "8.2": "Productividad y diversificación", "8.3": "Políticas para empleo y emprendimiento", "8.5": "Empleo pleno y trabajo decente", "8.7": "Erradicación del trabajo forzoso", "8.8": "Derechos laborales y trabajo seguro", "9.1": "Infraestructura de calidad", "9.2": "Industrialización inclusiva", "9.5": "Investigación e innovación", "9.b": "Desarrollo tecnológico nacional", "9.c": "Acceso a las TIC", "10.2": "Inclusión social, económica y política", "10.4": "Políticas fiscales y de protección social", "11.1": "Vivienda adecuada y asequible", "11.2": "Transporte seguro y sostenible", "12.7": "Adquisiciones públicas sostenibles", "15.1": "Conservación de ecosistemas terrestres", "15.2": "Gestión sostenible de bosques", "16.1": "Reducción de la violencia", "16.10": "Acceso a la información", "16.3": "Estado de derecho y acceso a la justicia", "16.4": "Combate a la delincuencia organizada", "16.5": "Reducción de la corrupción", "16.6": "Instituciones eficaces y transparentes", "16.7": "Decisiones inclusivas y participativas", "16.a": "Fortalecimiento de capacidades institucionales", "17.1": "Movilización de recursos internos", "17.3": "Recursos financieros adicionales"};
+const apro = DATA.filter(d=>d.sec.startsWith("Aprobadas"));
+const conODS = apro.filter(d=>d.op);
+const nuevas = apro.filter(d=>/expide/i.test(d.den.slice(0,60))).length;
+
+/* KPIs */
+const kpis=[[DATA.length,"iniciativas presentadas por el Ejecutivo"],
+ [apro.length,"aprobadas y/o publicadas en DOF"],
+ [Math.round(conODS.length/apro.length*100)+"%","de las aprobadas con correspondencia ODS"],
+ [nuevas,"leyes nuevas expedidas"],
+ ["ODS 16","el objetivo dominante: paz, justicia e instituciones"]];
+document.getElementById('kpis').innerHTML=kpis.map(k=>
+ `<div class="kpi"><div class="v">${k[0]}</div><div class="l">${k[1]}</div></div>`).join('');
+
+/* agregados por ODS */
+const agg={};
+for(const d of apro){
+  if(d.op){ (agg[d.op]??={p:0,s:0}).p++; }
+  for(const s of (d.os?d.os.split(';'):[])) (agg[s]??={p:0,s:0}).s++;
+}
+const orden=Object.keys(agg).map(Number).sort((a,b)=>(agg[b].p+agg[b].s)-(agg[a].p+agg[a].s));
+const sinODS=apro.length-conODS.length;
+
+/* barras horizontales */
+const tip=document.getElementById('tip');
+function showTip(e,html){tip.innerHTML=html;tip.style.opacity=1;
+  tip.style.left=Math.min(e.clientX+14,innerWidth-260)+'px';tip.style.top=(e.clientY-10)+'px';}
+function hideTip(){tip.style.opacity=0}
+
+(function(){
+  const W=980,rh=30,gap=8,lab=250,max=Math.max(...orden.map(o=>agg[o].p+agg[o].s));
+  const rows=orden.length+1, H=rows*(rh+gap)+10;
+  const x=v=>v/max*(W-lab-70);
+  let s=`<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="Iniciativas aprobadas por ODS">`;
+  orden.forEach((o,i)=>{
+    const y=i*(rh+gap), a=agg[o], t=a.p+a.s;
+    s+=`<g class="row-hit" data-ods="${o}">
+      <rect x="0" y="${y}" width="${W}" height="${rh}" fill="transparent"></rect>
+      <rect x="${lab-16}" y="${y+7}" width="14" height="14" rx="3" fill="${ODS[o][1]}"></rect>
+      <text x="${lab-24}" y="${y+19}" text-anchor="end">ODS ${o} · ${ODS[o][0]}</text>
+      <rect class="bar-p" x="${lab}" y="${y+4}" width="${Math.max(x(a.p),2)}" height="${rh-8}" rx="4"></rect>`;
+    if(a.s) s+=`<rect class="bar-s" x="${lab+x(a.p)+2}" y="${y+4}" width="${Math.max(x(a.s)-2,2)}" height="${rh-8}" rx="4"></rect>`;
+    s+=`<text class="val" x="${lab+x(t)+8}" y="${y+19}">${t}</text></g>`;
+  });
+  const y=orden.length*(rh+gap);
+  s+=`<g class="row-hit" data-ods="SC"><rect x="0" y="${y}" width="${W}" height="${rh}" fill="transparent"></rect>
+    <text x="${lab-24}" y="${y+19}" text-anchor="end">Sin correspondencia ODS</text>
+    <rect class="bar-n" x="${lab}" y="${y+4}" width="${Math.max(x(sinODS),2)}" height="${rh-8}" rx="4"></rect>
+    <text class="val" x="${lab+x(sinODS)+8}" y="${y+19}">${sinODS}</text></g></svg>`;
+  const el=document.getElementById('chart-ods'); el.innerHTML=s;
+  el.querySelectorAll('.row-hit').forEach(g=>{
+    const o=g.dataset.ods;
+    g.addEventListener('mousemove',e=>{
+      if(o==="SC")showTip(e,`<b>Sin correspondencia</b> · ${sinODS} iniciativas (monedas conmemorativas y ajustes monetarios)`);
+      else showTip(e,`<b>ODS ${o} · ${ODS[o][0]}</b><br>${agg[o].p} como materia principal · ${agg[o].s} como secundaria`);
+    });
+    g.addEventListener('mouseleave',hideTip);
+    g.addEventListener('click',()=>{document.getElementById('f-ods').value=(o==="SC"?"SC":o);render();
+      document.getElementById('tbody').scrollIntoView({behavior:'smooth'});});
+  });
+})();
+
+/* trimestres */
+(function(){
+  const per={};
+  for(const d of apro){ if(!d.fd)continue; const [dd,mm,aa]=d.fd.split('/');
+    const q=`${aa} T${Math.ceil(mm/3)}`; per[q]=(per[q]||0)+1; }
+  const ks=Object.keys(per).sort(); const max=Math.max(...Object.values(per));
+  const W=980,H=190,bw=Math.min(70,(W-60)/ks.length-14);
+  let s=`<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="Publicadas en DOF por trimestre">
+    <line class="axis" x1="0" y1="${H-30}" x2="${W}" y2="${H-30}"></line>`;
+  ks.forEach((k,i)=>{
+    const h=per[k]/max*(H-70), x=30+i*((W-60)/ks.length);
+    s+=`<g class="tri" data-k="${k}"><rect class="col" x="${x}" y="${H-30-h}" width="${bw}" height="${h}" rx="4"></rect>
+      <text class="val" x="${x+bw/2}" y="${H-36-h}" text-anchor="middle">${per[k]}</text>
+      <text x="${x+bw/2}" y="${H-12}" text-anchor="middle">${k}</text></g>`;
+  });
+  s+='</svg>';
+  const el=document.getElementById('chart-tri'); el.innerHTML=s;
+  el.querySelectorAll('.tri').forEach(g=>{
+    g.addEventListener('mousemove',e=>showTip(e,`<b>${g.dataset.k}</b> · ${per[g.dataset.k]} iniciativas publicadas en DOF`));
+    g.addEventListener('mouseleave',hideTip);
+  });
+})();
+
+/* tabla + ficha */
+const selO=document.getElementById('f-ods'), selS=document.getElementById('f-sec'), q=document.getElementById('q');
+for(const o of Object.keys(ODS)) selO.insertAdjacentHTML('beforeend',`<option value="${o}">ODS ${o} · ${ODS[o][0]}</option>`);
+selO.insertAdjacentHTML('beforeend','<option value="SC">Sin correspondencia</option>');
+for(const s of [...new Set(DATA.map(d=>d.sec))]) selS.insertAdjacentHTML('beforeend',`<option>${s}</option>`);
+
+function chips(d){
+  let h=d.op?`<span class="chip" style="background:${ODS[d.op][1]}">${d.op}</span>`:'<span class="conf">—</span>';
+  for(const s of (d.os?d.os.split(';'):[])) h+=`<span class="chip sec" style="background:${ODS[s][1]}">${s}</span>`;
+  return h;
+}
+function estBadge(d){
+  if(d.sec.startsWith('Aprobadas'))return '<span class="est ok">✓ Publicada</span>';
+  if(d.sec.startsWith('Pendientes'))return '<span class="est pe">◷ Pendiente</span>';
+  return `<span class="est no">✕ ${d.sec}</span>`;
+}
+function render(){
+  const t=q.value.toLowerCase(), fo=selO.value, fs=selS.value;
+  const rows=DATA.filter(d=>{
+    if(fs&&d.sec!==fs)return false;
+    if(fo==="SC"&&d.op)return false;
+    if(fo&&fo!=="SC"&&!(String(d.op)===fo||(d.os&&d.os.split(';').includes(fo))))return false;
+    if(t&&!(d.den.toLowerCase().includes(t)||d.tema.toLowerCase().includes(t)))return false;
+    return true;
+  });
+  document.getElementById('tbody').innerHTML=rows.map(d=>
+   `<tr class="item" data-n="${d.n}"><td><b>${d.tema}</b><br><span class="conf">${d.den.slice(0,150)}${d.den.length>150?'…':''}</span></td>
+    <td>${chips(d)}</td><td>${d.fp}</td><td>${d.fd||'—'}</td><td>${estBadge(d)}</td></tr>`).join('')
+   ||'<tr><td colspan="5" class="conf">Sin resultados con esos filtros.</td></tr>';
+  document.querySelectorAll('tr.item').forEach(tr=>tr.addEventListener('click',()=>ficha(+tr.dataset.n)));
+}
+function ficha(n){
+  const d=DATA.find(x=>x.n===n);
+  const odsL=[[d.op,'principal'],...(d.os?d.os.split(';').map(s=>[s,'secundario']):[])].filter(x=>x[0]);
+  document.getElementById('ficha').innerHTML=`
+    <button class="close" onclick="dlg.close()">×</button>
+    <div class="kicker">Expediente · Iniciativa del Ejecutivo Federal</div>
+    <h3>${d.den}</h3>
+    <div class="fgrid">
+      <div><b>Presentación</b>${d.fp||'—'}</div><div><b>Publicación en DOF</b>${d.fd||'—'}</div>
+      <div><b>Estatus</b>${d.est}</div><div><b>Confianza de la codificación</b>${d.conf}</div>
+    </div>
+    <b style="font-size:11px;text-transform:uppercase;letter-spacing:.07em;color:var(--ink3)">Objetivos relacionados</b>
+    ${odsL.length?odsL.map(([o,r])=>`<div class="ods-line">
+      <span class="chip" style="background:${ODS[o][1]}">${o}</span>
+      <span>ODS ${o} · ${ODS[o][0]} <span class="conf">(${r})</span></span></div>`).join('')
+      :'<div class="ods-line conf">Sin correspondencia ODS identificada.</div>'}
+    ${d.m?`<b style="font-size:11px;text-transform:uppercase;letter-spacing:.07em;color:var(--ink3);display:block;margin-top:12px">Metas relacionadas</b>
+    ${d.m.split(';').map(m=>`<div class="ods-line"><span class="chip" style="background:${ODS[m.split('.')[0]][1]}">${m}</span>
+      <span>${METAS[m]||''} <span class="conf">(denominación abreviada; texto oficial en unstats.un.org/sdgs/metadata)</span></span></div>`).join('')}`:''}
+    <div class="src">Codificación preliminar por materia (${d.conf}), asistida por modelo bajo protocolo
+    NormTrace; revisable. Fuente del expediente: SIL, Segob.</div>`;
+  dlg.showModal();
+}
+const dlg=document.getElementById('dlg');
+dlg.addEventListener('click',e=>{if(e.target===dlg)dlg.close()});
+[q,selO,selS].forEach(el=>el.addEventListener('input',render));
+render();
+</script>
+</body>
+</html>
