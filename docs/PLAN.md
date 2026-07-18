@@ -331,3 +331,49 @@ no es prerequisito del escáner interactivo.
   la referencia con fidelidad; el "40" del brief es aproximado.
 - **Pendiente de la fase:** scraper SIL (H.5), Módulo B Minutas (H.6), identidad +
   vistas Vue (H.7), tests con fixtures + capturas (H.8).
+
+### 2026-07-18 — Fase H v2 — Módulo A frontend, Módulo B (Minutas) e identidad
+
+- **Identidad "Huella 2030" (guinda)** `frontend/src/styles/identity.css`: tokens
+  guinda (`--accent:#9f2241`), modo claro/oscuro (prefers-color-scheme + `data-theme`),
+  barras en guinda y color oficial ODS **solo** en chips pequeños. Aplicada a las
+  tres superficies nuevas del portal; el escáner de texto queda intacto (regla
+  "no tocar el motor").
+- **Módulo A — vistas Vue:** `HuellaView.vue` (KPIs, correspondencia por ODS,
+  metas frecuentes, presentación por trimestre, tabla filtrable) y
+  `ExpedienteView.vue` (ficha con ODS principal/secundarios, metas con
+  "denominación abreviada" cuando no hay redacción oficial, confianza, descargo).
+  Endpoint `GET /huella/catalogos` sirve `ods.json`+`metas.json`. Rutas `/huella`
+  y `/expedientes/:id`; menú "Huella 2030".
+- **Módulo B — Minutas (H.6):** modelo `Minuta` + repo `Minutas` (colección
+  `minutas`, `upsert_preserving_coding` conserva codificación **y** origen).
+  Scraper `engine/.../iniclave_minutas.py` (parser sin red, clave estable
+  `CD-LXVI-II-2P-139`, CLI `qhld minutas`). **Atribución de origen SOLO por
+  coincidencia** con iniciativas del Ejecutivo; lo no documentado queda
+  "por documentar" — **nunca se inventa la bancada**. Agregado
+  `aggregate_minutas`: *aportación por origen* descriptiva, **orden alfabético
+  (no ranking)**, bucket "por documentar" al final. Endpoints `/minutas`,
+  `/minutas/lista`, `/minutas/{id}`; vista `MinutasView.vue` + ruta/menú.
+- **Semilla `minutas_ods.csv`** (editable): 76 minutas de origen **Ejecutivo
+  Federal** (subconjunto real de iniciativas aprobadas, origen de autoría
+  inequívoco). Las minutas de grupos parlamentarios se documentan luego vía el
+  iniclave; hasta entonces el panorama es parcial y así se declara en la UI.
+- **Scraper SIL (H.5):** `engine/.../sil_ejecutivo.py` clasifica cada iniciativa
+  en sección (Aprobadas/Pendientes/Desechadas/Retiradas) derivándola del estatus,
+  extrae fecha DOF y hace `upsert_preserving_coding`. CLI `qhld sil-ejecutivo`
+  (`--html-file` para operación offline). Reproduce el desglose del piloto
+  (76/4/1/1).
+- **Tests (H.8):** engine unit `test_mexico_sil_ejecutivo.py` (6) y
+  `test_mexico_iniclave_minutas.py` (6); api unit `test_huella_aggregate.py` (3,
+  contra la semilla: 82/76/ODS 16) y `test_minutas_aggregate.py` (4: orden
+  alfabético no-ranking, bucket por-documentar, 76 Ejecutivo Federal). Suites en
+  verde: engine 122 unit, api 19 unit. End-to-end con mongomock: sync SIL y sync
+  minutas preservan codificación/origen y atribuyen correctamente.
+- **Capturas** `docs/img/h_huella.png` y `docs/img/h_minutas.png` (render estático
+  con la identidad guinda alimentado por la semilla real).
+- **Limitación del sandbox:** el scraping en vivo (SIL, iniclave) no se ejecuta
+  aquí (egress); parsers e ingesta se verifican con fixtures y mongomock.
+- **Nota de despliegue:** el servicio *worker* de Railway falla en deploy por
+  configuración de entorno (falta wirear `BROKER`/`RESULT_BACKEND` a la referencia
+  de Redis; el default `redis://redis:6379` no resuelve en Railway), no por el
+  código de esta fase (los modelos nuevos importan limpio y `uv lock --check` pasa).
