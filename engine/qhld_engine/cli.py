@@ -103,5 +103,61 @@ def minutas(
     typer.echo(f"  atribuidas al Ejecutivo Federal: {res['atribuidas_ejecutivo']}")
 
 
+@app.command("normtrace-run")
+def normtrace_run(
+    iniciativa: str = typer.Option(None, "--iniciativa", help="Id de la iniciativa/ley."),
+    marco: str = typer.Option("ods6", "--marco", help="Marco de estándares (ods6|...)."),
+    text_file: str = typer.Option(None, "--text-file", help="Texto local (offline); omite la descarga."),
+    out: str = typer.Option(None, "--out", help="Ruta para guardar la corrida JSON."),
+):
+    """Corre el protocolo NormTrace (nivel 3) sobre una ley contra un marco.
+
+    Descarga el texto (LeyesBiblio), lo segmenta y codifica por estándar con el
+    LLM configurado (LLM_PROVIDER; 'mock' por defecto produce una línea base
+    preliminar sin clave). Toda salida nace 'automatico_preliminar'.
+    """
+    import json as _json
+
+    from qhld_engine.normtrace.runner import run as nt_run
+
+    result = nt_run(iniciativa, marco, text_file=text_file)
+    payload = _json.dumps(result, ensure_ascii=False, indent=2)
+    if out:
+        from pathlib import Path as _P
+        _P(out).write_text(payload, encoding="utf-8")
+        typer.echo(f"Corrida guardada en {out} — {len(result['registros'])} registros "
+                   f"({result['nivel_revision']}).")
+    else:
+        typer.echo(payload)
+
+
+@app.command("normtrace-eval")
+def normtrace_eval(
+    run_file: str = typer.Option(None, "--run", help="Corrida automática a evaluar; omitir para autochequeo del dorado."),
+    marco: str = typer.Option("ods6", "--marco", help="Marco (solo ods6 tiene dorado)."),
+):
+    """Evalúa una corrida contra el ejemplo dorado (candado de calidad).
+
+    Sin `--run` hace autochequeo del dorado (resolución de citas 100% y cobertura
+    100%): así CI verifica la integridad del contrato sin necesitar clave LLM. Con
+    `--run` aplica los cinco umbrales a la corrida automática. Sale con código de
+    error si reprueba.
+    """
+    import json as _json
+
+    from qhld_engine.normtrace.evaluator import evaluate, format_report
+    from qhld_engine.normtrace.gold import gold_run
+
+    if run_file:
+        run = _json.loads(open(run_file, encoding="utf-8").read())
+    else:
+        run = gold_run()  # autochequeo: el dorado como corrida validada
+
+    report = evaluate(run)
+    typer.echo(format_report(report))
+    if not report["aprueba"]:
+        raise typer.Exit(code=1)
+
+
 if __name__ == "__main__":
     app()

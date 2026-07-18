@@ -1,0 +1,41 @@
+name: normtrace-eval
+
+# Candado de calidad NormTrace (adenda nivel 2). Cualquier cambio a prompts,
+# segmentador, modelo o al esquema de mapeo debe pasar la evaluación dorada antes
+# de merge. Sin clave LLM en CI, se ejecuta el autochequeo del dorado (resolución
+# de citas 100% y cobertura 100%) y los tests del contrato (hash intocable).
+on:
+  pull_request:
+    paths:
+      - "engine/**"
+      - "packages/legal-segmenter/**"
+      - "packages/qhld-tasks/tipi_tasks/llm.py"
+      - "packages/qhld-tasks/tipi_tasks/normtrace.py"
+      - "normtrace/schemas_runtime/**"
+      - "normtrace/03_tables/legislative_mapping/gold/**"
+      - ".github/workflows/normtrace-eval.yml"
+  push:
+    branches: [main]
+
+jobs:
+  eval:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Instalar uv
+        uses: astral-sh/setup-uv@v5
+
+      - name: Sincronizar engine
+        working-directory: engine
+        run: uv sync --locked --dev
+
+      - name: Autochequeo del ejemplo dorado (LGA × ODS 6)
+        working-directory: engine
+        # Sin --run: verifica resolución de citas 100% y cobertura 100% del
+        # dorado. Sale con código de error si el contrato se rompe.
+        run: uv run qhld normtrace-eval --marco ods6
+
+      - name: Tests del candado (hash intocable + umbrales)
+        working-directory: engine
+        run: uv run pytest tests/unit/test_normtrace_gold.py -q

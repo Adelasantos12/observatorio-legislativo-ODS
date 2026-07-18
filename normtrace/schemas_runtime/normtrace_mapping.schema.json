@@ -1,0 +1,62 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "normtrace_mapping.schema.json",
+  "title": "NormTrace — corrida de mapeo estándar↔disposición",
+  "description": "Esquema versionado derivado del ejemplo dorado lga_ods6_mapeo_normtrace.csv (34 registros). Toda corrida (validada o automática preliminar) valida contra este esquema antes de publicarse. Los campos de ajuste (fits) son ordinales fuerte>medio>debil, más no_aplica.",
+  "type": "object",
+  "required": ["nivel_revision", "marco", "fuente_texto", "registros"],
+  "additionalProperties": false,
+  "properties": {
+    "nivel_revision": {
+      "type": "string",
+      "enum": ["validado_autora", "automatico_preliminar"],
+      "description": "validado_autora solo por decisión humana explícita (flip manual); toda salida automática nace automatico_preliminar."
+    },
+    "marco": { "type": "string", "description": "Marco de estándares, p. ej. 'ods6'." },
+    "iniciativa_id": { "type": ["string", "null"] },
+    "fecha": { "type": ["string", "null"], "description": "Corte de la corrida (YYYY-MM-DD)." },
+    "modelo": { "type": ["string", "null"] },
+    "version_prompt": { "type": ["string", "null"] },
+    "fuente_texto": { "type": "string", "description": "Origen del texto codificado, p. ej. 'LeyesBiblio LGAg DOF 11-12-2025'." },
+    "registros": {
+      "type": "array",
+      "minItems": 1,
+      "items": { "$ref": "#/definitions/registro" }
+    }
+  },
+  "definitions": {
+    "fit": {
+      "type": "string",
+      "enum": ["fuerte", "medio", "debil", "no_aplica"]
+    },
+    "registro": {
+      "type": "object",
+      "required": [
+        "estandar", "disposicion", "rol_correspondencia", "cobertura",
+        "actor_fit", "procedimiento_fit", "coordinacion_fit",
+        "enforcement_fit", "salvaguarda_derechos_fit", "federalismo_fit"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "estandar": { "type": "string", "description": "Estándar del marco (meta ODS o bloque de tratado)." },
+        "disposicion": { "type": "string", "description": "Disposición citada (artículo/fracción). Debe resolver contra el texto." },
+        "rol_correspondencia": {
+          "type": "string",
+          "enum": ["sustantivo", "contextual_habilitante"]
+        },
+        "cobertura": {
+          "type": "string",
+          "enum": ["completa", "parcial", "contextual"]
+        },
+        "actor_fit": { "$ref": "#/definitions/fit" },
+        "procedimiento_fit": { "$ref": "#/definitions/fit" },
+        "coordinacion_fit": { "$ref": "#/definitions/fit" },
+        "enforcement_fit": { "$ref": "#/definitions/fit" },
+        "salvaguarda_derechos_fit": { "$ref": "#/definitions/fit" },
+        "federalismo_fit": { "$ref": "#/definitions/fit" },
+        "tipo_brecha": { "type": ["string", "null"] },
+        "nota": { "type": ["string", "null"] }
+      }
+    }
+  }
+}
