@@ -25,7 +25,18 @@
         <div class="card kpi"><div class="v">{{ agg.kpis.pct_con_correspondencia_ods }}%</div><div class="l">de las aprobadas con correspondencia ODS</div></div>
         <div class="card kpi"><div class="v">{{ agg.kpis.leyes_nuevas }}</div><div class="l">leyes nuevas expedidas</div></div>
         <div class="card kpi"><div class="v">ODS {{ agg.kpis.ods_dominante }}</div><div class="l">objetivo dominante</div></div>
+        <div class="card kpi" v-if="agg.kpis.iniciativas_con_normtrace != null" style="cursor:pointer" @click="verVitrina">
+          <div class="v">{{ agg.kpis.iniciativas_con_normtrace }}</div>
+          <div class="l">con análisis NormTrace <span class="muted">(de {{ agg.kpis.iniciativas_presentadas }})</span></div>
+        </div>
       </section>
+
+      <div class="card" v-if="agg.normtrace_vitrina" style="border-left:4px solid var(--accent-2);margin-bottom:22px">
+        <b>Ficha vitrina · Análisis NormTrace validado.</b>
+        La <a href="#" @click.prevent="verVitrina">Ley General de Aguas frente al ODS 6</a>
+        cuenta con el análisis profundo (nivel 3) codificado y validado por la autora:
+        34 disposiciones mapeadas contra las metas del ODS 6 y el derecho humano al agua.
+      </div>
 
       <div class="o-grid" style="display:grid;grid-template-columns:1fr;gap:22px">
         <!-- Por ODS -->
@@ -140,6 +151,7 @@ function setOds(o) { fOds.value = String(o); loadIniciativas(); }
 function setMeta(m) { fMeta.value = m; loadIniciativas(); }
 function clearFilters() { q.value = ''; fOds.value = ''; fMeta.value = ''; loadIniciativas(); }
 function goExpediente(id) { router.push({ name: 'expediente', params: { id } }); }
+function verVitrina() { if (agg.value?.normtrace_vitrina) goExpediente(agg.value.normtrace_vitrina); }
 
 function loadIniciativas() {
   const params = {};

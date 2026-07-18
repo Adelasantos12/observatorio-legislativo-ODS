@@ -28,6 +28,7 @@ from tipi_backend.api.endpoints.voting import router as voting_router
 from tipi_backend.api.endpoints.tagger import router as tagger_router
 from tipi_backend.api.endpoints.huella import router as huella_router
 from tipi_backend.api.endpoints.minutas import router as minutas_router
+from tipi_backend.api.endpoints.normtrace import router as normtrace_router
 from tipi_backend.api.endpoints.scanned import router as scanned_router
 from tipi_backend.api.endpoints.alerts import router as alerts_router
 from tipi_backend.manage_alerts_by_email import router as emails_router
@@ -51,6 +52,7 @@ ROUTERS = [
     ("scanned", scanned_router),
     ("huella", huella_router),
     ("minutas", minutas_router),
+    ("normtrace", normtrace_router),
 ]
 
 

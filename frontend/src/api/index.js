@@ -134,4 +134,18 @@ export default {
   getMinuta(id) {
     return axios.get([config.URL, '/minutas/', id].join('')).then((r) => r.data);
   },
+
+  // --- Análisis NormTrace (nivel 3, adenda nivel 2) ---
+  getNormtraceExpediente(id) {
+    return axios
+      .get([config.URL, '/normtrace/expediente/', id].join(''))
+      .then((r) => r.data)
+      .catch(() => null); // sin análisis: la sección no se muestra
+  },
+  getNormtraceBrief(nombre) {
+    return axios
+      .get([config.URL, '/normtrace/brief/', nombre].join(''))
+      .then((r) => r.data)
+      .catch(() => null);
+  },
 };

@@ -58,6 +58,18 @@ def ejecutivo_resumen():
     inits = [initiative_to_dict(i) for i in ExecutiveInitiatives.get_all()]
     corte = ExecutiveInitiatives.get_corte()
     result = aggregate_executive(inits, corte=corte)
+    # KPI nivel 3: expedientes con análisis NormTrace (hoy: el dorado de la LGA).
+    from tipi_backend.api.normtrace import LGA_EXPEDIENTE_ID, count_con_analisis
+
+    def _count_runs():
+        try:
+            from tipi_data import db
+            return db.normtrace_runs.count_documents({})
+        except Exception:
+            return 0
+
+    result["kpis"]["iniciativas_con_normtrace"] = count_con_analisis(_count_runs)
+    result["normtrace_vitrina"] = LGA_EXPEDIENTE_ID
     cache.set(_CACHE_KEY, result, timeout=60 * 60)  # 1 h
     return result
 

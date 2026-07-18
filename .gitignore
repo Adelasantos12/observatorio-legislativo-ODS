@@ -8,3 +8,4 @@ venv/
 mongo-data/
 .DS_Store
 *.egg-info/
+.normtrace_cache/
