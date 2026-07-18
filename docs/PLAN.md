@@ -377,3 +377,38 @@ no es prerequisito del escáner interactivo.
   configuración de entorno (falta wirear `BROKER`/`RESULT_BACKEND` a la referencia
   de Redis; el default `redis://redis:6379` no resuelve en Railway), no por el
   código de esta fase (los modelos nuevos importan limpio y `uv lock --check` pasa).
+
+### 2026-07-18 — Adenda nivel 2 — protocolo NormTrace y ejemplo dorado
+
+- **Assets dorados:** `lga_ods6_mapeo_normtrace.csv` en
+  `normtrace/03_tables/legislative_mapping/gold/` (solo lectura, 34 registros) y
+  brief `lga_ods6_brief_normtrace.md` **restaurado** en `normtrace/04_outputs/briefs/`
+  (se había borrado por error en un commit previo; recuperado del árbol git). Un
+  CSV duplicado que quedó traspapelado en `briefs/` (byte-idéntico al dorado) se
+  eliminó: el canónico vive en `gold/`.
+- **Esquema versionado** `normtrace/schemas_runtime/normtrace_mapping.schema.json`
+  derivado de las columnas del dorado: `estandar, disposicion, rol_correspondencia,
+  cobertura, 6×*_fit, tipo_brecha, nota` + metadatos de corrida (`nivel_revision`
+  validado_autora|automatico_preliminar, fecha, modelo, version_prompt, fuente_texto).
+- **Motor** `qhld_engine/normtrace/`: `gold` (carga + hash), `frameworks` (marco
+  ods6 = 8 metas + bloques OG15/PIDESC/cadena federal), `citations` (resolución
+  programática, expande rangos y plurales), `schema` (validación), `runner`
+  (descarga LeyesBiblio → segmenta F3 → codifica por estándar; `mock` = línea base
+  preliminar sin clave, proveedor real vía la abstracción F4), `evaluator`
+  (5 umbrales). CLI `qhld normtrace-run` y `qhld normtrace-eval`.
+- **Candado de calidad:** `normtrace-eval` sin `--run` hace autochequeo del dorado
+  (resolución de citas 100% y cobertura 100%) — así CI verifica el contrato sin
+  clave LLM; con `--run` aplica los 5 umbrales y sale con error si reprueba. Test
+  `test_normtrace_gold.py` reprueba si cambia el hash del CSV dorado (solo la
+  autora lo cambia, con nota aquí). Workflow `.github/workflows/normtrace-eval.yml`.
+- **Verificado:** autochequeo del dorado APRUEBA los 5 umbrales; una corrida `mock`
+  (offline) es schema-válida, nace `automatico_preliminar` y REPRUEBA el gate
+  (línea base conservadora ≠ dorado) — honesto: solo LLM real o validación de la
+  autora pasa. engine unit 129 verdes.
+- **Portal (§4):** API `/normtrace/expediente/{id}` (dorado validado para la LGA
+  —iniciativa 54—, preliminar de Mongo para el resto), `/normtrace/brief/{nombre}`
+  (con guarda anti-traversal), KPI `iniciativas_con_normtrace` (1 de 82). Ficha de
+  expediente con sección "Análisis NormTrace": tabla por estándar (fits como puntos
+  llenos/medios/vacíos), badge grande validado/preliminar, brief renderizado y
+  descargo fijo. Callout de vitrina en el dashboard. Captura
+  `docs/img/h_expediente_normtrace.png`. api unit 24 verdes.
