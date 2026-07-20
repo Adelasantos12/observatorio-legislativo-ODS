@@ -100,19 +100,32 @@ VITE_VUE_APP_BACKEND_URL=https://<dominio-publico-del-api>.up.railway.app
 ```
 El resto de la config sale de `frontend/.env.mx`.
 
-## 4. Cargar el diccionario (una vez)
+## 4. Cargar los datos (una vez)
 
-Tras el primer deploy del `api`, carga el seed mexicano en Mongo. Desde la
-consola del servicio `api` (o un job one-off con la misma imagen y variables):
+Tras el primer deploy del `api`, **hay que sembrar Mongo**: sin esto el escáner
+no tiene diccionario y los tableros Huella/Minutas salen en 0 (y los expedientes
+dan "no encontrado"). Desde la consola del servicio `api` (pestaña del servicio →
+*Shell/Terminal*, o un job one-off con la misma imagen y variables), un solo
+comando lo carga todo (idempotente, son upserts):
 
 ```bash
-python /app/knowledgebase/load_kb.py                                  # 17 ODS (kb "mx")
-python /app/knowledgebase/load_kb.py /app/knowledgebase/seeds/rsi_mx.seed.json  # marco RSI (kb "rsi_mx")
+python /app/knowledgebase/load_all.py
 ```
+
+Esto carga, en orden: diccionario ODS (kb `mx`), marco RSI (kb `rsi_mx`),
+**iniciativas del Ejecutivo** (Huella módulo A, 82) y **minutas** (Huella módulo
+B, 76). Volver a correrlo no duplica ni pisa la codificación.
+
+> El tablero `/huella/ejecutivo` cachea su agregado 1 h. Si ya lo habías abierto
+> vacío, **reinicia el servicio `api`** tras sembrar (o espera al TTL) para ver
+> los números. El análisis NormTrace de la Ley General de Aguas se sirve del CSV
+> dorado horneado en la imagen, no depende de este seed.
 
 Verifica:
 ```bash
-curl "https://<api>.up.railway.app/topics/?knowledgebase=mx"   # 3 ODS mexicanos
+curl "https://<api>.up.railway.app/topics/?knowledgebase=mx"     # 3 ODS mexicanos
+curl "https://<api>.up.railway.app/huella/ejecutivo" | head -c 300   # KPIs != 0
+curl "https://<api>.up.railway.app/minutas/" | head -c 300           # minutas != 0
 ```
 
 ## 5. Notas
