@@ -47,6 +47,17 @@ El `api` escucha en `$PORT` (Railway lo inyecta); expón un dominio público par
 
 ## 3. Variables de entorno
 
+> **Redis en Railway requiere autenticación.** La plantilla de Redis expone la
+> conexión con credenciales en `REDIS_URL` (algo como
+> `redis://default:CLAVE@redis.railway.internal:6379`). **La forma recomendada es
+> añadir una sola variable de referencia** en el api y en el worker:
+> `REDIS_URL=${{Redis.REDIS_URL}}` (ajusta `Redis` al nombre real de tu servicio).
+> El código deriva de ahí el broker (db 2), el backend (db 3) y la caché (db 8)
+> con su contraseña. Si en su lugar fijas `BROKER`/`RESULT_BACKEND` a mano, la URL
+> **debe** incluir usuario y contraseña, o el worker fallará con
+> `Authentication required`. Sin `REDIS_URL` ni `BROKER` (docker-compose local) se
+> usan los defaults `redis://redis:6379`.
+
 ### api
 ```
 MONGO_HOST=<host privado de mongo>
@@ -54,10 +65,7 @@ MONGO_PORT=27017
 MONGO_DB_NAME=mx
 MONGO_USER=<usuario mongo>
 MONGO_PASSWORD=<clave mongo>
-CACHE_REDIS_HOST=<host privado de redis>
-CACHE_REDIS_PORT=6379
-BROKER=redis://<host redis>:6379/2
-RESULT_BACKEND=redis://<host redis>:6379/3
+REDIS_URL=${{Redis.REDIS_URL}}   # referencia a la plantilla Redis (con credenciales)
 TAGGER_MAX_WORDS=5000
 COUNTRY=mexico           # managers de tipo/estatus de iniciativa mexicanos (F1)
 USE_ALERTS=False
@@ -70,9 +78,7 @@ MONGO_PORT=27017
 MONGO_DB_NAME=mx
 MONGO_USER=<usuario mongo>
 MONGO_PASSWORD=<clave mongo>
-CACHE_REDIS_HOST=<host privado de redis>
-BROKER=redis://<host redis>:6379/2
-RESULT_BACKEND=redis://<host redis>:6379/3
+REDIS_URL=${{Redis.REDIS_URL}}   # referencia a la plantilla Redis (con credenciales)
 ```
 
 Codificación NormTrace (etapa 3) — el worker consume también la cola `normtrace`
