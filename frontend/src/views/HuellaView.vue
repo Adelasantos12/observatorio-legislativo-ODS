@@ -1,93 +1,124 @@
 <template>
-  <div class="huella-page">
-    <header>
-      <div class="kicker">Huella 2030 · Poder Ejecutivo Federal</div>
-      <h1 style="margin:6px 0 4px">Iniciativas del Ejecutivo × Agenda 2030</h1>
-      <p class="muted" v-if="agg">
-        Corte: {{ agg.corte || 's/f' }} · correspondencia ODS y metas preliminar por materia.
+  <div class="huella-page" :class="{ 'no-anim': !animate }">
+    <!-- Apertura (escena 1) -->
+    <header class="story-hero">
+      <div class="kicker">Huella 2030 · Poder Ejecutivo y Cámara de Diputados</div>
+      <h1 class="lede" v-if="ready">
+        Desde octubre de 2024, la Cámara de Diputados ha aprobado
+        <span class="num">{{ nMinutas }}</span> minutas; el Ejecutivo ha logrado
+        <span class="num">{{ nLogradas }}</span> de sus
+        <span class="num">{{ nIniciativas }}</span> iniciativas.
+      </h1>
+      <h1 class="lede" v-else>Cargando la huella legislativa…</h1>
+      <p class="sub">
+        Cada cuadrito es una minuta o una iniciativa. Desplázate: la misma
+        evidencia se reordena para contar qué avanza, hacia dónde y qué casi
+        nadie ve. La correspondencia con la Agenda 2030 es preliminar y
+        revisable (protocolo NormTrace).
       </p>
     </header>
 
-    <div class="disclaimer">
-      La correspondencia con ODS y metas es preliminar, por materia, asistida por
-      modelo (protocolo NormTrace). No es evaluación de cumplimiento ni calificación
-      de actores. Cada registro conserva su nivel de confianza; las iniciativas sin
-      codificar aparecen como pendientes.
-    </div>
+    <div class="story" v-if="ready">
+      <div class="scrolly">
+        <!-- Gráfico fijo -->
+        <div class="scrolly-graphic">
+          <div style="width:100%">
+            <!-- Escenas 1-4: unit chart -->
+            <div v-show="scene <= 3">
+              <div ref="stageEl" class="unit-stage">
+                <div
+                  v-for="n in nodes"
+                  :key="n.id"
+                  class="unit"
+                  :class="[n.type === 'min' ? 'is-min' : 'is-ini', { dim: pos[n.id] && pos[n.id].dim, glow: pos[n.id] && pos[n.id].glow }]"
+                  :style="unitStyle(n)"
+                  :title="n.label"
+                ></div>
+                <div v-for="a in annotations" :key="a.key" class="unit-anno"
+                     :style="{ left: a.x + 'px', top: a.y + 'px', opacity: a.show ? 1 : 0 }">
+                  <b>{{ a.n }}</b> {{ a.text }}
+                </div>
+              </div>
+              <div class="unit-legend">
+                <span class="k"><span class="sw" style="background:var(--accent)"></span> minuta ({{ nMinutas }})</span>
+                <span class="k"><span class="sw" style="background:var(--accent-2)"></span> iniciativa del Ejecutivo ({{ nIniciativas }})</span>
+              </div>
+            </div>
 
-    <div v-if="loading" class="muted">Cargando…</div>
-
-    <template v-else-if="agg">
-      <!-- KPIs -->
-      <section class="kpis" style="margin-bottom:26px">
-        <div class="card kpi"><div class="v">{{ agg.kpis.iniciativas_presentadas }}</div><div class="l">iniciativas presentadas por el Ejecutivo</div></div>
-        <div class="card kpi"><div class="v">{{ agg.kpis.aprobadas }}</div><div class="l">aprobadas y/o publicadas en DOF</div></div>
-        <div class="card kpi"><div class="v">{{ agg.kpis.pct_con_correspondencia_ods }}%</div><div class="l">de las aprobadas con correspondencia ODS</div></div>
-        <div class="card kpi"><div class="v">{{ agg.kpis.leyes_nuevas }}</div><div class="l">leyes nuevas expedidas</div></div>
-        <div class="card kpi"><div class="v">ODS {{ agg.kpis.ods_dominante }}</div><div class="l">objetivo dominante</div></div>
-        <div class="card kpi" v-if="agg.kpis.iniciativas_con_normtrace != null" style="cursor:pointer" @click="verVitrina">
-          <div class="v">{{ agg.kpis.iniciativas_con_normtrace }}</div>
-          <div class="l">con análisis NormTrace <span class="muted">(de {{ agg.kpis.iniciativas_presentadas }})</span></div>
-        </div>
-      </section>
-
-      <div class="card" v-if="agg.normtrace_vitrina" style="border-left:4px solid var(--accent-2);margin-bottom:22px">
-        <b>Ficha vitrina · Análisis NormTrace validado.</b>
-        La <a href="#" @click.prevent="verVitrina">Ley General de Aguas frente al ODS 6</a>
-        cuenta con el análisis profundo (nivel 3) codificado y validado por la autora:
-        34 disposiciones mapeadas contra las metas del ODS 6 y el derecho humano al agua.
-      </div>
-
-      <div class="o-grid" style="display:grid;grid-template-columns:1fr;gap:22px">
-        <!-- Por ODS -->
-        <section class="card">
-          <h3 style="margin-top:0">Correspondencia por ODS</h3>
-          <p class="muted">Clic en un ODS para filtrar la tabla. Guinda = materia principal · guinda claro = secundaria.</p>
-          <div v-for="row in agg.por_ods" :key="row.ods" class="bar-row" @click="setOds(row.ods)">
-            <span class="bar-label">
-              <span class="ods-chip" :style="{background: odsColor(row.ods)}">{{ row.ods }}</span>
-              {{ odsName(row.ods) }}
-            </span>
-            <span class="bar-track">
-              <span class="bar-p" :style="{width: pct(row.principal) + '%'}"></span>
-              <span class="bar-s" :style="{width: pct(row.secundario) + '%'}"></span>
-            </span>
-            <span class="bar-n">{{ row.principal }}+{{ row.secundario }}</span>
-          </div>
-        </section>
-
-        <!-- Metas -->
-        <section class="card">
-          <h3 style="margin-top:0">Metas más frecuentes</h3>
-          <p class="muted">{{ agg.por_meta.length }} metas distintas. Clic para filtrar.</p>
-          <div v-for="row in (showAllMetas ? agg.por_meta : agg.por_meta.slice(0,10))" :key="row.meta" class="bar-row" @click="setMeta(row.meta)">
-            <span class="bar-label">
-              <span class="ods-chip" :style="{background: odsColor(row.meta.split('.')[0])}">{{ row.meta.split('.')[0] }}</span>
-              <b>{{ row.meta }}</b> {{ metaCorto(row.meta) }}
-            </span>
-            <span class="bar-track"><span class="bar-p" :style="{width: pctMeta(row.n) + '%'}"></span></span>
-            <span class="bar-n">{{ row.n }}</span>
-          </div>
-          <a href="#" @click.prevent="showAllMetas=!showAllMetas">
-            {{ showAllMetas ? 'ver solo las 10 principales' : 'ver las ' + agg.por_meta.length }}
-          </a>
-        </section>
-
-        <!-- Por trimestre -->
-        <section class="card">
-          <h3 style="margin-top:0">Presentación por trimestre</h3>
-          <div class="col-chart">
-            <div v-for="t in agg.por_trimestre" :key="t.periodo" style="flex:1;text-align:center">
-              <div class="col" :style="{height: pctTri(t.n) + '%'}"></div>
-              <div class="muted" style="margin-top:6px">{{ t.periodo }}<br>{{ t.n }}</div>
+            <!-- Escena 5: el caso del agua (mini ficha NormTrace) -->
+            <div v-show="scene === 4" class="card">
+              <div style="display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap">
+                <h3 style="margin:0">Ley General de Aguas · ODS 6</h3>
+                <span class="nt-badge nt-badge--validado">● Validado por la autora</span>
+              </div>
+              <p class="muted">Análisis NormTrace nivel 3: 34 disposiciones mapeadas contra las metas del ODS 6 y el derecho humano al agua.</p>
+              <table class="nt-table" v-if="agua.length">
+                <thead><tr><th>Estándar</th><th>Disposición</th><th>Rol</th><th>Cobertura</th></tr></thead>
+                <tbody>
+                  <tr v-for="(r,i) in agua.slice(0,8)" :key="i">
+                    <td>{{ r.estandar }}</td><td>{{ r.disposicion }}</td>
+                    <td><span :class="{muted: r.rol_correspondencia!=='sustantivo'}">{{ r.rol_correspondencia==='sustantivo'?'sustantivo':'contextual' }}</span></td>
+                    <td>{{ r.cobertura }}</td>
+                  </tr>
+                </tbody>
+              </table>
+              <p style="margin-top:12px" v-if="vitrina">
+                <router-link :to="{ name: 'expediente', params: { id: vitrina } }">Ver la ficha NormTrace completa →</router-link>
+              </p>
             </div>
           </div>
-        </section>
+        </div>
+
+        <!-- Pasos de prosa -->
+        <div class="scrolly-steps">
+          <section class="step" data-step="0"><div class="step-card">
+            <h2>La agenda, en cuadritos</h2>
+            <p>Aquí está toda la producción legislativa relevante del periodo: <span class="num">{{ nMinutas }}</span> minutas aprobadas por la Cámara de origen y las <span class="num">{{ nIniciativas }}</span> iniciativas del Ejecutivo Federal.</p>
+            <p class="muted">Un cuadrito, un asunto. Los guinda son minutas; los dorados, iniciativas del Ejecutivo.</p>
+          </div></section>
+
+          <section class="step" data-step="1"><div class="step-card">
+            <h2>¿Cuántas se vuelven ley?</h2>
+            <p>De las minutas, <span class="num">{{ est.publicada_dof || 0 }}</span> ya se publicaron en el DOF; <span class="num">{{ est.en_revisora || 0 }}</span> esperan en el Senado y <span class="num">{{ est.devuelta || 0 }}</span> fueron devueltas.</p>
+            <p>
+              <span class="st-badge st-dof"><span class="ic"></span>Publicada en DOF</span> ·
+              <span class="st-badge st-rev"><span class="ic"></span>En revisora</span> ·
+              <span class="st-badge st-dev"><span class="ic"></span>Devuelta</span>
+            </p>
+          </div></section>
+
+          <section class="step" data-step="2"><div class="step-card">
+            <h2>El hallazgo</h2>
+            <p>Al reagrupar por Objetivo de Desarrollo Sostenible, casi la mitad de la agenda apunta a uno solo: <b>ODS {{ odsDominante }} — {{ odsName(odsDominante) }}</b>.</p>
+            <p class="muted">Después vienen los otros picos: género, trabajo, infraestructura y hacienda. Cada barra son cuadritos, no una estimación.</p>
+          </div></section>
+
+          <section class="step" data-step="3"><div class="step-card">
+            <h2>Lo que casi nadie ve</h2>
+            <p>Entre el volumen hay piezas singulares: la única del <b>ODS 6</b> (la Ley General de Aguas), las <span class="num">{{ nSinOds }}</span> sin correspondencia con la Agenda 2030, y detalles como la meta de menstruación digna.</p>
+            <p class="muted">El detalle inesperado es la recompensa del scroll, no el ruido de fondo.</p>
+          </div></section>
+
+          <section class="step" data-step="4"><div class="step-card">
+            <h2>El caso del agua</h2>
+            <p>La Ley General de Aguas es la primera ficha con análisis NormTrace profundo: sus disposiciones mapeadas, una por una, contra las metas 6.1 a 6.b y el derecho humano al agua.</p>
+            <p class="muted">Es la demostración del nivel 3 dentro de la historia. La tabla de al lado es un extracto validado por la autora.</p>
+          </div></section>
+
+          <section class="step" data-step="5"><div class="step-card">
+            <h2>Explora tú</h2>
+            <p>Hasta aquí la historia; ahora el dato es tuyo. Filtra las iniciativas por ODS, meta o texto, o salta al detalle de cada expediente y a las <router-link :to="{ name: 'minutas' }">minutas de la Cámara</router-link>.</p>
+          </div></section>
+        </div>
       </div>
 
-      <!-- Tabla -->
-      <section class="card" style="margin-top:22px">
-        <h3 style="margin-top:0">Iniciativas</h3>
+      <!-- Explorador (escena 6) -->
+      <section class="card" style="margin:0 clamp(16px,5vw,56px) 24px">
+        <h3 style="margin-top:0">Iniciativas del Ejecutivo — explorador</h3>
+        <div class="disclaimer">
+          Correspondencia ODS/metas preliminar por materia, asistida por modelo (NormTrace).
+          No es evaluación de cumplimiento. Cada registro conserva su nivel de confianza.
+        </div>
         <div class="filters">
           <input v-model="q" @input="loadIniciativas" placeholder="Buscar por denominación…" />
           <select v-model="fOds" @change="loadIniciativas">
@@ -115,44 +146,155 @@
         </table>
         <p class="muted" v-if="!iniciativas.length">Sin resultados con los filtros actuales.</p>
       </section>
-    </template>
+    </div>
+
+    <footer class="story-method" v-if="ready">
+      Corte {{ agg.corte || 's/f' }}. La correspondencia con ODS y metas es preliminar, por
+      materia, asistida por modelo (protocolo NormTrace); no es dictamen jurídico ni
+      evaluación de cumplimiento. Las minutas sin origen documentado aparecen como
+      «por documentar»; jamás se inventa una atribución. Cada cifra proviene del dato
+      vivo del API. Iniciativas con análisis NormTrace: {{ agg.kpis.iniciativas_con_normtrace }} de {{ nIniciativas }}.
+    </footer>
   </div>
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue';
+import { ref, reactive, computed, onMounted, onBeforeUnmount, nextTick } from 'vue';
 import { useRouter } from 'vue-router';
 import api from '@/api';
 
 const router = useRouter();
-const loading = ref(true);
-const agg = ref(null);
+const ready = ref(false);
+const scene = ref(0);
+const animate = ref(true);
+
+const agg = ref({ kpis: {}, por_ods: [], corte: null });
+const minAgg = ref({ kpis: {}, por_estatus: [], por_ods: [] });
 const cat = ref({ ods: {}, metas: [] });
+const nodes = ref([]);
+const pos = reactive({});
+const annotations = ref([]);
+const agua = ref([]);
+const vitrina = ref(null);
+
+const stageEl = ref(null);
+let io = null;
+let ro = null;
+
+// Explorador
 const iniciativas = ref([]);
 const q = ref('');
 const fOds = ref('');
 const fMeta = ref('');
-const showAllMetas = ref(false);
 
-const metaMap = ref({});
+// --- KPIs vivos ---
+const nMinutas = computed(() => minAgg.value.kpis.minutas_totales || 0);
+const nIniciativas = computed(() => agg.value.kpis.iniciativas_presentadas || 0);
+const nLogradas = computed(() => agg.value.kpis.aprobadas || 0);
+const est = computed(() => Object.fromEntries((minAgg.value.por_estatus || []).map((e) => [e.estatus, e.n])));
+const odsDominante = computed(() => agg.value.kpis.ods_dominante || '16');
+const nSinOds = computed(() => nodes.value.filter((n) => !n.ods).length);
 
 function odsColor(n) { return (cat.value.ods[String(n)] || {}).color || 'var(--ink3)'; }
 function odsName(n) { return (cat.value.ods[String(n)] || {}).nombre_es || ('ODS ' + n); }
-function metaCorto(code) { return metaMap.value[code]?.nombre_corto_es || ''; }
 
-function maxOds() { return Math.max(1, ...agg.value.por_ods.map((r) => r.principal + r.secundario)); }
-function maxMeta() { return Math.max(1, ...agg.value.por_meta.map((r) => r.n)); }
-function maxTri() { return Math.max(1, ...agg.value.por_trimestre.map((t) => t.n)); }
-function pct(n) { return (n / maxOds()) * 100; }
-function pctMeta(n) { return (n / maxMeta()) * 100; }
-function pctTri(n) { return (n / maxTri()) * 100; }
+// --- Layout del unit chart ---
+const S = 16; // paso (13px + 3px)
+function stageSize() {
+  const el = stageEl.value;
+  const w = el ? el.clientWidth : 560;
+  const h = el ? el.clientHeight : 500;
+  return { w: Math.max(200, w), h: Math.max(200, h) };
+}
 
-function setOds(o) { fOds.value = String(o); loadIniciativas(); }
-function setMeta(m) { fMeta.value = m; loadIniciativas(); }
-function clearFilters() { q.value = ''; fOds.value = ''; fMeta.value = ''; loadIniciativas(); }
+function gridLayout(list, x0, y0, w, cols) {
+  const map = {};
+  list.forEach((n, i) => {
+    map[n.id] = { x: x0 + (i % cols) * S, y: y0 + Math.floor(i / cols) * S };
+  });
+  return map;
+}
+
+function computePositions() {
+  const { w, h } = stageSize();
+  const out = {};
+  const anno = [];
+  const sc = scene.value;
+
+  if (sc === 0) {
+    // Retícula única centrada.
+    const cols = Math.max(8, Math.floor(w / S));
+    const total = nodes.value.length;
+    const rows = Math.ceil(total / cols);
+    const x0 = Math.max(0, (w - cols * S) / 2);
+    const y0 = Math.max(0, (h - rows * S) / 2);
+    Object.assign(out, gridLayout(nodes.value, x0, y0, w, cols));
+  } else if (sc === 1) {
+    // Columnas por estatus (minutas) + logradas/proceso (iniciativas).
+    const groups = [
+      { key: 'publicada_dof', label: 'Publicadas DOF', nodes: nodes.value.filter((n) => n.type === 'min' && n.status === 'publicada_dof') },
+      { key: 'en_revisora', label: 'En el Senado', nodes: nodes.value.filter((n) => n.type === 'min' && n.status === 'en_revisora') },
+      { key: 'devuelta', label: 'Devueltas', nodes: nodes.value.filter((n) => n.type === 'min' && n.status === 'devuelta') },
+      { key: 'ini', label: 'Iniciativas', nodes: nodes.value.filter((n) => n.type === 'ini') },
+    ].filter((g) => g.nodes.length);
+    const colW = w / groups.length;
+    const perRow = Math.max(2, Math.floor((colW - 8) / S));
+    groups.forEach((g, gi) => {
+      const x0 = gi * colW + 4;
+      Object.assign(out, gridLayout(g.nodes, x0, 40, colW, perRow));
+      anno.push({ key: g.key, x: x0, y: 16, n: g.nodes.length, text: g.label, show: true });
+    });
+  } else if (sc === 2 || sc === 3) {
+    // Filas (barras) por ODS, ordenadas por volumen; ODS 16 arriba.
+    const byOds = {};
+    nodes.value.forEach((n) => {
+      const k = n.ods || 'sin';
+      (byOds[k] = byOds[k] || []).push(n);
+    });
+    const keys = Object.keys(byOds).sort((a, b) => byOds[b].length - byOds[a].length);
+    const rowH = Math.max(S + 2, Math.min(30, h / keys.length));
+    const perRow = Math.max(6, Math.floor((w - 60) / S));
+    keys.forEach((k, ri) => {
+      const y0 = ri * rowH;
+      byOds[k].forEach((n, i) => {
+        const isHighlight = sc === 3 ? isSingular(n) : true;
+        out[n.id] = {
+          x: 56 + (i % perRow) * S,
+          y: y0 + Math.floor(i / perRow) * S,
+          dim: sc === 3 && !isHighlight,
+          glow: sc === 3 && isSingular(n),
+        };
+      });
+      anno.push({ key: 'ods' + k, x: 0, y: y0, n: byOds[k].length, text: k === 'sin' ? 'sin ODS' : 'ODS ' + k, show: sc === 2 || (sc === 3 && (k === '6' || k === 'sin')) });
+    });
+  }
+
+  Object.keys(pos).forEach((k) => delete pos[k]);
+  Object.assign(pos, out);
+  annotations.value = anno;
+}
+
+function isSingular(n) {
+  if (!n.ods) return true; // sin correspondencia
+  if (n.ods === '6') return true; // el caso del agua
+  return false;
+}
+
+function unitStyle(n) {
+  const p = pos[n.id];
+  if (!p) return { transform: 'translate(0,0)', opacity: 0 };
+  return { transform: `translate(${p.x}px, ${p.y}px)` };
+}
+
+function setScene(i) {
+  if (i === scene.value) return;
+  scene.value = i;
+  if (scene.value <= 3) nextTick(computePositions);
+}
+
+// --- Explorador ---
 function goExpediente(id) { router.push({ name: 'expediente', params: { id } }); }
-function verVitrina() { if (agg.value?.normtrace_vitrina) goExpediente(agg.value.normtrace_vitrina); }
-
+function clearFilters() { q.value = ''; fOds.value = ''; fMeta.value = ''; loadIniciativas(); }
 function loadIniciativas() {
   const params = {};
   if (q.value) params.q = q.value;
@@ -162,13 +304,45 @@ function loadIniciativas() {
 }
 
 onMounted(async () => {
-  try {
-    cat.value = await api.getHuellaCatalogos();
-    (cat.value.metas || []).forEach((m) => (metaMap.value[m.codigo] = m));
-    agg.value = await api.getHuellaEjecutivo();
-    loadIniciativas();
-  } finally {
-    loading.value = false;
+  animate.value = !window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  cat.value = await api.getHuellaCatalogos();
+  agg.value = await api.getHuellaEjecutivo();
+  minAgg.value = await api.getMinutasResumen();
+  vitrina.value = agg.value.normtrace_vitrina || null;
+
+  const inis = (await api.getHuellaIniciativas()) || [];
+  const mins = (await api.getMinutasLista()) || [];
+  const iniNodes = inis.map((i) => ({
+    id: 'i' + i.id, type: 'ini', ods: i.ods_principal || null,
+    status: (i.seccion || '').startsWith('Aprobadas') ? 'lograda' : 'proceso',
+    label: i.denominacion,
+  }));
+  const minNodes = mins.map((m) => ({
+    id: 'm' + m.id, type: 'min', ods: m.ods_principal || null,
+    status: m.estatus, label: m.denominacion,
+  }));
+  nodes.value = [...minNodes, ...iniNodes];
+
+  if (vitrina.value) {
+    const nt = await api.getNormtraceExpediente(vitrina.value);
+    agua.value = (nt && nt.registros) || [];
   }
+
+  ready.value = true;
+  loadIniciativas();
+
+  await nextTick();
+  computePositions();
+  ro = new ResizeObserver(() => { if (scene.value <= 3) computePositions(); });
+  if (stageEl.value) ro.observe(stageEl.value);
+
+  io = new IntersectionObserver((entries) => {
+    entries.forEach((e) => {
+      if (e.isIntersecting) setScene(Number(e.target.getAttribute('data-step')));
+    });
+  }, { rootMargin: '-45% 0px -45% 0px', threshold: 0 });
+  document.querySelectorAll('.step').forEach((s) => io.observe(s));
 });
+
+onBeforeUnmount(() => { if (io) io.disconnect(); if (ro) ro.disconnect(); });
 </script>

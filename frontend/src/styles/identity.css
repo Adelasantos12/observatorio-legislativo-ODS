@@ -106,3 +106,63 @@
 .nt-brief h1, .nt-brief h2, .nt-brief h3 { font-family: Georgia, serif; }
 .nt-brief table { width: 100%; border-collapse: collapse; margin: 12px 0; }
 .nt-brief th, .nt-brief td { border: 1px solid var(--line); padding: 6px 10px; font-size: 12.5px; text-align: left; }
+
+/* --- Scrollytelling "data essay" (adenda v3, parte B) --- */
+.story { max-width: 1180px; margin: 0 auto; }
+.story-hero { min-height: 78vh; display: flex; flex-direction: column; justify-content: center; padding: 24px clamp(16px,5vw,56px); }
+.story-hero .lede { font-family: Georgia, serif; font-size: clamp(26px, 4vw, 44px); line-height: 1.25; max-width: 18em; }
+.story-hero .sub { color: var(--ink2); font-size: 18px; margin-top: 18px; max-width: 36em; }
+.scrolly { position: relative; display: grid; grid-template-columns: 1fr 1fr; gap: 24px; align-items: start; padding: 0 clamp(16px,5vw,56px); }
+/* Columna de gráfico fija */
+.scrolly-graphic { position: sticky; top: 0; height: 100vh; display: flex; align-items: center; }
+.scrolly-steps { display: flex; flex-direction: column; }
+.step { min-height: 88vh; display: flex; align-items: center; }
+.step-card {
+  background: color-mix(in srgb, var(--card) 88%, transparent);
+  border: 1px solid var(--line); border-radius: 14px; padding: 22px 24px;
+  backdrop-filter: blur(3px);
+}
+.step-card h2 { font-family: Georgia, serif; font-size: clamp(20px,2.4vw,28px); margin: 0 0 10px; }
+.step-card p { font-size: 19px; line-height: 1.55; color: var(--ink); margin: 0 0 10px; }
+.step-card .num { color: var(--accent); font-weight: 700; }
+
+/* Unit chart: cada minuta/iniciativa es un cuadrito */
+.unit-stage { position: relative; width: 100%; height: 72vh; }
+.unit {
+  position: absolute; width: 13px; height: 13px; border-radius: 3px;
+  background: var(--accent); opacity: .92;
+  transition: transform .9s cubic-bezier(.22,.61,.36,1), opacity .5s, background .5s;
+  will-change: transform;
+}
+.unit.is-min { background: var(--accent); }
+.unit.is-ini { background: var(--accent-2); }
+.unit.dim { opacity: .12; }
+.unit.glow { box-shadow: 0 0 0 2px var(--paper), 0 0 10px 3px var(--accent); opacity: 1; z-index: 2; }
+.unit-anno { position: absolute; font-size: 13px; color: var(--ink2); transition: opacity .5s; }
+.unit-anno b { color: var(--ink); }
+.unit-legend { display: flex; gap: 16px; font-size: 12.5px; color: var(--ink2); margin-top: 10px; flex-wrap: wrap; }
+.unit-legend .k { display: inline-flex; align-items: center; gap: 6px; }
+.unit-legend .sw { width: 12px; height: 12px; border-radius: 3px; display: inline-block; }
+
+/* Badges de estatus con icono + texto */
+.st-badge { display: inline-flex; align-items: center; gap: 6px; font-size: 12.5px; font-weight: 600; }
+.st-badge .ic { width: 10px; height: 10px; border-radius: 50%; display: inline-block; }
+.st-dof .ic { background: var(--accent); }
+.st-rev .ic { background: var(--accent-2); }
+.st-dev .ic { background: var(--ink3); }
+
+.story-method { border-top: 3px solid var(--accent); margin-top: 40px; padding: 22px clamp(16px,5vw,56px) 70px; color: var(--ink2); font-size: 13px; }
+
+/* Fallback sin JS de animación: escenas apiladas legibles */
+.no-anim .scrolly-graphic { position: static; height: auto; }
+.no-anim .step { min-height: auto; margin-bottom: 28px; }
+
+@media (max-width: 720px) {
+  .scrolly { grid-template-columns: 1fr; }
+  .scrolly-graphic { position: sticky; top: 0; height: 50vh; z-index: 1; background: var(--paper); }
+  .unit-stage { height: 44vh; }
+  .step { min-height: 70vh; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .unit { transition: none; }
+}
