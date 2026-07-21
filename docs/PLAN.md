@@ -412,3 +412,38 @@ no es prerequisito del escáner interactivo.
   llenos/medios/vacíos), badge grande validado/preliminar, brief renderizado y
   descargo fijo. Callout de vitrina en el dashboard. Captura
   `docs/img/h_expediente_normtrace.png`. api unit 24 verdes.
+
+### 2026-07-21 — Adenda v3 — 139 minutas de la LXVI + rediseño narrativo
+
+**Parte A — minutas completas.**
+- Semilla cruda `minutas_lxvi_raw.csv` (139 minutas: 62 DOF, 75 en revisora, 2
+  devueltas; año I 39, II 100; secuencia 1–139 sin huecos) + `matches_minutas_
+  ejecutivo.json` (81 cruces con score). Modelo `Minuta` ampliado (titulo,
+  observaciones, estatus, pdfs, origen_tipo, grupos_parlamentarios, nivel_revision).
+- Scraper `iniclave_minutas` reescrito al esquema real; CLI `iniclave-minutas` con
+  verificación de secuencia (reporta huecos, no los silencia).
+- Codificación §A2 (`normtrace/minutas_coding`): herencia de las 81 (confianza =
+  origen si score ≥ 0.75, media si 0.62–0.75; 28 a verificación manual) + LLM para
+  las 58 (mock = línea base sin inventar). Export a `minutas_ods.csv`; el importador
+  preserva filas `validado_autora`. CLI `minutas-coding`.
+- Atribución §A3 (`normtrace/atribucion`): job incremental `normtrace-atribucion`
+  que lee el grupo parlamentario del dictamen; lo no parseable queda "por
+  documentar", nunca inventado.
+- API `/minutas`: agregado por origen (no ranking) + ODS/meta/estatus/año, KPI
+  "atribución documentada: X de 139", filtros nuevos.
+
+**Parte B — /huella data essay (scrollytelling).**
+- `/huella` reescrita como historia en 6 escenas: gráfico sticky +
+  IntersectionObserver (sin dependencias). Unit chart de 221 cuadritos (139
+  minutas guinda + 82 iniciativas doradas) que se reagrupan por transición CSS:
+  retícula → estatus → barras por ODS (16 dominante) → singulares (agua, sin
+  correspondencia) → caso del agua (mini ficha NormTrace + enlace) → explorador.
+  Toda cifra del dato vivo; fallback sin animación (escenas apiladas),
+  prefers-reduced-motion y layout móvil. Colores ODS solo en chips, prosa 18–20px.
+- Verificado: herencia determinista de las 81 (offline), pipeline de las 58 y
+  atribución quedan listos para clave/red; render estático de las 6 escenas
+  (`docs/img/h_story.png`). Suites: engine 135, api 26, qhld-data 11 unit.
+- **Sandbox:** el LLM real (58 minutas) y la descarga de dictámenes (atribución)
+  necesitan `LLM_API_KEY`/egress; corren en despliegue con los CLIs anteriores.
+  **Jobs diarios sugeridos:** `qhld iniclave-minutas`, `qhld minutas-coding`,
+  `qhld normtrace-atribucion` (worker/cron).
