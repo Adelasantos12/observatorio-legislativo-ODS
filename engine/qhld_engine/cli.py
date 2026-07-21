@@ -83,24 +83,75 @@ def sil_ejecutivo(
         typer.echo(f"  {res['por_seccion'].get(seccion, 0):>3}  {seccion}")
 
 
-@app.command("minutas")
-def minutas(
+@app.command("iniclave-minutas")
+def iniclave_minutas(
+    csv_path: str = typer.Option(None, "--csv", help="CSV crudo del iniclave (offline); omite para el semilla."),
     legislatura: str = typer.Option("LXVI", help="Legislatura vigente."),
 ):
-    """Sincroniza minutas de la Cámara de Diputados desde el iniclave (Huella).
+    """Sincroniza minutas de la Cámara de Diputados desde el iniclave (Huella v3).
 
-    Alimenta la colección `minutas` preservando codificación y origen ya
-    documentados. Atribuye "Ejecutivo Federal" cuando la denominación coincide
-    con una iniciativa del Ejecutivo; el resto queda "por documentar" (nunca se
-    inventa la bancada de origen). No es un ranking competitivo entre grupos.
+    Alimenta la colección `minutas` preservando codificación, atribución y
+    `nivel_revision` ya documentados. Verifica que la numeración de claves sea
+    continua: si hay un hueco, lo reporta (no lo silencia).
     """
     from qhld_engine.extractors.mexico.iniclave_minutas import sync_minutas
 
-    res = sync_minutas(legislatura=legislatura)
+    res = sync_minutas(csv_path=csv_path, legislatura=legislatura)
     typer.echo(f"Minutas — corte {res['corte']} — total {res['total']}")
-    for anio, n in res["por_anio"].items():
-        typer.echo(f"  año {anio}: {n}")
-    typer.echo(f"  atribuidas al Ejecutivo Federal: {res['atribuidas_ejecutivo']}")
+    for estatus, n in sorted(res["por_estatus"].items()):
+        typer.echo(f"  {n:>3}  {estatus}")
+    seq = res["secuencia"]
+    typer.echo(f"  secuencia: {seq['min']}–{seq['max']} ({seq['total']} claves)")
+    if seq["gaps"]:
+        typer.secho(f"  ⚠ HUECOS en la secuencia: {seq['gaps']}", fg="yellow")
+    else:
+        typer.echo("  secuencia continua, sin huecos ✓")
+
+
+@app.command("minutas-coding")
+def minutas_coding(
+    out: str = typer.Option(None, "--out", help="Ruta de minutas_ods.csv (por defecto la canónica)."),
+):
+    """Codifica las minutas por ODS/metas (herencia + LLM) y exporta minutas_ods.csv.
+
+    Herencia gratis de las minutas cruzadas con el Ejecutivo; LLM (config LLM_*)
+    para el resto (mock = línea base sin clave). Preserva filas validado_autora.
+    """
+    from qhld_engine.normtrace.minutas_coding import export_coding
+
+    res = export_coding(out_path=out)
+    typer.echo(
+        f"minutas_ods.csv — {res['total']} minutas "
+        f"({res['heredadas']} heredadas, {res['por_llm']} por LLM/mock, "
+        f"{res['validadas_preservadas']} validadas preservadas)"
+    )
+    if res["verificacion_manual"]:
+        typer.secho(
+            f"  {len(res['verificacion_manual'])} matches con score < 0.75 a verificar a mano: "
+            f"{', '.join(res['verificacion_manual'][:8])}"
+            + ("…" if len(res['verificacion_manual']) > 8 else ""),
+            fg="yellow",
+        )
+
+
+@app.command("normtrace-atribucion")
+def normtrace_atribucion(
+    base_url: str = typer.Option(None, "--base-url", help="Base de los PDFs del iniclave."),
+    limit: int = typer.Option(None, "--limit", help="Máximo de minutas a procesar por corrida."),
+):
+    """Atribuye grupo parlamentario a las minutas leyendo el dictamen (job incremental).
+
+    Solo minutas sin origen documentado; nunca pisa `validado_autora` ni inventa
+    atribución (lo no parseable queda "por documentar").
+    """
+    from qhld_engine.normtrace.atribucion import run_atribucion
+
+    res = run_atribucion(base_url=base_url, limit=limit)
+    typer.echo(
+        f"Atribución — {res['procesadas']} procesadas: "
+        f"{res['atribuidas']} atribuidas, {res['sin_dictamen']} sin dictamen, "
+        f"{res['por_documentar']} quedan por documentar."
+    )
 
 
 @app.command("normtrace-run")

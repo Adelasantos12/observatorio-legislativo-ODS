@@ -41,10 +41,14 @@ def minutas_lista(
     ods: Annotated[str | None, Query()] = None,
     meta: Annotated[str | None, Query()] = None,
     origen: Annotated[str | None, Query()] = None,
+    estatus: Annotated[str | None, Query()] = None,
+    anio: Annotated[str | None, Query()] = None,
+    tema: Annotated[str | None, Query()] = None,
     q: Annotated[str | None, Query()] = None,
 ):
-    """Lista filtrable de minutas."""
-    minutas = Minutas.search(ods=ods, meta=meta, origen=origen, q=q)
+    """Lista filtrable de minutas (por ODS, meta, origen, estatus, año, tema, texto)."""
+    minutas = Minutas.search(
+        ods=ods, meta=meta, origen=origen, q=q, estatus=estatus, anio=anio, tema=tema)
     return [minuta_to_dict(m) for m in minutas]
 
 
