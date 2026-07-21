@@ -1,14 +1,15 @@
 from os import environ as env
 from pathlib import Path
 
-from tipi_data.redis_url import redis_parts, redis_url_for_db
+from tipi_data.redis_url import resolve_broker, resolve_cache
 
 
 DEBUG = env.get('DEBUG', 'False') == 'True'
-# Broker/backend: si no se fijan explícitamente, se derivan de REDIS_URL (o de
-# REDISHOST/REDISPASSWORD…) para autenticarse en Railway sin construir URLs a mano.
-BROKER = env.get('BROKER') or redis_url_for_db(2, 'redis://redis:6379/2')
-RESULT_BACKEND = env.get('RESULT_BACKEND') or redis_url_for_db(3, 'redis://redis:6379/3')
+# Broker/backend: un BROKER autenticado puesto a mano manda; un BROKER heredado
+# sin contraseña cede ante REDIS_URL (autenticada) para no bloquear Railway; sin
+# nada, el default local. Ver resolve_broker.
+BROKER = resolve_broker(env.get('BROKER'), 2, 'redis://redis:6379/2')
+RESULT_BACKEND = resolve_broker(env.get('RESULT_BACKEND'), 3, 'redis://redis:6379/3')
 
 # --- NormTrace (codificación estructural por LLM, fase F4) --------------------
 # Proveedor de LLM. "mock" (por defecto) usa un codificador heurístico local
@@ -51,11 +52,9 @@ CLEAN_EMAILS_TIMEOUT = int(env.get('CLEAN_EMAILS_TIMEOUT', '300'))
 
 ALERT_BANNER_URL = env.get('ALERT_BANNER_URL', '')
 
-_redis_host, _redis_port, _redis_pwd, _redis_user = redis_parts()
 CACHE_REDIS_DB = int(env.get('CACHE_REDIS_DB_NAME', '8'))
-CACHE_REDIS_HOST = env.get('CACHE_REDIS_HOST') or _redis_host or 'redis'
-CACHE_REDIS_PORT = int(env.get('CACHE_REDIS_PORT') or _redis_port or 6379)
-CACHE_REDIS_PASSWORD = env.get('CACHE_REDIS_PASSWORD') or _redis_pwd or ''
+CACHE_REDIS_HOST, CACHE_REDIS_PORT, CACHE_REDIS_PASSWORD = resolve_cache(
+    env.get('CACHE_REDIS_HOST'), env.get('CACHE_REDIS_PORT'), env.get('CACHE_REDIS_PASSWORD'))
 
 SCANNED_TEXT_EXCERPT_SIZE = int(env.get('SCANNED_TEXT_EXCERPT_SIZE', '500'))
 

@@ -45,6 +45,31 @@ def redis_url_for_db(db, default):
     return f"{base}/{db}" if base else default
 
 
+def _has_credentials(url):
+    return isinstance(url, str) and "@" in url
+
+
+def resolve_broker(explicit, db, default):
+    """Elige la URL de Redis correcta dando prioridad a las credenciales.
+
+    Precedencia:
+      1. `explicit` (BROKER/RESULT_BACKEND) si trae credenciales (`user:pass@`):
+         una URL autenticada puesta a mano siempre se respeta.
+      2. La derivada de `REDIS_URL`/`REDISHOST` (con credenciales) si existe:
+         así, un `explicit` heredado sin contraseña (p. ej. el viejo
+         `redis://redis:6379/2`) NO bloquea la conexión autenticada — basta
+         añadir `REDIS_URL` y el worker levanta, sin cazar variables viejas.
+      3. `explicit` sin credenciales, si no hay nada derivado.
+      4. `default` (docker-compose local: `redis://redis:6379/N`).
+    """
+    if _has_credentials(explicit):
+        return explicit
+    derived = redis_url_for_db(db, None)
+    if derived:
+        return derived
+    return explicit or default
+
+
 def redis_parts():
     """(host, port, password, user) derivados de la config de entorno.
 
@@ -55,3 +80,19 @@ def redis_parts():
         return None, None, None, None
     p = urlsplit(base)
     return p.hostname, (p.port or 6379), (p.password or None), (p.username or None)
+
+
+def resolve_cache(explicit_host, explicit_port, explicit_pwd,
+                  default_host="redis", default_port=6379):
+    """(host, port, password) para el cliente de caché, priorizando credenciales.
+
+    Si hay `CACHE_REDIS_PASSWORD` explícito se respeta toda la config manual; si
+    no, se prefieren las partes derivadas de `REDIS_URL` (autenticadas) sobre un
+    `CACHE_REDIS_HOST` heredado sin contraseña; sin nada, los defaults locales.
+    """
+    if explicit_pwd:
+        return (explicit_host or default_host, int(explicit_port or default_port), explicit_pwd)
+    host, port, pwd, _ = redis_parts()
+    if host:
+        return (host, int(port or default_port), pwd or "")
+    return (explicit_host or default_host, int(explicit_port or default_port), "")
