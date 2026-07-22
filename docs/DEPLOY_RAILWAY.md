@@ -93,6 +93,29 @@ Con `LLM_PROVIDER=mock` (por defecto) el escáner deep funciona sin clave ni cos
 (codificación heurística marcada `needs_human_review`). El cerebro jurídico y el
 esquema van horneados en la imagen del worker (`COPY normtrace`).
 
+### Atribución de origen de las minutas (OCR de dictámenes)
+
+Las minutas que no son de origen Ejecutivo llevan su grupo parlamentario en el
+PDF del dictamen. Esos PDFs son **escaneos sin capa de texto**, así que el job
+hace **OCR** (la imagen del `engine` ya trae `tesseract-ocr`, `tesseract-ocr-spa`
+y `poppler-utils`). Se corre desde la imagen del `engine`:
+
+```bash
+qhld normtrace-atribucion            # usa la base por defecto verificada
+# o con base/pruebas explícitas:
+qhld normtrace-atribucion --base-url "https://www.diputados.gob.mx/LeyesBiblio/iniclave/" --limit 20
+```
+
+Variables (opcionales; ya traen default correcto):
+```
+INICLAVE_PDF_BASE=https://www.diputados.gob.mx/LeyesBiblio/iniclave/  # {base}66/{CLAVE}/{archivo}.pdf
+NORMTRACE_OCR_PAGES=3     # primeras N páginas por dictamen
+```
+
+Es **incremental**: solo toca minutas sin origen documentado, nunca pisa
+`validado_autora`, y lo que el OCR no reconoce queda "por documentar" (jamás se
+inventa el grupo). Reporta "X atribuidas, Y sin dictamen, Z por documentar".
+
 ### frontend
 La URL del backend se **hornea en build** (Vite). Define como *build variable*:
 ```

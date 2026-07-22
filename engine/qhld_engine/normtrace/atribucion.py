@@ -1,38 +1,44 @@
-"""Atribución por grupo parlamentario desde el dictamen (adenda v3 §A3).
+"""Atribución por grupo parlamentario desde el dictamen (adenda v3 §A3 + v4.1).
 
 El iniclave no trae al presentador de la minuta. Para las minutas que NO son de
-origen Ejecutivo, el dato vive en el PDF del dictamen: su primera sección
+origen Ejecutivo, el dato vive en el PDF del dictamen: su sección de antecedentes
 enumera las iniciativas dictaminadas con el nombre y el grupo de quien las
-presentó. Este job descarga el dictamen, busca los patrones
-"iniciativa presentada por … del Grupo Parlamentario de …" y llena
-`grupos_parlamentarios`. Donde el parseo no alcanza confianza, deja la lista
-vacía y la UI muestra "por documentar". NUNCA se inventa la atribución.
+presentó. Este job descarga el dictamen, lo lee y llena `grupos_parlamentarios`.
+Donde el parseo no alcanza confianza, deja la lista vacía y la UI muestra
+"por documentar". NUNCA se inventa la atribución.
 
-El extractor (`extract_grupos`) es determinista y sin red (testeable con texto
-de fixture); la descarga vive en `fetch_pdf_text`. El job (`run_atribucion`) es
-incremental: solo toca minutas sin atribución documentada y nunca pisa las
-`validado_autora`.
+IMPORTANTE (verificado con descargas reales): los dictámenes son **escaneos sin
+capa de texto**, así que hay que hacer **OCR** (pytesseract + pdf2image, lang
+`spa`, 200 dpi, primeras páginas). Sin OCR, la extracción devuelve cero. La
+imagen del engine ya trae `tesseract-ocr`, `tesseract-ocr-spa` y `poppler-utils`.
+
+Base de los PDFs (verificada): `https://www.diputados.gob.mx/LeyesBiblio/iniclave/`
++ `66/{CLAVE}/{archivo}.pdf`. Configurable con `INICLAVE_PDF_BASE`.
 """
 
 import os
 import re
 from datetime import datetime, timezone
 
-# Grupos parlamentarios de la LXVI Legislatura (Cámara de Diputados).
-GRUPOS_LXVI = {
-    "MORENA": r"morena",
-    "PAN": r"pan|acci[oó]n nacional",
-    "PRI": r"pri|revolucionario institucional",
-    "PT": r"pt|del trabajo",
-    "PVEM": r"pvem|verde ecologista",
-    "MC": r"mc|movimiento ciudadano",
-    "PRD": r"prd|de la revoluci[oó]n democr[aá]tica",
-}
+# Base real de los PDFs del iniclave (LeyesBiblio). Ruta = {base}66/{CLAVE}/{archivo}.
+DEFAULT_PDF_BASE = "https://www.diputados.gob.mx/LeyesBiblio/iniclave/"
 
-# "del Grupo Parlamentario de[l] <grupo>" / "(GP <grupo>)".
+# Grupos parlamentarios de la LXVI: sigla canónica -> patrón (sigla o nombre).
+GRUPOS_LXVI = [
+    ("MORENA", r"morena"),
+    ("PAN", r"pan|acci[oó]n nacional"),
+    ("PRI", r"pri|revolucionario institucional"),
+    ("PT", r"pt|del trabajo"),
+    ("PVEM", r"pvem|verde ecologista(?:\s+de\s+m[eé]xico)?"),
+    ("MC", r"mc|movimiento ciudadano"),
+    ("PRD", r"prd|de la revoluci[oó]n democr[aá]tica"),
+]
+
+# "Grupo Parlamentario (del|de la|de) <grupo>" — la firma de autoría en el dictamen.
 _GP_RE = re.compile(
-    r"grupo\s+parlamentario\s+(?:de[l]?\s+)?(?:partido\s+)?"
-    r"([A-Za-zÁÉÍÓÚÑáéíóúñ .]+?)(?:[,.;\)]|\s+(?:present|con|y|que)\b|$)",
+    r"grupo\s+parlamentario\s+(?:de[l]?\s+|de\s+la\s+)?(?:partido\s+)?("
+    + "|".join(p for _, p in GRUPOS_LXVI)
+    + r")\b",
     re.IGNORECASE,
 )
 
@@ -40,20 +46,23 @@ _GP_RE = re.compile(
 def normaliza_grupo(texto: str):
     """Mapea un fragmento a la sigla canónica del grupo, o None."""
     t = (texto or "").strip().lower()
-    for sigla, pat in GRUPOS_LXVI.items():
+    for sigla, pat in GRUPOS_LXVI:
         if re.search(rf"\b(?:{pat})\b", t):
             return sigla
     return None
 
 
 def extract_grupos(text: str):
-    """Lista de grupos parlamentarios (siglas) presentes en el texto del dictamen.
+    """Grupos parlamentarios (siglas) presentes en el dictamen.
 
-    Solo cuenta menciones ligadas a "Grupo Parlamentario"; devuelve el conjunto
-    ordenado. Vacío si no se reconoce ninguno (→ "por documentar").
+    Normaliza el whitespace (el OCR mete saltos de línea), busca las menciones de
+    "Grupo Parlamentario del X" y devuelve las siglas únicas ordenadas. Un dictamen
+    puede consolidar varias iniciativas: se juntan todos los grupos. Vacío si no se
+    reconoce ninguno (→ "por documentar").
     """
+    norm = re.sub(r"\s+", " ", text or "")
     grupos = set()
-    for m in _GP_RE.finditer(text or ""):
+    for m in _GP_RE.finditer(norm):
         sigla = normaliza_grupo(m.group(1))
         if sigla:
             grupos.add(sigla)
@@ -69,37 +78,55 @@ def dictamen_pdf(minuta: dict):
 
 
 def pdf_url(path: str, base_url: str | None = None):
-    base = base_url or os.environ.get(
-        "INICLAVE_PDF_BASE", "https://gaceta.diputados.gob.mx/PDF/Minutas")
-    path = path.lstrip("/")
-    return f"{base.rstrip('/')}/{path}"
+    """URL completa del PDF. Base termina en `/iniclave/`; si la ruta ya trae
+    `iniclave/` al inicio (los href del año en curso), se quita para no duplicar."""
+    base = base_url or os.environ.get("INICLAVE_PDF_BASE", DEFAULT_PDF_BASE)
+    p = (path or "").lstrip("/")
+    if p.lower().startswith("iniclave/"):
+        p = p[len("iniclave/"):]
+    return base.rstrip("/") + "/" + p
 
 
-def fetch_pdf_text(url: str, timeout: int = 60):
-    """Descarga un PDF y extrae su texto (None si falla)."""
+def ocr_pdf_bytes(content: bytes, pages: int | None = None, dpi: int = 200):
+    """OCR de las primeras páginas de un PDF (escaneo sin capa de texto)."""
+    from pdf2image import convert_from_bytes
+    import pytesseract
+
+    pages = pages or int(os.environ.get("NORMTRACE_OCR_PAGES", "3"))
+    try:
+        imgs = convert_from_bytes(content, dpi=dpi, first_page=1, last_page=pages)
+    except Exception:
+        return None
+    out = []
+    for img in imgs:
+        try:
+            out.append(pytesseract.image_to_string(img, lang="spa"))
+        except Exception:
+            continue
+    return "\n".join(out) if out else None
+
+
+def ocr_pdf_text(url: str, timeout: int = 90):
+    """Descarga un dictamen y devuelve su texto por OCR (None si falla)."""
     import requests
-    from pdfminer.high_level import extract_text
-    from io import BytesIO
 
     resp = requests.get(url, timeout=timeout)
     if not resp.ok:
         return None
-    try:
-        return extract_text(BytesIO(resp.content))
-    except Exception:
-        return None
+    return ocr_pdf_bytes(resp.content)
 
 
 def run_atribucion(base_url: str | None = None, limit: int | None = None,
-                   fetch=fetch_pdf_text) -> dict:
+                   fetch=None) -> dict:
     """Job incremental: atribuye grupos a minutas sin origen documentado.
 
     Solo procesa minutas cuyo `origen_tipo` no sea "ejecutivo", con
-    `grupos_parlamentarios` vacío y que no estén `validado_autora`. Marca cada
-    intento con `updated_at`; deja vacío lo que no se pudo parsear.
+    `grupos_parlamentarios` vacío y que no estén `validado_autora`. Descarga y
+    hace OCR del dictamen; deja vacío lo que no se pudo parsear (por documentar).
     """
     from tipi_data import db
 
+    fetch = fetch or ocr_pdf_text
     query = {
         "origen_tipo": {"$ne": "ejecutivo"},
         "nivel_revision": {"$ne": "validado_autora"},
