@@ -41,9 +41,19 @@ Para cada uno: **New Service → GitHub Repo → este repositorio**, deja el
 | api       | `deploy/railway/api.json`     | `api/Dockerfile`                  |
 | worker    | `deploy/railway/worker.json`  | `packages/qhld-tasks/Dockerfile`  |
 | frontend  | `deploy/railway/frontend.json`| `frontend/Dockerfile-mx`          |
+| engine    | `deploy/railway/engine.json`  | `engine/Dockerfile` (opcional)    |
 
 El `api` escucha en `$PORT` (Railway lo inyecta); expón un dominio público para
 él. El `worker` no expone puerto. El `frontend` sirve nginx en el puerto 80.
+
+El servicio **`engine` es opcional** y solo hace falta para los trabajos por
+lotes (`qhld sil-ejecutivo`, `iniclave-minutas`, `minutas-coding`,
+`normtrace-atribucion`). Trae el CLI `qhld` y las dependencias de OCR. No expone
+puerto. Necesita las mismas variables de Mongo que el api (`MONGO_HOST`,
+`MONGO_PORT`, `MONGO_DB_NAME`, `MONGO_USER`, `MONGO_PASSWORD`). Para crearlo:
+New Service → Deploy from repo → en **Settings → Build** pon *Dockerfile Path* =
+`engine/Dockerfile` (o *Config file* = `deploy/railway/engine.json`). La **siembra
+del api NO necesita este servicio**.
 
 ## 3. Variables de entorno
 
