@@ -103,6 +103,18 @@ def main():
 
     coding = load_coding(CODING_CSV)
     raws = list(csv.DictReader(RAW_CSV.open(encoding="utf-8")))
+    claves_actuales = {r["clave"].strip() for r in raws}
+
+    # Limpia minutas superadas de siembras anteriores (p. ej. claves MIN-EJE-*
+    # del esquema viejo) para que la colección converja a la fuente vigente. Nunca
+    # borra una minuta validada por la autora.
+    stale = col.delete_many({
+        "_id": {"$nin": list(claves_actuales)},
+        "nivel_revision": {"$ne": "validado_autora"},
+    })
+    if stale.deleted_count:
+        print(f"Eliminadas {stale.deleted_count} minutas superadas de una siembra anterior.")
+
     preservadas = 0
     for raw in raws:
         doc = build_doc(raw, coding)
