@@ -87,12 +87,13 @@ def pdf_url(path: str, base_url: str | None = None):
     return base.rstrip("/") + "/" + p
 
 
-def ocr_pdf_bytes(content: bytes, pages: int | None = None, dpi: int = 200):
+def ocr_pdf_bytes(content: bytes, pages: int | None = None, dpi: int | None = None):
     """OCR de las primeras páginas de un PDF (escaneo sin capa de texto)."""
     from pdf2image import convert_from_bytes
     import pytesseract
 
     pages = pages or int(os.environ.get("NORMTRACE_OCR_PAGES", "3"))
+    dpi = dpi or int(os.environ.get("NORMTRACE_OCR_DPI", "200"))
     try:
         imgs = convert_from_bytes(content, dpi=dpi, first_page=1, last_page=pages)
     except Exception:
@@ -106,11 +107,15 @@ def ocr_pdf_bytes(content: bytes, pages: int | None = None, dpi: int = 200):
     return "\n".join(out) if out else None
 
 
-def ocr_pdf_text(url: str, timeout: int = 90):
-    """Descarga un dictamen y devuelve su texto por OCR (None si falla)."""
+def ocr_pdf_text(url: str, timeout: int | None = None):
+    """Descarga un dictamen y devuelve su texto por OCR (None si falla o tarda)."""
     import requests
 
-    resp = requests.get(url, timeout=timeout)
+    timeout = timeout or int(os.environ.get("NORMTRACE_HTTP_TIMEOUT", "45"))
+    try:
+        resp = requests.get(url, timeout=timeout)
+    except Exception:
+        return None
     if not resp.ok:
         return None
     return ocr_pdf_bytes(resp.content)
@@ -133,16 +138,21 @@ def run_atribucion(base_url: str | None = None, limit: int | None = None,
         "$or": [{"grupos_parlamentarios": {"$exists": False}},
                 {"grupos_parlamentarios": []}],
     }
-    cursor = db.minutas.find(query).sort("numero", 1)
+    # Materializa la lista para poder mostrar progreso "i/N" (el conjunto es chico).
+    minutas = list(db.minutas.find(query).sort("numero", 1))
     if limit:
-        cursor = cursor.limit(limit)
+        minutas = minutas[:limit]
+    total = len(minutas)
+    print(f"Atribución: {total} minutas por procesar (OCR de dictámenes)…", flush=True)
 
     procesadas, atribuidas, sin_dictamen = 0, 0, 0
-    for minuta in cursor:
+    for minuta in minutas:
         procesadas += 1
+        clave = minuta.get("_id")
         pdf = dictamen_pdf(minuta)
         if not pdf:
             sin_dictamen += 1
+            print(f"  [{procesadas}/{total}] {clave}: sin dictamen", flush=True)
             continue
         text = fetch(pdf_url(pdf, base_url))
         grupos = extract_grupos(text) if text else []
@@ -152,6 +162,8 @@ def run_atribucion(base_url: str | None = None, limit: int | None = None,
             update["origen_tipo"] = "legislativo"
             atribuidas += 1
         db.minutas.update_one({"_id": minuta["_id"]}, {"$set": update})
+        print(f"  [{procesadas}/{total}] {clave}: {', '.join(grupos) if grupos else 'por documentar'}",
+              flush=True)
 
     return {
         "procesadas": procesadas,
