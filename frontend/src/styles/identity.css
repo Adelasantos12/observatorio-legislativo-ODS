@@ -166,3 +166,28 @@
 @media (prefers-reduced-motion: reduce) {
   .unit { transition: none; }
 }
+
+/* --- Ritmo y aire (adenda v4, disenador): una idea por pantalla, prosa ancha --- */
+/* Cuerpo de lectura: 18–20px, ancho ≤ ~70 caracteres. */
+.prose { max-width: 40em; margin: 0 auto; padding: 32px clamp(16px,5vw,56px) 80px; }
+.prose h2 { font-family: Georgia, serif; font-size: 22px; margin: 36px 0 8px; }
+.prose p { font-size: 19px; line-height: 1.6; color: var(--ink); max-width: 36em; }
+.prose .lede-sm { font-size: 21px; line-height: 1.5; color: var(--ink2); }
+.prose a { color: var(--accent); }
+
+/* Serie a medio llenar (Zeigarnik): casillas, la vacía visible */
+.serie { display: flex; flex-wrap: wrap; gap: 4px; max-width: 340px; }
+.serie-box { width: 14px; height: 14px; border-radius: 3px; border: 1.5px solid var(--accent); background: transparent; }
+.serie-box.full { background: var(--accent); }
+
+/* "Por qué importa": aire generoso, una columna de lectura por tarjeta */
+.porque { padding: 48px 0 8px; }
+.porque-h { font-size: clamp(22px,3vw,30px); margin: 0 0 6px; }
+.porque-intro { font-size: 16px; margin: 0 0 24px; }
+.porque-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 28px; }
+.porque-item { border-left: 3px solid var(--accent-2); padding: 4px 0 4px 18px; }
+.porque-item h3 { font-family: Georgia, serif; font-size: 20px; margin: 0 0 8px; }
+.porque-item p { font-size: 18px; line-height: 1.6; color: var(--ink); max-width: 34em; margin: 0; }
+
+/* Más aire entre la historia y el explorador */
+.story .explorador { margin-top: 40px !important; }

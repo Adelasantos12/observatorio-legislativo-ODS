@@ -22,6 +22,11 @@ export default {
         condition: true,
       },
       {
+        route: 'metodologia',
+        name: 'Metodología',
+        condition: true,
+      },
+      {
         route: 'about',
         name: 'Acerca',
         condition: true,

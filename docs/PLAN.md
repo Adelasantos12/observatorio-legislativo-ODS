@@ -447,3 +447,32 @@ no es prerequisito del escáner interactivo.
   necesitan `LLM_API_KEY`/egress; corren en despliegue con los CLIs anteriores.
   **Jobs diarios sugeridos:** `qhld iniclave-minutas`, `qhld minutas-coding`,
   `qhld normtrace-atribucion` (worker/cron).
+
+### 2026-07-22 — Adenda v4 — corrección de /minutas y reescritura narrativa
+
+- **Equipo de agentes** (`.claude/agents/`): estructura, psicologo, periodista,
+  disenador, uix (definiciones reutilizables). Entregables: `docs/narrativa/
+  estructura.md`, `encuadres.md`, `nota_periodista.md`.
+- **Encuadre por arquitectura, no anunciado (§2).** Se eliminó el bloque "Esto no
+  es un ranking ni una competencia…" de /minutas y toda frase que negara una
+  lectura temida. La aportación por origen se ordena por año y nombre, sin podios.
+- **Texto visible centralizado (§1).** Todo el copy vive en
+  `frontend/src/content/es.json` (marcado para revisión de la autora); los
+  componentes lo consumen por clave y rellenan `{tokens}` con cifras vivas del API.
+- **Candado de texto (§8.1):** `scripts/check_content.py` + test + workflow CI
+  `content-check`: reprueba frases de encuadre prohibidas y tics de IA. 101 cadenas
+  revisadas, en verde.
+- **Capa "por qué importa" (§3):** sección con los cuatro argumentos en voz de
+  periodista, marco de ganancia. **Caso del agua (§5):** trofeo + serie abierta con
+  contador de armonización estatal (32 casillas, efecto Zeigarnik; 0 documentadas,
+  sin número inventado). **/metodologia** nueva: método, fuentes, alcance y el
+  contador "origen documentado: X de 139" viven aquí, no junto a las gráficas.
+- **Datos completos (§6):** las 139 minutas cargadas (62/75/2) con filtros por
+  tema/ODS/meta/estatus/año (Parte A de la v3, ya integrada).
+- **Diseño (§4 disenador):** prosa 18–20px, ancho ≤70 caracteres, más aire entre
+  secciones; tokens guinda sin cambios; colores ODS solo en chips.
+- **Capturas** `docs/img/v4_huella_desktop.png`, `v4_huella_mobile.png`,
+  `v4_minutas_desktop.png`. api unit 28 verdes (incluye candado de texto).
+- **Worker:** `broker_connection_retry_on_startup` + reintento infinito para que
+  un broker aún sin wirear no marque el deploy como failed (se conecta solo al
+  añadir `REDIS_URL`).
