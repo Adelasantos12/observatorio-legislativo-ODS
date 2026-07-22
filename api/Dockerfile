@@ -18,12 +18,16 @@ WORKDIR /app/api
 COPY packages /app/packages
 # 2) Manifiesto + lock del api primero, para cachear la capa de dependencias.
 COPY api/pyproject.toml api/uv.lock ./
-RUN --mount=type=cache,target=/root/.cache/uv \
-    uv sync --locked --no-install-project --no-dev
+RUN uv sync --locked --no-install-project --no-dev
 # 3) Código del backend y sync final (instala el propio qhld-backend).
 COPY api/ /app/api/
-RUN --mount=type=cache,target=/root/.cache/uv \
-    uv sync --locked --no-dev
+RUN uv sync --locked --no-dev
+
+# 4) Diccionario (seeds + load_kb.py) y datos NormTrace (catálogos ODS/metas +
+#    CSV semilla del Ejecutivo): los usan los pasos de carga en Railway
+#    (`load_kb.py`, `load_executive.py`) y el API para servir catálogos.
+COPY knowledgebase /app/knowledgebase
+COPY normtrace /app/normtrace
 
 ENV PATH="/app/.venv/bin:$PATH"
 

@@ -12,6 +12,8 @@ from pdfminer.high_level import extract_text as extract_pdf_text
 from docx import Document
 from pptx import Presentation
 
+from legal_segmenter import segment as segment_legal
+
 import tipi_tasks
 from tipi_backend.api import cache
 from tipi_backend.api.business import get_tags, get_kbs
@@ -42,6 +44,49 @@ def remove_fields(result):
     tags = result["result"]["tags"]
     for tag in tags:
         del tag["public"]
+
+
+def units_with_tags(content, tags, kb):
+    """Segmenta el texto (etapa 2) y devuelve `(total_unidades, unidades_con_tags)`.
+
+    Cada unidad con tags incluye su `text` (necesario para la codificación
+    NormTrace de la etapa 3). Las unidades sin coincidencias se descartan.
+    """
+    units = segment_legal(content)
+    hit = []
+    for unit in units:
+        unit_result = tipi_tasks.tagger.extract_tags_from_text(unit.text, tags)
+        unit_result = filter_tags(unit_result, kb)
+        remove_fields(unit_result)
+        unit_tags = unit_result["result"]["tags"]
+        if not unit_tags:
+            continue
+        hit.append(
+            {
+                "unit_id": unit.unit_id,
+                "unit_type": unit.unit_type,
+                "number": unit.number,
+                "heading": (unit.heading or "")[:200],
+                "text": unit.text,
+                "parent_id": unit.parent_id,
+                "topics": unit_result["result"]["topics"],
+                "tags": unit_tags,
+            }
+        )
+    return len(units), hit
+
+
+def segment_and_tag(content, tags, kb):
+    """Bloque `segmentation` (etapa 2) para la respuesta: conteos por unidad, sin
+    incluir el texto completo de cada unidad (para no inflar la respuesta)."""
+    total, hit = units_with_tags(content, tags, kb)
+    units_out = [{k: v for k, v in u.items() if k != "text"} for u in hit]
+    return {
+        "mode": "legal",
+        "units_total": total,
+        "units_with_tags": len(units_out),
+        "units": units_out,
+    }
 
 
 def _extract_text_from_file(file: UploadFile) -> str:
@@ -95,8 +140,18 @@ def extract(
     text: Annotated[str, Form()] = "",
     file: Annotated[UploadFile | str | None, File()] = None,
     knowledgebase: Annotated[str, Form()] = "",
+    segment: Annotated[str, Form()] = "",
+    deep: Annotated[bool, Form()] = False,
 ):
-    """Etiqueta el texto y devuelve los temas (ODS) y etiquetas que coinciden."""
+    """Etiqueta el texto y devuelve los temas (ODS) y etiquetas que coinciden.
+
+    Con `segment=legal` añade un bloque `segmentation` con los conteos por unidad
+    jurídica (artículo, fracción, inciso, transitorio) del texto.
+
+    Con `deep=true` encola además la codificación estructural NormTrace (etapa 3,
+    asíncrona) de las unidades con tags y devuelve `normtrace_task_id`; el bloque
+    `structural` se recupera en `GET /tagger/deep/{id}` cuando termina.
+    """
     try:
         # Blank knowledgebase = no filter (all public KBs), matching Flask's default.
         # The empty default also stops Swagger "Try it out" from sending `"string"`.
@@ -130,12 +185,43 @@ def extract(
         result = tipi_tasks.tagger.extract_tags_from_text(content, tags)
         result = filter_tags(result, kb)
         remove_fields(result)
+
+        # Etapa 2/3 opcionales: segmentación jurídica y codificación NormTrace.
+        if (segment == "legal" or deep) and content:
+            total, hit = units_with_tags(content, tags, kb)
+            result["segmentation"] = {
+                "mode": "legal",
+                "units_total": total,
+                "units_with_tags": len(hit),
+                "units": [{k: v for k, v in u.items() if k != "text"} for u in hit],
+            }
+            # Etapa 3: encola la codificación estructural (cola normtrace).
+            if deep and hit:
+                task = tipi_tasks.normtrace.analyze_units.apply_async((hit,))
+                result["normtrace_task_id"] = task.id
+
         return result
     except HTTPException:
         raise
     except Exception as e:
         log.error(e)
         raise HTTPException(status_code=500, detail="Internal server error")
+
+
+@router.get("/deep/{id}")
+def normtrace_result(id: str):
+    """Devuelve el bloque `structural` (codificación NormTrace) de la tarea deep.
+
+    Mientras la tarea no termina responde `{status: PENDING|STARTED}`; al terminar,
+    `{status: SUCCESS, structural: {...}}` con las unidades codificadas (cada una
+    con `confidence_level` y `review_status`).
+    """
+    try:
+        tipi_tasks.init()
+        return tipi_tasks.normtrace.check_status_task(id)
+    except Exception as e:
+        log.error(e)
+        return JSONResponse(status_code=404, content={"Error": "No task found"})
 
 
 @router.get("/result/{id}")

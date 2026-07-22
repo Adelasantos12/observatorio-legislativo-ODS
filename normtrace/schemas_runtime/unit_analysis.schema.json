@@ -1,0 +1,101 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://escaner-legislativo-mx/normtrace/schemas_runtime/unit_analysis.schema.json",
+  "title": "UnitAnalysis",
+  "description": "Codificación estructural NormTrace de una unidad jurídica (artículo, fracción, inciso, transitorio) de un texto legislativo mexicano. Derivado de mexico_legal_provisions.schema.json y de las reglas de razonamiento (categorías de anclaje A–D, tipología de brechas). NO es dictamen jurídico: confidence_level y review_status viajan siempre.",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "unit_id": {
+      "type": "string",
+      "description": "Id estable de la unidad segmentada (p. ej. MX-LGS-art3-fracII)."
+    },
+    "unit_type": {
+      "type": "string",
+      "description": "Tipo de unidad (articulo, fraccion, inciso, transitorio, ...)."
+    },
+    "actor_mentioned": {
+      "type": "string",
+      "description": "Actor(es) a quien se atribuye competencia, deber o facultad. Cadena vacía si no se identifica."
+    },
+    "power_granted": {
+      "type": "string",
+      "description": "Facultad o atribución otorgada (marcadores: corresponde a, son atribuciones de, podrá, estará facultado para)."
+    },
+    "duty_created": {
+      "type": "string",
+      "description": "Deber u obligación creada (marcadores: deberá, tienen la obligación de, se sujetará a)."
+    },
+    "procedure_created": {
+      "type": "string",
+      "description": "Procedimiento establecido (plazos, pasos, notificación, recurso)."
+    },
+    "coordination_mechanism": {
+      "type": "string",
+      "description": "Mecanismo de coordinación inter-institucional o entre órdenes de gobierno (en coordinación con, se coordinará, la Federación y las entidades federativas)."
+    },
+    "enforcement_or_sanction": {
+      "type": "string",
+      "description": "Sanción, infracción o medida de seguridad asociada."
+    },
+    "rights_safeguard": {
+      "type": "string",
+      "description": "Salvaguarda de derechos (garantías, consentimiento, debido proceso)."
+    },
+    "source_level": {
+      "type": "string",
+      "description": "Categoría de anclaje normativo (reglas de razonamiento §2): A estatutario, B reglamentario, C administrativo, D operativo.",
+      "enum": ["statutory", "regulatory", "administrative", "operational", "none", "unknown"]
+    },
+    "anchoring_score": {
+      "type": ["integer", "null"],
+      "description": "Escala de anclaje 0–5 (reglas de razonamiento §3). Null si no se evalúa.",
+      "minimum": 0,
+      "maximum": 5
+    },
+    "gap_type": {
+      "type": "array",
+      "description": "Tipología de brechas (methodology_note §3 / reglas §6). Puede aplicar más de una; lista vacía si no se identifica brecha.",
+      "items": {
+        "type": "string",
+        "enum": [
+          "legal_silence",
+          "competence_ambiguity",
+          "administrative_only_anchoring",
+          "procedural_gap",
+          "coordination_gap",
+          "federal_implementation_gap",
+          "rights_safeguard_gap",
+          "oversight_gap",
+          "budget_capacity_gap",
+          "update_review_needed"
+        ]
+      },
+      "uniqueItems": true
+    },
+    "confidence_level": {
+      "type": "string",
+      "description": "Confianza de la codificación. Viaja siempre hasta el frontend.",
+      "enum": ["low", "medium", "high"]
+    },
+    "review_status": {
+      "type": "string",
+      "description": "Estatus de revisión. Toda salida lo lleva; ante fallo de validación se marca needs_human_review.",
+      "enum": ["needs_human_review", "reviewed", "auto_accepted"]
+    }
+  },
+  "required": [
+    "unit_id",
+    "actor_mentioned",
+    "power_granted",
+    "duty_created",
+    "procedure_created",
+    "coordination_mechanism",
+    "enforcement_or_sanction",
+    "rights_safeguard",
+    "source_level",
+    "gap_type",
+    "confidence_level",
+    "review_status"
+  ]
+}

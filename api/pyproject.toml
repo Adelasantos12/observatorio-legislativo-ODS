@@ -19,6 +19,7 @@ dependencies = [
     "python-pptx==1.0.2",
     "qhld-data",
     "qhld-tasks",
+    "legal-segmenter",
 ]
 
 [dependency-groups]
@@ -31,8 +32,9 @@ dev = [
 ]
 
 [tool.uv.sources]
-qhld-data  = { path = "../packages/qhld-data", editable = true }
-qhld-tasks = { path = "../packages/qhld-tasks", editable = true }
+qhld-data       = { path = "../packages/qhld-data", editable = true }
+qhld-tasks      = { path = "../packages/qhld-tasks", editable = true }
+legal-segmenter = { path = "../packages/legal-segmenter", editable = true }
 
 [tool.pytest.ini_options]
 # Listed unit-first so the fast no-infra tests run before the live-DB ones.

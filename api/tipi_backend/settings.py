@@ -10,9 +10,17 @@ credenciales viajan por variables de entorno (`LLM_API_KEY`, `MONGO_PASSWORD`,
 
 from os import environ as env
 
+from tipi_data.redis_url import resolve_cache
+
 
 def _as_bool(value: str) -> bool:
     return str(value).strip().lower() in ("1", "true", "yes", "on")
+
+
+# Config de caché Redis: un CACHE_REDIS_HOST heredado sin contraseña cede ante
+# REDIS_URL (autenticada) para no bloquear el api en Railway. Ver resolve_cache.
+_cache_host, _cache_port, _cache_pwd = resolve_cache(
+    env.get("CACHE_REDIS_HOST"), env.get("CACHE_REDIS_PORT"), env.get("CACHE_REDIS_PASSWORD"))
 
 
 class Config:
@@ -43,9 +51,9 @@ class Config:
 
     # --- Caché (Redis) ---
     CACHE = {
-        "CACHE_REDIS_HOST": env.get("CACHE_REDIS_HOST", "redis"),
-        "CACHE_REDIS_PORT": int(env.get("CACHE_REDIS_PORT", "6379")),
-        "CACHE_REDIS_PASSWORD": env.get("CACHE_REDIS_PASSWORD", ""),
+        "CACHE_REDIS_HOST": _cache_host,
+        "CACHE_REDIS_PORT": _cache_port,
+        "CACHE_REDIS_PASSWORD": _cache_pwd,
         "CACHE_REDIS_DB": int(env.get("CACHE_REDIS_DB_NAME", "8")),
     }
     # Claves de caché por recurso (mismos TTL/uso que el stack tipi original).

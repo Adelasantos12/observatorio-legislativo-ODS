@@ -30,11 +30,16 @@ export default {
       return [config.URL, '/topics/', topicId].join('');
     }
   },
-  annotate(text, file) {
+  annotate(text, file, deep = false) {
     let formData = new FormData();
     formData.append('text', text);
     formData.append('file', file);
     formData.append('knowledgebase', kb);
+    if (deep) {
+      // Etapa 2 (segmentación) + etapa 3 (codificación NormTrace asíncrona).
+      formData.append('segment', 'legal');
+      formData.append('deep', 'true');
+    }
 
     return axios.post(getEndpoint(), formData);
 
@@ -47,6 +52,14 @@ export default {
 
     function getEndpoint(taskID) {
       return [config.URL, '/tagger/result/', taskID].join('');
+    }
+  },
+  getNormtraceResult(taskID) {
+    // Bloque `structural` de la codificación NormTrace (etapa 3).
+    return axios.get(getEndpoint(taskID));
+
+    function getEndpoint(taskID) {
+      return [config.URL, '/tagger/deep/', taskID].join('');
     }
   },
   saveScanned(title, expiration, excerpt, result) {
@@ -85,5 +98,54 @@ export default {
     function getEndpoint(query) {
       return [config.URL, '/scanned/search/', query].join('');
     }
+  },
+
+  // --- Huella 2030 (fase H) ---
+  getHuellaCatalogos() {
+    return axios
+      .get([config.URL, '/huella/catalogos'].join(''))
+      .then((r) => r.data);
+  },
+  getHuellaEjecutivo() {
+    return axios
+      .get([config.URL, '/huella/ejecutivo'].join(''))
+      .then((r) => r.data);
+  },
+  getHuellaIniciativas(params = {}) {
+    return axios
+      .get([config.URL, '/huella/ejecutivo/iniciativas'].join(''), { params })
+      .then((r) => r.data);
+  },
+  getHuellaIniciativa(id) {
+    return axios
+      .get([config.URL, '/huella/ejecutivo/iniciativas/', id].join(''))
+      .then((r) => r.data);
+  },
+
+  // --- Minutas (fase H, módulo B) ---
+  getMinutasResumen() {
+    return axios.get([config.URL, '/minutas/'].join('')).then((r) => r.data);
+  },
+  getMinutasLista(params = {}) {
+    return axios
+      .get([config.URL, '/minutas/lista'].join(''), { params })
+      .then((r) => r.data);
+  },
+  getMinuta(id) {
+    return axios.get([config.URL, '/minutas/', id].join('')).then((r) => r.data);
+  },
+
+  // --- Análisis NormTrace (nivel 3, adenda nivel 2) ---
+  getNormtraceExpediente(id) {
+    return axios
+      .get([config.URL, '/normtrace/expediente/', id].join(''))
+      .then((r) => r.data)
+      .catch(() => null); // sin análisis: la sección no se muestra
+  },
+  getNormtraceBrief(nombre) {
+    return axios
+      .get([config.URL, '/normtrace/brief/', nombre].join(''))
+      .then((r) => r.data)
+      .catch(() => null);
   },
 };

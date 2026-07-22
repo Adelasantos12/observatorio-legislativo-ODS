@@ -69,11 +69,51 @@ class TagInitiatives:
 
             Initiatives.save(initiative)
 
+            # Etapa 3 (opcional): codificación estructural NormTrace por unidad
+            # de las iniciativas que dispararon marcos de interés. Desactivada por
+            # defecto (no requiere LLM salvo que se active `normtrace_deep`).
+            if initiative.has_tags() and get_settings().normtrace_deep:
+                self.code_structural(initiative, tags)
+
             if initiative.has_tags() and get_settings().use_alerts and send_alerts:
                 InitiativeAlerts.create_alert(initiative, REASONS['published'])
 
         except Exception as e:
             log.error(f"Error tagging {initiative['id']}: {e}")
+
+    def code_structural(self, initiative, tags):
+        """Segmenta el cuerpo de la iniciativa y codifica (NormTrace) las unidades
+        con tags; guarda el bloque `structural` en `extra['analysis']`."""
+        try:
+            from legal_segmenter import segment
+            from tipi_tasks import normtrace
+
+            content = " ".join(initiative['content']) if initiative['content'] else ""
+            if not content.strip():
+                return
+            hit = []
+            for unit in segment(content, doc_id=str(initiative['reference'])):
+                result = tipi_tasks.tagger.extract_tags_from_text(unit.text, tags)
+                unit_tags = result['result']['tags']
+                if not unit_tags:
+                    continue
+                hit.append({
+                    'unit_id': unit.unit_id, 'unit_type': unit.unit_type,
+                    'number': unit.number, 'heading': unit.heading,
+                    'text': unit.text, 'parent_id': unit.parent_id,
+                    'topics': sorted({t['topic'] for t in unit_tags}),
+                    'tags': unit_tags,
+                })
+            if not hit:
+                return
+            structural = normtrace.analyze_units(hit)
+            if not initiative.extra:
+                initiative['extra'] = dict()
+            initiative['extra']['analysis'] = structural
+            Initiatives.save(initiative)
+            log.info(f"NormTrace: {structural['units_analyzed']} unidades codificadas en {initiative['reference']}")
+        except Exception as e:  # noqa: BLE001
+            log.warning(f"NormTrace batch en {initiative['id']}: {e}")
 
     def get_tags(self, initiative, tags):
         tipi_tasks.init()

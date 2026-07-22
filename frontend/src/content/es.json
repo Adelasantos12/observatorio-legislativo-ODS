@@ -1,0 +1,149 @@
+{
+  "_nota_autora": "VERSIÓN REVISADA POR LA AUTORA (22/jul/2026). Sustituye íntegro al es.json del PR #2. Cambios respecto a la versión de Code: hero.sub, escenas.singulares completa, escenas.agua.p1 y fichaResumen, nueva clave escenas.agua.contadorSinDato (usarla mientras no exista fuente del dato de armonización; NO mostrar 0 de 32), porque_importa.intro e items[3].cuerpo, metodologia.normtrace. Los {tokens} los rellena el componente con cifras vivas del API.",
+  "nav": {
+    "huella": "Huella 2030",
+    "minutas": "Minutas",
+    "escaner": "Escáner",
+    "metodologia": "Metodología",
+    "acerca": "Acerca"
+  },
+  "hero": {
+    "kicker": "Huella 2030 · Cámara de Diputados y Poder Ejecutivo",
+    "lede": "Desde octubre de 2024, la Cámara de Diputados aprobó {minutas} minutas. El Ejecutivo logró {aprobadas} de sus {iniciativas} iniciativas.",
+    "sub": "Cada cuadrito es un asunto. Baja despacio: la retícula se va reacomodando sola, primero por estatus y luego por objetivo. Lo mejor está al final.",
+    "cargando": "Cargando la huella legislativa…"
+  },
+  "leyenda": {
+    "minuta": "minuta",
+    "iniciativa": "iniciativa del Ejecutivo"
+  },
+  "escenas": {
+    "agenda": {
+      "titulo": "La agenda, en cuadritos",
+      "p1": "Aquí está el trabajo del periodo: {minutas} minutas que la Cámara aprobó como origen y las {iniciativas} iniciativas que mandó el Ejecutivo.",
+      "p2": "Un cuadrito, un asunto. Los guinda son minutas; los dorados, iniciativas del Ejecutivo."
+    },
+    "estatus": {
+      "titulo": "¿Cuántas ya son ley?",
+      "p1": "{dof} minutas ya están en el Diario Oficial. Otras {revisora} siguen su curso en el Senado y {devueltas} volvieron para ajuste.",
+      "p2": "El tramo que falta para cerrar cada serie se dibuja con su casilla vacía."
+    },
+    "hallazgo": {
+      "titulo": "Casi la mitad mira al mismo lugar",
+      "p1": "Al ordenar por objetivo, una barra crece por encima del resto: {odsDominanteNombre}.",
+      "p2": "Detrás asoman los otros frentes de esta legislatura: igualdad, trabajo, infraestructura y hacienda."
+    },
+    "singulares": {
+      "titulo": "Lo que se ve al acercarse",
+      "p1": "Entre el volumen hay piezas que llaman la atención por sí solas. Una es la ley del agua. Y hay {sinOds} asuntos que no tienen casilla en este mapa, casi todos monedas y declaratorias conmemorativas.",
+      "p2": "Que existan cuadritos sin casilla es buena señal: el registro no fuerza coincidencias."
+    },
+    "agua": {
+      "titulo": "Una ley llegó el año en que el mundo revisó el agua",
+      "p1": "La Ley General de Aguas llevó a rango de ley los seis elementos del derecho humano al agua, el mínimo vital y la menstruación digna.",
+      "p2": "Con ella se abrió una serie que sigue en curso: las 32 entidades tienen que armonizar su legislación local.",
+      "fichaTitulo": "Ley General de Aguas · ODS 6",
+      "fichaBadge": "Validado por la autora",
+      "fichaResumen": "La ley leída disposición por disposición contra las metas del ODS 6 y el derecho humano al agua: 34 correspondencias registradas.",
+      "contadorLabel": "Entidades que ya armonizaron",
+      "contadorNota": "de 32",
+      "contadorSinDato": "en documentación",
+      "enlace": "El análisis completo, artículo por artículo →"
+    }
+  },
+  "porque_importa": {
+    "titulo": "Por qué nombrar esto vale la pena",
+    "intro": "Cuatro razones, cada una con su destinatario.",
+    "items": [
+      {
+        "titulo": "Lo que no se nombra, no cuenta afuera",
+        "cuerpo": "Los foros donde México negocia cosas concretas (la revisión del T-MEC, el foro de alto nivel de la ONU, la Unión Interparlamentaria, los comités de tratados) leen evidencia ordenada. El Congreso ya hizo el trabajo. Ponerlo en el idioma que esos foros entienden es cobrar algo que ya está pagado."
+      },
+      {
+        "titulo": "La agenda salió de aquí",
+        "cuerpo": "La Cámara legisló salario, vivienda, agua e igualdad por decisión propia. Este registro muestra dónde ese proyecto coincide con lo que se discute en el mundo. Primero la decisión; después el eco."
+      },
+      {
+        "titulo": "El grupo de los que publican su huella",
+        "cuerpo": "Un congreso que abre su propia huella con método verificable se pone junto a los que ya lo hacen, como España o Paraguay. Cuando alguien pregunte qué hace América Latina, esta es una respuesta con nombre y fecha."
+      },
+      {
+        "titulo": "Quien guarda el registro cuenta la historia",
+        "cuerpo": "Cada grupo y cada comisión acumula aquí lo que empujó, con fecha y fuente. La legislatura que cierra en 2027 deja constancia. Y la década que termina en 2030 se va a contar con datos; los tendrá a la mano quien los haya guardado."
+      }
+    ]
+  },
+  "explorador": {
+    "titulo": "Ahora te toca a ti",
+    "intro": "Filtra por objetivo, meta o texto. Abre el expediente de cada iniciativa o pásate a las minutas de la Cámara.",
+    "tablaTitulo": "Iniciativas del Ejecutivo",
+    "buscar": "Buscar por denominación…",
+    "todosOds": "Todos los ODS",
+    "metaPlaceholder": "Meta (ej. 16.6)",
+    "limpiar": "Limpiar",
+    "colNum": "#",
+    "colDenominacion": "Denominación",
+    "colOds": "ODS / metas",
+    "colEstatus": "Estatus",
+    "colConfianza": "Confianza",
+    "sinResultados": "Sin resultados con los filtros actuales.",
+    "sinCodificar": "sin codificar",
+    "ctaMinutas": "Ver las minutas de la Cámara →"
+  },
+  "metodo": {
+    "pie": "Corte {corte}. Correspondencia con la Agenda 2030 preliminar, asistida por modelo. El método, las fuentes y los límites están en metodología.",
+    "enlace": "Cómo se hizo esto"
+  },
+  "minutas": {
+    "kicker": "Minutas · Cámara de Diputados como cámara de origen",
+    "titulo": "Lo que la Cámara mandó al Senado",
+    "sub": "{total} minutas aprobadas como cámara de origen, con su correspondencia preliminar con la Agenda 2030. Corte {corte}.",
+    "kpiTotal": "minutas registradas",
+    "kpiConOds": "con correspondencia ODS",
+    "kpiPct": "del total con correspondencia",
+    "kpiAtribucion": "origen documentado",
+    "kpiPorDocumentar": "por documentar",
+    "origenTitulo": "Aportación por origen",
+    "origenSub": "Ordenado por año y nombre. Cada barra dice cuántos asuntos vienen de cada origen.",
+    "odsTitulo": "Correspondencia por ODS",
+    "odsSub": "Guinda, materia principal; guinda claro, secundaria.",
+    "estatusTitulo": "Dónde va cada minuta",
+    "filtroBuscar": "Buscar por denominación…",
+    "filtroTodosOrigenes": "Todos los orígenes",
+    "filtroMeta": "Meta (ej. 16.6)",
+    "filtroAnio": "Año",
+    "colClave": "Clave",
+    "colDenominacion": "Denominación",
+    "colEstatus": "Estatus",
+    "colOrigen": "Origen",
+    "colOds": "ODS / metas",
+    "colConfianza": "Confianza",
+    "porDocumentar": "por documentar",
+    "sinResultados": "Sin resultados con los filtros actuales.",
+    "notaMetodo": "Cómo se documenta el origen"
+  },
+  "estatus": {
+    "publicada_dof": "Publicada en el DOF",
+    "en_revisora": "En el Senado",
+    "devuelta": "Devuelta a la Cámara"
+  },
+  "estadoVacio": {
+    "titulo": "Datos en preparación",
+    "cuerpo": "La base de este portal aún no termina de cargarse. Vuelve en un momento: la historia aparece cuando el registro está completo."
+  },
+  "metodologia": {
+    "kicker": "Huella 2030 · Metodología",
+    "titulo": "Cómo se hizo este registro",
+    "intro": "Este portal ordena el trabajo legislativo del periodo y lo lee contra la Agenda 2030 con un método público y reproducible. Aquí está cada paso, con sus fuentes y sus límites.",
+    "fuentesTitulo": "De dónde salen los datos",
+    "fuentes": "Las minutas vienen del sistema iniclave de la Cámara de Diputados; las iniciativas del Ejecutivo, del Sistema de Información Legislativa; las publicaciones, del Diario Oficial de la Federación. Cada minuta conserva su clave única y su cadena de trámite.",
+    "codificacionTitulo": "Cómo se asigna cada objetivo",
+    "codificacion": "La correspondencia con los Objetivos de Desarrollo Sostenible se asigna por materia. Las minutas que continúan una iniciativa del Ejecutivo heredan su codificación; el resto se codifica con apoyo de modelo y catálogo oficial. Cada registro guarda su nivel de confianza y su estado de revisión.",
+    "alcanceTitulo": "Qué mide y qué no",
+    "alcance": "Mide correspondencia formal entre el texto y los estándares de la Agenda 2030. El cumplimiento real de cada ley requiere otra evaluación, con indicadores y seguimiento. Un registro con etiqueta preliminar espera revisión de especialista; uno validado lo revisó la autora.",
+    "atribucionTitulo": "Origen documentado",
+    "atribucion": "El sistema de la Cámara no publica quién presentó cada minuta. Para las que continúan una iniciativa del Ejecutivo, el origen es directo. Para el resto, se lee del dictamen. Avance al corte: {documentadas} de {total} con origen documentado; las demás quedan abiertas hasta confirmar la fuente.",
+    "normtraceTitulo": "Análisis profundo (NormTrace)",
+    "normtrace": "Una capa adicional lee una ley disposición por disposición contra un marco de estándares y registra juicios de ajuste por dimensión. La Ley General de Aguas es la primera ficha con este análisis, validada por la autora."
+  }
+}

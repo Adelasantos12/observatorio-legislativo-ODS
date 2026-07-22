@@ -38,6 +38,14 @@
               <small class="u-color-secondary">pdf, txt, doc, docx, pptx</small>
             </label>
           </div>
+          <p class="c-input-label u-block">
+            <label>
+              <input type="checkbox" v-model="deepMode" :disabled="inProgress" />
+              {{ t('scanner.deep.toggle') }}
+            </label>
+            <br />
+            <small class="u-color-secondary">{{ t('scanner.deep.hint') }}</small>
+          </p>
           <p>
             <button
               id="start"
@@ -83,6 +91,13 @@
             <scanner-visualizations :result="result" />
           </div>
 
+          <!-- Etapa 3: análisis estructural NormTrace (llega tras el rápido). -->
+          <structural-panel
+            v-if="deepMode && (structuralInProgress || structural)"
+            :structural="structural"
+            :loading="structuralInProgress"
+          />
+
           <!-- Begin CTAs -->
           <div
             class="o-grid o-grid--wide o-grid--center u-bg-primary-light u-padding-top-8 u-padding-bottom-8 u-margin-top-8"
@@ -115,6 +130,7 @@ import {
   TipiLoader,
 } from '@politicalwatch/tipi-uikit';
 import ScannerVisualizations from '@/components/scanner-visualizations.vue';
+import StructuralPanel from '@/components/structural-panel.vue';
 import Swal from 'sweetalert2';
 import VueScrollTo from 'vue-scrollto';
 import api from '@/api';
@@ -130,6 +146,11 @@ const inProgress = ref(false);
 const estimatedTime = ref(0);
 const excerptText = ref('');
 const scanned = ref({});
+
+// Análisis estructural NormTrace (etapa 3, asíncrono).
+const deepMode = ref(false);
+const structural = ref(null);
+const structuralInProgress = ref(false);
 
 const subtitle = computed(() => {
   return estimatedTime.value
@@ -153,6 +174,8 @@ function cleanText() {
 function cleanResult() {
   result.value = null;
   errors.value = null;
+  structural.value = null;
+  structuralInProgress.value = false;
 }
 
 function cleanTextAndResult() {
@@ -169,13 +192,18 @@ function annotate() {
   inProgress.value = true;
 
   api
-    .annotate(inputText.value, inputFile.value)
+    .annotate(inputText.value, inputFile.value, deepMode.value)
     .then((response) => {
       if (response.data.status === 'SUCCESS') {
         result.value = response.data.result;
         excerptText.value = response.data.excerpt;
         inProgress.value = false;
         VueScrollTo.scrollTo('#result', 1500);
+        // Etapa 3: si se encoló la codificación NormTrace, sondea su resultado.
+        if (deepMode.value && response.data.normtrace_task_id) {
+          structuralInProgress.value = true;
+          pollNormtrace(response.data.normtrace_task_id);
+        }
       } else if (response.data.status === 'PROCESSING') {
         estimatedTime.value = response.data.estimated_time;
         setTimeout(() => {
@@ -222,6 +250,28 @@ function getAsyncResults(taskID) {
       setTimeout(() => {
         getAsyncResults(taskID);
       }, 3000);
+    });
+}
+
+function pollNormtrace(taskID, attempt = 0) {
+  const MAX_ATTEMPTS = 60; // ~3 min a 3 s por intento
+  if (attempt >= MAX_ATTEMPTS) {
+    structuralInProgress.value = false;
+    return;
+  }
+  api
+    .getNormtraceResult(taskID)
+    .then((response) => {
+      if (response.data.status === 'SUCCESS') {
+        structural.value = response.data.structural;
+        structuralInProgress.value = false;
+      } else {
+        // PENDING / STARTED: la codificación sigue en curso.
+        setTimeout(() => pollNormtrace(taskID, attempt + 1), 3000);
+      }
+    })
+    .catch(() => {
+      setTimeout(() => pollNormtrace(taskID, attempt + 1), 3000);
     });
 }
 

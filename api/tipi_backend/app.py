@@ -26,6 +26,9 @@ from tipi_backend.api.endpoints.stats import router as stats_router
 from tipi_backend.api.endpoints.footprint import router as footprint_router
 from tipi_backend.api.endpoints.voting import router as voting_router
 from tipi_backend.api.endpoints.tagger import router as tagger_router
+from tipi_backend.api.endpoints.huella import router as huella_router
+from tipi_backend.api.endpoints.minutas import router as minutas_router
+from tipi_backend.api.endpoints.normtrace import router as normtrace_router
 from tipi_backend.api.endpoints.scanned import router as scanned_router
 from tipi_backend.api.endpoints.alerts import router as alerts_router
 from tipi_backend.manage_alerts_by_email import router as emails_router
@@ -47,14 +50,33 @@ ROUTERS = [
     ("voting", voting_router),
     ("tagger", tagger_router),
     ("scanned", scanned_router),
+    ("huella", huella_router),
+    ("minutas", minutas_router),
+    ("normtrace", normtrace_router),
 ]
 
 
 def _configure_logging():
-    logging_conf_path = os.path.normpath(
-        os.path.join(os.path.dirname(__file__), "../logging.conf")
-    )
-    logging.config.fileConfig(logging_conf_path, disable_existing_loggers=False)
+    """Configura el logging desde logging.conf si está disponible.
+
+    `logging.conf` vive junto al paquete (no se empaqueta en el wheel), así que en
+    algunos despliegues no está en la ruta esperada. Si no se encuentra o falla al
+    parsearse, se cae a una configuración básica en vez de tumbar el arranque de la
+    app (evita un crash-loop del contenedor)."""
+    candidates = [
+        os.environ.get("LOGGING_CONF"),
+        os.path.normpath(os.path.join(os.path.dirname(__file__), "../logging.conf")),
+        os.path.normpath(os.path.join(os.path.dirname(__file__), "logging.conf")),
+        "/app/api/logging.conf",
+    ]
+    for path in candidates:
+        if path and os.path.exists(path):
+            try:
+                logging.config.fileConfig(path, disable_existing_loggers=False)
+                return
+            except Exception:  # noqa: BLE001 — config inválida: cae a básico
+                break
+    logging.basicConfig(level=logging.INFO)
 
 
 def create_app(config=Config):

@@ -1,0 +1,21 @@
+name: content-check
+
+# Candado del texto visible (adenda v4 §2/§7/§8.1). Todo el copy vive en
+# frontend/src/content/es.json; este check reprueba si alguna cadena anuncia su
+# propio encuadre o trae un tic de escritura de IA.
+on:
+  pull_request:
+    paths:
+      - "frontend/src/content/**"
+      - "scripts/check_content.py"
+      - ".github/workflows/content-check.yml"
+  push:
+    branches: [main]
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Revisar texto visible (es.json)
+        run: python3 scripts/check_content.py
