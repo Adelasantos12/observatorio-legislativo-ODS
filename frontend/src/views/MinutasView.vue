@@ -3,10 +3,15 @@
     <header>
       <div class="kicker">{{ T.kicker }}</div>
       <h1 style="margin:6px 0 4px">{{ T.titulo }}</h1>
-      <p class="muted" v-if="agg">{{ fill(T.sub, { total: agg.kpis.minutas_totales, corte: agg.corte || 's/f' }) }}</p>
+      <p class="muted" v-if="agg && hasData">{{ fill(T.sub, { total: agg.kpis.minutas_totales, corte: agg.corte || 's/f' }) }}</p>
     </header>
 
     <div v-if="loading" class="muted">Cargando…</div>
+
+    <!-- Sin datos: nunca la vista con "0 minutas" (v4.1 §5) -->
+    <div v-else-if="!hasData" class="disclaimer" style="margin-top:14px">
+      <b>{{ EV.titulo }}</b> {{ EV.cuerpo }}
+    </div>
 
     <template v-else-if="agg">
       <section class="kpis" style="margin-bottom:26px">
@@ -110,14 +115,16 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue';
+import { ref, computed, onMounted } from 'vue';
 import api from '@/api';
 import { content, fill } from '@/content';
 
 const T = content.minutas;
 const EXP = content.explorador;
+const EV = content.estadoVacio;
 const loading = ref(true);
 const agg = ref(null);
+const hasData = computed(() => !!(agg.value && agg.value.kpis && agg.value.kpis.minutas_totales > 0));
 const cat = ref({ ods: {}, metas: [] });
 const lista = ref([]);
 const q = ref('');

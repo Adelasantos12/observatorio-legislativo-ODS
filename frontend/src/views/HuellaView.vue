@@ -1,14 +1,25 @@
 <template>
   <div class="huella-page" :class="{ 'no-anim': !animate }">
+    <!-- Sin datos: la historia nunca se dibuja con ceros del API (v4.1 §5) -->
+    <div v-if="!ready" class="story-hero">
+      <div class="kicker">{{ C.hero.kicker }}</div>
+      <h1 class="lede">{{ C.hero.cargando }}</h1>
+    </div>
+    <div v-else-if="!hasData" class="story-hero">
+      <div class="kicker">{{ C.hero.kicker }}</div>
+      <h1 class="lede">{{ C.estadoVacio.titulo }}</h1>
+      <p class="sub">{{ C.estadoVacio.cuerpo }}</p>
+    </div>
+
+    <template v-else>
     <!-- Apertura (escena 1) -->
     <header class="story-hero">
       <div class="kicker">{{ C.hero.kicker }}</div>
-      <h1 class="lede" v-if="ready">{{ fill(C.hero.lede, { minutas: nMinutas, aprobadas: nLogradas, iniciativas: nIniciativas }) }}</h1>
-      <h1 class="lede" v-else>{{ C.hero.cargando }}</h1>
+      <h1 class="lede">{{ fill(C.hero.lede, { minutas: nMinutas, aprobadas: nLogradas, iniciativas: nIniciativas }) }}</h1>
       <p class="sub">{{ C.hero.sub }}</p>
     </header>
 
-    <div class="story" v-if="ready">
+    <div class="story">
       <div class="scrolly">
         <!-- Gráfico fijo -->
         <div class="scrolly-graphic">
@@ -46,11 +57,16 @@
                   </tr>
                 </tbody>
               </table>
-              <!-- Serie abierta: armonización estatal (32 entidades) -->
+              <!-- Serie abierta: armonización estatal (32 entidades). Sin fuente
+                   del dato todavía, se muestra "en documentación", nunca "0 de 32". -->
               <div style="margin-top:14px">
-                <div class="muted" style="margin-bottom:6px">{{ C.escenas.agua.contadorLabel }} · <b>{{ armonizadas }}</b> {{ C.escenas.agua.contadorNota }}</div>
+                <div class="muted" style="margin-bottom:6px">
+                  {{ C.escenas.agua.contadorLabel }} ·
+                  <template v-if="armonizadas != null"><b>{{ armonizadas }}</b> {{ C.escenas.agua.contadorNota }}</template>
+                  <span v-else class="badge">{{ C.escenas.agua.contadorSinDato }}</span>
+                </div>
                 <div class="serie">
-                  <span v-for="i in 32" :key="i" class="serie-box" :class="{ full: i <= armonizadas }"></span>
+                  <span v-for="i in 32" :key="i" class="serie-box" :class="{ full: armonizadas != null && i <= armonizadas }"></span>
                 </div>
               </div>
               <p style="margin-top:12px" v-if="vitrina">
@@ -144,10 +160,11 @@
       </section>
     </div>
 
-    <footer class="story-method" v-if="ready">
+    <footer class="story-method">
       {{ fill(C.metodo.pie, { corte: agg.corte || 's/f' }) }}
       <router-link :to="{ name: 'metodologia' }">{{ C.metodo.enlace }}</router-link>.
     </footer>
+    </template>
   </div>
 </template>
 
@@ -170,9 +187,10 @@ const pos = reactive({});
 const annotations = ref([]);
 const agua = ref([]);
 const vitrina = ref(null);
-// Armonización estatal: sin fuente de dato todavía → serie abierta (0 de 32),
-// las 32 casillas vacías se dibujan como pendiente (nunca un número inventado).
-const armonizadas = ref(0);
+// Armonización estatal: sin fuente de dato todavía → null. La UI muestra "en
+// documentación" y las 32 casillas vacías; nunca un "0 de 32" (afirmación sin
+// fuente). Cuando exista el dato, se asigna el número y aparece "N de 32".
+const armonizadas = ref(null);
 
 const stageEl = ref(null);
 let io = null;
@@ -189,6 +207,8 @@ const nLogradas = computed(() => agg.value.kpis.aprobadas || 0);
 const est = computed(() => Object.fromEntries((minAgg.value.por_estatus || []).map((e) => [e.estatus, e.n])));
 const odsDominante = computed(() => agg.value.kpis.ods_dominante || '16');
 const nSinOds = computed(() => nodes.value.filter((n) => !n.ods).length);
+// La historia nunca se dibuja con ceros del API (v4.1 §5): sin unidades, estado vacío.
+const hasData = computed(() => nodes.value.length > 0);
 
 function odsColor(n) { return (cat.value.ods[String(n)] || {}).color || 'var(--ink3)'; }
 function odsName(n) { return (cat.value.ods[String(n)] || {}).nombre_es || ('ODS ' + n); }

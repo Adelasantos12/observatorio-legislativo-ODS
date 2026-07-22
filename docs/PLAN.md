@@ -476,3 +476,22 @@ no es prerequisito del escáner interactivo.
 - **Worker:** `broker_connection_retry_on_startup` + reintento infinito para que
   un broker aún sin wirear no marque el deploy como failed (se conecta solo al
   añadir `REDIS_URL`).
+
+### 2026-07-22 — v4.1 — revisión de la autora y correcciones de producción
+
+- **es.json revisado por la autora** (sustituye íntegro; cumple §8.5). Candado de
+  texto en verde (104 cadenas).
+- **Contador del agua (§2):** mientras no haya fuente del dato de armonización, la
+  UI muestra `contadorSinDato` ("en documentación"), nunca "0 de 32". Las 32
+  casillas vacías se quedan (serie abierta).
+- **Sin marco de déficit:** verificado que no queda "la única del ODS 6" ni
+  "…no una estimación" en el código; el agua es serie abierta con análisis completo.
+- **Interpolación (§4):** todas las cadenas con `{token}` pasan por `fill()` con
+  espaciado correcto; se retiró la copy "esperan" que producía "0esperan".
+- **Estado vacío obligatorio (§5):** `/huella` y `/minutas` nunca renderizan la
+  narrativa con ceros; si las colecciones vienen vacías muestran `estadoVacio`
+  ("Datos en preparación"). Tests de contenido: estadoVacio y contadorSinDato.
+- **Siembra de producción (§7):** `python /app/knowledgebase/load_all.py` →
+  17 ODS + 8 RSI + 82 iniciativas + 139 minutas + ficha dorada (34). Documentado
+  en `docs/DEPLOY_RAILWAY.md`. `REDIS_URL` en api y worker queda del lado de la
+  dueña en Railway.

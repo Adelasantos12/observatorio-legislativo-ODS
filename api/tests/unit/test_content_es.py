@@ -38,3 +38,18 @@ def test_checker_detecta_violaciones():
     ]
     problemas = cc.check(muestra)
     assert len(problemas) >= 3
+
+
+def test_estado_vacio_tiene_copy():
+    """La historia con datos vacíos usa este copy, no ceros (v4.1 §5)."""
+    cc = _load_checker()
+    data = __import__("json").loads(cc.ES_JSON.read_text(encoding="utf-8"))
+    ev = data.get("estadoVacio", {})
+    assert ev.get("titulo") and ev.get("cuerpo")
+
+
+def test_agua_tiene_contador_sin_dato():
+    """El contador de armonización usa 'en documentación', nunca '0 de 32' (v4.1 §2)."""
+    cc = _load_checker()
+    data = __import__("json").loads(cc.ES_JSON.read_text(encoding="utf-8"))
+    assert data["escenas"]["agua"].get("contadorSinDato")

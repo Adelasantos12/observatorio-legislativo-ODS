@@ -1,6 +1,5 @@
 {
-  "_nota_autora": "REVISIÓN DE LA AUTORA ANTES DE MERGE A PRODUCCIÓN. Todo el texto visible del portal vive aquí. Los {tokens} entre llaves los rellena el componente con cifras vivas del API; no los edites. Ninguna cadena debe anunciar su propio encuadre (ver docs/narrativa/encuadres.md).",
-
+  "_nota_autora": "VERSIÓN REVISADA POR LA AUTORA (22/jul/2026). Sustituye íntegro al es.json del PR #2. Cambios respecto a la versión de Code: hero.sub, escenas.singulares completa, escenas.agua.p1 y fichaResumen, nueva clave escenas.agua.contadorSinDato (usarla mientras no exista fuente del dato de armonización; NO mostrar 0 de 32), porque_importa.intro e items[3].cuerpo, metodologia.normtrace. Los {tokens} los rellena el componente con cifras vivas del API.",
   "nav": {
     "huella": "Huella 2030",
     "minutas": "Minutas",
@@ -8,19 +7,16 @@
     "metodologia": "Metodología",
     "acerca": "Acerca"
   },
-
   "hero": {
     "kicker": "Huella 2030 · Cámara de Diputados y Poder Ejecutivo",
     "lede": "Desde octubre de 2024, la Cámara de Diputados aprobó {minutas} minutas. El Ejecutivo logró {aprobadas} de sus {iniciativas} iniciativas.",
-    "sub": "Cada cuadrito es un asunto. Baja despacio: la misma evidencia se reacomoda para mostrar qué ya es ley, hacia dónde apunta y qué aparece al acercarse.",
+    "sub": "Cada cuadrito es un asunto. Baja despacio: la retícula se va reacomodando sola, primero por estatus y luego por objetivo. Lo mejor está al final.",
     "cargando": "Cargando la huella legislativa…"
   },
-
   "leyenda": {
     "minuta": "minuta",
     "iniciativa": "iniciativa del Ejecutivo"
   },
-
   "escenas": {
     "agenda": {
       "titulo": "La agenda, en cuadritos",
@@ -39,25 +35,25 @@
     },
     "singulares": {
       "titulo": "Lo que se ve al acercarse",
-      "p1": "Entre el volumen hay piezas que se buscan solas. Una es la ley del agua. Otras son las que todavía no encuentran su casilla en la agenda: {sinOds} asuntos.",
-      "p2": "El detalle es el premio de quien baja hasta aquí."
+      "p1": "Entre el volumen hay piezas que llaman la atención por sí solas. Una es la ley del agua. Y hay {sinOds} asuntos que no tienen casilla en este mapa, casi todos monedas y declaratorias conmemorativas.",
+      "p2": "Que existan cuadritos sin casilla es buena señal: el registro no fuerza coincidencias."
     },
     "agua": {
       "titulo": "Una ley llegó el año en que el mundo revisó el agua",
-      "p1": "La Ley General de Aguas escribió en la ley los seis elementos del derecho humano al agua, el mínimo vital y la menstruación digna.",
+      "p1": "La Ley General de Aguas llevó a rango de ley los seis elementos del derecho humano al agua, el mínimo vital y la menstruación digna.",
       "p2": "Con ella se abrió una serie que sigue en curso: las 32 entidades tienen que armonizar su legislación local.",
       "fichaTitulo": "Ley General de Aguas · ODS 6",
       "fichaBadge": "Validado por la autora",
-      "fichaResumen": "34 disposiciones leídas una por una contra las metas del ODS 6 y el derecho humano al agua.",
+      "fichaResumen": "La ley leída disposición por disposición contra las metas del ODS 6 y el derecho humano al agua: 34 correspondencias registradas.",
       "contadorLabel": "Entidades que ya armonizaron",
       "contadorNota": "de 32",
+      "contadorSinDato": "en documentación",
       "enlace": "El análisis completo, artículo por artículo →"
     }
   },
-
   "porque_importa": {
     "titulo": "Por qué nombrar esto vale la pena",
-    "intro": "Cuatro razones, cada una un hecho con un destino concreto.",
+    "intro": "Cuatro razones, cada una con su destinatario.",
     "items": [
       {
         "titulo": "Lo que no se nombra, no cuenta afuera",
@@ -73,11 +69,10 @@
       },
       {
         "titulo": "Quien guarda el registro cuenta la historia",
-        "cuerpo": "Cada grupo y cada comisión acumula aquí lo que empujó, con fecha y fuente. La legislatura que cierra en 2027 deja constancia. La década que cierra en 2030 se contará con datos, y los tendrá a la mano quien los haya guardado."
+        "cuerpo": "Cada grupo y cada comisión acumula aquí lo que empujó, con fecha y fuente. La legislatura que cierra en 2027 deja constancia. Y la década que termina en 2030 se va a contar con datos; los tendrá a la mano quien los haya guardado."
       }
     ]
   },
-
   "explorador": {
     "titulo": "Ahora te toca a ti",
     "intro": "Filtra por objetivo, meta o texto. Abre el expediente de cada iniciativa o pásate a las minutas de la Cámara.",
@@ -95,12 +90,10 @@
     "sinCodificar": "sin codificar",
     "ctaMinutas": "Ver las minutas de la Cámara →"
   },
-
   "metodo": {
     "pie": "Corte {corte}. Correspondencia con la Agenda 2030 preliminar, asistida por modelo. El método, las fuentes y los límites están en metodología.",
     "enlace": "Cómo se hizo esto"
   },
-
   "minutas": {
     "kicker": "Minutas · Cámara de Diputados como cámara de origen",
     "titulo": "Lo que la Cámara mandó al Senado",
@@ -129,13 +122,15 @@
     "sinResultados": "Sin resultados con los filtros actuales.",
     "notaMetodo": "Cómo se documenta el origen"
   },
-
   "estatus": {
     "publicada_dof": "Publicada en el DOF",
     "en_revisora": "En el Senado",
     "devuelta": "Devuelta a la Cámara"
   },
-
+  "estadoVacio": {
+    "titulo": "Datos en preparación",
+    "cuerpo": "La base de este portal aún no termina de cargarse. Vuelve en un momento: la historia aparece cuando el registro está completo."
+  },
   "metodologia": {
     "kicker": "Huella 2030 · Metodología",
     "titulo": "Cómo se hizo este registro",
@@ -149,6 +144,6 @@
     "atribucionTitulo": "Origen documentado",
     "atribucion": "El sistema de la Cámara no publica quién presentó cada minuta. Para las que continúan una iniciativa del Ejecutivo, el origen es directo. Para el resto, se lee del dictamen. Avance al corte: {documentadas} de {total} con origen documentado; las demás quedan abiertas hasta confirmar la fuente.",
     "normtraceTitulo": "Análisis profundo (NormTrace)",
-    "normtrace": "Una capa adicional lee una ley disposición por disposición contra un marco de estándares y sus juicios de ajuste. La Ley General de Aguas es la primera ficha con este análisis, validada por la autora."
+    "normtrace": "Una capa adicional lee una ley disposición por disposición contra un marco de estándares y registra juicios de ajuste por dimensión. La Ley General de Aguas es la primera ficha con este análisis, validada por la autora."
   }
 }

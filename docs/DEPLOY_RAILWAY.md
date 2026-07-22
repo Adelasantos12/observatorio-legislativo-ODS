@@ -112,9 +112,17 @@ comando lo carga todo (idempotente, son upserts):
 python /app/knowledgebase/load_all.py
 ```
 
-Esto carga, en orden: diccionario ODS (kb `mx`), marco RSI (kb `rsi_mx`),
-**iniciativas del Ejecutivo** (Huella módulo A, 82) y **minutas** (Huella módulo
-B, 76). Volver a correrlo no duplica ni pisa la codificación.
+Esto carga, en orden e idempotente, con estos conteos esperados al corte:
+
+| Colección / kb | Conteo |
+|---|---|
+| `topics` kb `mx` (diccionario ODS) | 17 |
+| `topics` kb `rsi_mx` (marco RSI) | 8 |
+| `executive_initiatives` (Huella módulo A) | 82 |
+| `minutas` (Huella módulo B, LXVI) | 139 (62 DOF · 75 en revisora · 2 devueltas) |
+| ficha dorada LGA (servida de disco, no colección) | 34 filas |
+
+Volver a correrlo no duplica ni pisa la codificación (`validado_autora` intacto).
 
 > El tablero `/huella/ejecutivo` cachea su agregado 1 h. Si ya lo habías abierto
 > vacío, **reinicia el servicio `api`** tras sembrar (o espera al TTL) para ver
