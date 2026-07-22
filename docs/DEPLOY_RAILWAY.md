@@ -41,9 +41,19 @@ Para cada uno: **New Service → GitHub Repo → este repositorio**, deja el
 | api       | `deploy/railway/api.json`     | `api/Dockerfile`                  |
 | worker    | `deploy/railway/worker.json`  | `packages/qhld-tasks/Dockerfile`  |
 | frontend  | `deploy/railway/frontend.json`| `frontend/Dockerfile-mx`          |
+| engine    | `deploy/railway/engine.json`  | `engine/Dockerfile` (opcional)    |
 
 El `api` escucha en `$PORT` (Railway lo inyecta); expón un dominio público para
 él. El `worker` no expone puerto. El `frontend` sirve nginx en el puerto 80.
+
+El servicio **`engine` es opcional** y solo hace falta para los trabajos por
+lotes (`qhld sil-ejecutivo`, `iniclave-minutas`, `minutas-coding`,
+`normtrace-atribucion`). Trae el CLI `qhld` y las dependencias de OCR. No expone
+puerto. Necesita las mismas variables de Mongo que el api (`MONGO_HOST`,
+`MONGO_PORT`, `MONGO_DB_NAME`, `MONGO_USER`, `MONGO_PASSWORD`). Para crearlo:
+New Service → Deploy from repo → en **Settings → Build** pon *Dockerfile Path* =
+`engine/Dockerfile` (o *Config file* = `deploy/railway/engine.json`). La **siembra
+del api NO necesita este servicio**.
 
 ## 3. Variables de entorno
 
@@ -92,6 +102,29 @@ NORMTRACE_MAX_UNITS=50     # presupuesto de unidades por documento
 Con `LLM_PROVIDER=mock` (por defecto) el escáner deep funciona sin clave ni costo
 (codificación heurística marcada `needs_human_review`). El cerebro jurídico y el
 esquema van horneados en la imagen del worker (`COPY normtrace`).
+
+### Atribución de origen de las minutas (OCR de dictámenes)
+
+Las minutas que no son de origen Ejecutivo llevan su grupo parlamentario en el
+PDF del dictamen. Esos PDFs son **escaneos sin capa de texto**, así que el job
+hace **OCR** (la imagen del `engine` ya trae `tesseract-ocr`, `tesseract-ocr-spa`
+y `poppler-utils`). Se corre desde la imagen del `engine`:
+
+```bash
+qhld normtrace-atribucion            # usa la base por defecto verificada
+# o con base/pruebas explícitas:
+qhld normtrace-atribucion --base-url "https://www.diputados.gob.mx/LeyesBiblio/iniclave/" --limit 20
+```
+
+Variables (opcionales; ya traen default correcto):
+```
+INICLAVE_PDF_BASE=https://www.diputados.gob.mx/LeyesBiblio/iniclave/  # {base}66/{CLAVE}/{archivo}.pdf
+NORMTRACE_OCR_PAGES=3     # primeras N páginas por dictamen
+```
+
+Es **incremental**: solo toca minutas sin origen documentado, nunca pisa
+`validado_autora`, y lo que el OCR no reconoce queda "por documentar" (jamás se
+inventa el grupo). Reporta "X atribuidas, Y sin dictamen, Z por documentar".
 
 ### frontend
 La URL del backend se **hornea en build** (Vite). Define como *build variable*:

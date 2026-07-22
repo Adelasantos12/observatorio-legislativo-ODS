@@ -88,16 +88,51 @@ def test_code_all_semilla():
 
 # --- Atribución (§A3) --------------------------------------------------------
 
-def test_extract_grupos_reconoce_bancadas():
+# Texto OCR real de las primeras páginas del dictamen CD-LXVI-II-2P-091
+# (patrones verificados por la autora; respuesta conocida: PAN).
+OCR_091 = """ANTECEDENTES
+
+1. En sesión celebrada por la Cámara de Diputados, la Dip. Annia Sarahí Gómez
+Cárdenas y Diputados integrantes del Grupo Parlamentario del PAN presentaron
+la Iniciativa con proyecto de decreto por el que se reforman diversas
+disposiciones.
+
+SUSCRITA POR LA DIP. ANNIA SARAHÍ GÓMEZ CÁRDENAS Y DIP. INTEGRANTES DEL
+GRUPO PARLAMENTARIO DEL PAN"""
+
+
+def test_atribuye_091_a_pan():
+    """Caso de respuesta conocida: el dictamen 091 se atribuye a PAN (v4.1 §4)."""
+    assert atribucion.extract_grupos(OCR_091) == ["PAN"]
+
+
+def test_extract_grupos_normaliza_saltos_de_linea():
+    # El OCR parte "GRUPO PARLAMENTARIO" en dos líneas; el whitespace se normaliza.
+    texto = "integrantes del Grupo\nParlamentario del\nMORENA presentaron"
+    assert atribucion.extract_grupos(texto) == ["MORENA"]
+
+
+def test_extract_grupos_consolida_varios():
     texto = (
-        "Iniciativa presentada por la diputada Fulana, del Grupo Parlamentario de "
-        "MORENA. Otra, del Grupo Parlamentario del Partido Acción Nacional."
+        "del Grupo Parlamentario del PAN ... y del Grupo Parlamentario de MORENA ... "
+        "así como del Grupo Parlamentario de Movimiento Ciudadano."
     )
-    assert atribucion.extract_grupos(texto) == ["MORENA", "PAN"]
+    assert atribucion.extract_grupos(texto) == ["MC", "MORENA", "PAN"]
 
 
 def test_extract_grupos_vacio_si_no_hay():
     assert atribucion.extract_grupos("Texto sin grupos parlamentarios.") == []
+
+
+def test_pdf_url_base_real_y_sin_duplicar_iniclave():
+    base = "https://www.diputados.gob.mx/LeyesBiblio/iniclave/"
+    assert atribucion.pdf_url("66/CD-LXVI-II-2P-091/02_dictamen_091_17feb26.pdf", base) == (
+        base + "66/CD-LXVI-II-2P-091/02_dictamen_091_17feb26.pdf"
+    )
+    # href del año en curso: ruta con 'iniclave/' al inicio no debe duplicar.
+    assert atribucion.pdf_url("iniclave/66/CD-X/02_dictamen.pdf", base) == (
+        base + "66/CD-X/02_dictamen.pdf"
+    )
 
 
 def test_dictamen_pdf_elige_el_correcto():

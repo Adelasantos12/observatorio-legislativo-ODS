@@ -495,3 +495,21 @@ no es prerequisito del escáner interactivo.
   17 ODS + 8 RSI + 82 iniciativas + 139 minutas + ficha dorada (34). Documentado
   en `docs/DEPLOY_RAILWAY.md`. `REDIS_URL` en api y worker queda del lado de la
   dueña en Railway.
+
+### 2026-07-22 — Atribución de minutas por OCR de dictámenes
+
+- **Re-siembra converge a las 139** (`load_minutas.py` limpia claves superadas
+  como `MIN-EJE-*`, preserva `validado_autora`). Corrige el "solo Ejecutivo" en
+  producción tras redeploy del api + `load_all.py`. PR #3 mergeado.
+- **Atribución real (`normtrace/atribucion.py`):** base verificada
+  `https://www.diputados.gob.mx/LeyesBiblio/iniclave/` (+`66/{CLAVE}/{archivo}`;
+  se de-duplica `iniclave/` de los href del año en curso). Los dictámenes son
+  **escaneos sin texto** → **OCR** con pytesseract + pdf2image (`spa`, 200 dpi,
+  primeras 3 páginas). Patrones reales ("SUSCRITA POR … DEL GRUPO PARLAMENTARIO
+  DEL PAN", "… integrantes del Grupo Parlamentario del X presentaron"): regex
+  sobre texto con whitespace normalizado, consolida varios grupos, sin match →
+  "por documentar" (nunca inventa). CLI `qhld normtrace-atribucion` (incremental).
+- **Fixture de respuesta conocida:** CD-LXVI-II-2P-091 → PAN, con texto OCR de
+  prueba (sin red en CI). engine unit 138 verdes.
+- **Imagen engine** ya trae `tesseract-ocr(-spa)` y `poppler-utils`; se quitaron
+  sus cache-mounts (Railway-safe). Documentado en `docs/DEPLOY_RAILWAY.md`.
