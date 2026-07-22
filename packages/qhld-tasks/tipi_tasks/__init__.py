@@ -31,12 +31,23 @@ app.conf.beat_schedule = beat_schedule
 _TASK_ROUTES = {"normtrace.analyze_units": {"queue": "normtrace"}}
 app.conf.task_routes = _TASK_ROUTES
 
+# Resiliencia de arranque: en un PaaS el broker puede no estar listo cuando el
+# worker inicia (o su URL aún no está wireada). Reintentar en vez de salir con
+# error evita que el deploy se marque "failed" en bucle; en cuanto el broker
+# responde, el worker se conecta solo.
+_BROKER_RESILIENCE = {
+    "broker_connection_retry_on_startup": True,
+    "broker_connection_max_retries": None,  # reintenta indefinidamente
+}
+app.conf.update(_BROKER_RESILIENCE)
+
 
 def init():
     global app
     app = Celery("tasks", broker=config.BROKER, backend=config.RESULT_BACKEND)
     app.conf.beat_schedule = beat_schedule
     app.conf.task_routes = _TASK_ROUTES
+    app.conf.update(_BROKER_RESILIENCE)
 
 
 from .alerts import *
