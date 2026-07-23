@@ -6,14 +6,16 @@
       <h1 class="lede">{{ C.hero.cargando }}</h1>
     </div>
     <div v-else-if="!hasData" class="story-hero">
+      <img class="section-art" :src="art.neutra" alt="" aria-hidden="true" />
       <div class="kicker">{{ C.hero.kicker }}</div>
       <h1 class="lede">{{ C.estadoVacio.titulo }}</h1>
       <p class="sub">{{ C.estadoVacio.cuerpo }}</p>
     </div>
 
     <template v-else>
-    <!-- Apertura (escena 1) -->
+    <!-- Apertura (escena 1): hero de manchas ODS ascendiendo al anillo -->
     <header class="story-hero">
+      <img class="hero-art" :src="art.hero" alt="Figuras en colores de los ODS ascendiendo hacia el anillo de los 17 Objetivos" />
       <div class="kicker">{{ C.hero.kicker }}</div>
       <h1 class="lede">{{ fill(C.hero.lede, { minutas: nMinutas, aprobadas: nLogradas, iniciativas: nIniciativas }) }}</h1>
       <p class="sub">{{ C.hero.sub }}</p>
@@ -27,7 +29,7 @@
             <div v-show="scene <= 3">
               <div ref="stageEl" class="unit-stage">
                 <div v-for="n in nodes" :key="n.id" class="unit"
-                  :class="[n.type === 'min' ? 'is-min' : 'is-ini', { dim: pos[n.id] && pos[n.id].dim, glow: pos[n.id] && pos[n.id].glow }]"
+                  :class="[n.type === 'min' ? 'is-min' : 'is-ini', { 'has-ods': grouped && n.ods, dim: pos[n.id] && pos[n.id].dim, glow: pos[n.id] && pos[n.id].glow }]"
                   :style="unitStyle(n)" :title="n.label"></div>
                 <div v-for="a in annotations" :key="a.key" class="unit-anno"
                      :style="{ left: a.x + 'px', top: a.y + 'px', opacity: a.show ? 1 : 0 }">
@@ -35,8 +37,9 @@
                 </div>
               </div>
               <div class="unit-legend">
-                <span class="k"><span class="sw" style="background:var(--accent)"></span> {{ C.leyenda.minuta }} ({{ nMinutas }})</span>
-                <span class="k"><span class="sw" style="background:var(--accent-2)"></span> {{ C.leyenda.iniciativa }} ({{ nIniciativas }})</span>
+                <span class="k"><span class="sw" style="background:var(--ink-2);opacity:.8"></span> {{ C.leyenda.minuta }} ({{ nMinutas }})</span>
+                <span class="k"><span class="sw" style="background:var(--ink-3)"></span> {{ C.leyenda.iniciativa }} ({{ nIniciativas }})</span>
+                <span class="k" v-show="grouped"><span class="sw" style="background:linear-gradient(90deg,#e5243b,#26bde2,#4c9f38)"></span> agrupadas por ODS</span>
               </div>
             </div>
 
@@ -85,6 +88,7 @@
           </div></section>
 
           <section class="step" data-step="1"><div class="step-card">
+            <img class="step-art" :src="art.ascenso" alt="" aria-hidden="true" />
             <h2>{{ C.escenas.estatus.titulo }}</h2>
             <p>{{ fill(C.escenas.estatus.p1, { dof: est.publicada_dof || 0, revisora: est.en_revisora || 0, devueltas: est.devuelta || 0 }) }}</p>
             <p>
@@ -95,6 +99,7 @@
           </div></section>
 
           <section class="step" data-step="2"><div class="step-card">
+            <img class="step-art" :src="art.alcance" alt="" aria-hidden="true" />
             <h2>{{ C.escenas.hallazgo.titulo }}</h2>
             <p>{{ fill(C.escenas.hallazgo.p1, { odsDominanteNombre: odsName(odsDominante) }) }}</p>
             <p class="muted">{{ C.escenas.hallazgo.p2 }}</p>
@@ -107,6 +112,7 @@
           </div></section>
 
           <section class="step" data-step="4"><div class="step-card">
+            <img class="step-art" :src="art.alcance" alt="" aria-hidden="true" />
             <h2>{{ C.escenas.agua.titulo }}</h2>
             <p>{{ C.escenas.agua.p1 }}</p>
             <p class="muted">{{ C.escenas.agua.p2 }}</p>
@@ -115,15 +121,43 @@
       </div>
 
       <!-- Por qué importa (escena 6) -->
-      <section class="porque" style="margin:0 clamp(16px,5vw,56px)">
-        <h2 class="serif porque-h">{{ C.porque_importa.titulo }}</h2>
-        <p class="muted porque-intro">{{ C.porque_importa.intro }}</p>
+      <section v-reveal class="porque" style="margin:0 clamp(16px,5vw,56px)">
+        <div class="section-head">
+          <img class="section-art" :src="art.apoyo" alt="" aria-hidden="true" />
+          <div>
+            <h2 class="porque-h">{{ C.porque_importa.titulo }}</h2>
+            <p class="porque-intro">{{ C.porque_importa.intro }}</p>
+          </div>
+        </div>
         <div class="porque-grid">
           <article v-for="(it, i) in C.porque_importa.items" :key="i" class="porque-item">
             <h3>{{ it.titulo }}</h3>
             <p>{{ it.cuerpo }}</p>
           </article>
         </div>
+      </section>
+
+      <!-- Quién más lo hace (prueba social, adenda v6 §3b) -->
+      <section v-if="C.quien_mas_lo_hace" v-reveal class="porque" style="margin:0 clamp(16px,5vw,56px)">
+        <div class="section-head">
+          <img class="section-art" :src="art.alcance" alt="" aria-hidden="true" style="width:96px" />
+          <div>
+            <h2 class="porque-h">{{ C.quien_mas_lo_hace.titulo }}</h2>
+            <p class="porque-intro">{{ C.quien_mas_lo_hace.intro }}</p>
+          </div>
+        </div>
+        <div class="porque-grid">
+          <article v-for="(it, i) in C.quien_mas_lo_hace.items" :key="i" class="social-item">
+            <h3>{{ it.lugar }}</h3>
+            <p>{{ it.cuerpo }}</p>
+          </article>
+        </div>
+        <p class="social-remate">{{ C.quien_mas_lo_hace.remate }}</p>
+      </section>
+
+      <!-- Cierre de la historia: el emblema (anillo de los 17 ODS) -->
+      <section v-reveal style="text-align:center;margin:64px clamp(16px,5vw,56px) 0">
+        <img :src="art.anillo" alt="Anillo de los 17 Objetivos de Desarrollo Sostenible" style="width:96px;height:96px" />
       </section>
 
       <!-- Explorador (escena 7) -->
@@ -173,11 +207,25 @@ import { ref, reactive, computed, onMounted, onBeforeUnmount, nextTick } from 'v
 import { useRouter } from 'vue-router';
 import api from '@/api';
 import { content as C, fill } from '@/content';
+import heroUrl from '@/assets/illustrations/hero_manchas_ods.svg?url';
+import apoyoUrl from '@/assets/illustrations/apoyo.svg?url';
+import ascensoUrl from '@/assets/illustrations/ascenso.svg?url';
+import alcanceUrl from '@/assets/illustrations/alcance.svg?url';
+import anilloUrl from '@/assets/illustrations/anillo_ods.svg?url';
+import neutraUrl from '@/assets/illustrations/mancha_neutra.svg?url';
+
+// Ilustraciones por sección (reuso, adenda v5.1 §4.3)
+const art = {
+  hero: heroUrl, apoyo: apoyoUrl, ascenso: ascensoUrl,
+  alcance: alcanceUrl, anillo: anilloUrl, neutra: neutraUrl,
+};
 
 const router = useRouter();
 const ready = ref(false);
 const scene = ref(0);
 const animate = ref(true);
+// Las escenas 2 y 3 agrupan las unidades por objetivo: ahí adoptan su color ODS.
+const grouped = computed(() => scene.value === 2 || scene.value === 3);
 
 const agg = ref({ kpis: {}, por_ods: [], corte: null });
 const minAgg = ref({ kpis: {}, por_estatus: [], por_ods: [] });
@@ -266,7 +314,10 @@ function isSingular(n) { return !n.ods || n.ods === '6'; }
 function unitStyle(n) {
   const p = pos[n.id];
   if (!p) return { transform: 'translate(0,0)', opacity: 0 };
-  return { transform: `translate(${p.x}px, ${p.y}px)` };
+  const s = { transform: `translate(${p.x}px, ${p.y}px)` };
+  // Al agruparse por objetivo, la unidad lleva el color oficial de su ODS.
+  if (grouped.value && n.ods) s['--ods'] = odsColor(n.ods);
+  return s;
 }
 function setScene(i) { if (i === scene.value) return; scene.value = i; if (i <= 3) nextTick(computePositions); }
 

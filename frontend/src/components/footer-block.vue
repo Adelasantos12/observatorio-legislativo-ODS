@@ -1,5 +1,11 @@
 <template>
   <div>
+    <!-- Marca sobre tinta (Nota v6.1): anillo + wordmark blanco -->
+    <div class="footer-brand">
+      <div class="footer-brand__wrap">
+        <brand-lockup :to="{ name: 'huella' }" :on-dark="true" />
+      </div>
+    </div>
     <div
       id="footer"
       class="o-container o-container--fluid o-section u-bg-white"
@@ -52,12 +58,14 @@ import 'vue-cookie-accept-decline/dist/vue-cookie-accept-decline.css';
 import { bootstrap } from 'vue-gtag';
 
 import { TipiIcon } from '@politicalwatch/tipi-uikit';
+import BrandLockup from '@/components/brand-lockup.vue';
 
 export default {
   name: 'footer-block',
   components: {
     VueCookieAcceptDecline,
     TipiIcon,
+    BrandLockup,
   },
   methods: {
     cookieStatus: (val) => {
@@ -97,9 +105,17 @@ export default {
 </script>
 
 <style scoped lang="scss">
+.footer-brand {
+  background: #1b1e32; // --ink
+  .footer-brand__wrap {
+    max-width: 1240px;
+    margin: 0 auto;
+    padding: 22px clamp(16px, 5vw, 56px);
+  }
+}
 #footer {
   .o-container {
-    border-top: 1px solid #ddd;
+    border-top: 1px solid #e6e4de;
   }
 }
 </style>

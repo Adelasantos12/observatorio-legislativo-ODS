@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="412 276 292 190" role="img" aria-label="Dos figuras suben una escalinata">
+  <ellipse cx="558" cy="452" rx="150" ry="10" fill="#F2F0EB"/>
+  <rect x="420" y="392" width="84" height="60" rx="6" fill="#EDEBE5"/>
+  <rect x="516" y="342" width="84" height="110" rx="6" fill="#E3E1DA"/>
+  <rect x="612" y="282" width="84" height="170" rx="6" fill="#D9D7CF"/>
+  <path d="M 462 392 C 438 392 430 372 434 348 C 438 326 452 312 468 314 C 486 316 494 334 490 358 C 487 380 480 392 462 392 Z" fill="#26bde2"/>
+  <path d="M 654 282 C 630 282 622 258 626 226 C 629 200 640 182 656 184 C 674 186 682 208 678 240 C 675 266 670 282 654 282 Z" fill="#3f7e44"/>
+</svg>

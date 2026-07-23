@@ -1,5 +1,9 @@
 {
   "_nota_autora": "VERSIÓN REVISADA POR LA AUTORA (22/jul/2026). Sustituye íntegro al es.json del PR #2. Cambios respecto a la versión de Code: hero.sub, escenas.singulares completa, escenas.agua.p1 y fichaResumen, nueva clave escenas.agua.contadorSinDato (usarla mientras no exista fuente del dato de armonización; NO mostrar 0 de 32), porque_importa.intro e items[3].cuerpo, metodologia.normtrace. Los {tokens} los rellena el componente con cifras vivas del API.",
+  "marca": {
+    "nombre": "Observatorio Legislativo",
+    "tagline": "HUELLA 2030 · MÉXICO"
+  },
   "nav": {
     "huella": "Huella 2030",
     "minutas": "Minutas",
@@ -21,7 +25,7 @@
     "agenda": {
       "titulo": "La agenda, en cuadritos",
       "p1": "Aquí está el trabajo del periodo: {minutas} minutas que la Cámara aprobó como origen y las {iniciativas} iniciativas que mandó el Ejecutivo.",
-      "p2": "Un cuadrito, un asunto. Los guinda son minutas; los dorados, iniciativas del Ejecutivo."
+      "p2": "Un cuadrito, un asunto. Las minutas van en tinta; las iniciativas del Ejecutivo, en gris. Al agruparse por objetivo, cada cuadrito toma el color de su ODS."
     },
     "estatus": {
       "titulo": "¿Cuántas ya son ley?",
@@ -53,25 +57,48 @@
   },
   "porque_importa": {
     "titulo": "Por qué nombrar esto vale la pena",
-    "intro": "Cuatro razones, cada una con su destinatario.",
+    "intro": "Cuatro razones, en el lenguaje de quien legisla.",
     "items": [
       {
-        "titulo": "Lo que no se nombra, no cuenta afuera",
-        "cuerpo": "Los foros donde México negocia cosas concretas (la revisión del T-MEC, el foro de alto nivel de la ONU, la Unión Interparlamentaria, los comités de tratados) leen evidencia ordenada. El Congreso ya hizo el trabajo. Ponerlo en el idioma que esos foros entienden es cobrar algo que ya está pagado."
+        "titulo": "Cumplir no basta si nadie lo puede probar afuera",
+        "cuerpo": "El Congreso ejerce control de convencionalidad cuando revisa si una ley mexicana ya cumple lo que el país firmó, no solo lo que prometió firmar algún día. Ese resultado se pone a prueba en foros concretos: la revisión del T-MEC, el foro de alto nivel de la ONU, la Unión Interparlamentaria, los comités que vigilan tratados de derechos humanos. Ahí opera la diplomacia parlamentaria, delegación tras delegación, y necesita evidencia ordenada, no discursos improvisados. Una ley que nadie catalogó no se puede invocar ante esos comités, aunque esté vigente y se aplique todos los días."
       },
       {
-        "titulo": "La agenda salió de aquí",
-        "cuerpo": "La Cámara legisló salario, vivienda, agua e igualdad por decisión propia. Este registro muestra dónde ese proyecto coincide con lo que se discute en el mundo. Primero la decisión; después el eco."
+        "titulo": "La ley nació en San Lázaro antes que en Nueva York",
+        "cuerpo": "La Cámara legisló salario, vivienda, agua e igualdad por decisión propia, con su propia técnica legislativa: definiciones, plazos, autoridades responsables, sanciones. Esa arquitectura interna es la que después permite la armonización legislativa, ya sea entre la Federación y los congresos estatales o entre una ley mexicana y un tratado ya firmado. Este registro muestra dónde ese trabajo coincide con lo que se discute en el resto del mundo. Primero la decisión legislativa; después el eco internacional."
       },
       {
-        "titulo": "El grupo de los que publican su huella",
-        "cuerpo": "Un congreso que abre su propia huella con método verificable se pone junto a los que ya lo hacen, como España o Paraguay. Cuando alguien pregunte qué hace América Latina, esta es una respuesta con nombre y fecha."
+        "titulo": "México entra a un grupo que todavía es chico",
+        "cuerpo": "Un congreso que ordena y publica su propia huella legislativa practica una versión concreta del parlamento abierto: no solo sube actas, también deja ver en qué agenda global se inscribe su trabajo diario. Pocos lo hacen con método verificable; España y Paraguay son los referentes más cercanos, cada uno a su manera. Cuando alguien pregunte qué hace América Latina con la Agenda 2030, esta es una respuesta con nombre, fecha y fuente citable."
       },
       {
-        "titulo": "Quien guarda el registro cuenta la historia",
-        "cuerpo": "Cada grupo y cada comisión acumula aquí lo que empujó, con fecha y fuente. La legislatura que cierra en 2027 deja constancia. Y la década que termina en 2030 se va a contar con datos; los tendrá a la mano quien los haya guardado."
+        "titulo": "Quien construye el archivo decide qué versión queda",
+        "cuerpo": "Cada grupo parlamentario y cada comisión acumula aquí lo que empujó, con fecha y fuente, convertido en huella normativa propia y consultable. Construir ese archivo es también ejercer soberanía normativa: México cuenta su propia contribución a la Agenda 2030 con sus datos, antes de que otro organismo la cuente por él. Registrar equivale a legislar una segunda vez, ahora para la memoria; lo que no queda anotado aquí, después nadie lo puede invocar. La legislatura que cierra en 2027 deja constancia, y la década que termina en 2030 se va a contar con datos que alguien tuvo que guardar primero."
       }
     ]
+  },
+  "quien_mas_lo_hace": {
+    "titulo": "Otros parlamentos ya llevan su cuenta; México decide cómo llevar la suya",
+    "intro": "En otros países, la sociedad civil o el propio Congreso llevan años ordenando su trabajo legislativo contra la Agenda 2030. Cuatro referencias verificables sitúan este ejercicio en un mapa más amplio.",
+    "items": [
+      {
+        "lugar": "España",
+        "cuerpo": "Parlamento2030, el escáner que construye Political Watch desde la sociedad civil, etiqueta la actividad del Congreso de los Diputados con la misma lógica: leyes leídas contra los 17 objetivos, con método público y verificable."
+      },
+      {
+        "lugar": "Paraguay",
+        "cuerpo": "Congreso 2030 (ods.congreso.gov.py) parte del mismo enfoque, pero lo opera el propio Congreso paraguayo: los expedientes salen etiquetados por objetivo desde la fuente, no desde afuera."
+      },
+      {
+        "lugar": "Unión Interparlamentaria",
+        "cuerpo": "Desde 2016, la UIP y el PNUD publican una herramienta de autoevaluación para que cada parlamento documente con método su aporte a la Agenda 2030. Decenas de cámaras alrededor del mundo ya la usan."
+      },
+      {
+        "lugar": "México, como sede",
+        "cuerpo": "En marzo de 2025, la Conferencia Mundial de Mujeres Parlamentarias de la UIP se reunió en la Ciudad de México. La conversación internacional sobre parlamento y desarrollo sostenible ya tuvo aquí un punto de encuentro."
+      }
+    ],
+    "remate": "México no llega tarde a este grupo. Llega con registro propio y con una Cámara que publica su propia huella, sin depender de que otra institución la observe desde afuera. Ahí está la diferencia con España, donde es la sociedad civil la que mira, y el parecido con Paraguay, donde el parlamento se mira a sí mismo. Quién sostiene la cámara que observa es el argumento completo del parlamento abierto."
   },
   "explorador": {
     "titulo": "Ahora te toca a ti",
@@ -106,7 +133,7 @@
     "origenTitulo": "Aportación por origen",
     "origenSub": "Ordenado por año y nombre. Cada barra dice cuántos asuntos vienen de cada origen.",
     "odsTitulo": "Correspondencia por ODS",
-    "odsSub": "Guinda, materia principal; guinda claro, secundaria.",
+    "odsSub": "Cada barra lleva el color oficial de su objetivo; el tono claro marca la correspondencia secundaria.",
     "estatusTitulo": "Dónde va cada minuta",
     "filtroBuscar": "Buscar por denominación…",
     "filtroTodosOrigenes": "Todos los orígenes",
