@@ -9,6 +9,16 @@ server {
   root   /usr/share/nginx/html;
   index index.html;
 
+  # Producto seguro (adenda v6 §4): sin scripts ni fuentes de terceros, CSP
+  # restrictiva, HTTPS forzado. La app se autoaloja por completo (Inter, SVGs,
+  # clipboard, xlsx del registro npm); solo se permite hablar con el propio API.
+  add_header Content-Security-Policy "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self' https:; object-src 'none'; base-uri 'self'; frame-ancestors 'none'; form-action 'self'; upgrade-insecure-requests" always;
+  add_header X-Content-Type-Options "nosniff" always;
+  add_header X-Frame-Options "DENY" always;
+  add_header Referrer-Policy "strict-origin-when-cross-origin" always;
+  add_header Permissions-Policy "geolocation=(), microphone=(), camera=(), interest-cohort=()" always;
+  add_header Strict-Transport-Security "max-age=31536000; includeSubDomains" always;
+
   location / {
     try_files $uri $uri/ @rewrites;
   }

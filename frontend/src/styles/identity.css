@@ -1,193 +1,314 @@
-/* Identidad "Huella 2030" (fase H) — reemplaza el look heredado de escaner2030.
-   Tokens probados en docs/referencia/dashboard_huella2030.html. Los colores
-   oficiales de los 17 ODS solo se usan como chips pequeños (ver .ods-chip), nunca
-   como color de superficies o barras: barras en guinda. Modo oscuro por
-   prefers-color-scheme. */
+/* Identidad "Huella 2030" — Adenda v5.1 (identidad institucional con la imagen
+   de los ODS) + v6 (craft de gráficas y tarjetas).
+
+   Regla de color: la base es blanco, tinta y neutros. El color ODS aparece SOLO
+   cuando representa un ODS real (chips, barras, segmentos del anillo, manchas de
+   ilustración). El azul ONU (--action) es el único color de interfaz. El catálogo
+   oficial de los 17 ODS (API/ods.json) es la única fuente de sus hex: aquí no se
+   definen copias sueltas. Guinda, dorado y la paleta pastel de la v5 quedan
+   retiradas. */
+
+/* ---- Inter autoalojada (sin fuentes externas) ---- */
+@font-face {
+  font-family: "Inter";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("../assets/fonts/inter-latin-400.woff2") format("woff2");
+}
+@font-face {
+  font-family: "Inter";
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url("../assets/fonts/inter-latin-600.woff2") format("woff2");
+}
+
 :root {
-  --paper: #faf7f2; --card: #ffffff; --ink: #211d1a; --ink2: #5c554e; --ink3: #8a8177;
-  --line: #e7e0d6; --accent: #9f2241; --accent-2: #c9a06a; --accent-soft: #e5c6cf;
+  /* base institucional */
+  --bg:        #FFFFFF;
+  --bg-alt:    #F7F6F2;   /* franjas alternas de sección */
+  --ink:       #1B1E32;   /* azul noche, nunca negro puro */
+  --ink-2:     #565A70;
+  --ink-3:     #9A9DAC;
+  --line:      #E6E4DE;
+  --shadow:    #F2F0EB;   /* sombras planas de ilustración */
+  --neutral-1: #EDEBE5;   /* estructuras (escalones, plataformas) */
+  --neutral-2: #D9D7CF;
+  /* acento interactivo único (enlaces, botones, focos) */
+  --action:    #009EDB;   /* azul ONU */
+
+  /* Puentes con los nombres heredados que aún usan algunos componentes;
+     apuntan a valores institucionales para que nada quede en guinda/dorado. */
+  --paper: var(--bg);
+  --card: var(--bg);
+  --ink2: var(--ink-2);
+  --ink3: var(--ink-3);
+  --accent: var(--action);
+  --accent-2: var(--ink-3);
+  --accent-soft: var(--neutral-2);
 }
-@media (prefers-color-scheme: dark) {
-  :root:where(:not([data-theme="light"])) {
-    --paper: #171412; --card: #211d1a; --ink: #f2ede6; --ink2: #c9c1b6; --ink3: #948b80;
-    --line: #39332c; --accent: #d6607f; --accent-2: #c9a06a; --accent-soft: #5a2f3c;
-  }
-}
-:root[data-theme="dark"] {
-  --paper: #171412; --card: #211d1a; --ink: #f2ede6; --ink2: #c9c1b6; --ink3: #948b80;
-  --line: #39332c; --accent: #d6607f; --accent-2: #c9a06a; --accent-soft: #5a2f3c;
-}
+
+/* La identidad v5.1 se compromete con una base blanca: el portal Huella es
+   claro por diseño. No se define un modo oscuro para estos tokens. */
 
 .huella-page {
-  background: var(--paper);
+  background: var(--bg);
   color: var(--ink);
-  font-family: "Avenir Next", "Segoe UI", system-ui, -apple-system, sans-serif;
+  font-family: "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
+  font-weight: 400;
+  -webkit-font-smoothing: antialiased;
   min-height: 100vh;
-  padding: 28px clamp(16px, 5vw, 56px) 80px;
+  padding: 28px clamp(16px, 5vw, 56px) 96px;
+  overflow-x: hidden;                 /* ninguna vista scrollea en horizontal */
 }
+.huella-page, .huella-page * { min-width: 0; }
+.huella-page .story-hero .lede,
+.huella-page .story-hero .sub,
+.huella-page .step-card p,
+.huella-page .prose p,
+.huella-page .porque-item p,
+.huella-page .social-item p { overflow-wrap: break-word; }
+.huella-page img, .huella-page svg { max-width: 100%; }
 .huella-page h1, .huella-page h2, .huella-page h3, .huella-page h4,
-.huella-page .serif { font-family: Georgia, "Times New Roman", serif; }
+.huella-page .serif {
+  font-family: "Inter", system-ui, sans-serif;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  color: var(--ink);
+}
+/* Cifras y datos con cifras tabulares */
+.huella-page .v, .huella-page .bar-n, .huella-page .kpi, .huella-page table td,
+.huella-page .num, .huella-page .count, .huella-page .st-badge,
+.huella-page t[data-num], .tabular { font-variant-numeric: tabular-nums; }
+
 .huella-page .kicker {
   letter-spacing: .14em; text-transform: uppercase; font-size: 11.5px;
-  color: var(--accent); font-weight: 700;
+  color: var(--action); font-weight: 600;
 }
-.huella-page header { border-bottom: 3px solid var(--accent); padding-bottom: 18px; margin-bottom: 26px; }
+.huella-page header { border-bottom: 1px solid var(--line); padding-bottom: 18px; margin-bottom: 26px; }
 
 .huella-page .card {
-  background: var(--card); border: 1px solid var(--line); border-radius: 12px; padding: 18px 20px;
+  background: var(--bg); border: 1px solid var(--line); border-radius: 12px; padding: 18px 20px;
 }
-.huella-page .kpis { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 14px; }
-.huella-page .kpi .v { font-family: Georgia, serif; font-size: 34px; line-height: 1.1; color: var(--accent); }
-.huella-page .kpi .l { color: var(--ink2); font-size: 13px; margin-top: 4px; }
+.huella-page .kpis { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 14px; }
+.huella-page .kpi { transition: box-shadow .2s ease, transform .2s ease; }
+.huella-page .kpi:hover { box-shadow: 0 4px 16px rgba(27,30,50,.08); transform: translateY(-1px); }
+.huella-page .kpi .v { font-weight: 600; font-size: 34px; line-height: 1.1; color: var(--ink); letter-spacing: -0.02em; }
+.huella-page .kpi .l { color: var(--ink-2); font-size: 13px; margin-top: 4px; }
+.huella-page .kpi .spark { margin-top: 10px; height: 22px; display: block; }
 
-/* Barras en guinda (principal) y guinda claro (secundario) */
-.huella-page .bar-row { display: flex; align-items: center; gap: 10px; margin: 6px 0; cursor: pointer; }
-.huella-page .bar-label { width: 260px; font-size: 13px; color: var(--ink2); flex: none; }
-.huella-page .bar-track { flex: 1; background: color-mix(in srgb, var(--line) 60%, transparent); border-radius: 6px; height: 22px; position: relative; }
-.huella-page .bar-p { background: var(--accent); height: 100%; border-radius: 6px 0 0 6px; display: inline-block; vertical-align: top; }
-.huella-page .bar-s { background: var(--accent-soft); height: 100%; display: inline-block; vertical-align: top; }
-.huella-page .bar-n { color: var(--ink3); font-size: 12px; margin-left: 8px; }
+/* ---- Barras (v6 §1: sin marco, rejilla mínima, etiqueta directa) ----
+   Series NO-ODS (estatus, orígenes, trimestres): tinta y neutros.
+   Series ODS: el componente pasa el color oficial por variable --ods. */
+.huella-page .bar-row { display: flex; align-items: center; gap: 10px; margin: 7px 0; cursor: pointer; transition: opacity .18s ease; }
+.huella-page .bars:hover .bar-row { opacity: .4; }         /* v6 §1.5 realce en hover */
+.huella-page .bars .bar-row:hover { opacity: 1; }
+.huella-page .bar-label { width: 260px; font-size: 13px; color: var(--ink-2); flex: none; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.huella-page .bar-track { flex: 1; background: color-mix(in srgb, var(--line) 55%, transparent); border-radius: 6px; height: 22px; position: relative; }
+.huella-page .bar-p { background: var(--ink-2); height: 100%; border-radius: 4px; display: inline-block; vertical-align: top; }
+.huella-page .bar-s { background: var(--neutral-2); height: 100%; border-radius: 4px; display: inline-block; vertical-align: top; }
+/* Barra de una serie ODS: color oficial (principal) + 35% (secundario) */
+.huella-page .bar-row.is-ods .bar-p { background: var(--ods, var(--ink-2)); }
+.huella-page .bar-row.is-ods .bar-s { background: color-mix(in srgb, var(--ods, var(--neutral-2)) 35%, transparent); }
+.huella-page .bar-n { color: var(--ink); font-size: 12.5px; margin-left: 8px; font-variant-numeric: tabular-nums; min-width: 2.5em; }
 .huella-page .col-chart { display: flex; align-items: flex-end; gap: 10px; height: 160px; }
-.huella-page .col { background: var(--accent); width: 100%; border-radius: 4px 4px 0 0; }
+.huella-page .col { background: var(--ink-2); width: 100%; border-radius: 4px 4px 0 0; }
 
-/* Chip de color del ODS (cuadrito con número) — único uso del color oficial */
+/* Chip de color del ODS (cuadrito con número) — único uso del color oficial.
+   El número es la codificación secundaria obligatoria (v5.1 §3.1). */
 .ods-chip {
   display: inline-flex; align-items: center; justify-content: center;
-  width: 20px; height: 20px; border-radius: 4px; color: #fff; font-size: 11px; font-weight: 700;
-  flex: none;
+  width: 20px; height: 20px; border-radius: 4px; color: #fff; font-size: 11px; font-weight: 600;
+  flex: none; font-variant-numeric: tabular-nums;
 }
 
 .huella-page table { width: 100%; border-collapse: collapse; font-size: 13.5px; }
-.huella-page th { text-align: left; background: color-mix(in srgb, var(--accent) 6%, var(--card)); padding: 10px; border-bottom: 2px solid var(--line); }
+.huella-page th { text-align: left; background: var(--bg-alt); color: var(--ink-2); font-weight: 600; padding: 10px; border-bottom: 1px solid var(--line); }
 .huella-page td { padding: 10px; border-bottom: 1px solid var(--line); vertical-align: top; }
 .huella-page tr.item { cursor: pointer; }
-.huella-page tr.item:hover td { background: color-mix(in srgb, var(--accent) 5%, transparent); }
+.huella-page tr.item:hover td { background: var(--bg-alt); }
 
-.huella-page .filters { display: flex; gap: 10px; flex-wrap: wrap; margin: 12px 0; }
+.huella-page .filters { display: flex; gap: 10px; flex-wrap: wrap; margin: 12px 0; align-items: center; }
 .huella-page .filters input, .huella-page .filters select {
-  background: var(--paper); color: var(--ink); border: 1px solid var(--line);
+  background: var(--bg); color: var(--ink); border: 1px solid var(--line);
   border-radius: 8px; padding: 8px 12px; font: inherit;
 }
-.huella-page .badge {
-  display: inline-block; padding: 2px 9px; border-radius: 999px; font-size: 12px; font-weight: 700;
-  border: 1px solid var(--line);
+.huella-page .filters input:focus, .huella-page .filters select:focus,
+.huella-page a:focus-visible, .huella-page button:focus-visible {
+  outline: 2px solid var(--action); outline-offset: 2px;
 }
-.huella-page .badge--pendiente { color: var(--ink2); }
-.huella-page .badge--alta { background: color-mix(in srgb, var(--accent) 12%, transparent); color: var(--accent); }
+.huella-page .badge {
+  display: inline-flex; align-items: center; gap: 6px; padding: 3px 10px; border-radius: 999px; font-size: 12px; font-weight: 600;
+  border: 1px solid var(--line); background: var(--bg-alt); color: var(--ink-2); cursor: pointer;
+}
+.huella-page .badge--pendiente { color: var(--ink-3); }
+.huella-page .badge--alta, .huella-page .badge.is-active { background: color-mix(in srgb, var(--action) 12%, var(--bg)); color: var(--action); border-color: color-mix(in srgb, var(--action) 40%, var(--line)); }
+/* Chips removibles de filtro activo (v6 §2.4) */
+.huella-page .chip-x { display: inline-flex; align-items: center; gap: 6px; padding: 3px 6px 3px 10px; border-radius: 999px; font-size: 12px; font-weight: 600; background: color-mix(in srgb, var(--action) 10%, var(--bg)); color: var(--action); border: 1px solid color-mix(in srgb, var(--action) 35%, var(--line)); }
+.huella-page .chip-x button { border: 0; background: none; color: inherit; cursor: pointer; font-size: 14px; line-height: 1; padding: 0 2px; }
+.huella-page .result-count { color: var(--ink-2); font-size: 13px; font-variant-numeric: tabular-nums; }
+
 .huella-page .disclaimer {
-  background: color-mix(in srgb, var(--accent-2) 14%, var(--card));
-  border-left: 4px solid var(--accent-2); padding: 12px 16px; font-size: 13px; color: var(--ink2);
+  background: var(--bg-alt);
+  border-left: 3px solid var(--ink-3); padding: 12px 16px; font-size: 13px; color: var(--ink-2);
   border-radius: 8px; margin: 16px 0;
 }
-.huella-page a { color: var(--accent); }
-.huella-page .muted { color: var(--ink3); font-size: 12px; }
+.huella-page a { color: var(--action); text-underline-offset: 2px; }
+.huella-page .muted { color: var(--ink-3); font-size: 12px; }
 
-/* --- Análisis NormTrace (nivel 3) --- */
-/* Badge grande de estatus de revisión */
+/* --- Análisis NormTrace (nivel 3): estatus de revisión en tinta, sin semáforo --- */
 .nt-badge {
   display: inline-flex; align-items: center; gap: 8px;
-  padding: 8px 16px; border-radius: 999px; font-weight: 700; font-size: 14px;
+  padding: 8px 16px; border-radius: 999px; font-weight: 600; font-size: 14px;
+  background: var(--bg-alt); color: var(--ink); border: 1px solid var(--line);
 }
-.nt-badge--validado { background: color-mix(in srgb, var(--accent-2) 22%, var(--card)); color: var(--ink); border: 1px solid var(--accent-2); }
-.nt-badge--preliminar { background: #f6e6c8; color: #7a5b12; border: 1px solid #d9b327; }
-:root[data-theme="dark"] .nt-badge--preliminar { background: #4a3a15; color: #f0d79a; border-color: #7a5b12; }
-@media (prefers-color-scheme: dark) {
-  :root:where(:not([data-theme="light"])) .nt-badge--preliminar { background: #4a3a15; color: #f0d79a; border-color: #7a5b12; }
-}
-/* Puntos de ajuste (fit): lleno / medio / vacío */
-.nt-fit { display: inline-flex; align-items: center; gap: 6px; font-size: 12px; color: var(--ink2); white-space: nowrap; }
-.nt-dot { width: 12px; height: 12px; border-radius: 50%; border: 2px solid var(--accent); flex: none; }
-.nt-dot--fuerte { background: var(--accent); }
-.nt-dot--medio { background: linear-gradient(90deg, var(--accent) 50%, transparent 50%); }
+.nt-badge::before { content: ""; width: 10px; height: 10px; border-radius: 50%; border: 2px solid var(--ink-2); flex: none; }
+.nt-badge--validado::before { background: var(--ink-2); }              /* lleno = validado */
+.nt-badge--preliminar::before { background: transparent; }            /* hueco = preliminar */
+.nt-badge--preliminar { color: var(--ink-2); }
+/* Puntos de ajuste (fit): lleno / medio / vacío, en tinta */
+.nt-fit { display: inline-flex; align-items: center; gap: 6px; font-size: 12px; color: var(--ink-2); white-space: nowrap; }
+.nt-dot { width: 12px; height: 12px; border-radius: 50%; border: 2px solid var(--ink-2); flex: none; }
+.nt-dot--fuerte { background: var(--ink-2); }
+.nt-dot--medio { background: linear-gradient(90deg, var(--ink-2) 50%, transparent 50%); }
 .nt-dot--debil { background: transparent; }
-.nt-dot--no_aplica { border-color: var(--ink3); background: transparent; opacity: .5; }
+.nt-dot--no_aplica { border-color: var(--ink-3); background: transparent; opacity: .5; }
 .huella-page .nt-table td, .huella-page .nt-table th { font-size: 12.5px; padding: 8px; }
-.nt-brief { background: var(--card); border: 1px solid var(--line); border-radius: 12px; padding: 18px 22px; margin-top: 14px; }
-.nt-brief h1, .nt-brief h2, .nt-brief h3 { font-family: Georgia, serif; }
+.nt-brief { background: var(--bg); border: 1px solid var(--line); border-radius: 12px; padding: 18px 22px; margin-top: 14px; }
 .nt-brief table { width: 100%; border-collapse: collapse; margin: 12px 0; }
 .nt-brief th, .nt-brief td { border: 1px solid var(--line); padding: 6px 10px; font-size: 12.5px; text-align: left; }
 
-/* --- Scrollytelling "data essay" (adenda v3, parte B) --- */
+/* --- Scrollytelling "data essay" --- */
 .story { max-width: 1180px; margin: 0 auto; }
-.story-hero { min-height: 78vh; display: flex; flex-direction: column; justify-content: center; padding: 24px clamp(16px,5vw,56px); }
-.story-hero .lede { font-family: Georgia, serif; font-size: clamp(26px, 4vw, 44px); line-height: 1.25; max-width: 18em; }
-.story-hero .sub { color: var(--ink2); font-size: 18px; margin-top: 18px; max-width: 36em; }
+.story-hero { min-height: 72vh; display: flex; flex-direction: column; justify-content: center; padding: 24px clamp(16px,5vw,56px); }
+.story-hero .hero-art { width: 100%; max-width: 1100px; height: auto; margin: 0 auto 28px; display: block; }
+.story-hero .lede { font-family: "Inter", system-ui, sans-serif; font-weight: 600; letter-spacing: -0.02em; font-size: clamp(30px, 4.4vw, 52px); line-height: 1.12; max-width: 16em; }
+.story-hero .sub { color: var(--ink-2); font-size: 18.5px; line-height: 1.55; margin-top: 18px; max-width: 34em; }
 .scrolly { position: relative; display: grid; grid-template-columns: 1fr 1fr; gap: 24px; align-items: start; padding: 0 clamp(16px,5vw,56px); }
-/* Columna de gráfico fija */
 .scrolly-graphic { position: sticky; top: 0; height: 100vh; display: flex; align-items: center; }
 .scrolly-steps { display: flex; flex-direction: column; }
 .step { min-height: 88vh; display: flex; align-items: center; }
 .step-card {
-  background: color-mix(in srgb, var(--card) 88%, transparent);
+  background: color-mix(in srgb, var(--bg) 90%, transparent);
   border: 1px solid var(--line); border-radius: 14px; padding: 22px 24px;
   backdrop-filter: blur(3px);
 }
-.step-card h2 { font-family: Georgia, serif; font-size: clamp(20px,2.4vw,28px); margin: 0 0 10px; }
-.step-card p { font-size: 19px; line-height: 1.55; color: var(--ink); margin: 0 0 10px; }
-.step-card .num { color: var(--accent); font-weight: 700; }
+.step-card h2 { font-size: clamp(21px,2.4vw,30px); margin: 0 0 10px; }
+.step-card p { font-size: 18.5px; line-height: 1.6; color: var(--ink); margin: 0 0 10px; }
+.step-card .num { color: var(--action); font-weight: 600; font-variant-numeric: tabular-nums; }
+.step-art { width: 84px; height: 84px; display: block; margin-bottom: 12px; }
 
-/* Unit chart: cada minuta/iniciativa es un cuadrito */
+/* Unit chart: cada minuta/iniciativa es un cuadrito.
+   Reposo: minutas --ink-2 al 80%, iniciativas --ink-3. Al agruparse por
+   objetivo adoptan el color ODS de su grupo (color inyectado por JS). */
 .unit-stage { position: relative; width: 100%; height: 72vh; }
 .unit {
   position: absolute; width: 13px; height: 13px; border-radius: 3px;
-  background: var(--accent); opacity: .92;
+  background: var(--ink-2); opacity: .8;
   transition: transform .9s cubic-bezier(.22,.61,.36,1), opacity .5s, background .5s;
   will-change: transform;
 }
-.unit.is-min { background: var(--accent); }
-.unit.is-ini { background: var(--accent-2); }
+.unit.is-min { background: var(--ink-2); opacity: .8; }
+.unit.is-ini { background: var(--ink-3); opacity: .85; }
+.unit.has-ods { background: var(--ods); opacity: .95; }   /* agrupado por ODS */
 .unit.dim { opacity: .12; }
-.unit.glow { box-shadow: 0 0 0 2px var(--paper), 0 0 10px 3px var(--accent); opacity: 1; z-index: 2; }
-.unit-anno { position: absolute; font-size: 13px; color: var(--ink2); transition: opacity .5s; }
+.unit.glow { box-shadow: 0 0 0 2px var(--bg), 0 0 10px 3px var(--action); opacity: 1; z-index: 2; }
+.unit-anno { position: absolute; font-size: 13px; color: var(--ink-2); transition: opacity .5s; font-variant-numeric: tabular-nums; }
 .unit-anno b { color: var(--ink); }
-.unit-legend { display: flex; gap: 16px; font-size: 12.5px; color: var(--ink2); margin-top: 10px; flex-wrap: wrap; }
+.unit-legend { display: flex; gap: 16px; font-size: 12.5px; color: var(--ink-2); margin-top: 10px; flex-wrap: wrap; }
 .unit-legend .k { display: inline-flex; align-items: center; gap: 6px; }
 .unit-legend .sw { width: 12px; height: 12px; border-radius: 3px; display: inline-block; }
 
-/* Badges de estatus con icono + texto */
-.st-badge { display: inline-flex; align-items: center; gap: 6px; font-size: 12.5px; font-weight: 600; }
-.st-badge .ic { width: 10px; height: 10px; border-radius: 50%; display: inline-block; }
-.st-dof .ic { background: var(--accent); }
-.st-rev .ic { background: var(--accent-2); }
-.st-dev .ic { background: var(--ink3); }
+/* Badges de estatus: icono + texto en tinta con fondo --bg-alt; sin semáforo. */
+.st-badge { display: inline-flex; align-items: center; gap: 6px; font-size: 12.5px; font-weight: 600; color: var(--ink); background: var(--bg-alt); border: 1px solid var(--line); border-radius: 999px; padding: 2px 10px; }
+.st-badge .ic { width: 10px; height: 10px; display: inline-block; flex: none; border: 1.5px solid var(--ink-2); }
+.st-dof .ic { background: var(--ink-2); border-radius: 50%; }              /* publicada: círculo lleno */
+.st-rev .ic { background: transparent; border-radius: 50%; }              /* en revisora: círculo hueco */
+.st-dev .ic { background: transparent; border-radius: 0; transform: rotate(45deg); } /* devuelta: rombo hueco */
 
-.story-method { border-top: 3px solid var(--accent); margin-top: 40px; padding: 22px clamp(16px,5vw,56px) 70px; color: var(--ink2); font-size: 13px; }
+.story-method { border-top: 1px solid var(--line); margin-top: 40px; padding: 22px clamp(16px,5vw,56px) 70px; color: var(--ink-2); font-size: 13px; }
 
-/* Fallback sin JS de animación: escenas apiladas legibles */
+/* Fallback sin JS de animación */
 .no-anim .scrolly-graphic { position: static; height: auto; }
 .no-anim .step { min-height: auto; margin-bottom: 28px; }
 
 @media (max-width: 720px) {
   .scrolly { grid-template-columns: 1fr; }
-  .scrolly-graphic { position: sticky; top: 0; height: 50vh; z-index: 1; background: var(--paper); }
+  .scrolly-graphic { position: sticky; top: 0; height: 50vh; z-index: 1; background: var(--bg); }
   .unit-stage { height: 44vh; }
   .step { min-height: 70vh; }
+  .story-hero .sub { font-size: 17px; }
 }
 @media (prefers-reduced-motion: reduce) {
   .unit { transition: none; }
 }
 
-/* --- Ritmo y aire (adenda v4, disenador): una idea por pantalla, prosa ancha --- */
-/* Cuerpo de lectura: 18–20px, ancho ≤ ~70 caracteres. */
-.prose { max-width: 40em; margin: 0 auto; padding: 32px clamp(16px,5vw,56px) 80px; }
-.prose h2 { font-family: Georgia, serif; font-size: 22px; margin: 36px 0 8px; }
-.prose p { font-size: 19px; line-height: 1.6; color: var(--ink); max-width: 36em; }
-.prose .lede-sm { font-size: 21px; line-height: 1.5; color: var(--ink2); }
-.prose a { color: var(--accent); }
+/* --- Ritmo y aire: una idea por pantalla, prosa ancha (máx ~68 caracteres) --- */
+.prose { max-width: 40em; margin: 0 auto; padding: 32px clamp(16px,5vw,56px) 96px; }
+.prose h2 { font-size: 22px; margin: 40px 0 8px; }
+.prose p { font-size: 18.5px; line-height: 1.65; color: var(--ink); max-width: 36em; }
+.prose .lede-sm { font-size: 21px; line-height: 1.5; color: var(--ink-2); }
 
-/* Serie a medio llenar (Zeigarnik): casillas, la vacía visible */
+/* Serie a medio llenar (Zeigarnik): casillas en tinta, la vacía visible */
 .serie { display: flex; flex-wrap: wrap; gap: 4px; max-width: 340px; }
-.serie-box { width: 14px; height: 14px; border-radius: 3px; border: 1.5px solid var(--accent); background: transparent; }
-.serie-box.full { background: var(--accent); }
+.serie-box { width: 14px; height: 14px; border-radius: 3px; border: 1.5px solid var(--ink-2); background: transparent; }
+.serie-box.full { background: var(--ink-2); }
 
-/* "Por qué importa": aire generoso, una columna de lectura por tarjeta */
-.porque { padding: 48px 0 8px; }
-.porque-h { font-size: clamp(22px,3vw,30px); margin: 0 0 6px; }
-.porque-intro { font-size: 16px; margin: 0 0 24px; }
+/* "Por qué importa" y "Quién más lo hace": aire generoso */
+.porque { padding: 56px 0 8px; }
+.porque-h { font-size: clamp(24px,3vw,32px); margin: 0 0 6px; }
+.porque-intro { font-size: 16px; margin: 0 0 24px; color: var(--ink-2); }
 .porque-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 28px; }
-.porque-item { border-left: 3px solid var(--accent-2); padding: 4px 0 4px 18px; }
-.porque-item h3 { font-family: Georgia, serif; font-size: 20px; margin: 0 0 8px; }
+.porque-item { border-left: 3px solid var(--line); padding: 4px 0 4px 18px; }
+.porque-item h3 { font-size: 20px; margin: 0 0 8px; }
 .porque-item p { font-size: 18px; line-height: 1.6; color: var(--ink); max-width: 34em; margin: 0; }
+.section-art { width: 128px; height: auto; display: block; margin: 0 0 16px; }
+.section-head { display: flex; align-items: center; gap: 20px; flex-wrap: wrap; }
 
-/* Más aire entre la historia y el explorador */
+/* Prueba social (v6 §3b) */
+.social-item { border-left: 3px solid var(--line); padding: 4px 0 4px 18px; }
+.social-item h3 { font-size: 17px; margin: 0 0 6px; }
+.social-item p { font-size: 16.5px; line-height: 1.6; color: var(--ink-2); max-width: 40em; margin: 0; }
+.social-remate { margin-top: 24px; font-size: 18.5px; line-height: 1.6; color: var(--ink); max-width: 40em; }
+.draft-flag { display: inline-block; font-size: 11px; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; color: var(--ink-3); border: 1px dashed var(--ink-3); border-radius: 6px; padding: 2px 8px; margin-left: 10px; }
+
 .story .explorador { margin-top: 40px !important; }
+
+/* ---- v6 §2.3: skeleton loaders (nunca spinner ni pantalla en blanco) ---- */
+.skeleton { position: relative; overflow: hidden; background: var(--bg-alt); border-radius: 8px; }
+.skeleton::after { content: ""; position: absolute; inset: 0; transform: translateX(-100%);
+  background: linear-gradient(90deg, transparent, color-mix(in srgb, var(--neutral-1) 60%, transparent), transparent);
+  animation: skeleton-sweep 1.2s infinite; }
+.sk-line { height: 12px; margin: 8px 0; }
+.sk-kpi { height: 96px; }
+.sk-card { height: 120px; }
+@keyframes skeleton-sweep { 100% { transform: translateX(100%); } }
+
+/* ---- v6 §2.2: tarjetas de minuta/expediente ---- */
+.card-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 16px; }
+.rec-card { display: flex; flex-direction: column; gap: 8px; background: var(--bg); border: 1px solid var(--line); border-radius: 12px; padding: 16px 18px; cursor: pointer; transition: box-shadow .2s ease, transform .2s ease; text-align: left; }
+.rec-card:hover { box-shadow: 0 4px 16px rgba(27,30,50,.08); transform: translateY(-1px); }
+.rec-card .clave { font-size: 12px; color: var(--ink-3); font-variant-numeric: tabular-nums; }
+.rec-card .tema { font-size: 16.5px; font-weight: 600; color: var(--ink); line-height: 1.35; letter-spacing: -0.01em; }
+.rec-card .meta-row { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; margin-top: auto; }
+.view-toggle { display: inline-flex; border: 1px solid var(--line); border-radius: 8px; overflow: hidden; }
+.view-toggle button { border: 0; background: var(--bg); color: var(--ink-2); font: inherit; font-size: 13px; padding: 6px 12px; cursor: pointer; }
+.view-toggle button.is-active { background: var(--bg-alt); color: var(--ink); font-weight: 600; }
+
+/* ---- v6 §1.5: tooltip del sistema (no el del navegador) ---- */
+.viz-tip { position: fixed; z-index: 40; pointer-events: none; background: var(--ink); color: #fff; font-size: 12.5px; line-height: 1.4; padding: 7px 10px; border-radius: 8px; max-width: 260px; box-shadow: 0 6px 20px rgba(27,30,50,.18); font-variant-numeric: tabular-nums; }
+
+/* ---- Chart headers que afirman (v6 §1.6) ---- */
+.chart-h { font-size: 18px; font-weight: 600; letter-spacing: -0.01em; margin: 0 0 2px; }
+.chart-sub { font-size: 13.5px; color: var(--ink-2); margin: 0 0 14px; }
+
+/* ---- v6 §5 Motion: aparición de sección (una vez), reduced-motion la anula ---- */
+.reveal { opacity: 0; transform: translateY(12px); }
+.reveal.in { opacity: 1; transform: none; transition: opacity .35s ease, transform .35s ease; }
+@media (prefers-reduced-motion: reduce) {
+  .reveal { opacity: 1; transform: none; }
+  .reveal.in { transition: none; }
+  .skeleton::after { animation: none; }
+  .kpi:hover, .rec-card:hover { transform: none; }
+}

@@ -133,6 +133,7 @@ import ScannerVisualizations from '@/components/scanner-visualizations.vue';
 import StructuralPanel from '@/components/structural-panel.vue';
 import Swal from 'sweetalert2';
 import VueScrollTo from 'vue-scrollto';
+import ClipboardJS from 'clipboard';
 import api from '@/api';
 
 const router = useRouter();
