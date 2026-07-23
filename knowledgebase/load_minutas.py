@@ -31,6 +31,7 @@ CODING_CSV = MAP_DIR / "minutas_ods.csv"
 # como dato; la columna `grupos` puede venir vacía = "por documentar" (nunca se inventa).
 ATRIB_CSV = MAP_DIR / "minutas_atribucion.csv"
 SEED_CORTE = "2026-07-21"
+# Marca de despliegue: atribución de grupos parlamentarios activa (52 minutas).
 
 host = os.environ.get("MONGO_HOST", "localhost")
 port = int(os.environ.get("MONGO_PORT", "27017"))
