@@ -1,0 +1,35 @@
+name: identidad-ods
+
+# Candado cromático de la Adenda v5.1 §1/§6.1: la base es blanco, tinta y
+# neutros; el color ODS solo cuando representa un ODS real; el azul ONU es el
+# único color de interfaz. Guinda, dorado y la paleta pastel de la v5 quedan
+# retiradas. Este check reprueba si alguno de esos hex reaparece en el código
+# de la aplicación (frontend/src, index.html, public). Los mockups históricos
+# de docs/referencia no son código y quedan fuera del barrido.
+on:
+  pull_request:
+    paths:
+      - "frontend/src/**"
+      - "frontend/index.html"
+      - "frontend/public/**"
+      - ".github/workflows/identidad-ods.yml"
+  push:
+    branches: [main]
+
+jobs:
+  hex-retirados:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Barrido de hex retirados (guinda, dorado, pastel v5)
+        run: |
+          set -e
+          # guinda #9f2241, dorado #c9a06a, teal #2BB8A3, coral #FF8A70,
+          # lila #7B87E8, amarillo pastel #FFD66B (y el guinda oscuro #d6607f).
+          PATRON='#(9f2241|c9a06a|2BB8A3|FF8A70|7B87E8|FFD66B|d6607f)'
+          if grep -rniE "$PATRON" \
+               frontend/src frontend/index.html frontend/public 2>/dev/null; then
+            echo "::error::Se encontraron colores retirados por la Adenda v5.1 §1 en el código de la app."
+            exit 1
+          fi
+          echo "Identidad ODS OK: sin guinda, dorado ni pastel de la v5 en el código de la app."
