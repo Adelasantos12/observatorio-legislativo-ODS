@@ -513,3 +513,26 @@ no es prerequisito del escáner interactivo.
   prueba (sin red en CI). engine unit 138 verdes.
 - **Imagen engine** ya trae `tesseract-ocr(-spa)` y `poppler-utils`; se quitaron
   sus cache-mounts (Railway-safe). Documentado en `docs/DEPLOY_RAILWAY.md`.
+
+### 2026-07-23 — Atribución horneada como dato (red bloqueada desde datacenter)
+
+- **Hallazgo:** `www.diputados.gob.mx` **bloquea IPs de centros de datos**. El job
+  en vivo del engine falla con `ConnectTimeout` desde Railway (y el proxy de egress
+  de la sesión niega el host). Solo responde a conexiones residenciales. La descarga
+  de dictámenes no puede correr desde el servidor.
+- **Solución:** la atribución se produce **fuera de línea** (Mac de la autora, red
+  normal) con un script autónomo (OCR de los 56 dictámenes de la Cámara) y se hornea
+  como dato: `normtrace/03_tables/legislative_mapping/minutas_atribucion.csv`
+  (`clave,grupos`; vacío = "por documentar"). `load_minutas.py` lo aplica al sembrar
+  (`origen_tipo=legislativo` + `grupos_parlamentarios`), sin tocar las Ejecutivas ni
+  las `validado_autora`. Resultado: **52 de 58 con grupo, 6 por documentar**.
+- **Extractor endurecido (`extract_grupos`):** ahora exige contexto de **autoría**
+  (`suscrita`/`presentó`/`a cargo de`…) en una ventana cercana a "Grupo Parlamentario
+  del X". Antes contaba también la **lista de integrantes de la comisión** → producía
+  "los 6 partidos" falsos (p. ej. minuta 018). Verificado leyendo los dictámenes
+  reales: donde salen muchos grupos (085, 106, 129, 132) son dictámenes **ómnibus**
+  que de verdad consolidan iniciativas de varios partidos (correcto), no ruido.
+- **Tests:** `knowledgebase/tests/test_atribucion_minutas.py` (CSV válido, 52 con
+  grupo, 091→PAN, aplica a legislativa, protege Ejecutiva, vacío = por documentar) y
+  `engine` unit nuevo `test_extract_grupos_ignora_lista_de_comision`. Import de
+  `pymongo` en `load_minutas` hecho perezoso para poder probar sin Mongo.

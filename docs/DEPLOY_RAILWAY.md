@@ -106,25 +106,39 @@ esquema van horneados en la imagen del worker (`COPY normtrace`).
 ### Atribución de origen de las minutas (OCR de dictámenes)
 
 Las minutas que no son de origen Ejecutivo llevan su grupo parlamentario en el
-PDF del dictamen. Esos PDFs son **escaneos sin capa de texto**, así que el job
-hace **OCR** (la imagen del `engine` ya trae `tesseract-ocr`, `tesseract-ocr-spa`
-y `poppler-utils`). Se corre desde la imagen del `engine`:
+PDF del dictamen. Esos PDFs son **escaneos sin capa de texto**, así que hay que
+hacerles **OCR** (`tesseract-ocr`, `tesseract-ocr-spa`, `poppler-utils`).
+
+> **Importante — de dónde sale este dato.** El sitio de la Cámara
+> (`www.diputados.gob.mx`) **bloquea las IPs de centros de datos**: la descarga
+> falla con `ConnectTimeout` desde Railway (y desde cualquier nube). Solo responde
+> a conexiones residenciales. Por eso la atribución **se produce fuera de línea**
+> (desde una máquina con conexión normal) y se hornea como dato:
+> `normtrace/03_tables/legislative_mapping/minutas_atribucion.csv` (columnas
+> `clave,grupos`; grupo vacío = "por documentar"). El sembrado
+> (`load_minutas.py` / `load_all.py`) lo aplica: pone `origen_tipo=legislativo` y
+> `grupos_parlamentarios` a esas minutas, **sin** tocar las de origen Ejecutivo ni
+> las `validado_autora`. Regenerar el CSV no requiere red desde el servidor.
+
+El extractor `extract_grupos` solo cuenta un grupo si hay una palabra de **autoría**
+("suscrita", "presentó", "a cargo de"…) cerca de la mención "Grupo Parlamentario del
+X"; así ignora la lista de integrantes de la comisión (que nombra a todos los grupos)
+y conserva la coautoría real de los dictámenes ómnibus. Nunca inventa: lo que no
+tiene autoría legible queda "por documentar".
+
+El job en vivo del `engine` (`qhld normtrace-atribucion`) usa el mismo extractor y
+sirve para **regenerar** el CSV desde una red con salida al sitio; requiere esa
+conectividad (no funciona desde el datacenter de Railway):
 
 ```bash
-qhld normtrace-atribucion            # usa la base por defecto verificada
-# o con base/pruebas explícitas:
-qhld normtrace-atribucion --base-url "https://www.diputados.gob.mx/LeyesBiblio/iniclave/" --limit 20
+qhld normtrace-atribucion --limit 20   # solo desde una red que alcance diputados.gob.mx
 ```
 
 Variables (opcionales; ya traen default correcto):
 ```
 INICLAVE_PDF_BASE=https://www.diputados.gob.mx/LeyesBiblio/iniclave/  # {base}66/{CLAVE}/{archivo}.pdf
-NORMTRACE_OCR_PAGES=3     # primeras N páginas por dictamen
+NORMTRACE_OCR_PAGES=8     # primeras N páginas por dictamen
 ```
-
-Es **incremental**: solo toca minutas sin origen documentado, nunca pisa
-`validado_autora`, y lo que el OCR no reconoce queda "por documentar" (jamás se
-inventa el grupo). Reporta "X atribuidas, Y sin dictamen, Z por documentar".
 
 ### frontend
 La URL del backend se **hornea en build** (Vite). Define como *build variable*:
@@ -153,6 +167,7 @@ Esto carga, en orden e idempotente, con estos conteos esperados al corte:
 | `topics` kb `rsi_mx` (marco RSI) | 8 |
 | `executive_initiatives` (Huella módulo A) | 82 |
 | `minutas` (Huella módulo B, LXVI) | 139 (62 DOF · 75 en revisora · 2 devueltas) |
+| minutas con grupo parlamentario atribuido (OCR de dictámenes) | 52 de las 58 de la Cámara (6 por documentar) |
 | ficha dorada LGA (servida de disco, no colección) | 34 filas |
 
 Volver a correrlo no duplica ni pisa la codificación (`validado_autora` intacto).

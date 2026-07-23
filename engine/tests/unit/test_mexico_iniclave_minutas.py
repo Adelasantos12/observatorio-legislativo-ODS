@@ -113,11 +113,25 @@ def test_extract_grupos_normaliza_saltos_de_linea():
 
 
 def test_extract_grupos_consolida_varios():
+    # Dictamen ómnibus: cada iniciativa trae su propia línea de autoría con verbo.
     texto = (
-        "del Grupo Parlamentario del PAN ... y del Grupo Parlamentario de MORENA ... "
-        "así como del Grupo Parlamentario de Movimiento Ciudadano."
+        "La diputada X, del Grupo Parlamentario del PAN, presentó la iniciativa. "
+        "El diputado Y, del Grupo Parlamentario de MORENA, presentó otra. "
+        "La diputada Z, del Grupo Parlamentario de Movimiento Ciudadano, suscribió la suya."
     )
     assert atribucion.extract_grupos(texto) == ["MC", "MORENA", "PAN"]
+
+
+def test_extract_grupos_ignora_lista_de_comision():
+    # La lista de integrantes de la comisión nombra a todos los grupos SIN autoría:
+    # no debe atribuirse ninguno (antes producía "los 6 partidos" falsos).
+    roster = (
+        "Integrantes de la Comisión: Grupo Parlamentario de MORENA; "
+        "Grupo Parlamentario del PAN; Grupo Parlamentario del PRI; "
+        "Grupo Parlamentario del PT; Grupo Parlamentario del PVEM; "
+        "Grupo Parlamentario de Movimiento Ciudadano."
+    )
+    assert atribucion.extract_grupos(roster) == []
 
 
 def test_extract_grupos_vacio_si_no_hay():
