@@ -22,7 +22,8 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
-          node-version: "20"
+          # Node 22+ expone WebSocket global, que usa el runner e2e (CDP).
+          node-version: "22"
       - name: Chromium para el runner e2e
         id: chrome
         uses: browser-actions/setup-chrome@v1
