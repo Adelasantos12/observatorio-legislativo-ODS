@@ -42,6 +42,18 @@ _GP_RE = re.compile(
     re.IGNORECASE,
 )
 
+# Palabras que marcan AUTORÍA (quién PRESENTÓ la iniciativa), no membresía de la
+# comisión que dictamina. Sin una de estas cerca de "Grupo Parlamentario del X", ese
+# grupo NO se cuenta: así se ignora la lista de integrantes de la comisión (que
+# nombra a todos los grupos y produciría "los 6 partidos" falsos) y solo se atribuye
+# a quien de verdad presentó. Conserva la coautoría real de dictámenes ómnibus.
+_AUTORIA_RE = re.compile(
+    r"suscri|present(?:[oó]|aron|ada|ado|an|a\b)|a\s+cargo\s+de|propon|propus|formul|a\s+nombre",
+    re.IGNORECASE,
+)
+# Caracteres alrededor de la mención del grupo donde se busca el contexto de autoría.
+VENTANA_AUTORIA = 130
+
 
 def normaliza_grupo(texto: str):
     """Mapea un fragmento a la sigla canónica del grupo, o None."""
@@ -53,19 +65,23 @@ def normaliza_grupo(texto: str):
 
 
 def extract_grupos(text: str):
-    """Grupos parlamentarios (siglas) presentes en el dictamen.
+    """Grupos parlamentarios (siglas) con contexto de AUTORÍA en el dictamen.
 
-    Normaliza el whitespace (el OCR mete saltos de línea), busca las menciones de
-    "Grupo Parlamentario del X" y devuelve las siglas únicas ordenadas. Un dictamen
-    puede consolidar varias iniciativas: se juntan todos los grupos. Vacío si no se
-    reconoce ninguno (→ "por documentar").
+    Normaliza el whitespace (el OCR mete saltos de línea) y solo cuenta un grupo si
+    hay una palabra de autoría (suscrita/presentó/a cargo de…) en una ventana cercana
+    a la mención "Grupo Parlamentario del X". Así descarta la lista de integrantes de
+    la comisión (que menciona a todos los grupos) pero conserva la coautoría real de
+    los dictámenes que consolidan varias iniciativas. Vacío si no reconoce ninguno con
+    autoría (→ "por documentar"; nunca se inventa).
     """
     norm = re.sub(r"\s+", " ", text or "")
     grupos = set()
     for m in _GP_RE.finditer(norm):
-        sigla = normaliza_grupo(m.group(1))
-        if sigla:
-            grupos.add(sigla)
+        ini, fin = max(0, m.start() - VENTANA_AUTORIA), min(len(norm), m.end() + VENTANA_AUTORIA)
+        if _AUTORIA_RE.search(norm[ini:fin]):
+            sigla = normaliza_grupo(m.group(1))
+            if sigla:
+                grupos.add(sigla)
     return sorted(grupos)
 
 

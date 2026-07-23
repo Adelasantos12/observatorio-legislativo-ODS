@@ -21,13 +21,15 @@ import sys
 from datetime import datetime, timezone
 from pathlib import Path
 
-from pymongo import MongoClient
-
 HERE = Path(__file__).parent
 ROOT = HERE.parent
 MAP_DIR = ROOT / "normtrace/03_tables/legislative_mapping"
 RAW_CSV = Path(sys.argv[1]) if len(sys.argv) > 1 else MAP_DIR / "minutas_lxvi_raw.csv"
 CODING_CSV = MAP_DIR / "minutas_ods.csv"
+# Atribución de grupo parlamentario obtenida por OCR de los dictámenes (clave,grupos).
+# Producida fuera de línea (el sitio de la Cámara bloquea IPs de datacenter) y horneada
+# como dato; la columna `grupos` puede venir vacía = "por documentar" (nunca se inventa).
+ATRIB_CSV = MAP_DIR / "minutas_atribucion.csv"
 SEED_CORTE = "2026-07-21"
 
 host = os.environ.get("MONGO_HOST", "localhost")
@@ -64,10 +66,34 @@ def load_coding(path):
         return {r["clave"].strip(): r for r in csv.DictReader(fh)}
 
 
-def build_doc(raw, coding):
+def load_atribucion(path):
+    """Mapa clave -> [grupos] desde el CSV de atribución por OCR. Solo entradas
+    con grupo (las vacías = 'por documentar' no aportan y se ignoran)."""
+    if not path.is_file():
+        return {}
+    out = {}
+    with path.open(encoding="utf-8") as fh:
+        for r in csv.DictReader(fh):
+            grupos = _split(r.get("grupos"))
+            if grupos:
+                out[r["clave"].strip()] = grupos
+    return out
+
+
+def build_doc(raw, coding, atribucion=None):
     clave = raw["clave"].strip()
     leg, anio, periodo, num = _parse_clave(clave)
     c = coding.get(clave, {})
+    # La atribución por OCR del dictamen es la fuente para el grupo parlamentario de
+    # las minutas de origen legislativo; si existe, manda sobre la del CSV de coding.
+    atribucion = atribucion or {}
+    grupos_ocr = atribucion.get(clave)
+    origen_tipo = (c.get("origen_tipo") or "").strip() or None
+    if grupos_ocr and origen_tipo != "ejecutivo":
+        grupos = grupos_ocr
+        origen_tipo = "legislativo"
+    else:
+        grupos = _split(c.get("grupos_parlamentarios"))
     return {
         "_id": clave,
         "clave": clave,
@@ -85,9 +111,10 @@ def build_doc(raw, coding):
         "metas": _split(c.get("metas")),
         "tema": (c.get("tema") or "").strip() or None,
         "confianza": (c.get("confianza") or "").strip() or "pendiente",
-        "origen_tipo": (c.get("origen_tipo") or "").strip() or None,
-        "origen": "Ejecutivo Federal" if (c.get("origen_tipo") or "").strip() == "ejecutivo" else None,
-        "grupos_parlamentarios": _split(c.get("grupos_parlamentarios")),
+        "origen_tipo": origen_tipo,
+        "origen": "Ejecutivo Federal" if origen_tipo == "ejecutivo" else (
+            "Cámara de Diputados" if origen_tipo == "legislativo" else None),
+        "grupos_parlamentarios": grupos,
         "expediente_ref": (c.get("expediente_ref") or "").strip() or None,
         "nivel_revision": (c.get("nivel_revision") or "").strip() or "automatico_preliminar",
         "updated_at": datetime.now(timezone.utc),
@@ -95,6 +122,7 @@ def build_doc(raw, coding):
 
 
 def main():
+    from pymongo import MongoClient  # import perezoso: el módulo se puede probar sin Mongo
     if user and password:
         client = MongoClient(host, port, username=user, password=password)
     else:
@@ -102,6 +130,7 @@ def main():
     col = client[db_name]["minutas"]
 
     coding = load_coding(CODING_CSV)
+    atribucion = load_atribucion(ATRIB_CSV)
     raws = list(csv.DictReader(RAW_CSV.open(encoding="utf-8")))
     claves_actuales = {r["clave"].strip() for r in raws}
 
@@ -117,7 +146,7 @@ def main():
 
     preservadas = 0
     for raw in raws:
-        doc = build_doc(raw, coding)
+        doc = build_doc(raw, coding, atribucion)
         existing = col.find_one({"_id": doc["_id"]})
         if existing and existing.get("nivel_revision") == "validado_autora":
             # La codificación validada por la autora es intocable; solo
@@ -134,6 +163,10 @@ def main():
 
     print(f"Importadas {len(raws)} minutas en '{db_name}.minutas' "
           f"({preservadas} con codificación validada preservada).")
+    if atribucion:
+        con_grupo = col.count_documents({"grupos_parlamentarios.0": {"$exists": True}})
+        print(f"Atribución de grupo parlamentario aplicada: {len(atribucion)} minutas de la "
+              f"Cámara (total con grupo en colección: {con_grupo}).")
     print(f"Corte: {SEED_CORTE}. Total en colección: {col.count_documents({})}")
 
 
