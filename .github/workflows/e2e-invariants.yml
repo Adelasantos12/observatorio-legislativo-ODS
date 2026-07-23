@@ -1,0 +1,38 @@
+name: e2e-invariants
+
+# Invariantes del producto (adenda v6.2 §3/§4). Fija las piezas que no pueden
+# desaparecer al aplicar una re-piel: el scrollytelling completo de /huella y su
+# unit chart, la escena del agua con su ficha NormTrace y enlace, las tarjetas y
+# filtros de /minutas. Si un PR rompe uno de estos, este job truena.
+on:
+  pull_request:
+    paths:
+      - "frontend/**"
+      - ".github/workflows/e2e-invariants.yml"
+  push:
+    branches: [main]
+
+jobs:
+  invariants:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: frontend
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+      - name: Chromium para el runner e2e
+        id: chrome
+        uses: browser-actions/setup-chrome@v1
+      - name: Instalar dependencias
+        run: npm ci || npm install
+      - name: Compilar (API en localhost:8080, igual que el servidor de fixtures)
+        run: npm run build
+        env:
+          VITE_VUE_APP_BACKEND_URL: http://localhost:8080
+      - name: Tests e2e de invariantes
+        run: node e2e/invariants.mjs
+        env:
+          CHROME: ${{ steps.chrome.outputs.chrome-path }}
