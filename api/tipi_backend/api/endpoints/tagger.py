@@ -1,5 +1,6 @@
 import codecs
 import logging
+import os
 import pickle
 import subprocess
 import tempfile
@@ -89,6 +90,36 @@ def segment_and_tag(content, tags, kb):
     }
 
 
+def _ocr_pdf(path: str) -> str:
+    """OCR de un PDF escaneado (sin capa de texto), como respaldo de pdfminer.
+
+    Los binarios `tesseract`/`poppler` van en la imagen del api; las libs Python
+    (`pdf2image`, `pytesseract`) son opcionales: si faltan, devuelve "" y el flujo
+    normal reporta el error amigable de siempre. Tope de páginas y dpi configurables
+    para acotar tiempo/memoria en documentos grandes.
+    """
+    try:
+        from pdf2image import convert_from_path
+        import pytesseract
+    except ImportError:
+        logging.warning("OCR de PDF no disponible: instala pdf2image y pytesseract.")
+        return ""
+    max_pages = int(os.environ.get("TAGGER_OCR_MAX_PAGES", "20"))
+    dpi = int(os.environ.get("TAGGER_OCR_DPI", "200"))
+    try:
+        images = convert_from_path(path, dpi=dpi, first_page=1, last_page=max_pages)
+    except Exception as exc:
+        logging.warning("No se pudo rasterizar el PDF para OCR: %s", exc)
+        return ""
+    partes = []
+    for img in images:
+        try:
+            partes.append(pytesseract.image_to_string(img, lang="spa"))
+        except Exception as exc:
+            logging.warning("Fallo de OCR en una página: %s", exc)
+    return "\n".join(partes).strip()
+
+
 def _extract_text_from_file(file: UploadFile) -> str:
     with tempfile.NamedTemporaryFile(
         prefix="tipiscanner_", suffix=splitext(file.filename)[1]
@@ -100,6 +131,11 @@ def _extract_text_from_file(file: UploadFile) -> str:
             text = f.read().decode("utf-8").strip()
         elif mimetype == "application/pdf":
             text = extract_pdf_text(f.name).strip()
+            # PDF escaneado (imagen): pdfminer no encuentra capa de texto -> OCR.
+            if len(text) < 20:
+                ocr_text = _ocr_pdf(f.name)
+                if ocr_text:
+                    text = ocr_text
         elif mimetype == "application/vnd.openxmlformats-officedocument.wordprocessingml.document":
             doc = Document(f)
             text = "\n".join([para.text for para in doc.paragraphs]).strip()

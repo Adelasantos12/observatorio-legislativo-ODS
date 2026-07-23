@@ -15,6 +15,10 @@ dependencies = [
     "jinja2==3.1.6",
     "natsort==8.4.0",
     "pdfminer.six==20260107",
+    # OCR de respaldo para PDFs escaneados (imagen sin capa de texto). Los binarios
+    # tesseract/poppler van en el Dockerfile del api.
+    "pdf2image==1.17.0",
+    "pytesseract==0.3.13",
     "python-docx==1.2.0",
     "python-pptx==1.0.2",
     "qhld-data",
