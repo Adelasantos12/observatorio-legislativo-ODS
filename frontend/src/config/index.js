@@ -67,7 +67,9 @@ export default {
   },
   // Logo PLACEHOLDER textual del despliegue mexicano (SVG con el nombre de
   // marca). Sustituir por el arte definitivo cuando esté disponible (fase F1).
-  LOGO: '/img/logo-mx.svg',
+  // Isotipo del sitio: el anillo de los 17 ODS (Nota v6.1). El header y el pie
+  // usan el lockup vivo (BrandLockup); esta clave queda para metadatos/compat.
+  LOGO: '/img/anillo-ods.svg',
 
   DEFAULT_PAGE_TITLE: {
     es: 'Escáner Legislativo MX — Escanea cualquier texto legislativo en clave ODS',
@@ -87,7 +89,7 @@ export default {
       },
       {
         itemprop: 'image',
-        content: '/img/logo-mx.svg',
+        content: '/img/og-anillo-ods.svg',
       },
       {
         name: 'twitter:card',
@@ -112,7 +114,7 @@ export default {
       },
       {
         property: 'og:image',
-        content: '/img/logo-mx.svg',
+        content: '/img/og-anillo-ods.svg',
       },
       {
         property: 'og:description',
@@ -137,7 +139,7 @@ export default {
       },
       {
         itemprop: 'image',
-        content: '/img/logo-mx.svg',
+        content: '/img/og-anillo-ods.svg',
       },
       {
         name: 'twitter:card',
@@ -162,7 +164,7 @@ export default {
       },
       {
         property: 'og:image',
-        content: '/img/logo-mx.svg',
+        content: '/img/og-anillo-ods.svg',
       },
       {
         property: 'og:description',
