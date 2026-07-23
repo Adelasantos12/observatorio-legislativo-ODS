@@ -142,7 +142,7 @@
         <div class="section-head">
           <img class="section-art" :src="art.alcance" alt="" aria-hidden="true" style="width:96px" />
           <div>
-            <h2 class="porque-h">{{ C.quien_mas_lo_hace.titulo }}<span v-if="C.quien_mas_lo_hace._estado" class="draft-flag" title="Pendiente de visto bueno de la autora">Borrador</span></h2>
+            <h2 class="porque-h">{{ C.quien_mas_lo_hace.titulo }}</h2>
             <p class="porque-intro">{{ C.quien_mas_lo_hace.intro }}</p>
           </div>
         </div>
