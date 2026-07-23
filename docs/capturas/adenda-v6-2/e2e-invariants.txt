@@ -1,0 +1,32 @@
+
+/huella — scrollytelling e invariantes de escena
+  ✓ huella carga con datos (hero visible)
+  ✓ escena apertura (agenda) presente
+  ✓ escena estatus presente
+  ✓ escena hallazgo presente
+  ✓ escena singulares presente
+  ✓ escena del agua presente
+  ✓ sección "por qué importa" presente
+  ✓ sección "quién más lo hace" presente
+  ✓ explorador presente
+  ✓ pasos del scrollytelling en orden 0..4
+  ✓ unit chart existe con cuadritos (>20)
+  ✓ unit chart transiciona (transition-duration ≠ 0s)
+  ✓ ficha del agua con badge "Validado por la autora"
+  ✓ la tarjeta del agua enlaza a un expediente
+
+/expedientes/:id — ficha NormTrace de la vitrina
+  ✓ la ficha del expediente carga (no queda en «Cargando»)
+  ✓ la ficha muestra el análisis NormTrace
+
+/minutas — tarjetas dinámicas y filtros
+  ✓ minutas carga con datos
+  ✓ KPI cards animan hasta su cifra final (139)
+  ✓ minutas conserva tarjetas (rec-card)
+  ✓ minutas conserva toggle tarjetas/tabla
+  ✓ minutas conserva filtros
+  ✓ minutas muestra contador vivo ("… de …")
+  ✓ gráfica por ODS usa barras is-ods
+  ✓ el toggle muestra la tabla densa
+
+Invariantes: 24/24 en verde
