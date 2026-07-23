@@ -79,7 +79,16 @@ REDIS_URL=${{Redis.REDIS_URL}}   # referencia a la plantilla Redis (con credenci
 TAGGER_MAX_WORDS=5000
 COUNTRY=mexico           # managers de tipo/estatus de iniciativa mexicanos (F1)
 USE_ALERTS=False
+# OCR de respaldo para PDFs escaneados (imagen sin capa de texto). Opcionales;
+# tesseract/poppler ya van en la imagen del api. Solo se dispara si pdfminer no
+# encuentra texto. Sube el tope de páginas si subes documentos escaneados largos.
+TAGGER_OCR_MAX_PAGES=20   # páginas máximas a rasterizar por PDF escaneado
+TAGGER_OCR_DPI=200        # resolución del rasterizado para OCR
 ```
+
+> **PDFs escaneados (imagen):** si un PDF no trae capa de texto, el escáner ahora
+> le hace **OCR** automáticamente (español) en vez de fallar con "no se pudo obtener
+> el texto". No requiere configuración; los binarios ya están en la imagen del api.
 
 ### worker
 ```

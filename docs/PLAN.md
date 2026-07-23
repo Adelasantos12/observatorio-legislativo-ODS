@@ -536,3 +536,15 @@ no es prerequisito del escáner interactivo.
   grupo, 091→PAN, aplica a legislativa, protege Ejecutiva, vacío = por documentar) y
   `engine` unit nuevo `test_extract_grupos_ignora_lista_de_comision`. Import de
   `pymongo` en `load_minutas` hecho perezoso para poder probar sin Mongo.
+
+### 2026-07-23 — Escáner: OCR de respaldo para PDFs escaneados (imagen)
+
+- **`_extract_text_from_file` (`api/.../endpoints/tagger.py`):** si `pdfminer` no
+  encuentra capa de texto (PDF escaneado), cae a **OCR** (`_ocr_pdf`: pdf2image +
+  pytesseract, `spa`, tope de páginas/dpi por `TAGGER_OCR_MAX_PAGES`/`TAGGER_OCR_DPI`).
+  Los binarios tesseract/poppler ya iban en la imagen del api; se añadieron
+  `pdf2image` y `pytesseract` a `api/pyproject.toml` (uv.lock regenerado). Degrada con
+  gracia: si faltan las libs o falla el rasterizado, devuelve "" y sale el error
+  amigable de siempre.
+- **Tests:** `api` unit `test_pdf_imagen_cae_a_ocr`, `test_pdf_con_texto_no_llama_ocr`,
+  `test_ocr_pdf_degrada_con_gracia` (14/14 verdes en test_tagger.py).

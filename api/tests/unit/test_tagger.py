@@ -170,6 +170,70 @@ def test_segment_absent_by_default(client, sync_word_limit):
     assert "segmentation" not in res.json()
 
 
+class _FakeUpload:
+    """UploadFile mínimo para `_extract_text_from_file` (sin FastAPI)."""
+
+    def __init__(self, content: bytes, content_type: str, filename: str):
+        import io
+        self.file = io.BytesIO(content)
+        self.content_type = content_type
+        self.filename = filename
+
+
+def test_pdf_imagen_cae_a_ocr(monkeypatch):
+    """Un PDF sin capa de texto (pdfminer devuelve vacío) usa el respaldo OCR."""
+    from tipi_backend.api.endpoints import tagger
+
+    monkeypatch.setattr(tagger, "extract_pdf_text", lambda path: "")
+    llamado = {}
+
+    def fake_ocr(path):
+        llamado["si"] = True
+        return "Texto recuperado por OCR sobre el cambio climático."
+
+    monkeypatch.setattr(tagger, "_ocr_pdf", fake_ocr)
+
+    up = _FakeUpload(b"%PDF-1.4 escaneo", "application/pdf", "escaneo.pdf")
+    text = tagger._extract_text_from_file(up)
+    assert llamado.get("si") is True
+    assert "OCR" in text
+
+
+def test_pdf_con_texto_no_llama_ocr(monkeypatch):
+    """Si pdfminer ya trae texto, no se dispara el OCR (más lento)."""
+    from tipi_backend.api.endpoints import tagger
+
+    monkeypatch.setattr(tagger, "extract_pdf_text",
+                        lambda path: "Documento con capa de texto legible y suficiente.")
+
+    def no_debe_llamarse(path):
+        raise AssertionError("no debía llamarse al OCR cuando ya hay texto")
+
+    monkeypatch.setattr(tagger, "_ocr_pdf", no_debe_llamarse)
+
+    up = _FakeUpload(b"%PDF-1.4 con texto", "application/pdf", "texto.pdf")
+    text = tagger._extract_text_from_file(up)
+    assert "capa de texto" in text
+
+
+def test_ocr_pdf_degrada_con_gracia(monkeypatch):
+    """Si el rasterizado falla, `_ocr_pdf` devuelve '' (no revienta)."""
+    import sys
+    import types
+    from tipi_backend.api.endpoints import tagger
+
+    fake_p2i = types.ModuleType("pdf2image")
+    def boom(*a, **k):
+        raise RuntimeError("poppler ausente")
+    fake_p2i.convert_from_path = boom
+    fake_pt = types.ModuleType("pytesseract")
+    fake_pt.image_to_string = lambda *a, **k: ""
+    monkeypatch.setitem(sys.modules, "pdf2image", fake_p2i)
+    monkeypatch.setitem(sys.modules, "pytesseract", fake_pt)
+
+    assert tagger._ocr_pdf("/no/existe.pdf") == ""
+
+
 def test_deep_enqueues_normtrace_and_returns_task_id(client, sync_word_limit):
     """Con deep=true, la respuesta trae `segmentation` y encola la codificación
     NormTrace devolviendo `normtrace_task_id` (broker memory:// del conftest)."""
