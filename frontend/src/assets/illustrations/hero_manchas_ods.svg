@@ -50,12 +50,14 @@
     <path d="M 654 282 C 630 282 622 258 626 226 C 629 200 640 182 656 184 C 674 186 682 208 678 240 C 675 266 670 282 654 282 Z" fill="#3f7e44"/>
   </g>
 
-  <!-- ══ GRUPO DERECHO: figura alta estirándose hacia el anillo (id=alcance) ══ -->
+  <!-- ══ GRUPO DERECHO: apilamiento de tres piedras que toca el anillo (id=alcance, v6.2 §0) ══ -->
   <g id="alcance">
-    <!-- figura ODS 8 vino, alta, pebble estilizado con leve inclinación al anillo -->
-    <path d="M 908 452 C 874 452 862 422 866 374 C 870 322 882 272 902 240 C 916 218 940 212 954 226 C 968 240 968 268 960 308 C 950 356 948 400 944 422 C 940 446 930 452 908 452 Z" fill="#a21942"/>
-    <!-- gesto de alcance: ODS 7 amarillo tocando el borde del anillo -->
-    <path d="M 950 214 C 936 208 932 192 938 176 C 944 162 956 156 968 162 C 980 168 982 184 976 198 C 971 210 962 220 950 214 Z" fill="#fcc30b"/>
+    <!-- piedra base: ODS 8 vino -->
+    <path d="M 900 451 C 862 451 836 435 836 412 C 836 389 864 373 900 373 C 936 373 964 389 964 412 C 964 435 936 451 900 451 Z" fill="#a21942"/>
+    <!-- piedra media: ODS 14 azul -->
+    <path d="M 902 366 C 874 366 850 352 850 332 C 850 312 874 298 902 298 C 930 298 954 312 954 332 C 954 352 930 366 902 366 Z" fill="#0a97d9"/>
+    <!-- piedra alta: ODS 7 amarilla, se estira hasta tocar el anillo -->
+    <path d="M 928 290 C 902 286 880 274 882 250 C 884 224 912 200 942 206 C 978 213 998 235 990 260 C 984 278 954 294 928 290 Z" fill="#fcc30b"/>
   </g>
 
   <!-- puntos de conexión discretos entre grupos y anillo -->
