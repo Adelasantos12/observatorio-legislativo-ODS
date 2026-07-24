@@ -89,16 +89,16 @@ try {
         hallazgo: txt.includes('Y cuando se leen en clave 2030'),
         singulares: txt.includes('Lo que se ve al acercarse'),
         agua: txt.includes('Una ley llegó el año'),
-        madrid: txt.includes('En Madrid ya lo hacen'),
-        asuncion: txt.includes('En Asunción lo hacen desde adentro'),
-        foros: txt.includes('Y en los foros ya hay mesa puesta'),
-        mexico: txt.includes('México no llega tarde'),
-        cierre: txt.includes('Quien guarda el registro cuenta la historia'),
+        registro: txt.includes('¿Y por qué esto no se sabía?'),
+        hito2015: txt.includes('193 países'),
+        hito2030: txt.includes('Vence la Agenda'),
         explorador: !!document.querySelector('.explorador'),
       },
       dsteps, sinEstado, unitCount: units.length, td,
-      viajeStops: document.querySelectorAll('.viaje-stop').length,
-      viajeSteps: document.querySelectorAll('.step[data-step^=\"v\"]').length,
+      lineaSteps: document.querySelectorAll('.step[data-step^=\"l\"]').length,
+      lineaPts: document.querySelectorAll('.linea-pt').length,
+      hoy: !!document.querySelector('.linea-pt.hoy'),
+      counters: document.querySelectorAll('.linea-num').length,
       hasFig: !!document.querySelector('.viaje-fig'),
       aguaBadge: agua ? agua.textContent.trim() : null,
       enlaceHref: enlace ? enlace.getAttribute('href') : null,
@@ -107,52 +107,75 @@ try {
   const T = h.titulos;
   assert('E1 apertura (agenda) presente', T.agenda);
   assert('E2 estatus presente', T.estatus);
-  assert('E3 "el momento del color" presente (título reescrito)', T.hallazgo);
+  assert('E3 "el momento del color" presente', T.hallazgo);
   assert('E4 singulares presente', T.singulares);
   assert('E5 agua presente', T.agua);
-  assert('Acto II · V1 Madrid presente', T.madrid);
-  assert('Acto II · V2 Asunción presente', T.asuncion);
-  assert('Acto II · V3 foros presente', T.foros);
-  assert('Acto II · V4 México presente', T.mexico);
-  assert('Acto II · V5 cierre presente', T.cierre);
+  assert('B · escena del registro presente', T.registro);
+  assert('Acto II · línea de tiempo con sus extremos (2015 y 2030)', T.hito2015 && T.hito2030);
   assert('explorador presente', T.explorador);
-  // v7 §0.1: ningún paso sin estado gráfico
   assert('cada paso tiene su data-state (ningún paso sin estado)', h.sinEstado === 0, `sin estado=${h.sinEstado}`);
-  assert('Acto I con sus 6 pasos (0..5)', ['0','1','2','3','4','5'].every(s=>h.dsteps.includes(s)), JSON.stringify(h.dsteps));
-  assert('el viaje tiene sus 5 pasos y 4 paradas', h.viajeSteps === 5 && h.viajeStops === 4, `pasos=${h.viajeSteps} paradas=${h.viajeStops}`);
-  assert('la figura del viaje existe', h.hasFig);
+  assert('Acto I + registro con sus 8 pasos (0..7)', ['0','1','2','3','4','5','6','7'].every(s=>h.dsteps.includes(s)), JSON.stringify(h.dsteps));
+  assert('la línea de tiempo tiene 11 pasos y 11 hitos', h.lineaSteps === 11 && h.lineaPts === 11, `pasos=${h.lineaSteps} hitos=${h.lineaPts}`);
+  assert('marcador HOY distinto presente', h.hoy);
+  assert('dos contadores vivos con cifras tabulares', h.counters >= 2, `contadores=${h.counters}`);
+  assert('C · sin figura viajera (óvalo gris eliminado)', h.hasFig === false);
   assert('unit chart existe con cuadritos (>20)', h.unitCount > 20, `count=${h.unitCount}`);
   assert('unit chart transiciona (transition-duration ≠ 0s)', h.td && h.td !== '0s', `td=${h.td}`);
   assert('ficha del agua con badge "Validado por la autora"', (h.aguaBadge||'').includes('Validado por la autora'), h.aguaBadge);
   assert('la tarjeta del agua enlaza a un expediente', !!h.enlaceHref && h.enlaceHref.includes('/expedientes/'), h.enlaceHref);
 
-  // ---------- E3 · el momento del color (beat neutro → color) ----------
-  console.log('\n/huella — E3: el momento del color');
   async function scrollToStep(sel) {
     await c.send('Runtime.evaluate', { expression: `(()=>{const s=document.querySelector('${sel}');if(s){const r=s.getBoundingClientRect();window.scrollTo(0, window.scrollY + r.top - innerHeight*0.4);}})()` });
     await new Promise(r => setTimeout(r, 900));
   }
+
+  // ---------- E3 · el momento del color + E · rótulos ODS completos ----------
+  console.log('\n/huella — E3: el momento del color; E: rótulos ODS');
   await scrollToStep('.step[data-state=orden]');
-  const beatOrden = await evalJson(c, `return { hasOds: document.querySelectorAll('.unit.has-ods').length, state: (document.querySelector('.scrolly .scrolly-graphic')||{}).getAttribute?.('data-state') }`);
+  const beatOrden = await evalJson(c, `return { hasOds: document.querySelectorAll('.unit.has-ods').length }`);
   assert('E3 beat 1 (orden): cuadritos agrupados pero SIN color', beatOrden.hasOds === 0, `has-ods=${beatOrden.hasOds}`);
   await scrollToStep('.step[data-state=color]');
-  const beatColor = await evalJson(c, `return { hasOds: document.querySelectorAll('.unit.has-ods').length }`);
+  const beatColor = await evalJson(c, `
+    const rows = [...document.querySelectorAll('.unit-anno.ods-row')].filter(a=>getComputedStyle(a).opacity!=='0');
+    const names = rows.map(a=>(a.querySelector('.ods-row-name')||{}).textContent||'');
+    return { hasOds: document.querySelectorAll('.unit.has-ods').length,
+             rows: rows.length, truncadas: names.filter(n=>/^O\\.\\.\\.$|^\\S{0,2}\\.\\.\\.$/.test(n.trim())).length,
+             ejemplo: names.find(n=>/·/.test(n))||'' };
+  `);
   assert('E3 beat 2 (color): los cuadritos se tiñen de su ODS', beatColor.hasOds > 20, `has-ods=${beatColor.hasOds}`);
+  assert('E · rótulos de fila ODS presentes y sin truncar a "O…"', beatColor.rows > 3 && beatColor.truncadas === 0 && /·/.test(beatColor.ejemplo), `filas=${beatColor.rows} truncadas=${beatColor.truncadas} ej="${beatColor.ejemplo}"`);
 
-  // ---------- Acto II · la figura del viaje se mueve ----------
-  console.log('\n/huella — Acto II: la figura recorre el camino');
-  await scrollToStep('.step[data-step=v0]');
-  const p0 = await evalJson(c, `return { left: (document.querySelector('.viaje-fig')||{}).style?.left||'' }`);
-  await scrollToStep('.step[data-step=v3]');
-  const p3 = await evalJson(c, `return { left: (document.querySelector('.viaje-fig')||{}).style?.left||'', ring: getComputedStyle(document.querySelector('.viaje-stop.is-final .ring')||document.body).opacity }`);
-  assert('la figura del viaje se mueve entre paradas', p0.left !== p3.left && !!p3.left, `${p0.left} → ${p3.left}`);
+  // ---------- B · la escena del registro (color → contorno → color) ----------
+  console.log('\n/huella — B: la escena del registro');
+  await scrollToStep('.step[data-state=registro-sin]');
+  const regSin = await evalJson(c, `return { outline: document.querySelectorAll('.unit.outline').length, hasOds: document.querySelectorAll('.unit.has-ods').length }`);
+  assert('registro sin registro: los cuadritos pierden color (contorno)', regSin.outline > 20 && regSin.hasOds === 0, `outline=${regSin.outline} color=${regSin.hasOds}`);
+  await scrollToStep('.step[data-state=registro-con]');
+  const regCon = await evalJson(c, `return { hasOds: document.querySelectorAll('.unit.has-ods').length }`);
+  assert('registro documentado: el color regresa', regCon.hasOds > 20, `color=${regCon.hasOds}`);
+
+  // ---------- A/C · la línea de tiempo avanza (paneo ≥ un paso) ----------
+  console.log('\n/huella — A: la línea de tiempo avanza');
+  await scrollToStep('.step[data-step=l0]');
+  const l0 = await evalJson(c, `const t=document.querySelector('.linea-track'); return { x: t?getComputedStyle(t).transform:'' }`);
+  await scrollToStep('.step[data-step=l5]');
+  const l5 = await evalJson(c, `
+    const t=document.querySelector('.linea-track');
+    const m = t ? new DOMMatrixReadOnly(getComputedStyle(t).transform) : null;
+    return { x: t?getComputedStyle(t).transform:'', tx: m?m.m41:0 };
+  `);
+  assert('la línea de tiempo se desplaza entre pasos', l0.x !== l5.x && !!l5.x, `${l0.x} → ${l5.x}`);
 
   // ---------- expediente de la vitrina (LGA / NormTrace) ----------
   console.log('\n/expedientes/:id — ficha NormTrace de la vitrina');
   const ficha = await goto(c, h.enlaceHref || '/expedientes/ini5', `!/Cargando expediente/.test(document.body.innerText) && document.querySelector('header h1')`);
   assert('la ficha del expediente carga (no queda en «Cargando»)', ficha);
-  const f = await evalJson(c, `const t=document.body.innerText; return { nt: t.includes('Análisis NormTrace'), lga: t.includes('LGA') };`);
+  const f = await evalJson(c, `const t=document.body.innerText; return { nt: t.includes('Análisis NormTrace'), lga: t.includes('LGA'),
+    brecha: /brecha/i.test(t), agenda: t.includes('Agenda'), oportunidad: t.includes('Oportunidad de fortalecimiento') };`);
   assert('la ficha muestra el análisis NormTrace', f.nt);
+  // D · la palabra "brecha" no aparece en ninguna vista; la columna es "Agenda"
+  assert('D · cero apariciones de "brecha" en la ficha', f.brecha === false);
+  assert('D · la columna se presenta como "Agenda" / "Oportunidad de fortalecimiento"', f.agenda && f.oportunidad);
 
   // ---------- /minutas ----------
   console.log('\n/minutas — tarjetas dinámicas y filtros');
