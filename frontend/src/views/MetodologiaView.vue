@@ -20,6 +20,18 @@
       <h2>{{ T.normtraceTitulo }}</h2>
       <p>{{ T.normtrace }}</p>
 
+      <!-- Referencias de la escena del registro (patch registro §5). Cada una
+           lleva su ancla (#ref-…) a la que enlazan los tramos de esa escena. -->
+      <template v-if="T.referencias && T.referencias.length">
+        <h2>{{ T.referenciasTitulo }}</h2>
+        <p class="lede-sm">{{ T.referenciasIntro }}</p>
+        <div v-for="r in T.referencias" :key="r.id" :id="r.id" class="referencia">
+          <p><b>{{ r.cita }}</b></p>
+          <p><a :href="r.url" target="_blank" rel="noopener">{{ r.url }}</a></p>
+          <p class="muted">{{ r.nota }}</p>
+        </div>
+      </template>
+
       <p style="margin-top:26px">
         <router-link :to="{ name: 'huella' }">← Volver a la historia</router-link>
       </p>
