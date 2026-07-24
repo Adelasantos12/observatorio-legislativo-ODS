@@ -54,7 +54,12 @@ const routes = [
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
-  scrollBehavior() {
+  scrollBehavior(to) {
+    // Los enlaces de la escena del registro apuntan a #ref-… en /metodologia:
+    // si hay ancla, se lleva a la referencia (con aire para el encabezado).
+    if (to.hash) {
+      return { el: to.hash, top: 80, behavior: 'smooth' };
+    }
     return {
       x: 0,
       y: 0,

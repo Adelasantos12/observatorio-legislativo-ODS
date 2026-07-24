@@ -55,10 +55,12 @@
       "enlace": "El análisis completo, artículo por artículo →"
     },
     "registro": {
-      "titulo": "¿Y por qué esto no se sabía?",
-      "p1": "Porque el vínculo casi nunca queda escrito. Las iniciativas mexicanas rara vez nombran en su exposición de motivos el objetivo global que tocan, y cuando una ley se publica en el Diario Oficial, la exposición de motivos ni siquiera la acompaña. El rastro se corta justo donde empezaría a contar.",
-      "p2": "Y nombrar el objetivo no alcanza. La Agenda tiene 169 metas: una misma ley puede tocar tres, cinco, ocho, y casi ninguna lo dice. Si el documento oficial no registra esos impactos, el avance existe pero no se puede afirmar. Trabajo hecho, historia sin contar.",
-      "p3": "Eso es lo que hace este observatorio: leer cada asunto contra las metas, con método público, y dejarlo documentado. Para que lo que la Cámara ya hizo se pueda decir con fecha y fuente."
+      "titulo": "¿Y esto no se sabía ya?",
+      "p1": "Sí, y no... las acciones existen, sin embargo el vínculo ha sido complejo de trazar. ⟦Cuando la propia Cámara revisó cerca de 130 leyes federales en 2020, encontró una sola mención de la Agenda 2030 en todo el corpus⟧: la reforma de 2018 a la Ley de Planeación. Y el Diario Oficial publica los decretos sin la exposición de motivos, así que el documento donde el propósito quedó dicho no viaja con la ley.",
+      "p2": "No es una rareza mexicana. ⟦La revisión más amplia de la evidencia disponible, más de tres mil estudios, concluye que el efecto de los ODS ha sido sobre todo discursivo y que rara vez llega a las leyes⟧. Y aunque el objetivo se nombrara, faltaría lo fino: la Agenda son 169 metas, una misma ley puede tocar varias, y casi ningún expediente deja constancia de esos alcances.",
+      "p3": "Ese es el trabajo de este observatorio: leer cada asunto contra las metas, con método público, y dejar el vínculo trazado. Lo que la Cámara ya hizo, dicho con fecha y fuente.",
+      "p1ancla": "ref-estrategia",
+      "p2ancla": "ref-biermann"
     }
   },
   "porque_importa": {
@@ -191,6 +193,12 @@
         "t": "pasado"
       },
       {
+        "anio": "2025",
+        "hecho": "De los 35 países que presentaron su informe voluntario ante la ONU, solo 10 mencionaron a su parlamento.",
+        "fuente": "https://social.desa.un.org/sites/default/files/2025-10/2025%20VNR%20Synthesis%20Report_final.pdf",
+        "t": "pasado"
+      },
+      {
         "anio": "HOY",
         "hecho": "Este observatorio retoma el registro donde se quedó: {minutas} minutas y {aprobadas} leyes del periodo, leídas meta por meta.",
         "fuente": "",
@@ -293,6 +301,34 @@
     "atribucionTitulo": "Origen documentado",
     "atribucion": "El sistema de la Cámara no publica quién presentó cada minuta. Para las que continúan una iniciativa del Ejecutivo, el origen es directo. Para el resto, se lee del dictamen. Avance al corte: {documentadas} de {total} con origen documentado; las demás quedan abiertas hasta confirmar la fuente.",
     "normtraceTitulo": "Análisis profundo (NormTrace)",
-    "normtrace": "Una capa adicional lee una ley disposición por disposición contra un marco de estándares y registra juicios de ajuste por dimensión. La Ley General de Aguas es la primera ficha con este análisis, validada por la autora."
+    "normtrace": "Una capa adicional lee una ley disposición por disposición contra un marco de estándares y registra juicios de ajuste por dimensión. La Ley General de Aguas es la primera ficha con este análisis, validada por la autora.",
+    "referenciasTitulo": "Referencias de la escena del registro",
+    "referenciasIntro": "Los hechos de esta lectura provienen de fuentes públicas:",
+    "referencias": [
+      {
+        "id": "ref-estrategia",
+        "cita": "Cámara de Diputados, LXIV Legislatura (2020). Estrategia Legislativa para la Agenda 2030. México.",
+        "url": "https://www.gob.mx/cms/uploads/attachment/file/573730/Estrategia_Legislativa_para_la_Agenda_2030_VF_comp.pdf",
+        "nota": "De cerca de 130 leyes federales analizadas, solo el decreto de reforma a la Ley de Planeación (2018) menciona la Agenda 2030 (p. 11)."
+      },
+      {
+        "id": "ref-biermann",
+        "cita": "Biermann, F. et al. (2022). Scientific evidence on the political impact of the Sustainable Development Goals. Nature Sustainability, 5, 795-800.",
+        "url": "https://doi.org/10.1038/s41893-022-00909-5",
+        "nota": "El impacto de los ODS ha sido principalmente discursivo; el impacto normativo y legislativo es raro."
+      },
+      {
+        "id": "ref-vnr",
+        "cita": "UN DESA (2025). Voluntary National Reviews Synthesis Report, p. 11.",
+        "url": "https://social.desa.un.org/sites/default/files/2025-10/2025%20VNR%20Synthesis%20Report_final.pdf",
+        "nota": "Solo 10 de los 35 informes voluntarios de 2025 mencionan participación parlamentaria."
+      },
+      {
+        "id": "ref-toolkit",
+        "cita": "UIP y PNUD (2016). Parliaments and the Sustainable Development Goals: A self-assessment toolkit. Ginebra.",
+        "url": "https://www.ipu.org/file/2549/download",
+        "nota": "Incluye como pregunta de diagnóstico si los proyectos de ley se acompañan de una evaluación de su impacto en los ODS."
+      }
+    ]
   }
 }

@@ -129,9 +129,9 @@
           <!-- B · La escena del registro (el puente / la tesis). El color se pierde
                (lo hecho sin registro) y vuelve con p3 (lo documentado). -->
           <section v-if="C.escenas.registro" class="step" data-step="6" data-state="registro-sin"><div class="step-card">
-            <h2>{{ C.escenas.registro.titulo }}</h2>
-            <p>{{ C.escenas.registro.p1 }}</p>
-            <p class="muted">{{ C.escenas.registro.p2 }}</p>
+            <h2>{{ reg.titulo }}</h2>
+            <p>{{ regP1.pre }}<router-link v-if="regP1.mid" :to="{ name: 'metodologia', hash: '#' + reg.p1ancla }">{{ regP1.mid }}</router-link>{{ regP1.post }}</p>
+            <p class="muted">{{ regP2.pre }}<router-link v-if="regP2.mid" :to="{ name: 'metodologia', hash: '#' + reg.p2ancla }">{{ regP2.mid }}</router-link>{{ regP2.post }}</p>
           </div></section>
           <section v-if="C.escenas.registro" class="step" data-step="7" data-state="registro-con"><div class="step-card">
             <p class="lede-color">{{ C.escenas.registro.p3 }}</p>
@@ -248,6 +248,16 @@ const colored = computed(() => [3, 4, 7].includes(scene.value)); // teñido (E3 
 const outlineScene = computed(() => scene.value === 6);           // registro sin registro: contorno
 // Estado del panel derivado del índice de paso (máquina de estados, v7 §0.3).
 const graphicState = computed(() => ['grid', 'estatus', 'orden', 'color', 'singulares', 'agua', 'registro-sin', 'registro-con'][scene.value] || 'grid');
+// Escena del registro: ⟦…⟧ marca el tramo con enlace a una referencia en
+// /metodologia. Los corchetes no se renderizan (patch registro §2).
+function bracket(s) {
+  const m = (s || '').match(/^([\s\S]*?)⟦([\s\S]*?)⟧([\s\S]*)$/);
+  return m ? { pre: m[1], mid: m[2], post: m[3] } : { pre: s || '', mid: '', post: '' };
+}
+const reg = computed(() => (C.escenas && C.escenas.registro) || {});
+const regP1 = computed(() => bracket(reg.value.p1));
+const regP2 = computed(() => bracket(reg.value.p2));
+
 // Línea de tiempo (Acto II, v7.1)
 const hitos = computed(() => (C.linea && C.linea.hitos) || []);
 // Cifras tabulares vivas: días a la Cumbre (sep 2027, día provisional 1/sep) y
