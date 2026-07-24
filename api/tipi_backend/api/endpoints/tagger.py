@@ -2,6 +2,7 @@ import codecs
 import logging
 import os
 import pickle
+import re
 import subprocess
 import tempfile
 from os.path import splitext
@@ -90,6 +91,69 @@ def segment_and_tag(content, tags, kb):
     }
 
 
+# Extensiones de imagen que aceptamos como "foto o escaneo" (se leen por OCR).
+_IMAGE_EXTS = (".jpg", ".jpeg", ".png", ".tif", ".tiff", ".bmp", ".webp", ".gif")
+
+
+def _word_count(text: str) -> int:
+    """Palabras "de verdad" (>=2 letras, con acentos) en el texto. Sirve para
+    distinguir texto legible de ruido (números de página, artefactos)."""
+    return len(re.findall(r"[A-Za-zÁÉÍÓÚÜÑáéíóúüñ]{2,}", text or ""))
+
+
+def _looks_thin(text: str) -> bool:
+    """¿El texto extraído es esencialmente vacío? (PDF escaneado sin capa de
+    texto, o con una capa de basura). Umbral en palabras, no en caracteres: un
+    escaneo puede traer >20 chars de ruido y aun así no tener contenido real."""
+    return _word_count(text) < 6
+
+
+def _sniff_kind(head: bytes, filename: str, mimetype: str) -> str:
+    """Tipo real del archivo por firma binaria (magic bytes) primero, luego por
+    extensión y content-type. No confiar solo en content-type: los navegadores y
+    móviles suben PDFs válidos como 'application/octet-stream' (o sin tipo)."""
+    ext = splitext(filename or "")[1].lower()
+    mimetype = (mimetype or "").lower()
+    # 1) Firmas binarias (lo más confiable).
+    if head[:4] == b"%PDF":
+        return "pdf"
+    if head[:3] == b"\xff\xd8\xff" or head[:8] == b"\x89PNG\r\n\x1a\n" \
+            or head[:4] in (b"II*\x00", b"MM\x00*") or head[:2] == b"BM" \
+            or head[:6] in (b"GIF87a", b"GIF89a") \
+            or (head[:4] == b"RIFF" and head[8:12] == b"WEBP"):
+        return "image"
+    if head[:8] == b"\xd0\xcf\x11\xe0\xa1\xb1\x1a\xe1":  # OLE2 (.doc, .ppt viejos)
+        return "doc"
+    if head[:2] == b"PK":  # zip: docx/pptx/xlsx
+        if ext == ".pptx" or "presentation" in mimetype:
+            return "pptx"
+        return "docx"  # por defecto, el ofimático más común
+    # 2) Extensión / content-type como respaldo.
+    if ext == ".pdf" or mimetype == "application/pdf":
+        return "pdf"
+    if ext in _IMAGE_EXTS or mimetype.startswith("image/"):
+        return "image"
+    if ext == ".docx" or "wordprocessingml" in mimetype:
+        return "docx"
+    if ext == ".pptx" or "presentationml" in mimetype:
+        return "pptx"
+    if ext == ".doc" or mimetype == "application/msword":
+        return "doc"
+    if ext == ".txt" or mimetype == "text/plain":
+        return "txt"
+    return "unknown"
+
+
+def _decode_text(raw: bytes) -> str:
+    """Decodifica un .txt tolerando codificaciones no UTF-8 (Windows/Latin)."""
+    for enc in ("utf-8", "utf-8-sig", "cp1252", "latin-1"):
+        try:
+            return raw.decode(enc).strip()
+        except UnicodeDecodeError:
+            continue
+    return raw.decode("utf-8", errors="replace").strip()
+
+
 def _ocr_pdf(path: str) -> str:
     """OCR de un PDF escaneado (sin capa de texto), como respaldo de pdfminer.
 
@@ -120,26 +184,54 @@ def _ocr_pdf(path: str) -> str:
     return "\n".join(partes).strip()
 
 
+def _ocr_image(path: str) -> str:
+    """OCR directo de una imagen (foto o captura de pantalla). Mismo respaldo
+    opcional que el de PDF; degrada a "" si faltan las libs o falla la lectura."""
+    try:
+        import pytesseract
+        from PIL import Image
+    except ImportError:
+        logging.warning("OCR de imagen no disponible: instala pytesseract y Pillow.")
+        return ""
+    try:
+        with Image.open(path) as img:
+            return pytesseract.image_to_string(img, lang="spa").strip()
+    except Exception as exc:
+        logging.warning("Fallo de OCR de imagen: %s", exc)
+        return ""
+
+
 def _extract_text_from_file(file: UploadFile) -> str:
-    with tempfile.NamedTemporaryFile(
-        prefix="tipiscanner_", suffix=splitext(file.filename)[1]
-    ) as f:
-        f.write(file.file.read())
+    """Extrae texto de un archivo subido de forma robusta.
+
+    - Detecta el tipo por firma binaria (no solo por content-type), así un PDF
+      subido como 'octet-stream' se lee igual.
+    - PDF escaneado (sin capa de texto legible) -> OCR de respaldo.
+    - Foto o imagen (jpg/png/tiff/…) -> OCR directo.
+    El objetivo: si el documento tiene texto legible por una persona, lo sacamos.
+    """
+    raw = file.file.read()
+    kind = _sniff_kind(raw[:16], file.filename or "", file.content_type or "")
+    suffix = splitext(file.filename or "")[1] or (".pdf" if kind == "pdf" else "")
+    with tempfile.NamedTemporaryFile(prefix="tipiscanner_", suffix=suffix) as f:
+        f.write(raw)
         f.seek(0)
-        mimetype = file.content_type
-        if mimetype == "text/plain":
-            text = f.read().decode("utf-8").strip()
-        elif mimetype == "application/pdf":
-            text = extract_pdf_text(f.name).strip()
-            # PDF escaneado (imagen): pdfminer no encuentra capa de texto -> OCR.
-            if len(text) < 20:
+        if kind == "txt":
+            text = _decode_text(raw)
+        elif kind == "pdf":
+            text = (extract_pdf_text(f.name) or "").strip()
+            # PDF escaneado o con capa de texto pobre -> OCR; nos quedamos con el
+            # resultado que traiga más palabras legibles.
+            if _looks_thin(text):
                 ocr_text = _ocr_pdf(f.name)
-                if ocr_text:
+                if _word_count(ocr_text) > _word_count(text):
                     text = ocr_text
-        elif mimetype == "application/vnd.openxmlformats-officedocument.wordprocessingml.document":
+        elif kind == "image":
+            text = _ocr_image(f.name)
+        elif kind == "docx":
             doc = Document(f)
             text = "\n".join([para.text for para in doc.paragraphs]).strip()
-        elif mimetype == "application/msword":
+        elif kind == "doc":
             result = subprocess.run(
                 ["antiword", f.name], stdout=subprocess.PIPE, stderr=subprocess.PIPE
             )
@@ -148,7 +240,7 @@ def _extract_text_from_file(file: UploadFile) -> str:
                     f"Error al leer el archivo .doc: {result.stderr.decode('utf-8')}"
                 )
             text = result.stdout.decode("utf-8").strip()
-        elif mimetype == "application/vnd.openxmlformats-officedocument.presentationml.presentation":
+        elif kind == "pptx":
             ppt = Presentation(f)
             text = "\n".join(
                 [
@@ -161,14 +253,21 @@ def _extract_text_from_file(file: UploadFile) -> str:
         else:
             raise HTTPException(
                 status_code=400,
-                detail="Formato no soportado. Por favor, utilice un archivo .txt, .pdf, .docx, .doc o .pptx.",
+                detail="Formato no soportado. Sube un PDF, una imagen (foto o escaneo), o un archivo .txt, .docx, .doc o .pptx.",
             )
-    if not text:
+    if not text or not text.strip():
+        # Mensaje específico para foto/escaneo: distingue "no pudimos LEER el
+        # archivo" de "lo leímos pero no coincidió con ninguna etiqueta".
+        if kind in ("pdf", "image"):
+            raise HTTPException(
+                status_code=422,
+                detail="No pudimos extraer texto del archivo. Si es una foto o un PDF escaneado, prueba con una imagen más nítida o un PDF con texto seleccionable.",
+            )
         raise HTTPException(
             status_code=400,
             detail="Error al obtener el texto del fichero proporcionado. Pruebe con otro fichero.",
         )
-    return text
+    return text.strip()
 
 
 @router.post("/")
