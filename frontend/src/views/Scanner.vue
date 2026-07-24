@@ -28,14 +28,17 @@
                 type="file"
                 id="file"
                 name="file"
+                accept=".pdf,.txt,.doc,.docx,.pptx,image/*"
                 @change="loadSelectedFile"
-                placeholder="PDF, doc o txt"
+                placeholder="PDF, imagen, doc o txt"
               />
               <small class="u-color-secondary">{{
                 t('scanner.form.weight')
               }}</small
               ><br />
-              <small class="u-color-secondary">pdf, txt, doc, docx, pptx</small>
+              <small class="u-color-secondary"
+                >pdf, imagen o foto (jpg, png…), txt, doc, docx, pptx</small
+              >
             </label>
           </div>
           <p class="c-input-label u-block">
@@ -220,7 +223,12 @@ function annotate() {
         errors.value =
           'Archivo demasiado pesado para procesarlo. Prueba con uno más ligero.';
       } else {
-        errors.value = error?.response?.data?.message || 'Error desconocido';
+        // FastAPI devuelve el mensaje en `detail` (p. ej. foto/PDF ilegible);
+        // se prefiere sobre `message` para mostrar la ayuda específica.
+        errors.value =
+          error?.response?.data?.detail ||
+          error?.response?.data?.message ||
+          'Error desconocido';
       }
       inProgress.value = false;
     });
