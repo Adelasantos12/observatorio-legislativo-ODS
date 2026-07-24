@@ -67,7 +67,9 @@ onBeforeUnmount(() => {
   max-width: 1240px; margin: 0 auto;
   display: flex; align-items: center; justify-content: space-between;
   gap: 16px; padding: 14px clamp(16px, 5vw, 56px);
-  transition: padding .2s ease;
+  /* La compactación suave del header al hacer scroll es una interacción
+     distintiva del producto (decisión de diseño), no un descuido. */
+  transition: padding .2s ease; /* impeccable-disable-line layout-transition: interacción de scroll distintiva */
 }
 .site-header.scrolled .site-header__wrap { padding-top: 10px; padding-bottom: 10px; }
 
@@ -100,10 +102,12 @@ onBeforeUnmount(() => {
     flex-direction: column; align-items: flex-start; gap: 4px;
     background: var(--bg, #fff); border-bottom: 1px solid var(--line, #E6E4DE);
     padding: 8px clamp(16px, 5vw, 56px) 16px;
-    max-height: 0; overflow: hidden; opacity: 0; pointer-events: none;
-    transition: max-height .25s ease, opacity .2s ease;
+    /* El panel está absolutamente posicionado (no empuja el contenido), así que
+       se anima con transform + opacity —sin tocar layout— en vez de max-height. */
+    opacity: 0; pointer-events: none; transform: translateY(-8px);
+    transition: transform .22s ease, opacity .2s ease;
   }
-  .site-header__nav.open { max-height: 60vh; opacity: 1; pointer-events: auto; }
+  .site-header__nav.open { opacity: 1; pointer-events: auto; transform: translateY(0); }
   .site-header__link { padding: 10px 0; font-size: 16px; width: 100%; }
   .site-header__link.router-link-active::after { display: none; }
 }

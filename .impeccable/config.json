@@ -1,0 +1,14 @@
+{
+  "detector": {
+    "ignoreRules": [],
+    "ignoreFiles": [],
+    "ignoreValues": [
+      {
+        "rule": "overused-font",
+        "value": "inter",
+        "createdAt": "2026-07-24T19:06:33.049Z",
+        "reason": "Fuente de marca del proyecto (decisión de la autora)"
+      }
+    ]
+  }
+}
