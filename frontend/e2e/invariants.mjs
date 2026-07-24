@@ -42,8 +42,8 @@ function conn(url) {
   const send = (m, p = {}) => { const i = ++id; ws.send(JSON.stringify({ id: i, method: m, params: p })); return new Promise(r => pend[i] = r); };
   return { ready, send };
 }
-// Red de seguridad: nunca colgar más de 100s.
-setTimeout(() => { console.error('Timeout global del runner'); process.exit(1); }, 100000).unref();
+// Red de seguridad: nunca colgar más de 240s (el barrido de 5 anchos es lento).
+setTimeout(() => { console.error('Timeout global del runner'); process.exit(1); }, 240000).unref();
 async function newPage() {
   const t = await (await fetch(`http://localhost:9223/json/new?about:blank`, { method: 'PUT' })).json();
   const c = conn(t.webSocketDebuggerUrl); await c.ready;
@@ -75,42 +75,77 @@ try {
 
   const h = await evalJson(c, `
     const txt = document.body.innerText;
-    const steps = [...document.querySelectorAll('[data-step]')].map(e=>e.getAttribute('data-step'));
+    const steps = [...document.querySelectorAll('.step[data-step]')];
+    const dsteps = steps.map(e=>e.getAttribute('data-step'));
+    const sinEstado = steps.filter(s=>!s.getAttribute('data-state')).length;
     const units = document.querySelectorAll('.unit-stage .unit');
-    const unit = units[0];
-    const td = unit ? getComputedStyle(unit).transitionDuration : '0s';
+    const td = units[0] ? getComputedStyle(units[0]).transitionDuration : '0s';
     const agua = document.querySelector('.nt-badge--validado');
     const enlace = document.querySelector('a[href*="/expedientes/"]');
     return {
       titulos: {
         agenda: txt.includes('La agenda, en cuadritos'),
         estatus: txt.includes('¿Cuántas ya son ley?'),
-        hallazgo: txt.includes('Casi la mitad mira al mismo lugar'),
+        hallazgo: txt.includes('Y cuando se leen en clave 2030'),
         singulares: txt.includes('Lo que se ve al acercarse'),
         agua: txt.includes('Una ley llegó el año'),
-        porque: txt.includes('Por qué nombrar esto vale la pena'),
-        quien_mas: txt.includes('Otros parlamentos ya llevan su cuenta'),
-        explorador: txt.includes('Explora')||txt.includes('explora')||!!document.querySelector('.explorador'),
+        madrid: txt.includes('En Madrid ya lo hacen'),
+        asuncion: txt.includes('En Asunción lo hacen desde adentro'),
+        foros: txt.includes('Y en los foros ya hay mesa puesta'),
+        mexico: txt.includes('México no llega tarde'),
+        cierre: txt.includes('Quien guarda el registro cuenta la historia'),
+        explorador: !!document.querySelector('.explorador'),
       },
-      steps, unitCount: units.length, td,
+      dsteps, sinEstado, unitCount: units.length, td,
+      viajeStops: document.querySelectorAll('.viaje-stop').length,
+      viajeSteps: document.querySelectorAll('.step[data-step^=\"v\"]').length,
+      hasFig: !!document.querySelector('.viaje-fig'),
       aguaBadge: agua ? agua.textContent.trim() : null,
       enlaceHref: enlace ? enlace.getAttribute('href') : null,
     };
   `);
   const T = h.titulos;
-  assert('escena apertura (agenda) presente', T.agenda);
-  assert('escena estatus presente', T.estatus);
-  assert('escena hallazgo presente', T.hallazgo);
-  assert('escena singulares presente', T.singulares);
-  assert('escena del agua presente', T.agua);
-  assert('sección "por qué importa" presente', T.porque);
-  assert('sección "quién más lo hace" presente', T.quien_mas);
+  assert('E1 apertura (agenda) presente', T.agenda);
+  assert('E2 estatus presente', T.estatus);
+  assert('E3 "el momento del color" presente (título reescrito)', T.hallazgo);
+  assert('E4 singulares presente', T.singulares);
+  assert('E5 agua presente', T.agua);
+  assert('Acto II · V1 Madrid presente', T.madrid);
+  assert('Acto II · V2 Asunción presente', T.asuncion);
+  assert('Acto II · V3 foros presente', T.foros);
+  assert('Acto II · V4 México presente', T.mexico);
+  assert('Acto II · V5 cierre presente', T.cierre);
   assert('explorador presente', T.explorador);
-  assert('pasos del scrollytelling en orden 0..4', JSON.stringify(h.steps) === JSON.stringify(['0','1','2','3','4']), JSON.stringify(h.steps));
+  // v7 §0.1: ningún paso sin estado gráfico
+  assert('cada paso tiene su data-state (ningún paso sin estado)', h.sinEstado === 0, `sin estado=${h.sinEstado}`);
+  assert('Acto I con sus 6 pasos (0..5)', ['0','1','2','3','4','5'].every(s=>h.dsteps.includes(s)), JSON.stringify(h.dsteps));
+  assert('el viaje tiene sus 5 pasos y 4 paradas', h.viajeSteps === 5 && h.viajeStops === 4, `pasos=${h.viajeSteps} paradas=${h.viajeStops}`);
+  assert('la figura del viaje existe', h.hasFig);
   assert('unit chart existe con cuadritos (>20)', h.unitCount > 20, `count=${h.unitCount}`);
   assert('unit chart transiciona (transition-duration ≠ 0s)', h.td && h.td !== '0s', `td=${h.td}`);
   assert('ficha del agua con badge "Validado por la autora"', (h.aguaBadge||'').includes('Validado por la autora'), h.aguaBadge);
   assert('la tarjeta del agua enlaza a un expediente', !!h.enlaceHref && h.enlaceHref.includes('/expedientes/'), h.enlaceHref);
+
+  // ---------- E3 · el momento del color (beat neutro → color) ----------
+  console.log('\n/huella — E3: el momento del color');
+  async function scrollToStep(sel) {
+    await c.send('Runtime.evaluate', { expression: `(()=>{const s=document.querySelector('${sel}');if(s){const r=s.getBoundingClientRect();window.scrollTo(0, window.scrollY + r.top - innerHeight*0.4);}})()` });
+    await new Promise(r => setTimeout(r, 900));
+  }
+  await scrollToStep('.step[data-state=orden]');
+  const beatOrden = await evalJson(c, `return { hasOds: document.querySelectorAll('.unit.has-ods').length, state: (document.querySelector('.scrolly .scrolly-graphic')||{}).getAttribute?.('data-state') }`);
+  assert('E3 beat 1 (orden): cuadritos agrupados pero SIN color', beatOrden.hasOds === 0, `has-ods=${beatOrden.hasOds}`);
+  await scrollToStep('.step[data-state=color]');
+  const beatColor = await evalJson(c, `return { hasOds: document.querySelectorAll('.unit.has-ods').length }`);
+  assert('E3 beat 2 (color): los cuadritos se tiñen de su ODS', beatColor.hasOds > 20, `has-ods=${beatColor.hasOds}`);
+
+  // ---------- Acto II · la figura del viaje se mueve ----------
+  console.log('\n/huella — Acto II: la figura recorre el camino');
+  await scrollToStep('.step[data-step=v0]');
+  const p0 = await evalJson(c, `return { left: (document.querySelector('.viaje-fig')||{}).style?.left||'' }`);
+  await scrollToStep('.step[data-step=v3]');
+  const p3 = await evalJson(c, `return { left: (document.querySelector('.viaje-fig')||{}).style?.left||'', ring: getComputedStyle(document.querySelector('.viaje-stop.is-final .ring')||document.body).opacity }`);
+  assert('la figura del viaje se mueve entre paradas', p0.left !== p3.left && !!p3.left, `${p0.left} → ${p3.left}`);
 
   // ---------- expediente de la vitrina (LGA / NormTrace) ----------
   console.log('\n/expedientes/:id — ficha NormTrace de la vitrina');
@@ -150,6 +185,27 @@ try {
   await new Promise(r => setTimeout(r, 400));
   const tabla = await evalJson(c, `return { table: !!document.querySelector('table tbody tr') }`);
   assert('el toggle muestra la tabla densa', tabla.table);
+
+  // ---------- Anticolisión de etiquetas de grupo en 5 anchos (v7 §0.2) ----------
+  console.log('\n/huella — etiquetas de grupo sin traslape (5 anchos)');
+  for (const width of [320, 375, 768, 1024, 1440]) {
+    const cw = await newPage();
+    await cw.send('Emulation.setDeviceMetricsOverride', { width, height: 900, deviceScaleFactor: 1, mobile: width <= 480, screenWidth: width, screenHeight: 900 });
+    await goto(cw, '/huella', `document.querySelector('.hero-art')`);
+    await cw.send('Runtime.evaluate', { expression: `(()=>{const s=document.querySelector('.step[data-state=estatus]');if(s){const r=s.getBoundingClientRect();window.scrollTo(0, window.scrollY + r.top - innerHeight*0.4);}})()` });
+    await new Promise(r => setTimeout(r, 900));
+    const res = await evalJson(cw, `
+      const annos = [...document.querySelectorAll('.unit-anno')].filter(a=>getComputedStyle(a).opacity!=='0').map(a=>a.getBoundingClientRect());
+      let overlap = 0;
+      for (let i=0;i<annos.length;i++) for (let j=i+1;j<annos.length;j++) {
+        const a=annos[i], b=annos[j];
+        if (a.right>b.left+1 && b.right>a.left+1 && a.bottom>b.top+1 && b.bottom>a.top+1) overlap++;
+      }
+      return { count: annos.length, overlap };
+    `);
+    assert(`etiquetas de grupo sin traslape @${width}px`, res.overlap === 0, `annos=${res.count} traslapes=${res.overlap}`);
+    await cw.send('Page.close').catch(() => {});
+  }
 } catch (e) {
   fail('runner sin excepción', String(e && e.stack || e));
 } finally {
