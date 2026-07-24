@@ -53,6 +53,13 @@
       "contadorNota": "de 32",
       "contadorSinDato": "en documentación",
       "enlace": "El análisis completo, artículo por artículo →"
+    },
+    "registro": {
+      "_estado": "DRAFT v7.1 B — pendiente de visto bueno de la autora antes de merge",
+      "titulo": "¿Y por qué esto no se sabía?",
+      "p1": "Porque el vínculo casi nunca queda escrito. Las iniciativas mexicanas rara vez nombran en su exposición de motivos el objetivo global que tocan, y cuando una ley se publica en el Diario Oficial, la exposición de motivos ni siquiera la acompaña. El rastro se corta justo donde empezaría a contar.",
+      "p2": "Y nombrar el objetivo no alcanza. La Agenda tiene 169 metas: una misma ley puede tocar tres, cinco, ocho, y casi ninguna lo dice. Si el documento oficial no registra esos impactos, el avance existe pero no se puede afirmar. Trabajo hecho, historia sin contar.",
+      "p3": "Eso es lo que hace este observatorio: leer cada asunto contra las metas, con método público, y dejarlo documentado. Para que lo que la Cámara ya hizo se pueda decir con fecha y fuente."
     }
   },
   "porque_importa": {
@@ -138,6 +145,84 @@
       "foros": "Ginebra · Nueva York",
       "mexico": "México"
     }
+  },
+  "linea": {
+    "_estado": "DRAFT v7.1 A — pendiente de visto bueno de la autora antes de merge",
+    "titulo": "Una década, y dónde estamos parados",
+    "hitos": [
+      {
+        "anio": "2015",
+        "hecho": "193 países, México entre ellos, adoptan la Agenda 2030 en la Asamblea General de la ONU.",
+        "fuente": "https://www.un.org/sustainabledevelopment/",
+        "t": "pasado"
+      },
+      {
+        "anio": "2016",
+        "hecho": "La Unión Interparlamentaria y el PNUD publican la herramienta de autoevaluación para que los parlamentos documenten su parte. El Senado mexicano instala su grupo de trabajo sobre la Agenda.",
+        "fuente": "https://www.ipu.org/resources/publications/toolkits/2017-01",
+        "t": "pasado"
+      },
+      {
+        "anio": "2018",
+        "hecho": "Madrid: la sociedad civil presenta ante la ONU Parlamento2030, el primer etiquetado de un congreso en clave ODS. El parlamento español es observado desde afuera.",
+        "fuente": "https://parlamento2030.es/acerca",
+        "t": "pasado"
+      },
+      {
+        "anio": "2019-2020",
+        "hecho": "San Lázaro arma su propio grupo de trabajo y publica la Estrategia Legislativa para la Agenda 2030. El hilo mexicano existe.",
+        "fuente": "https://www.gob.mx/agenda2030",
+        "t": "pasado"
+      },
+      {
+        "anio": "2020",
+        "hecho": "Asunción: el Senado paraguayo lanza Congreso2030py con la misma tecnología. Primer congreso de la región que se observa a sí mismo.",
+        "fuente": "https://eurosocial.eu/",
+        "t": "pasado"
+      },
+      {
+        "anio": "2021",
+        "hecho": "El Informe Nacional Voluntario de México presume ante la ONU a su Poder Legislativo: la Comisión Especial del Senado y el Grupo de Trabajo de Diputados aparecen en el reporte oficial.",
+        "fuente": "https://hlpf.un.org/countries/mexico/voluntary-national-review-2021",
+        "t": "pasado"
+      },
+      {
+        "anio": "2024",
+        "hecho": "México presenta su cuarto Informe. El capítulo legislativo ya no aparece: el registro se detuvo, no el trabajo.",
+        "fuente": "https://hlpf.un.org/countries/mexico/voluntary-national-reviews-2024",
+        "t": "pasado"
+      },
+      {
+        "anio": "HOY",
+        "hecho": "Este observatorio retoma el registro donde se quedó: {minutas} minutas y {aprobadas} leyes del periodo, leídas meta por meta.",
+        "fuente": "",
+        "t": "hoy"
+      },
+      {
+        "anio": "jul 2027",
+        "hecho": "El foro de la ONU revisa educación, desigualdades, consumo, ecosistemas y alianzas (ODS 4, 10, 12, 15 y 17).",
+        "fuente": "https://hlpf.un.org/",
+        "t": "futuro"
+      },
+      {
+        "anio": "sep 2027",
+        "hecho": "Cumbre ODS: jefes de Estado, balance de década. Lo que esté documentado, existe; lo que no, no se puede decir.",
+        "fuente": "https://hlpf.un.org/sdg-summit",
+        "t": "futuro"
+      },
+      {
+        "anio": "2030",
+        "hecho": "Vence la Agenda. La década se contará con datos.",
+        "fuente": "https://www.un.org/sustainabledevelopment/",
+        "t": "futuro"
+      }
+    ],
+    "fuenteEtiqueta": "fuente",
+    "contador1": "Faltan {dias} días para la Cumbre ODS de septiembre de 2027.",
+    "contador2Pre": "La Agenda vence en 2030. Este registro lleva",
+    "contador2Post": "asuntos documentados.",
+    "contadorDiasPre": "Faltan",
+    "contadorDiasSuf": "días para la Cumbre ODS de septiembre de 2027."
   },
   "explorador": {
     "titulo": "Ahora te toca a ti",
