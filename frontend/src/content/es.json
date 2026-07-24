@@ -55,7 +55,6 @@
       "enlace": "El análisis completo, artículo por artículo →"
     },
     "registro": {
-      "_estado": "DRAFT v7.1 B — pendiente de visto bueno de la autora antes de merge",
       "titulo": "¿Y por qué esto no se sabía?",
       "p1": "Porque el vínculo casi nunca queda escrito. Las iniciativas mexicanas rara vez nombran en su exposición de motivos el objetivo global que tocan, y cuando una ley se publica en el Diario Oficial, la exposición de motivos ni siquiera la acompaña. El rastro se corta justo donde empezaría a contar.",
       "p2": "Y nombrar el objetivo no alcanza. La Agenda tiene 169 metas: una misma ley puede tocar tres, cinco, ocho, y casi ninguna lo dice. Si el documento oficial no registra esos impactos, el avance existe pero no se puede afirmar. Trabajo hecho, historia sin contar.",
@@ -147,7 +146,6 @@
     }
   },
   "linea": {
-    "_estado": "DRAFT v7.1 A — pendiente de visto bueno de la autora antes de merge",
     "titulo": "Una década, y dónde estamos parados",
     "hitos": [
       {
