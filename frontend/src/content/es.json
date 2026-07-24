@@ -33,9 +33,9 @@
       "p2": "El tramo que falta para cerrar cada serie se dibuja con su casilla vacía."
     },
     "hallazgo": {
-      "titulo": "Casi la mitad mira al mismo lugar",
-      "p1": "Al ordenar por objetivo, una barra crece por encima del resto: {odsDominanteNombre}.",
-      "p2": "Detrás asoman los otros frentes de esta legislatura: igualdad, trabajo, infraestructura y hacienda."
+      "titulo": "Y cuando se leen en clave 2030, aparece esto",
+      "p1": "Los mismos cuadritos, ordenados ahora por objetivo. Todavía sin color: primero el orden.",
+      "p2": "Ahora sí. Cada asunto toma el color de su objetivo, y una columna crece por encima del resto: paz, justicia e instituciones. Detrás, igualdad, trabajo, infraestructura y hacienda."
     },
     "singulares": {
       "titulo": "Lo que se ve al acercarse",
@@ -99,6 +99,45 @@
       }
     ],
     "remate": "México no llega tarde a este grupo. Llega con registro propio y con una Cámara que publica su propia huella, sin depender de que otra institución la observe desde afuera. Ahí está la diferencia con España, donde es la sociedad civil la que mira, y el parecido con Paraguay, donde el parlamento se mira a sí mismo. Quién sostiene la cámara que observa es el argumento completo del parlamento abierto."
+  },
+  "viaje": {
+    "madrid": {
+      "titulo": "En Madrid ya lo hacen, desde afuera",
+      "p": "Desde 2019, una organización civil etiqueta todo lo que pasa por el Congreso de los Diputados en clave 2030. El parlamento español es observado; la evidencia la construye la sociedad civil."
+    },
+    "asuncion": {
+      "titulo": "En Asunción lo hacen desde adentro",
+      "p": "El Congreso paraguayo publica sus propios expedientes etiquetados por objetivo. Ahí el parlamento no espera a que lo observen: se observa a sí mismo. Eso tiene nombre en la literatura: parlamento abierto."
+    },
+    "foros": {
+      "titulo": "Y en los foros ya hay mesa puesta",
+      "p": "La Unión Interparlamentaria y el PNUD publican desde 2016 una herramienta para que cada parlamento documente su parte de la Agenda 2030. Cada julio, el foro de alto nivel de la ONU revisa avances país por país. Los que llegan con registro, hablan; los que no, escuchan.",
+      "chips": [
+        "UIP",
+        "PNUD",
+        "HLPF"
+      ]
+    },
+    "mexico": {
+      "titulo": "México no llega tarde. Llega con registro propio",
+      "p1": "El Ejecutivo ya tiene su tablero: agenda2030.mx sigue los indicadores del país desde hace años. Lo que no existía era la mitad legislativa. Este observatorio la pone sobre la mesa, y con eso México se vuelve el primer caso de la región donde las dos mitades del Estado pueden contarse juntas.",
+      "p2": "La política exterior mexicana tiene principios escritos en la Constitución: cooperación internacional para el desarrollo, respeto a los derechos humanos, igualdad jurídica de los Estados. Nombrar el trabajo legislativo en el lenguaje que el mundo comparte no es adoptar una agenda ajena: es ejercer una identidad que ya está en el artículo 89. La influencia también se construye así, contando con método lo que ya se decidió en casa. En el Parlatino y en ParlAmericas, ese registro convierte a México en referencia, no en audiencia.",
+      "chips": [
+        "Parlatino",
+        "ParlAmericas",
+        "agenda2030.mx"
+      ]
+    },
+    "cierre": {
+      "titulo": "Quien guarda el registro cuenta la historia",
+      "p": "La legislatura que cierra en 2027 deja constancia con fecha y fuente. La década que termina en 2030 se va a contar con datos. Ya están aquí."
+    },
+    "paradas": {
+      "madrid": "Madrid",
+      "asuncion": "Asunción",
+      "foros": "Ginebra · Nueva York",
+      "mexico": "México"
+    }
   },
   "explorador": {
     "titulo": "Ahora te toca a ti",
