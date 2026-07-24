@@ -35,8 +35,7 @@
     "hallazgo": {
       "titulo": "Y cuando se leen en clave 2030, aparece esto",
       "p1": "Los mismos cuadritos, ordenados ahora por objetivo. Todavía sin color: primero el orden.",
-      "p2": "Ahora sí. Cada asunto toma el color de su objetivo, y una columna crece por encima del resto: paz, justicia e instituciones. Detrás, igualdad, trabajo, infraestructura y hacienda.",
-      "_estado": "DRAFT v7 E3 — pendiente de visto bueno de la autora antes de merge"
+      "p2": "Ahora sí. Cada asunto toma el color de su objetivo, y una columna crece por encima del resto: paz, justicia e instituciones. Detrás, igualdad, trabajo, infraestructura y hacienda."
     },
     "singulares": {
       "titulo": "Lo que se ve al acercarse",
@@ -102,7 +101,6 @@
     "remate": "México no llega tarde a este grupo. Llega con registro propio y con una Cámara que publica su propia huella, sin depender de que otra institución la observe desde afuera. Ahí está la diferencia con España, donde es la sociedad civil la que mira, y el parecido con Paraguay, donde el parlamento se mira a sí mismo. Quién sostiene la cámara que observa es el argumento completo del parlamento abierto."
   },
   "viaje": {
-    "_estado": "DRAFT v7 Acto II — pendiente de visto bueno de la autora antes de merge",
     "madrid": {
       "titulo": "En Madrid ya lo hacen, desde afuera",
       "p": "Desde 2019, una organización civil etiqueta todo lo que pasa por el Congreso de los Diputados en clave 2030. El parlamento español es observado; la evidencia la construye la sociedad civil."
