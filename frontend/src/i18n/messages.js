@@ -180,7 +180,8 @@ const messages = {
       unidades jurídicas del texto (artículo, fracción, inciso), una
       codificación asistida identifica qué actor queda obligado o
       facultado, con qué procedimiento, coordinación entre órdenes de
-      gobierno, sanción o salvaguarda, y qué tipo de brecha presenta. Es
+      gobierno, sanción o salvaguarda, y qué aspectos deja abiertos para
+      su desarrollo posterior. Es
       una lectura preliminar que conserva siempre su cita fuente y su
       estatus de revisión.
     </p>
@@ -258,7 +259,7 @@ const messages = {
           duty: 'Deber / Facultad',
           procedure: 'Procedimiento',
           coordination: 'Coordinación',
-          gap: 'Tipo de brecha',
+          gap: 'Agenda',
           confidence: 'Confianza',
         },
       },

@@ -26,20 +26,26 @@
         <!-- Gráfico fijo (un solo panel; su estado se deriva del índice de paso, v7 §0.3) -->
         <div class="scrolly-graphic" :data-state="graphicState">
           <div style="width:100%">
-            <div v-show="scene <= 4">
+            <div v-show="scene <= 4 || scene >= 6">
               <div ref="stageEl" class="unit-stage">
                 <div v-for="n in nodes" :key="n.id" class="unit"
-                  :class="[n.type === 'min' ? 'is-min' : 'is-ini', { faint: scene === 1 && n.type === 'ini', 'has-ods': colored && n.ods, dim: pos[n.id] && pos[n.id].dim, glow: pos[n.id] && pos[n.id].glow }]"
+                  :class="[n.type === 'min' ? 'is-min' : 'is-ini', { faint: scene === 1 && n.type === 'ini', 'has-ods': colored && n.ods, outline: outlineScene && n.ods, dim: pos[n.id] && pos[n.id].dim, glow: pos[n.id] && pos[n.id].glow }]"
                   :style="unitStyle(n)" :title="n.label"></div>
                 <div v-for="a in annotations" :key="a.key" class="unit-anno"
-                     :style="{ left: a.x + 'px', top: a.y + 'px', maxWidth: (a.w ? a.w + 'px' : undefined), opacity: a.show ? 1 : 0 }" :title="a.full || a.text">
-                  <b>{{ a.n }}</b> {{ a.text }}
+                     :class="{ 'ods-row': a.kind === 'ods' }"
+                     :style="{ left: a.x + 'px', top: a.y + 'px', maxWidth: (a.w ? a.w + 'px' : undefined), opacity: a.show ? 1 : 0 }" :title="a.full || a.name || a.text">
+                  <template v-if="a.kind === 'ods'">
+                    <span v-if="a.odsNum" class="ods-chip" :style="{ background: a.color }">{{ a.odsNum }}</span>
+                    <span class="ods-row-name">{{ a.name }}</span>
+                    <b class="ods-row-count">{{ a.n }}</b>
+                  </template>
+                  <template v-else><b>{{ a.n }}</b> {{ a.text }}</template>
                 </div>
               </div>
               <div class="unit-legend">
                 <span class="k"><span class="sw" style="background:var(--ink-2);opacity:.8"></span> {{ C.leyenda.minuta }} ({{ nMinutas }})</span>
                 <span class="k"><span class="sw" style="background:var(--ink-3)"></span> {{ C.leyenda.iniciativa }} ({{ nIniciativas }})</span>
-                <span class="k" v-show="colored"><span class="sw" style="background:linear-gradient(90deg,#e5243b,#26bde2,#4c9f38)"></span> agrupadas por ODS</span>
+                <span class="k" v-show="colored"><span class="sw" style="background:linear-gradient(90deg,#e5243b,#26bde2,#4c9f38)"></span> color por ODS · minutas a pleno, Ejecutivo tenue</span>
               </div>
             </div>
 
@@ -119,61 +125,50 @@
             <p>{{ C.escenas.agua.p1 }}</p>
             <p class="muted">{{ C.escenas.agua.p2 }}</p>
           </div></section>
+
+          <!-- B · La escena del registro (el puente / la tesis). El color se pierde
+               (lo hecho sin registro) y vuelve con p3 (lo documentado). -->
+          <section v-if="C.escenas.registro" class="step" data-step="6" data-state="registro-sin"><div class="step-card">
+            <h2>{{ C.escenas.registro.titulo }}</h2>
+            <p>{{ C.escenas.registro.p1 }}</p>
+            <p class="muted">{{ C.escenas.registro.p2 }}</p>
+          </div></section>
+          <section v-if="C.escenas.registro" class="step" data-step="7" data-state="registro-con"><div class="step-card">
+            <p class="lede-color">{{ C.escenas.registro.p3 }}</p>
+          </div></section>
         </div>
       </div>
 
-      <!-- ACTO II · El viaje (guion v7): camino con cuatro paradas y una figura
-           mancha que avanza; sustituye a las tres columnas de "por qué importa". -->
-      <div v-if="C.viaje" class="story viaje">
+      <!-- ACTO II · La línea de tiempo 2015→2030 (guion v7.1 A/C). Sin figura
+           viajera: la línea se dibuja sola y cada hito enciende su punto. -->
+      <div v-if="C.linea" class="story linea-story">
       <div class="scrolly">
-        <div class="scrolly-graphic" :data-state="'viaje-' + viajeScene">
+        <div class="scrolly-graphic" :data-state="'linea-' + lineaScene">
           <div style="width:100%">
-            <div class="viaje-stage">
-              <div class="viaje-path"></div>
-              <!-- paradas -->
-              <div v-for="(st, i) in paradas" :key="st.key" class="viaje-stop"
-                   :class="{ 'is-active': i === Math.min(viajeScene,3), 'is-final': i === 3, 'reveal-ring': i === 3 && viajeScene >= 3 }"
-                   :style="{ left: st.x + '%' }">
-                <img v-if="i === 3" class="ring" :src="art.anillo" alt="Anillo de los 17 ODS" />
-                <span class="dot"></span>
-                <span class="chip">{{ st.label }}</span>
+            <div class="linea-stage">
+              <div class="linea-anio-big" :class="hitos[lineaScene] && hitos[lineaScene].t">{{ hitos[lineaScene] ? hitos[lineaScene].anio : '' }}</div>
+              <div class="linea-track-wrap">
+                <div class="linea-baseline"></div>
+                <div class="linea-track" :style="{ transform: 'translate(-' + (lineaScene * 240) + 'px, -50%)' }">
+                  <div class="linea-progress" :style="{ width: (lineaScene * 240) + 'px' }"></div>
+                  <div v-for="(hi, i) in hitos" :key="i" class="linea-pt" :class="[hi.t, { active: i === lineaScene }]" :style="{ left: (i * 240) + 'px' }">
+                    <span class="dot"></span>
+                    <span class="yr">{{ hi.anio }}</span>
+                  </div>
+                </div>
               </div>
-              <!-- extras por parada -->
-              <div class="viaje-mini" :class="{ show: viajeScene === 0 }" :style="{ left: paradas[0].x + '%' }">
-                <span v-for="m in 12" :key="m" class="m"></span>
+              <div class="linea-counters">
+                <div class="ct"><span class="lbl">{{ C.linea.contadorDiasPre }}</span><b class="tabular linea-num">{{ diasCumbre }}</b><span class="lbl">{{ C.linea.contadorDiasSuf }}</span></div>
+                <div class="ct"><span class="lbl">{{ C.linea.contador2Pre }}</span><b class="tabular linea-num">{{ asuntosDoc }}</b><span class="lbl">{{ C.linea.contador2Post }}</span></div>
               </div>
-              <div class="viaje-mini institucional" :class="{ show: viajeScene === 1 }" :style="{ left: paradas[1].x + '%' }">
-                <span v-for="m in 12" :key="m" class="m"></span>
-              </div>
-              <div class="viaje-sig" :style="{ left: paradas[2].x + '%', opacity: viajeScene === 2 ? 1 : 0, transition: 'opacity .5s ease-in-out' }">
-                <span v-for="s in (C.viaje.foros.chips || [])" :key="s" class="s">{{ s }}</span>
-              </div>
-              <div class="viaje-sig" :style="{ left: paradas[3].x + '%', top: '46%', opacity: viajeScene >= 3 ? 1 : 0, transition: 'opacity .5s ease-in-out' }">
-                <span v-for="s in (C.viaje.mexico.chips || [])" :key="s" class="s">{{ s }}</span>
-              </div>
-              <!-- figura mancha que avanza -->
-              <svg class="viaje-fig" :style="{ left: paradas[Math.min(viajeScene,3)].x + '%' }" viewBox="0 0 30 40" aria-hidden="true">
-                <path class="pebble" d="M15 39 C6 39 2 31 3 22 C4 12 8 3 15 3 C22 3 26 12 27 22 C28 31 24 39 15 39 Z"/>
-              </svg>
             </div>
-            <p class="viaje-legend">{{ paradas[Math.min(viajeScene,3)].label }}</p>
           </div>
         </div>
         <div class="scrolly-steps">
-          <section class="step" data-step="v0" data-state="viaje-0"><div class="step-card">
-            <h2>{{ C.viaje.madrid.titulo }}</h2><p>{{ C.viaje.madrid.p }}</p>
-          </div></section>
-          <section class="step" data-step="v1" data-state="viaje-1"><div class="step-card">
-            <h2>{{ C.viaje.asuncion.titulo }}</h2><p>{{ C.viaje.asuncion.p }}</p>
-          </div></section>
-          <section class="step" data-step="v2" data-state="viaje-2"><div class="step-card">
-            <h2>{{ C.viaje.foros.titulo }}</h2><p>{{ C.viaje.foros.p }}</p>
-          </div></section>
-          <section class="step" data-step="v3" data-state="viaje-3"><div class="step-card">
-            <h2>{{ C.viaje.mexico.titulo }}</h2><p>{{ C.viaje.mexico.p1 }}</p><p>{{ C.viaje.mexico.p2 }}</p>
-          </div></section>
-          <section class="step" data-step="v4" data-state="viaje-4"><div class="step-card">
-            <h2>{{ C.viaje.cierre.titulo }}</h2><p>{{ C.viaje.cierre.p }}</p>
+          <section v-for="(hi, i) in hitos" :key="i" class="step" :data-step="'l' + i" :data-state="'linea-' + i"><div class="step-card">
+            <div class="linea-anio" :class="hi.t">{{ hi.anio }}</div>
+            <p>{{ hitoTexto(hi) }}</p>
+            <a v-if="hi.fuente" :href="hi.fuente" target="_blank" rel="noopener" class="linea-fuente">{{ C.linea.fuenteEtiqueta || 'fuente' }} ↗</a>
           </div></section>
         </div>
       </div>
@@ -242,24 +237,28 @@ const art = {
 const router = useRouter();
 const ready = ref(false);
 const scene = ref(0);
-const viajeScene = ref(0);
+const lineaScene = ref(0);
 const animate = ref(true);
 // Layout por objetivo en E3/E4 (escenas 2-4). El color (teñido) llega en el
 // segundo beat de E3 (escena 3): ese es "el momento del color" (guion v7 E3).
-const grouped = computed(() => scene.value >= 2 && scene.value <= 4);
-const colored = computed(() => scene.value >= 3 && scene.value <= 4);
+// Escenas con layout por objetivo. Incluye la escena del registro (6 y 7).
+const BYODS = [2, 3, 4, 6, 7];
+const grouped = computed(() => BYODS.includes(scene.value));
+const colored = computed(() => [3, 4, 7].includes(scene.value)); // teñido (E3 + registro con color)
+const outlineScene = computed(() => scene.value === 6);           // registro sin registro: contorno
 // Estado del panel derivado del índice de paso (máquina de estados, v7 §0.3).
-const graphicState = computed(() => ['grid', 'estatus', 'orden', 'color', 'singulares', 'agua'][scene.value] || 'grid');
-// Paradas del viaje (Acto II)
-const paradas = computed(() => {
-  const p = (C.viaje && C.viaje.paradas) || {};
-  return [
-    { key: 'madrid', label: p.madrid || 'Madrid', x: 15 },
-    { key: 'asuncion', label: p.asuncion || 'Asunción', x: 38 },
-    { key: 'foros', label: p.foros || 'Ginebra · Nueva York', x: 61 },
-    { key: 'mexico', label: p.mexico || 'México', x: 84 },
-  ];
+const graphicState = computed(() => ['grid', 'estatus', 'orden', 'color', 'singulares', 'agua', 'registro-sin', 'registro-con'][scene.value] || 'grid');
+// Línea de tiempo (Acto II, v7.1)
+const hitos = computed(() => (C.linea && C.linea.hitos) || []);
+// Cifras tabulares vivas: días a la Cumbre (sep 2027, día provisional 1/sep) y
+// asuntos documentados (minutas + iniciativas del periodo).
+const diasCumbre = computed(() => {
+  const target = new Date('2027-09-01T00:00:00Z');
+  const diff = Math.ceil((target - new Date()) / 86400000);
+  return diff > 0 ? new Intl.NumberFormat('es-MX').format(diff) : '0';
 });
+const asuntosDoc = computed(() => new Intl.NumberFormat('es-MX').format(nMinutas.value + nIniciativas.value));
+function hitoTexto(hi) { return fill(hi.hecho || '', { minutas: nMinutas.value, aprobadas: nLogradas.value }); }
 
 const agg = ref({ kpis: {}, por_ods: [], corte: null });
 const minAgg = ref({ kpis: {}, por_estatus: [], por_ods: [] });
@@ -294,6 +293,10 @@ const hasData = computed(() => nodes.value.length > 0);
 
 function odsColor(n) { return (cat.value.ods[String(n)] || {}).color || 'var(--ink3)'; }
 function odsName(n) { return (cat.value.ods[String(n)] || {}).nombre_es || ('ODS ' + n); }
+// v7.1 E: nombre corto para el rótulo de fila (la identidad del ODS nunca se
+// trunca a "O..."). Fila "sin" = "Sin correspondencia".
+const ODS_CORTO = { 1:'Pobreza', 2:'Hambre', 3:'Salud', 4:'Educación', 5:'Género', 6:'Agua', 7:'Energía', 8:'Trabajo decente', 9:'Industria', 10:'Desigualdades', 11:'Ciudades', 12:'Consumo responsable', 13:'Clima', 14:'Océanos', 15:'Ecosistemas', 16:'Paz y justicia', 17:'Alianzas' };
+function odsCorto(n) { return ODS_CORTO[Number(n)] || ('ODS ' + n); }
 
 const S = 16;
 function stageSize() {
@@ -338,19 +341,36 @@ function computePositions() {
       const fits = measureLabel(g.label) + 24 <= colW;
       anno.push({ key: g.key, x: x0, y: 14, n: g.nodes.length, text: fits ? g.label : g.short, full: g.label, w: Math.max(34, colW - 10), show: true });
     });
-  } else if (sc >= 2 && sc <= 4) {
+  } else if ([2, 3, 4, 6, 7].includes(sc)) {
     const byOds = {};
     nodes.value.forEach((n) => { const k = n.ods || 'sin'; (byOds[k] = byOds[k] || []).push(n); });
     const keys = Object.keys(byOds).sort((a, b) => byOds[b].length - byOds[a].length);
-    const rowH = Math.max(S + 2, Math.min(30, h / keys.length));
-    const perRow = Math.max(6, Math.floor((w - 60) / S));
-    keys.forEach((k, ri) => {
-      const y0 = ri * rowH;
-      byOds[k].forEach((n, i) => {
-        // E4 (singulares): se atenúa lo demás y se iluminan agua y "sin casilla".
-        out[n.id] = { x: 56 + (i % perRow) * S, y: y0 + Math.floor(i / perRow) * S, dim: sc === 4 && !isSingular(n), glow: sc === 4 && isSingular(n) };
+    // E: la identidad del ODS nunca se trunca. Desktop reserva un gutter de
+    // 280px para el rótulo completo; móvil lo pone encima de su fila.
+    const wide = w >= 560;
+    const gutter = wide ? 280 : 0;
+    const labelH = wide ? 0 : 20;
+    const perRow = Math.max(4, Math.floor((w - gutter - 12) / S));
+    const show = (sc === 2 || sc === 3) || (sc === 4 && false); // en singulares se ocultan los rótulos generales
+    let y = 0;
+    keys.forEach((k) => {
+      const list = byOds[k];
+      const rows = Math.ceil(list.length / perRow);
+      const y0 = y;
+      const cy = wide ? y0 : y0 + labelH;
+      const cx = wide ? gutter + 8 : 2;
+      list.forEach((n, i) => {
+        out[n.id] = { x: cx + (i % perRow) * S, y: cy + Math.floor(i / perRow) * S, dim: sc === 4 && !isSingular(n), glow: sc === 4 && isSingular(n) };
       });
-      anno.push({ key: 'ods' + k, x: 0, y: y0, w: 52, n: byOds[k].length, text: k === 'sin' ? 'sin ODS' : 'ODS ' + k, show: (sc === 2 || sc === 3) || (sc === 4 && (k === '6' || k === 'sin')) });
+      const isSin = k === 'sin';
+      anno.push({
+        kind: 'ods', key: 'ods' + k, x: 0, y: y0, w: wide ? gutter - 12 : (w - 8),
+        odsNum: isSin ? '' : String(k), color: isSin ? 'var(--ink-3)' : odsColor(k),
+        name: isSin ? 'Sin correspondencia' : ('ODS ' + k + ' · ' + odsCorto(k)),
+        n: list.length,
+        show: sc === 4 ? (k === '6' || k === 'sin') : (sc >= 6 ? false : show),
+      });
+      y += wide ? Math.max(S + 6, rows * S + 4) : (labelH + rows * S + 10);
     });
   }
   Object.keys(pos).forEach((k) => delete pos[k]);
@@ -366,8 +386,8 @@ function unitStyle(n) {
   if (colored.value && n.ods) s['--ods'] = odsColor(n.ods);
   return s;
 }
-function setScene(i) { if (i === scene.value) return; scene.value = i; if (i <= 4) nextTick(computePositions); }
-function setViaje(i) { if (i === viajeScene.value) return; viajeScene.value = i; }
+function setScene(i) { if (i === scene.value) return; scene.value = i; if (i <= 4 || i >= 6) nextTick(computePositions); }
+function setLinea(i) { if (i === lineaScene.value) return; lineaScene.value = i; }
 
 function goExpediente(id) { router.push({ name: 'expediente', params: { id } }); }
 function clearFilters() { q.value = ''; fOds.value = ''; fMeta.value = ''; loadIniciativas(); }
@@ -402,14 +422,14 @@ onMounted(async () => {
   loadIniciativas();
   await nextTick();
   computePositions();
-  ro = new ResizeObserver(() => { if (scene.value <= 4) computePositions(); });
+  ro = new ResizeObserver(() => { if (scene.value <= 4 || scene.value >= 6) computePositions(); });
   if (stageEl.value) ro.observe(stageEl.value);
   // El estado cambia al cruzar el 50% del viewport (v7 §0.3): un paso, un estado.
   io = new IntersectionObserver((entries) => {
     entries.forEach((e) => {
       if (!e.isIntersecting) return;
       const ds = e.target.getAttribute('data-step');
-      if (ds && ds[0] === 'v') setViaje(Number(ds.slice(1)));
+      if (ds && ds[0] === 'l') setLinea(Number(ds.slice(1)));
       else setScene(Number(ds));
     });
   }, { rootMargin: '-50% 0px -50% 0px', threshold: 0 });

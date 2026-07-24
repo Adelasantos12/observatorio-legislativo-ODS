@@ -60,10 +60,10 @@ const porOdsIni = Object.entries(agrupa(iniciativas.filter(i=>i.ods_principal),'
 const huellaEjec={ corte:'30 jun 2026', normtrace_vitrina:'ini5',
   kpis:{ iniciativas_presentadas:iniciativas.length, aprobadas:iniciativas.filter(i=>i.seccion.startsWith('Aprobadas')).length, ods_dominante:'16' },
   por_ods: porOdsIni.sort((a,b)=>b.n-a.n) };
-const expediente={ registros:[
-  {estandar:'PIDESC art. 11', disposicion:'LGA art. 4', rol_correspondencia:'sustantivo', cobertura:'parcial'},
-  {estandar:'Observación Gral. 15', disposicion:'LGA art. 7', rol_correspondencia:'sustantivo', cobertura:'alta'},
-  {estandar:'ODS 6.1', disposicion:'LGA art. 12', rol_correspondencia:'contextual', cobertura:'media'},
+const expediente={ fuente_texto:'DOF', marco:'ods', registros:[
+  {estandar:'PIDESC art. 11', disposicion:'LGA art. 4', rol_correspondencia:'sustantivo', cobertura:'parcial', tipo_brecha:'brecha_procedimental'},
+  {estandar:'Observación Gral. 15', disposicion:'LGA art. 7', rol_correspondencia:'sustantivo', cobertura:'alta', tipo_brecha:'brecha_presupuestal'},
+  {estandar:'ODS 6.1', disposicion:'LGA art. 12', rol_correspondencia:'contextual', cobertura:'media', tipo_brecha:'reconocimiento_sin_garantia'},
 ]};
 function filt(list,q){ let out=list;
   if(q.q){const s=q.q.toLowerCase();out=out.filter(m=>(m.denominacion+m.tema).toLowerCase().includes(s));}
