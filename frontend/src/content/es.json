@@ -59,7 +59,6 @@
       "p1": "Sí, y no... las acciones existen, sin embargo el vínculo ha sido complejo de trazar. ⟦Cuando la propia Cámara revisó cerca de 130 leyes federales en 2020, encontró una sola mención de la Agenda 2030 en todo el corpus⟧: la reforma de 2018 a la Ley de Planeación. Y el Diario Oficial publica los decretos sin la exposición de motivos, así que el documento donde el propósito quedó dicho no viaja con la ley.",
       "p2": "No es una rareza mexicana. ⟦La revisión más amplia de la evidencia disponible, más de tres mil estudios, concluye que el efecto de los ODS ha sido sobre todo discursivo y que rara vez llega a las leyes⟧. Y aunque el objetivo se nombrara, faltaría lo fino: la Agenda son 169 metas, una misma ley puede tocar varias, y casi ningún expediente deja constancia de esos alcances.",
       "p3": "Ese es el trabajo de este observatorio: leer cada asunto contra las metas, con método público, y dejar el vínculo trazado. Lo que la Cámara ya hizo, dicho con fecha y fuente.",
-      "_estado": "DRAFT patch registro — pendiente de visto bueno de la autora antes de merge",
       "p1ancla": "ref-estrategia",
       "p2ancla": "ref-biermann"
     }
@@ -305,7 +304,6 @@
     "normtrace": "Una capa adicional lee una ley disposición por disposición contra un marco de estándares y registra juicios de ajuste por dimensión. La Ley General de Aguas es la primera ficha con este análisis, validada por la autora.",
     "referenciasTitulo": "Referencias de la escena del registro",
     "referenciasIntro": "Los hechos de esta lectura provienen de fuentes públicas:",
-    "_estado_referencias": "DRAFT patch registro — referencias pendientes de visto bueno de la autora",
     "referencias": [
       {
         "id": "ref-estrategia",
