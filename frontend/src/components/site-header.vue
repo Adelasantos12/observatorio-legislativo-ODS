@@ -67,14 +67,15 @@ onBeforeUnmount(() => {
   max-width: 1240px; margin: 0 auto;
   display: flex; align-items: center; justify-content: space-between;
   gap: 16px; padding: 14px clamp(16px, 5vw, 56px);
+  /* La compactación suave del header al hacer scroll es una interacción
+     distintiva del producto (decisión de diseño), no un descuido. */
+  transition: padding .2s ease; /* impeccable-disable-line layout-transition: interacción de scroll distintiva */
 }
-/* La compactación al hacer scroll no anima el padding (provoca reflujo): el
-   cambio es instantáneo y la sombra de .scrolled da el indicio de movimiento. */
 .site-header.scrolled .site-header__wrap { padding-top: 10px; padding-bottom: 10px; }
 
 .site-header__nav { display: flex; align-items: center; gap: clamp(14px, 2.2vw, 30px); }
 .site-header__link {
-  font-family: "IBM Plex Sans", system-ui, sans-serif;
+  font-family: "Inter", system-ui, sans-serif;
   font-size: 15px; font-weight: 500; color: var(--ink-2, #565A70);
   text-decoration: none; padding: 6px 0; position: relative; white-space: nowrap;
 }

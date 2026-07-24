@@ -8,24 +8,23 @@
    definen copias sueltas. Guinda, dorado y la paleta pastel de la v5 quedan
    retiradas. */
 
-/* ---- Tipografía autoalojada (sin fuentes externas) ----
-   Cuerpo e interfaz: IBM Plex Sans (variable), legible para datos densos y con
-   más carácter que las sans genéricas. Titulares y masthead: Newsreader, una
-   serie serif editorial que da el contraste sobrio propio de un observatorio
-   legislativo. Ambas son variables: un solo archivo cubre sus pesos. */
+/* ---- Inter autoalojada (sin fuentes externas) ----
+   Fuente de marca del proyecto (decisión de la autora). El detector de
+   impeccable la marca como "overused-font"; se conserva a propósito y queda
+   registrado como waiver en .impeccable/config.json. */
 @font-face {
-  font-family: "IBM Plex Sans";
+  font-family: "Inter";
   font-style: normal;
-  font-weight: 100 700;
+  font-weight: 400;
   font-display: swap;
-  src: url("../assets/fonts/ibmplexsans-latin.woff2") format("woff2");
+  src: url("../assets/fonts/inter-latin-400.woff2") format("woff2");
 }
 @font-face {
-  font-family: "Newsreader";
+  font-family: "Inter";
   font-style: normal;
-  font-weight: 400 700;
+  font-weight: 600;
   font-display: swap;
-  src: url("../assets/fonts/newsreader-latin.woff2") format("woff2");
+  src: url("../assets/fonts/inter-latin-600.woff2") format("woff2");
 }
 
 :root {
@@ -63,7 +62,7 @@ html { overflow-x: hidden; }
 .huella-page {
   background: var(--bg);
   color: var(--ink);
-  font-family: "IBM Plex Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+  font-family: "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
   font-weight: 400;
   -webkit-font-smoothing: antialiased;
   min-height: 100vh;
@@ -83,9 +82,9 @@ html { overflow-x: hidden; }
 .huella-page img, .huella-page svg { max-width: 100%; }
 .huella-page h1, .huella-page h2, .huella-page h3, .huella-page h4,
 .huella-page .serif {
-  font-family: "Newsreader", Georgia, "Times New Roman", serif;
+  font-family: "Inter", system-ui, sans-serif;
   font-weight: 600;
-  letter-spacing: -0.01em;
+  letter-spacing: -0.02em;
   color: var(--ink);
 }
 /* Cifras y datos con cifras tabulares */
@@ -194,7 +193,7 @@ html { overflow-x: hidden; }
 .story { max-width: 1180px; margin: 0 auto; }
 .story-hero { min-height: 72vh; display: flex; flex-direction: column; justify-content: center; padding: 24px clamp(16px,5vw,56px); }
 .story-hero .hero-art { width: 100%; max-width: 1100px; height: auto; margin: 0 auto 28px; display: block; }
-.story-hero .lede { font-family: "Newsreader", Georgia, "Times New Roman", serif; font-weight: 600; letter-spacing: -0.01em; font-size: clamp(30px, 4.4vw, 52px); line-height: 1.12; max-width: 16em; }
+.story-hero .lede { font-family: "Inter", system-ui, sans-serif; font-weight: 600; letter-spacing: -0.02em; font-size: clamp(30px, 4.4vw, 52px); line-height: 1.12; max-width: 16em; }
 .story-hero .sub { color: var(--ink-2); font-size: 18.5px; line-height: 1.55; margin-top: 18px; max-width: 34em; }
 /* Panel gráfico fijo 55% + pasos 40% (guion v7 §0.1) */
 .scrolly { position: relative; display: grid; grid-template-columns: 55% 40%; gap: 5%; align-items: start; padding: 0 clamp(16px,5vw,56px); }

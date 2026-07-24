@@ -319,7 +319,7 @@ let _ctx = null;
 function measureLabel(txt) {
   if (typeof document === 'undefined') return 0;
   if (!_ctx) { _ctx = document.createElement('canvas').getContext('2d'); }
-  _ctx.font = '600 13px "IBM Plex Sans", system-ui, sans-serif';
+  _ctx.font = '600 13px Inter, system-ui, sans-serif';
   return _ctx.measureText('00 ' + txt).width;
 }
 function gridLayout(list, x0, y0, cols) {
