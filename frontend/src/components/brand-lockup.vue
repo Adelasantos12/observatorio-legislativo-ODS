@@ -43,12 +43,12 @@ const M = content.marca;
 .brand-ring { width: 34px; height: 34px; display: block; flex: none; }
 .brand-text { display: inline-flex; flex-direction: column; gap: 3px; }
 .brand-name {
-  font-family: "Inter", system-ui, sans-serif;
-  font-weight: 600; font-size: 16px; letter-spacing: -0.015em;
+  font-family: "Newsreader", Georgia, "Times New Roman", serif;
+  font-weight: 600; font-size: 18px; letter-spacing: -0.005em;
   color: var(--ink, #1B1E32);
 }
 .brand-tagline {
-  font-family: "Inter", system-ui, sans-serif;
+  font-family: "IBM Plex Sans", system-ui, sans-serif;
   font-weight: 500; font-size: 10.5px; letter-spacing: .14em; text-transform: uppercase;
   color: var(--ink-3, #9A9DAC);
 }
