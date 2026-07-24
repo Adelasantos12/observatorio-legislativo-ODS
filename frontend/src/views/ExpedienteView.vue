@@ -58,7 +58,7 @@
         <table class="nt-table">
           <thead><tr>
             <th>Estándar</th><th>Disposición</th><th>Rol</th><th>Cobertura</th>
-            <th>Actor</th><th>Proc.</th><th>Coord.</th><th>Exig.</th><th>Salvag.</th><th>Feder.</th><th>Brecha</th>
+            <th>Actor</th><th>Proc.</th><th>Coord.</th><th>Exig.</th><th>Salvag.</th><th>Feder.</th><th title="Aspectos que la propia ley deja abiertos para su desarrollo posterior.">Agenda</th>
           </tr></thead>
           <tbody>
             <tr v-for="(r,i) in nt.registros" :key="i">
@@ -67,7 +67,7 @@
               <td><span :class="{muted: r.rol_correspondencia !== 'sustantivo'}">{{ rolCorto(r.rol_correspondencia) }}</span></td>
               <td>{{ r.cobertura }}</td>
               <td v-for="f in FITS" :key="f"><span class="nt-fit"><span class="nt-dot" :class="'nt-dot--'+r[f]"></span>{{ fitCorto(r[f]) }}</span></td>
-              <td class="muted">{{ r.tipo_brecha || '—' }}</td>
+              <td class="muted" :title="r.tipo_brecha || ''">{{ agendaLabel(r.tipo_brecha) }}</td>
             </tr>
           </tbody>
         </table>
@@ -122,6 +122,18 @@ function odsName(n) { return (cat.value.ods[String(n)] || {}).nombre_es || ('ODS
 function metaCorto(code) { return metaMap.value[code]?.nombre_corto_es || ''; }
 function metaOficial(code) { return metaMap.value[code]?.nombre_oficial_es || null; }
 
+// v7.1 D: la palabra "brecha" no aparece en ninguna vista. El dato interno
+// (tipo_brecha) no cambia; solo su presentación como "Agenda".
+const AGENDA_LABELS = {
+  brecha_procedimental: 'Oportunidad de fortalecimiento · procedimiento',
+  reconocimiento_sin_garantia: 'Oportunidad de fortalecimiento · exigibilidad',
+  brecha_presupuestal: 'Oportunidad de fortalecimiento · presupuesto',
+  brecha_de_implementacion: 'Oportunidad de fortalecimiento · implementación',
+  brecha_de_remision: 'Oportunidad de fortalecimiento · desarrollo normativo',
+  brecha_de_cobertura: 'Oportunidad de fortalecimiento · cobertura',
+  brecha_administrativa: 'Oportunidad de fortalecimiento · operación',
+};
+function agendaLabel(v) { return AGENDA_LABELS[v] || '—'; }
 function rolCorto(r) { return r === 'sustantivo' ? 'sustantivo' : 'contextual'; }
 function fitCorto(f) { return ({ fuerte: 'fuerte', medio: 'medio', debil: 'débil', no_aplica: 'n/a' })[f] || f; }
 
