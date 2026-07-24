@@ -225,8 +225,10 @@ html { overflow-x: hidden; }
 .unit.is-min { background: var(--ink-2); opacity: .8; }
 .unit.is-ini { background: var(--ink-3); opacity: .85; }
 .unit.is-ini.faint { opacity: .3; }                       /* E2: el bloque del Ejecutivo se atenúa */
-.unit.has-ods { background: var(--ods); opacity: .95; }   /* E3: teñido con su color ODS */
+.unit.has-ods { background: var(--ods); opacity: 1; }     /* E3: teñido con su color ODS (minutas a pleno) */
+.unit.has-ods.is-ini { opacity: .55; }                    /* v7.1 E.2: Ejecutivo a media opacidad, mismo color */
 .unit.empty { background: transparent; border: 1.5px dotted var(--line); opacity: 1; } /* Zeigarnik: casilla vacía */
+.unit.outline { background: transparent !important; border: 1.5px dotted var(--ink-3); opacity: .85; } /* B: lo hecho sin registro */
 .unit.dim { opacity: .12; }
 .unit.glow { box-shadow: 0 0 0 2px var(--bg), 0 0 10px 3px var(--action); opacity: 1; z-index: 2; }
 .unit-anno { position: absolute; font-size: 13px; color: var(--ink-2); transition: opacity .5s; font-variant-numeric: tabular-nums; }
@@ -252,28 +254,40 @@ html { overflow-x: hidden; }
    mide en JS y la variante corta lleva el nombre completo en title. */
 .unit-anno { max-width: 120px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .unit-anno b { margin-right: 4px; }
+/* v7.1 E: rótulo de fila ODS completo (chip + nombre + conteo), sin truncar */
+.unit-anno.ods-row { display: flex; align-items: center; gap: 8px; overflow: visible; }
+.unit-anno.ods-row .ods-chip { width: 18px; height: 18px; flex: none; }
+.unit-anno.ods-row .ods-row-name { font-size: 12.5px; color: var(--ink-2); overflow: hidden; text-overflow: ellipsis; }
+.unit-anno.ods-row .ods-row-count { color: var(--ink); font-variant-numeric: tabular-nums; margin-left: auto; padding-left: 8px; }
 
-/* ---- ACTO II · El viaje (guion v7): camino horizontal + figura mancha ---- */
-.viaje-stage { position: relative; width: 100%; height: 62vh; }
-.viaje-path { position: absolute; left: 4%; right: 4%; top: 52%; height: 0; border-top: 2px dashed var(--ink-3); opacity: .55; }
-.viaje-stop { position: absolute; top: 52%; transform: translate(-50%, -50%); display: flex; flex-direction: column; align-items: center; gap: 8px; transition: opacity .6s ease-in-out; }
-.viaje-stop .dot { width: 14px; height: 14px; border-radius: 50%; background: var(--ink-3); border: 3px solid var(--bg); box-shadow: 0 0 0 1px var(--line); }
-.viaje-stop.is-active .dot { background: var(--action); }
-.viaje-stop .chip { font-size: 12.5px; font-weight: 600; color: var(--ink-2); background: var(--bg-alt); border: 1px solid var(--line); border-radius: 999px; padding: 3px 11px; white-space: nowrap; }
-.viaje-stop.is-active .chip { color: var(--ink); border-color: color-mix(in srgb, var(--action) 40%, var(--line)); }
-.viaje-stop.is-final { top: 30%; }
-.viaje-stop.is-final .ring { width: 96px; height: 96px; display: block; opacity: 0; transform: scale(.6); transition: opacity .6s ease-in-out, transform .6s ease-in-out; }
-.viaje-stop.is-final.reveal-ring .ring { opacity: 1; transform: scale(1); }
-.viaje-mini { position: absolute; top: 62%; transform: translateX(-50%); display: grid; grid-template-columns: repeat(6, 9px); gap: 3px; opacity: 0; transition: opacity .5s ease-in-out; }
-.viaje-mini.show { opacity: 1; }
-.viaje-mini .m { width: 9px; height: 9px; border-radius: 2px; background: var(--ink-2); opacity: .7; }
-.viaje-mini.institucional { padding: 5px; border: 1px solid var(--line); border-radius: 6px; background: var(--bg-alt); }
-.viaje-sig { position: absolute; top: 66%; transform: translateX(-50%); display: flex; gap: 5px; }
-.viaje-sig .s { font-size: 10.5px; font-weight: 600; letter-spacing: .06em; color: var(--ink-2); background: var(--bg-alt); border: 1px solid var(--line); border-radius: 6px; padding: 2px 6px; }
-/* La figura mancha (neutra, sin cara) avanza de parada en parada */
-.viaje-fig { position: absolute; width: 30px; height: 40px; top: 52%; transform: translate(-50%, -78%); transition: left .6s ease-in-out, top .6s ease-in-out; }
-.viaje-fig .pebble { fill: var(--neutral-2); }
-.viaje-legend { margin-top: 10px; font-size: 12.5px; color: var(--ink-3); text-align: center; }
+/* ---- ACTO II · Línea de tiempo 2015→2030 (guion v7.1 A/C) · sin figura ---- */
+.linea-stage { position: relative; width: 100%; padding: 0 8px; }
+.linea-anio-big { font-weight: 600; font-size: clamp(40px, 6vw, 72px); letter-spacing: -0.03em; color: var(--ink); font-variant-numeric: tabular-nums; text-align: center; margin-bottom: 6px; transition: color .4s ease-in-out; }
+.linea-anio-big.futuro { color: var(--ink-3); }
+.linea-anio-big.hoy { color: var(--action); }
+.linea-track-wrap { position: relative; height: 88px; overflow: hidden; }
+.linea-baseline { position: absolute; left: 0; right: 0; top: 50%; border-top: 2px dashed var(--line); }
+.linea-track { position: absolute; left: 50%; top: 50%; height: 0; transition: transform .6s ease-in-out; }
+.linea-progress { position: absolute; right: 0; top: -1px; height: 2px; background: var(--ink-2); }
+.linea-pt { position: absolute; top: 0; transform: translate(-50%, -50%); display: flex; flex-direction: column; align-items: center; gap: 6px; }
+.linea-pt .dot { width: 12px; height: 12px; border-radius: 50%; background: var(--ink-3); transition: transform .3s cubic-bezier(.34,1.56,.64,1), box-shadow .3s; }
+.linea-pt.pasado .dot { background: var(--ink-2); }
+.linea-pt.hoy .dot { background: var(--action); width: 15px; height: 15px; }
+.linea-pt.futuro .dot { background: var(--bg); border: 2px solid var(--line); }
+.linea-pt .yr { position: absolute; top: 16px; font-size: 11px; font-weight: 600; color: var(--ink-3); white-space: nowrap; font-variant-numeric: tabular-nums; }
+.linea-pt.pasado .yr, .linea-pt.hoy .yr { color: var(--ink-2); }
+.linea-pt.active .dot { transform: scale(1.5); box-shadow: 0 0 0 4px color-mix(in srgb, var(--action) 25%, transparent); }
+.linea-pt.active .yr { color: var(--ink); font-size: 12px; }
+.linea-counters { display: flex; gap: 28px; justify-content: center; margin-top: 26px; flex-wrap: wrap; }
+.linea-counters .ct { font-size: 13px; color: var(--ink-2); max-width: 230px; text-align: center; }
+.linea-counters .linea-num { display: block; font-size: 34px; font-weight: 600; color: var(--ink); font-variant-numeric: tabular-nums; letter-spacing: -0.02em; line-height: 1.1; }
+/* pasos de la línea */
+.linea-anio { font-weight: 600; font-size: 34px; letter-spacing: -0.02em; color: var(--ink); font-variant-numeric: tabular-nums; margin-bottom: 4px; }
+.linea-anio.futuro { color: var(--ink-3); }
+.linea-anio.hoy { color: var(--action); }
+.linea-fuente { display: inline-block; margin-top: 8px; font-size: 12.5px; color: var(--action); }
+.linea-story { margin-top: 32px; }
+@media (max-width: 720px) { .linea-track-wrap { height: 72px; } .linea-counters { gap: 16px; } }
 
 @media (max-width: 720px) {
   /* Móvil (guion v7 §0.4): gráfico fijo en el tercio superior, pasos debajo. */
