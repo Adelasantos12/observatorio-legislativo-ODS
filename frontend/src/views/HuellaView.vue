@@ -308,10 +308,26 @@ function odsName(n) { return (cat.value.ods[String(n)] || {}).nombre_es || ('ODS
 const ODS_CORTO = { 1:'Pobreza', 2:'Hambre', 3:'Salud', 4:'Educación', 5:'Género', 6:'Agua', 7:'Energía', 8:'Trabajo decente', 9:'Industria', 10:'Desigualdades', 11:'Ciudades', 12:'Consumo responsable', 13:'Clima', 14:'Océanos', 15:'Ecosistemas', 16:'Paz y justicia', 17:'Alianzas' };
 function odsCorto(n) { return ODS_CORTO[Number(n)] || ('ODS ' + n); }
 
-const S = 16;
+// Tamaño de celda adaptable (v8 · responsive): los cuadritos se reajustan solos
+// para caber en el panel a cualquier ancho —móvil o ventana no maximizada— sin
+// amontonarse ni desbordar. GAP es el aire entre cuadritos; el lado del cuadrito
+// renderizado (unitPx) se recalcula por escena y se aplica inline.
+const GAP = 3;
+const MINCELL = 7;   // celda mínima: cuadrito de ~4px, aún legible como mancha
+const MAXCELL = 16;  // celda de referencia (el look de escritorio holgado)
+const unitPx = ref(MAXCELL - GAP);
 function stageSize() {
   const el = stageEl.value;
-  return { w: Math.max(200, el ? el.clientWidth : 560), h: Math.max(200, el ? el.clientHeight : 500) };
+  return { w: Math.max(200, el ? el.clientWidth : 560), h: Math.max(180, el ? el.clientHeight : 500) };
+}
+// Mayor celda en [MINCELL, MAXCELL] tal que N nodos, repartidos en las columnas
+// que quepan en 'w', no superen la altura 'h'. Así la rejilla nunca desborda.
+function fitCell(n, w, h) {
+  for (let c = MAXCELL; c > MINCELL; c--) {
+    const cols = Math.max(1, Math.floor(w / c));
+    if (Math.ceil(n / cols) * c <= h) return c;
+  }
+  return MINCELL;
 }
 // Medición de etiqueta de grupo (v7 §0.2): ancho del texto renderizado, con el
 // número + espacio delante, para decidir si cabe o se abrevia.
@@ -322,18 +338,20 @@ function measureLabel(txt) {
   _ctx.font = '600 13px Inter, system-ui, sans-serif';
   return _ctx.measureText('00 ' + txt).width;
 }
-function gridLayout(list, x0, y0, cols) {
+function gridLayout(list, x0, y0, cols, c) {
   const map = {};
-  list.forEach((n, i) => { map[n.id] = { x: x0 + (i % cols) * S, y: y0 + Math.floor(i / cols) * S }; });
+  list.forEach((n, i) => { map[n.id] = { x: x0 + (i % cols) * c, y: y0 + Math.floor(i / cols) * c }; });
   return map;
 }
 function computePositions() {
   const { w, h } = stageSize();
   const out = {}; const anno = []; const sc = scene.value;
+  let cell = MAXCELL;
   if (sc === 0) {
-    const cols = Math.max(8, Math.floor(w / S));
+    cell = fitCell(nodes.value.length, w, h);
+    const cols = Math.max(8, Math.floor(w / cell));
     const rows = Math.ceil(nodes.value.length / cols);
-    Object.assign(out, gridLayout(nodes.value, Math.max(0, (w - cols * S) / 2), Math.max(0, (h - rows * S) / 2), cols));
+    Object.assign(out, gridLayout(nodes.value, Math.max(0, (w - cols * cell) / 2), Math.max(0, (h - rows * cell) / 2), cols, cell));
   } else if (sc === 1) {
     const groups = [
       { key: 'publicada_dof', label: C.estatus.publicada_dof, short: 'DOF', nodes: nodes.value.filter((n) => n.type === 'min' && n.status === 'publicada_dof') },
@@ -342,10 +360,13 @@ function computePositions() {
       { key: 'ini', label: C.leyenda.iniciativa, short: 'Ejecutivo', nodes: nodes.value.filter((n) => n.type === 'ini') },
     ].filter((g) => g.nodes.length);
     const colW = w / groups.length;
-    const perRow = Math.max(2, Math.floor((colW - 8) / S));
+    // La celda se encoge para que la columna más alta quepa bajo su rótulo (y=40).
+    const maxN = Math.max(...groups.map((g) => g.nodes.length));
+    for (let c = MAXCELL; c > MINCELL; c--) { const pr = Math.max(2, Math.floor((colW - 8) / c)); cell = c; if (40 + Math.ceil(maxN / pr) * c <= h) break; }
+    const perRow = Math.max(2, Math.floor((colW - 8) / cell));
     groups.forEach((g, gi) => {
       const x0 = gi * colW + 4;
-      Object.assign(out, gridLayout(g.nodes, x0, 40, perRow));
+      Object.assign(out, gridLayout(g.nodes, x0, 40, perRow, cell));
       // Anticolisión: si el nombre + 24px no cabe en la columna, se abrevia; el
       // completo va en title y la etiqueta se recorta al ancho de su columna.
       const fits = measureLabel(g.label) + 24 <= colW;
@@ -355,34 +376,56 @@ function computePositions() {
     const byOds = {};
     nodes.value.forEach((n) => { const k = n.ods || 'sin'; (byOds[k] = byOds[k] || []).push(n); });
     const keys = Object.keys(byOds).sort((a, b) => byOds[b].length - byOds[a].length);
-    // E: la identidad del ODS nunca se trunca. Desktop reserva un gutter de
-    // 280px para el rótulo completo; móvil lo pone encima de su fila.
-    const wide = w >= 560;
-    const gutter = wide ? 280 : 0;
-    const labelH = wide ? 0 : 20;
-    const perRow = Math.max(4, Math.floor((w - gutter - 12) / S));
-    const show = (sc === 2 || sc === 3) || (sc === 4 && false); // en singulares se ocultan los rótulos generales
-    let y = 0;
-    keys.forEach((k) => {
-      const list = byOds[k];
-      const rows = Math.ceil(list.length / perRow);
-      const y0 = y;
-      const cy = wide ? y0 : y0 + labelH;
-      const cx = wide ? gutter + 8 : 2;
-      list.forEach((n, i) => {
-        out[n.id] = { x: cx + (i % perRow) * S, y: cy + Math.floor(i / perRow) * S, dim: sc === 4 && !isSingular(n), glow: sc === 4 && isSingular(n) };
+    // E: la identidad del ODS nunca se trunca. Se intenta el layout con rótulo por
+    // fila (ODS N · Nombre encima de su banda de color), encogiendo la celda para
+    // que el apilado quepa a lo alto. Si el panel es demasiado bajo (móvil), los
+    // 18 rótulos no caben, así que se cae a una rejilla compacta ordenada por ODS
+    // —el color agrupa— con la leyenda inferior explicando el color. Se decide por
+    // la ALTURA disponible (no por el ancho): así el escritorio conserva rótulos y
+    // el móvil nunca amontona los cuadritos.
+    const LABEL_H = 20;
+    const ROW_GAP = 3; // aire entre bandas de ODS (ajustado para que 18 quepan)
+    const perRowFor = (c) => Math.max(4, Math.floor((w - 12) / c));
+    const labeledHeight = (c) => keys.reduce((y, k) => y + LABEL_H + Math.ceil(byOds[k].length / perRowFor(c)) * c + ROW_GAP, 0);
+    let labeledCell = 0;
+    for (let c = MAXCELL; c >= MINCELL; c--) { if (labeledHeight(c) <= h) { labeledCell = c; break; } }
+    if (labeledCell) {
+      cell = labeledCell;
+      const perRow = perRowFor(cell);
+      const show = (sc === 2 || sc === 3);
+      let y = 0;
+      keys.forEach((k) => {
+        const list = byOds[k];
+        const rows = Math.ceil(list.length / perRow);
+        const cy = y + LABEL_H;
+        list.forEach((n, i) => {
+          out[n.id] = { x: 2 + (i % perRow) * cell, y: cy + Math.floor(i / perRow) * cell, dim: sc === 4 && !isSingular(n), glow: sc === 4 && isSingular(n) };
+        });
+        const isSin = k === 'sin';
+        anno.push({
+          kind: 'ods', key: 'ods' + k, x: 0, y, w: w - 8,
+          odsNum: isSin ? '' : String(k), color: isSin ? 'var(--ink-3)' : odsColor(k),
+          name: isSin ? 'Sin correspondencia' : ('ODS ' + k + ' · ' + odsCorto(k)),
+          n: list.length,
+          show: sc === 4 ? (k === '6' || k === 'sin') : (sc >= 6 ? false : show),
+        });
+        y += LABEL_H + rows * cell + ROW_GAP;
       });
-      const isSin = k === 'sin';
-      anno.push({
-        kind: 'ods', key: 'ods' + k, x: 0, y: y0, w: wide ? gutter - 12 : (w - 8),
-        odsNum: isSin ? '' : String(k), color: isSin ? 'var(--ink-3)' : odsColor(k),
-        name: isSin ? 'Sin correspondencia' : ('ODS ' + k + ' · ' + odsCorto(k)),
-        n: list.length,
-        show: sc === 4 ? (k === '6' || k === 'sin') : (sc >= 6 ? false : show),
+    } else {
+      // Rejilla compacta ordenada por ODS (colores contiguos), centrada y sin
+      // rótulos por fila. Se reajusta a la altura del panel: nunca se amontona.
+      const ordered = keys.flatMap((k) => byOds[k]);
+      cell = fitCell(ordered.length, w, h);
+      const cols = Math.max(6, Math.floor(w / cell));
+      const rows = Math.ceil(ordered.length / cols);
+      const x0 = Math.max(0, (w - cols * cell) / 2);
+      const y0 = Math.max(0, (h - rows * cell) / 2);
+      ordered.forEach((n, i) => {
+        out[n.id] = { x: x0 + (i % cols) * cell, y: y0 + Math.floor(i / cols) * cell, dim: sc === 4 && !isSingular(n), glow: sc === 4 && isSingular(n) };
       });
-      y += wide ? Math.max(S + 6, rows * S + 4) : (labelH + rows * S + 10);
-    });
+    }
   }
+  unitPx.value = Math.max(4, cell - GAP);
   Object.keys(pos).forEach((k) => delete pos[k]);
   Object.assign(pos, out);
   annotations.value = anno;
@@ -390,8 +433,9 @@ function computePositions() {
 function isSingular(n) { return !n.ods || n.ods === '6'; }
 function unitStyle(n) {
   const p = pos[n.id];
-  if (!p) return { transform: 'translate(0,0)', opacity: 0 };
-  const s = { transform: `translate(${p.x}px, ${p.y}px)` };
+  const size = { width: unitPx.value + 'px', height: unitPx.value + 'px' };
+  if (!p) return { ...size, transform: 'translate(0,0)', opacity: 0 };
+  const s = { ...size, transform: `translate(${p.x}px, ${p.y}px)` };
   // El color oficial del ODS solo se aplica en "el momento del color" (E3 beat 2).
   if (colored.value && n.ods) s['--ods'] = odsColor(n.ods);
   return s;

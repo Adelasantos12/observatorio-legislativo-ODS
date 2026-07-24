@@ -216,7 +216,9 @@ html { overflow-x: hidden; }
 /* Unit chart: cada minuta/iniciativa es un cuadrito.
    Reposo: minutas --ink-2 al 80%, iniciativas --ink-3. Al agruparse por
    objetivo adoptan el color ODS de su grupo (color inyectado por JS). */
-.unit-stage { position: relative; width: 100%; height: 72vh; }
+/* overflow:hidden es red de seguridad: la celda ya se ajusta en JS para caber,
+   pero si algo se pasara, se recorta dentro del panel en vez de amontonarse. */
+.unit-stage { position: relative; width: 100%; height: 72vh; overflow: hidden; }
 .unit {
   position: absolute; width: 13px; height: 13px; border-radius: 3px;
   background: var(--ink-2); opacity: .8;
@@ -295,8 +297,10 @@ html { overflow-x: hidden; }
 @media (max-width: 720px) {
   /* Móvil (guion v7 §0.4): gráfico fijo en el tercio superior, pasos debajo. */
   .scrolly { grid-template-columns: 1fr; gap: 0; }
-  .scrolly-graphic { position: sticky; top: 0; height: 40vh; z-index: 1; background: var(--bg); border-bottom: 1px solid var(--line); }
-  .unit-stage { height: 34vh; }
+  .scrolly-graphic { position: sticky; top: 0; height: 48vh; z-index: 1; background: var(--bg); border-bottom: 1px solid var(--line); }
+  .unit-stage { height: 40vh; }
+  /* Los cuadritos se reajustan (unitPx en JS); la leyenda envuelve en móvil. */
+  .unit-legend { font-size: 11.5px; gap: 10px; }
   .viaje-stage { height: 34vh; }
   .step { min-height: 66vh; }
   .story-hero .sub { font-size: 17px; }
