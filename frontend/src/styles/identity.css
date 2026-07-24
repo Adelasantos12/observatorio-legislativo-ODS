@@ -49,6 +49,10 @@
   --accent-soft: var(--neutral-2);
 }
 
+/* Guarda contra scroll horizontal a nivel de viewport (no rompe position:sticky,
+   a diferencia de ponerlo en un contenedor intermedio — v7 §0.1). */
+html { overflow-x: hidden; }
+
 /* La identidad v5.1 se compromete con una base blanca: el portal Huella es
    claro por diseño. No se define un modo oscuro para estos tokens. */
 
@@ -60,7 +64,10 @@
   -webkit-font-smoothing: antialiased;
   min-height: 100vh;
   padding: 28px clamp(16px, 5vw, 56px) 96px;
-  overflow-x: hidden;                 /* ninguna vista scrollea en horizontal */
+  /* Nota v7 §0.1: NO poner overflow-x aquí. `overflow-x:hidden` convierte a
+     .huella-page en contenedor de scroll y rompe el `position: sticky` del panel
+     del scrollytelling (el "panel vacío" con las tarjetas flotando). El guardado
+     contra overflow horizontal vive en el <body> (main), no aquí. */
 }
 .huella-page, .huella-page * { min-width: 0; }
 .huella-page .story-hero .lede,
@@ -185,7 +192,8 @@
 .story-hero .hero-art { width: 100%; max-width: 1100px; height: auto; margin: 0 auto 28px; display: block; }
 .story-hero .lede { font-family: "Inter", system-ui, sans-serif; font-weight: 600; letter-spacing: -0.02em; font-size: clamp(30px, 4.4vw, 52px); line-height: 1.12; max-width: 16em; }
 .story-hero .sub { color: var(--ink-2); font-size: 18.5px; line-height: 1.55; margin-top: 18px; max-width: 34em; }
-.scrolly { position: relative; display: grid; grid-template-columns: 1fr 1fr; gap: 24px; align-items: start; padding: 0 clamp(16px,5vw,56px); }
+/* Panel gráfico fijo 55% + pasos 40% (guion v7 §0.1) */
+.scrolly { position: relative; display: grid; grid-template-columns: 55% 40%; gap: 5%; align-items: start; padding: 0 clamp(16px,5vw,56px); }
 .scrolly-graphic { position: sticky; top: 0; height: 100vh; display: flex; align-items: center; }
 .scrolly-steps { display: flex; flex-direction: column; }
 .step { min-height: 88vh; display: flex; align-items: center; }
@@ -197,6 +205,9 @@
 .step-card h2 { font-size: clamp(21px,2.4vw,30px); margin: 0 0 10px; }
 .step-card p { font-size: 18.5px; line-height: 1.6; color: var(--ink); margin: 0 0 10px; }
 .step-card .num { color: var(--action); font-weight: 600; font-variant-numeric: tabular-nums; }
+/* E3 · el momento del color: el párrafo del clímax pesa más */
+.step-card .lede-color { font-size: clamp(20px,2.3vw,26px); font-weight: 600; letter-spacing: -0.01em; line-height: 1.35; color: var(--ink); }
+.viaje { margin-top: 32px; }
 .step-art { width: 84px; height: 84px; display: block; margin-bottom: 12px; }
 
 /* Unit chart: cada minuta/iniciativa es un cuadrito.
@@ -206,12 +217,16 @@
 .unit {
   position: absolute; width: 13px; height: 13px; border-radius: 3px;
   background: var(--ink-2); opacity: .8;
-  transition: transform .9s cubic-bezier(.22,.61,.36,1), opacity .5s, background .5s;
+  /* El estado del gráfico cambia en 600ms ease-in-out (guion v7 §0.1). El
+     "momento del color" (E3) tiñe el fondo de todos a la vez. */
+  transition: transform .6s ease-in-out, opacity .6s ease-in-out, background-color .6s ease-in-out;
   will-change: transform;
 }
 .unit.is-min { background: var(--ink-2); opacity: .8; }
 .unit.is-ini { background: var(--ink-3); opacity: .85; }
-.unit.has-ods { background: var(--ods); opacity: .95; }   /* agrupado por ODS */
+.unit.is-ini.faint { opacity: .3; }                       /* E2: el bloque del Ejecutivo se atenúa */
+.unit.has-ods { background: var(--ods); opacity: .95; }   /* E3: teñido con su color ODS */
+.unit.empty { background: transparent; border: 1.5px dotted var(--line); opacity: 1; } /* Zeigarnik: casilla vacía */
 .unit.dim { opacity: .12; }
 .unit.glow { box-shadow: 0 0 0 2px var(--bg), 0 0 10px 3px var(--action); opacity: 1; z-index: 2; }
 .unit-anno { position: absolute; font-size: 13px; color: var(--ink-2); transition: opacity .5s; font-variant-numeric: tabular-nums; }
@@ -233,15 +248,45 @@
 .no-anim .scrolly-graphic { position: static; height: auto; }
 .no-anim .step { min-height: auto; margin-bottom: 28px; }
 
+/* Etiqueta de grupo del unit chart: no se traslapa (guion v7 §0.2); el ancho se
+   mide en JS y la variante corta lleva el nombre completo en title. */
+.unit-anno { max-width: 120px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.unit-anno b { margin-right: 4px; }
+
+/* ---- ACTO II · El viaje (guion v7): camino horizontal + figura mancha ---- */
+.viaje-stage { position: relative; width: 100%; height: 62vh; }
+.viaje-path { position: absolute; left: 4%; right: 4%; top: 52%; height: 0; border-top: 2px dashed var(--ink-3); opacity: .55; }
+.viaje-stop { position: absolute; top: 52%; transform: translate(-50%, -50%); display: flex; flex-direction: column; align-items: center; gap: 8px; transition: opacity .6s ease-in-out; }
+.viaje-stop .dot { width: 14px; height: 14px; border-radius: 50%; background: var(--ink-3); border: 3px solid var(--bg); box-shadow: 0 0 0 1px var(--line); }
+.viaje-stop.is-active .dot { background: var(--action); }
+.viaje-stop .chip { font-size: 12.5px; font-weight: 600; color: var(--ink-2); background: var(--bg-alt); border: 1px solid var(--line); border-radius: 999px; padding: 3px 11px; white-space: nowrap; }
+.viaje-stop.is-active .chip { color: var(--ink); border-color: color-mix(in srgb, var(--action) 40%, var(--line)); }
+.viaje-stop.is-final { top: 30%; }
+.viaje-stop.is-final .ring { width: 96px; height: 96px; display: block; opacity: 0; transform: scale(.6); transition: opacity .6s ease-in-out, transform .6s ease-in-out; }
+.viaje-stop.is-final.reveal-ring .ring { opacity: 1; transform: scale(1); }
+.viaje-mini { position: absolute; top: 62%; transform: translateX(-50%); display: grid; grid-template-columns: repeat(6, 9px); gap: 3px; opacity: 0; transition: opacity .5s ease-in-out; }
+.viaje-mini.show { opacity: 1; }
+.viaje-mini .m { width: 9px; height: 9px; border-radius: 2px; background: var(--ink-2); opacity: .7; }
+.viaje-mini.institucional { padding: 5px; border: 1px solid var(--line); border-radius: 6px; background: var(--bg-alt); }
+.viaje-sig { position: absolute; top: 66%; transform: translateX(-50%); display: flex; gap: 5px; }
+.viaje-sig .s { font-size: 10.5px; font-weight: 600; letter-spacing: .06em; color: var(--ink-2); background: var(--bg-alt); border: 1px solid var(--line); border-radius: 6px; padding: 2px 6px; }
+/* La figura mancha (neutra, sin cara) avanza de parada en parada */
+.viaje-fig { position: absolute; width: 30px; height: 40px; top: 52%; transform: translate(-50%, -78%); transition: left .6s ease-in-out, top .6s ease-in-out; }
+.viaje-fig .pebble { fill: var(--neutral-2); }
+.viaje-legend { margin-top: 10px; font-size: 12.5px; color: var(--ink-3); text-align: center; }
+
 @media (max-width: 720px) {
-  .scrolly { grid-template-columns: 1fr; }
-  .scrolly-graphic { position: sticky; top: 0; height: 50vh; z-index: 1; background: var(--bg); }
-  .unit-stage { height: 44vh; }
-  .step { min-height: 70vh; }
+  /* Móvil (guion v7 §0.4): gráfico fijo en el tercio superior, pasos debajo. */
+  .scrolly { grid-template-columns: 1fr; gap: 0; }
+  .scrolly-graphic { position: sticky; top: 0; height: 40vh; z-index: 1; background: var(--bg); border-bottom: 1px solid var(--line); }
+  .unit-stage { height: 34vh; }
+  .viaje-stage { height: 34vh; }
+  .step { min-height: 66vh; }
   .story-hero .sub { font-size: 17px; }
 }
 @media (prefers-reduced-motion: reduce) {
-  .unit { transition: none; }
+  .unit, .viaje-fig, .viaje-stop.is-final .ring { transition: none; }
+  /* Fallback del viaje: la figura aparece en cada parada sin desplazarse. */
 }
 
 /* --- Ritmo y aire: una idea por pantalla, prosa ancha (máx ~68 caracteres) --- */

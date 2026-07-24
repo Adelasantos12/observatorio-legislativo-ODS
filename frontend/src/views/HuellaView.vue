@@ -23,28 +23,28 @@
 
     <div class="story">
       <div class="scrolly">
-        <!-- Gráfico fijo -->
-        <div class="scrolly-graphic">
+        <!-- Gráfico fijo (un solo panel; su estado se deriva del índice de paso, v7 §0.3) -->
+        <div class="scrolly-graphic" :data-state="graphicState">
           <div style="width:100%">
-            <div v-show="scene <= 3">
+            <div v-show="scene <= 4">
               <div ref="stageEl" class="unit-stage">
                 <div v-for="n in nodes" :key="n.id" class="unit"
-                  :class="[n.type === 'min' ? 'is-min' : 'is-ini', { 'has-ods': grouped && n.ods, dim: pos[n.id] && pos[n.id].dim, glow: pos[n.id] && pos[n.id].glow }]"
+                  :class="[n.type === 'min' ? 'is-min' : 'is-ini', { faint: scene === 1 && n.type === 'ini', 'has-ods': colored && n.ods, dim: pos[n.id] && pos[n.id].dim, glow: pos[n.id] && pos[n.id].glow }]"
                   :style="unitStyle(n)" :title="n.label"></div>
                 <div v-for="a in annotations" :key="a.key" class="unit-anno"
-                     :style="{ left: a.x + 'px', top: a.y + 'px', opacity: a.show ? 1 : 0 }">
+                     :style="{ left: a.x + 'px', top: a.y + 'px', maxWidth: (a.w ? a.w + 'px' : undefined), opacity: a.show ? 1 : 0 }" :title="a.full || a.text">
                   <b>{{ a.n }}</b> {{ a.text }}
                 </div>
               </div>
               <div class="unit-legend">
                 <span class="k"><span class="sw" style="background:var(--ink-2);opacity:.8"></span> {{ C.leyenda.minuta }} ({{ nMinutas }})</span>
                 <span class="k"><span class="sw" style="background:var(--ink-3)"></span> {{ C.leyenda.iniciativa }} ({{ nIniciativas }})</span>
-                <span class="k" v-show="grouped"><span class="sw" style="background:linear-gradient(90deg,#e5243b,#26bde2,#4c9f38)"></span> agrupadas por ODS</span>
+                <span class="k" v-show="colored"><span class="sw" style="background:linear-gradient(90deg,#e5243b,#26bde2,#4c9f38)"></span> agrupadas por ODS</span>
               </div>
             </div>
 
-            <!-- Escena 5: el caso del agua -->
-            <div v-show="scene === 4" class="card">
+            <!-- E5: el caso del agua (invariante v6.2, no puede faltar) -->
+            <div v-show="scene === 5" class="card">
               <div style="display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap">
                 <h3 style="margin:0">{{ C.escenas.agua.fichaTitulo }}</h3>
                 <span class="nt-badge nt-badge--validado">● {{ C.escenas.agua.fichaBadge }}</span>
@@ -79,16 +79,15 @@
           </div>
         </div>
 
-        <!-- Pasos de prosa -->
+        <!-- Pasos de prosa (Acto I). Cada paso dispara un estado del panel. -->
         <div class="scrolly-steps">
-          <section class="step" data-step="0"><div class="step-card">
+          <section class="step" data-step="0" data-state="grid"><div class="step-card">
             <h2>{{ C.escenas.agenda.titulo }}</h2>
             <p>{{ fill(C.escenas.agenda.p1, { minutas: nMinutas, iniciativas: nIniciativas }) }}</p>
             <p class="muted">{{ C.escenas.agenda.p2 }}</p>
           </div></section>
 
-          <section class="step" data-step="1"><div class="step-card">
-            <img class="step-art" :src="art.ascenso" alt="" aria-hidden="true" />
+          <section class="step" data-step="1" data-state="estatus"><div class="step-card">
             <h2>{{ C.escenas.estatus.titulo }}</h2>
             <p>{{ fill(C.escenas.estatus.p1, { dof: est.publicada_dof || 0, revisora: est.en_revisora || 0, devueltas: est.devuelta || 0 }) }}</p>
             <p>
@@ -98,21 +97,24 @@
             </p>
           </div></section>
 
-          <section class="step" data-step="2"><div class="step-card">
-            <img class="step-art" :src="art.alcance" alt="" aria-hidden="true" />
+          <!-- E3 · beat 1: se ordenan por objetivo, todavía sin color -->
+          <section class="step" data-step="2" data-state="orden"><div class="step-card">
             <h2>{{ C.escenas.hallazgo.titulo }}</h2>
-            <p>{{ fill(C.escenas.hallazgo.p1, { odsDominanteNombre: odsName(odsDominante) }) }}</p>
-            <p class="muted">{{ C.escenas.hallazgo.p2 }}</p>
+            <p>{{ C.escenas.hallazgo.p1 }}</p>
           </div></section>
 
-          <section class="step" data-step="3"><div class="step-card">
+          <!-- E3 · beat 2: el momento del color -->
+          <section class="step" data-step="3" data-state="color"><div class="step-card">
+            <p class="lede-color">{{ C.escenas.hallazgo.p2 }}</p>
+          </div></section>
+
+          <section class="step" data-step="4" data-state="singulares"><div class="step-card">
             <h2>{{ C.escenas.singulares.titulo }}</h2>
             <p>{{ fill(C.escenas.singulares.p1, { sinOds: nSinOds }) }}</p>
             <p class="muted">{{ C.escenas.singulares.p2 }}</p>
           </div></section>
 
-          <section class="step" data-step="4"><div class="step-card">
-            <img class="step-art" :src="art.alcance" alt="" aria-hidden="true" />
+          <section class="step" data-step="5" data-state="agua"><div class="step-card">
             <h2>{{ C.escenas.agua.titulo }}</h2>
             <p>{{ C.escenas.agua.p1 }}</p>
             <p class="muted">{{ C.escenas.agua.p2 }}</p>
@@ -120,45 +122,62 @@
         </div>
       </div>
 
-      <!-- Por qué importa (escena 6) -->
-      <section v-reveal class="porque" style="margin:0 clamp(16px,5vw,56px)">
-        <div class="section-head">
-          <img class="section-art" :src="art.apoyo" alt="" aria-hidden="true" />
-          <div>
-            <h2 class="porque-h">{{ C.porque_importa.titulo }}</h2>
-            <p class="porque-intro">{{ C.porque_importa.intro }}</p>
+      <!-- ACTO II · El viaje (guion v7): camino con cuatro paradas y una figura
+           mancha que avanza; sustituye a las tres columnas de "por qué importa". -->
+      <div v-if="C.viaje" class="story viaje">
+      <div class="scrolly">
+        <div class="scrolly-graphic" :data-state="'viaje-' + viajeScene">
+          <div style="width:100%">
+            <div class="viaje-stage">
+              <div class="viaje-path"></div>
+              <!-- paradas -->
+              <div v-for="(st, i) in paradas" :key="st.key" class="viaje-stop"
+                   :class="{ 'is-active': i === Math.min(viajeScene,3), 'is-final': i === 3, 'reveal-ring': i === 3 && viajeScene >= 3 }"
+                   :style="{ left: st.x + '%' }">
+                <img v-if="i === 3" class="ring" :src="art.anillo" alt="Anillo de los 17 ODS" />
+                <span class="dot"></span>
+                <span class="chip">{{ st.label }}</span>
+              </div>
+              <!-- extras por parada -->
+              <div class="viaje-mini" :class="{ show: viajeScene === 0 }" :style="{ left: paradas[0].x + '%' }">
+                <span v-for="m in 12" :key="m" class="m"></span>
+              </div>
+              <div class="viaje-mini institucional" :class="{ show: viajeScene === 1 }" :style="{ left: paradas[1].x + '%' }">
+                <span v-for="m in 12" :key="m" class="m"></span>
+              </div>
+              <div class="viaje-sig" :style="{ left: paradas[2].x + '%', opacity: viajeScene === 2 ? 1 : 0, transition: 'opacity .5s ease-in-out' }">
+                <span v-for="s in (C.viaje.foros.chips || [])" :key="s" class="s">{{ s }}</span>
+              </div>
+              <div class="viaje-sig" :style="{ left: paradas[3].x + '%', top: '46%', opacity: viajeScene >= 3 ? 1 : 0, transition: 'opacity .5s ease-in-out' }">
+                <span v-for="s in (C.viaje.mexico.chips || [])" :key="s" class="s">{{ s }}</span>
+              </div>
+              <!-- figura mancha que avanza -->
+              <svg class="viaje-fig" :style="{ left: paradas[Math.min(viajeScene,3)].x + '%' }" viewBox="0 0 30 40" aria-hidden="true">
+                <path class="pebble" d="M15 39 C6 39 2 31 3 22 C4 12 8 3 15 3 C22 3 26 12 27 22 C28 31 24 39 15 39 Z"/>
+              </svg>
+            </div>
+            <p class="viaje-legend">{{ paradas[Math.min(viajeScene,3)].label }}</p>
           </div>
         </div>
-        <div class="porque-grid">
-          <article v-for="(it, i) in C.porque_importa.items" :key="i" class="porque-item">
-            <h3>{{ it.titulo }}</h3>
-            <p>{{ it.cuerpo }}</p>
-          </article>
+        <div class="scrolly-steps">
+          <section class="step" data-step="v0" data-state="viaje-0"><div class="step-card">
+            <h2>{{ C.viaje.madrid.titulo }}</h2><p>{{ C.viaje.madrid.p }}</p>
+          </div></section>
+          <section class="step" data-step="v1" data-state="viaje-1"><div class="step-card">
+            <h2>{{ C.viaje.asuncion.titulo }}</h2><p>{{ C.viaje.asuncion.p }}</p>
+          </div></section>
+          <section class="step" data-step="v2" data-state="viaje-2"><div class="step-card">
+            <h2>{{ C.viaje.foros.titulo }}</h2><p>{{ C.viaje.foros.p }}</p>
+          </div></section>
+          <section class="step" data-step="v3" data-state="viaje-3"><div class="step-card">
+            <h2>{{ C.viaje.mexico.titulo }}</h2><p>{{ C.viaje.mexico.p1 }}</p><p>{{ C.viaje.mexico.p2 }}</p>
+          </div></section>
+          <section class="step" data-step="v4" data-state="viaje-4"><div class="step-card">
+            <h2>{{ C.viaje.cierre.titulo }}</h2><p>{{ C.viaje.cierre.p }}</p>
+          </div></section>
         </div>
-      </section>
-
-      <!-- Quién más lo hace (prueba social, adenda v6 §3b) -->
-      <section v-if="C.quien_mas_lo_hace" v-reveal class="porque" style="margin:0 clamp(16px,5vw,56px)">
-        <div class="section-head">
-          <img class="section-art" :src="art.alcance" alt="" aria-hidden="true" style="width:96px" />
-          <div>
-            <h2 class="porque-h">{{ C.quien_mas_lo_hace.titulo }}</h2>
-            <p class="porque-intro">{{ C.quien_mas_lo_hace.intro }}</p>
-          </div>
-        </div>
-        <div class="porque-grid">
-          <article v-for="(it, i) in C.quien_mas_lo_hace.items" :key="i" class="social-item">
-            <h3>{{ it.lugar }}</h3>
-            <p>{{ it.cuerpo }}</p>
-          </article>
-        </div>
-        <p class="social-remate">{{ C.quien_mas_lo_hace.remate }}</p>
-      </section>
-
-      <!-- Cierre de la historia: el emblema (anillo de los 17 ODS) -->
-      <section v-reveal style="text-align:center;margin:64px clamp(16px,5vw,56px) 0">
-        <img :src="art.anillo" alt="Anillo de los 17 Objetivos de Desarrollo Sostenible" style="width:96px;height:96px" />
-      </section>
+      </div>
+      </div>
 
       <!-- Explorador (escena 7) -->
       <section class="card explorador" style="margin:0 clamp(16px,5vw,56px) 24px">
@@ -223,9 +242,24 @@ const art = {
 const router = useRouter();
 const ready = ref(false);
 const scene = ref(0);
+const viajeScene = ref(0);
 const animate = ref(true);
-// Las escenas 2 y 3 agrupan las unidades por objetivo: ahí adoptan su color ODS.
-const grouped = computed(() => scene.value === 2 || scene.value === 3);
+// Layout por objetivo en E3/E4 (escenas 2-4). El color (teñido) llega en el
+// segundo beat de E3 (escena 3): ese es "el momento del color" (guion v7 E3).
+const grouped = computed(() => scene.value >= 2 && scene.value <= 4);
+const colored = computed(() => scene.value >= 3 && scene.value <= 4);
+// Estado del panel derivado del índice de paso (máquina de estados, v7 §0.3).
+const graphicState = computed(() => ['grid', 'estatus', 'orden', 'color', 'singulares', 'agua'][scene.value] || 'grid');
+// Paradas del viaje (Acto II)
+const paradas = computed(() => {
+  const p = (C.viaje && C.viaje.paradas) || {};
+  return [
+    { key: 'madrid', label: p.madrid || 'Madrid', x: 15 },
+    { key: 'asuncion', label: p.asuncion || 'Asunción', x: 38 },
+    { key: 'foros', label: p.foros || 'Ginebra · Nueva York', x: 61 },
+    { key: 'mexico', label: p.mexico || 'México', x: 84 },
+  ];
+});
 
 const agg = ref({ kpis: {}, por_ods: [], corte: null });
 const minAgg = ref({ kpis: {}, por_estatus: [], por_ods: [] });
@@ -266,6 +300,15 @@ function stageSize() {
   const el = stageEl.value;
   return { w: Math.max(200, el ? el.clientWidth : 560), h: Math.max(200, el ? el.clientHeight : 500) };
 }
+// Medición de etiqueta de grupo (v7 §0.2): ancho del texto renderizado, con el
+// número + espacio delante, para decidir si cabe o se abrevia.
+let _ctx = null;
+function measureLabel(txt) {
+  if (typeof document === 'undefined') return 0;
+  if (!_ctx) { _ctx = document.createElement('canvas').getContext('2d'); }
+  _ctx.font = '600 13px Inter, system-ui, sans-serif';
+  return _ctx.measureText('00 ' + txt).width;
+}
 function gridLayout(list, x0, y0, cols) {
   const map = {};
   list.forEach((n, i) => { map[n.id] = { x: x0 + (i % cols) * S, y: y0 + Math.floor(i / cols) * S }; });
@@ -280,19 +323,22 @@ function computePositions() {
     Object.assign(out, gridLayout(nodes.value, Math.max(0, (w - cols * S) / 2), Math.max(0, (h - rows * S) / 2), cols));
   } else if (sc === 1) {
     const groups = [
-      { key: 'publicada_dof', label: C.estatus.publicada_dof, nodes: nodes.value.filter((n) => n.type === 'min' && n.status === 'publicada_dof') },
-      { key: 'en_revisora', label: C.estatus.en_revisora, nodes: nodes.value.filter((n) => n.type === 'min' && n.status === 'en_revisora') },
-      { key: 'devuelta', label: C.estatus.devuelta, nodes: nodes.value.filter((n) => n.type === 'min' && n.status === 'devuelta') },
-      { key: 'ini', label: C.leyenda.iniciativa, nodes: nodes.value.filter((n) => n.type === 'ini') },
+      { key: 'publicada_dof', label: C.estatus.publicada_dof, short: 'DOF', nodes: nodes.value.filter((n) => n.type === 'min' && n.status === 'publicada_dof') },
+      { key: 'en_revisora', label: C.estatus.en_revisora, short: 'Senado', nodes: nodes.value.filter((n) => n.type === 'min' && n.status === 'en_revisora') },
+      { key: 'devuelta', label: C.estatus.devuelta, short: 'Devuelta', nodes: nodes.value.filter((n) => n.type === 'min' && n.status === 'devuelta') },
+      { key: 'ini', label: C.leyenda.iniciativa, short: 'Ejecutivo', nodes: nodes.value.filter((n) => n.type === 'ini') },
     ].filter((g) => g.nodes.length);
     const colW = w / groups.length;
     const perRow = Math.max(2, Math.floor((colW - 8) / S));
     groups.forEach((g, gi) => {
       const x0 = gi * colW + 4;
       Object.assign(out, gridLayout(g.nodes, x0, 40, perRow));
-      anno.push({ key: g.key, x: x0, y: 16, n: g.nodes.length, text: g.label, show: true });
+      // Anticolisión: si el nombre + 24px no cabe en la columna, se abrevia; el
+      // completo va en title y la etiqueta se recorta al ancho de su columna.
+      const fits = measureLabel(g.label) + 24 <= colW;
+      anno.push({ key: g.key, x: x0, y: 14, n: g.nodes.length, text: fits ? g.label : g.short, full: g.label, w: Math.max(34, colW - 10), show: true });
     });
-  } else if (sc === 2 || sc === 3) {
+  } else if (sc >= 2 && sc <= 4) {
     const byOds = {};
     nodes.value.forEach((n) => { const k = n.ods || 'sin'; (byOds[k] = byOds[k] || []).push(n); });
     const keys = Object.keys(byOds).sort((a, b) => byOds[b].length - byOds[a].length);
@@ -301,9 +347,10 @@ function computePositions() {
     keys.forEach((k, ri) => {
       const y0 = ri * rowH;
       byOds[k].forEach((n, i) => {
-        out[n.id] = { x: 56 + (i % perRow) * S, y: y0 + Math.floor(i / perRow) * S, dim: sc === 3 && !isSingular(n), glow: sc === 3 && isSingular(n) };
+        // E4 (singulares): se atenúa lo demás y se iluminan agua y "sin casilla".
+        out[n.id] = { x: 56 + (i % perRow) * S, y: y0 + Math.floor(i / perRow) * S, dim: sc === 4 && !isSingular(n), glow: sc === 4 && isSingular(n) };
       });
-      anno.push({ key: 'ods' + k, x: 0, y: y0, n: byOds[k].length, text: k === 'sin' ? 'sin ODS' : 'ODS ' + k, show: sc === 2 || (sc === 3 && (k === '6' || k === 'sin')) });
+      anno.push({ key: 'ods' + k, x: 0, y: y0, w: 52, n: byOds[k].length, text: k === 'sin' ? 'sin ODS' : 'ODS ' + k, show: (sc === 2 || sc === 3) || (sc === 4 && (k === '6' || k === 'sin')) });
     });
   }
   Object.keys(pos).forEach((k) => delete pos[k]);
@@ -315,11 +362,12 @@ function unitStyle(n) {
   const p = pos[n.id];
   if (!p) return { transform: 'translate(0,0)', opacity: 0 };
   const s = { transform: `translate(${p.x}px, ${p.y}px)` };
-  // Al agruparse por objetivo, la unidad lleva el color oficial de su ODS.
-  if (grouped.value && n.ods) s['--ods'] = odsColor(n.ods);
+  // El color oficial del ODS solo se aplica en "el momento del color" (E3 beat 2).
+  if (colored.value && n.ods) s['--ods'] = odsColor(n.ods);
   return s;
 }
-function setScene(i) { if (i === scene.value) return; scene.value = i; if (i <= 3) nextTick(computePositions); }
+function setScene(i) { if (i === scene.value) return; scene.value = i; if (i <= 4) nextTick(computePositions); }
+function setViaje(i) { if (i === viajeScene.value) return; viajeScene.value = i; }
 
 function goExpediente(id) { router.push({ name: 'expediente', params: { id } }); }
 function clearFilters() { q.value = ''; fOds.value = ''; fMeta.value = ''; loadIniciativas(); }
@@ -354,11 +402,17 @@ onMounted(async () => {
   loadIniciativas();
   await nextTick();
   computePositions();
-  ro = new ResizeObserver(() => { if (scene.value <= 3) computePositions(); });
+  ro = new ResizeObserver(() => { if (scene.value <= 4) computePositions(); });
   if (stageEl.value) ro.observe(stageEl.value);
+  // El estado cambia al cruzar el 50% del viewport (v7 §0.3): un paso, un estado.
   io = new IntersectionObserver((entries) => {
-    entries.forEach((e) => { if (e.isIntersecting) setScene(Number(e.target.getAttribute('data-step'))); });
-  }, { rootMargin: '-45% 0px -45% 0px', threshold: 0 });
+    entries.forEach((e) => {
+      if (!e.isIntersecting) return;
+      const ds = e.target.getAttribute('data-step');
+      if (ds && ds[0] === 'v') setViaje(Number(ds.slice(1)));
+      else setScene(Number(ds));
+    });
+  }, { rootMargin: '-50% 0px -50% 0px', threshold: 0 });
   document.querySelectorAll('.step').forEach((s) => io.observe(s));
 });
 
