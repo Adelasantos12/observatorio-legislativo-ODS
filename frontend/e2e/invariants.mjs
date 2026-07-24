@@ -89,14 +89,29 @@ try {
         hallazgo: txt.includes('Y cuando se leen en clave 2030'),
         singulares: txt.includes('Lo que se ve al acercarse'),
         agua: txt.includes('Una ley llegó el año'),
-        registro: txt.includes('¿Y por qué esto no se sabía?'),
+        registro: txt.includes('¿Y esto no se sabía ya?'),
         hito2015: txt.includes('193 países'),
+        hito2025: txt.includes('De los 35 países') && txt.includes('solo 10 mencionaron'),
         hito2030: txt.includes('Vence la Agenda'),
         explorador: !!document.querySelector('.explorador'),
       },
+      // Cifras exactas de la escena del registro (patch registro, regla dura):
+      // el texto puede abreviarse, el dato no. Se verifican verbatim.
+      cifras: {
+        c130: txt.includes('cerca de 130'),
+        unaMencion: txt.includes('una sola mención'),
+        tresMil: txt.includes('más de tres mil estudios'),
+        dies35: txt.includes('35 países') && txt.includes('solo 10'),
+      },
+      // Meta-lenguaje prohibido en la escena (candado): "ni siquiera" no aparece.
+      niSiquiera: txt.includes('ni siquiera'),
+      // Los dos tramos ⟦…⟧ enlazan a referencias de /metodologia (#ref-…).
+      regEnlaces: [...document.querySelectorAll('a[href*=\"/metodologia#ref-\"]')].map(a=>a.getAttribute('href')),
       dsteps, sinEstado, unitCount: units.length, td,
       lineaSteps: document.querySelectorAll('.step[data-step^=\"l\"]').length,
       lineaPts: document.querySelectorAll('.linea-pt').length,
+      // El hito 2025 lleva su enlace fuente (VNR Synthesis Report).
+      hito2025Fuente: [...document.querySelectorAll('.linea-fuente')].length,
       hoy: !!document.querySelector('.linea-pt.hoy'),
       counters: document.querySelectorAll('.linea-num').length,
       hasFig: !!document.querySelector('.viaje-fig'),
@@ -112,10 +127,21 @@ try {
   assert('E5 agua presente', T.agua);
   assert('B · escena del registro presente', T.registro);
   assert('Acto II · línea de tiempo con sus extremos (2015 y 2030)', T.hito2015 && T.hito2030);
+  assert('Acto II · hito 2025 (10 de 35 informes citan a su parlamento)', T.hito2025);
   assert('explorador presente', T.explorador);
   assert('cada paso tiene su data-state (ningún paso sin estado)', h.sinEstado === 0, `sin estado=${h.sinEstado}`);
   assert('Acto I + registro con sus 8 pasos (0..7)', ['0','1','2','3','4','5','6','7'].every(s=>h.dsteps.includes(s)), JSON.stringify(h.dsteps));
-  assert('la línea de tiempo tiene 11 pasos y 11 hitos', h.lineaSteps === 11 && h.lineaPts === 11, `pasos=${h.lineaSteps} hitos=${h.lineaPts}`);
+  assert('la línea de tiempo tiene 12 pasos y 12 hitos', h.lineaSteps === 12 && h.lineaPts === 12, `pasos=${h.lineaSteps} hitos=${h.lineaPts}`);
+  // Patch registro: cifras exactas verbatim, meta-lenguaje fuera y enlaces vivos.
+  assert('cifra "cerca de 130" preservada verbatim', h.cifras.c130);
+  assert('cifra "una sola mención" preservada verbatim', h.cifras.unaMencion);
+  assert('cifra "más de tres mil estudios" preservada verbatim', h.cifras.tresMil);
+  assert('cifra "10 de 35" preservada verbatim (hito 2025)', h.cifras.dies35);
+  assert('la escena del registro no usa "ni siquiera" (candado)', h.niSiquiera === false);
+  assert('la escena del registro enlaza a dos referencias de /metodologia', h.regEnlaces.length === 2, JSON.stringify(h.regEnlaces));
+  assert('los enlaces apuntan a #ref-estrategia y #ref-biermann',
+    h.regEnlaces.some(x=>x.includes('#ref-estrategia')) && h.regEnlaces.some(x=>x.includes('#ref-biermann')), JSON.stringify(h.regEnlaces));
+  assert('el hito 2025 lleva enlace fuente (VNR)', h.hito2025Fuente > 0, `fuentes=${h.hito2025Fuente}`);
   assert('marcador HOY distinto presente', h.hoy);
   assert('dos contadores vivos con cifras tabulares', h.counters >= 2, `contadores=${h.counters}`);
   assert('C · sin figura viajera (óvalo gris eliminado)', h.hasFig === false);
@@ -208,6 +234,22 @@ try {
   await new Promise(r => setTimeout(r, 400));
   const tabla = await evalJson(c, `return { table: !!document.querySelector('table tbody tr') }`);
   assert('el toggle muestra la tabla densa', tabla.table);
+
+  // ---------- /metodologia · bloque de referencias (patch registro §5) ----------
+  console.log('\n/metodologia — bloque de referencias con anclas');
+  const metReady = await goto(c, '/metodologia', `document.querySelector('article.prose h1')`);
+  assert('metodologia carga', metReady);
+  const met = await evalJson(c, `
+    const ids = ['ref-estrategia','ref-biermann','ref-vnr','ref-toolkit'];
+    return {
+      anclas: ids.filter(id => !!document.getElementById(id)),
+      enlaces: ids.filter(id => { const el=document.getElementById(id); return el && el.querySelector('a[href^=\"http\"]'); }),
+      biermannDoi: (document.getElementById('ref-biermann')||{}).innerHTML ? /10\\.1038\\/s41893-022-00909-5/.test(document.getElementById('ref-biermann').innerHTML) : false,
+    };
+  `);
+  assert('las cuatro referencias tienen su ancla (#ref-…)', met.anclas.length === 4, JSON.stringify(met.anclas));
+  assert('cada referencia trae su enlace externo', met.enlaces.length === 4, JSON.stringify(met.enlaces));
+  assert('la referencia Biermann conserva su DOI', met.biermannDoi);
 
   // ---------- Anticolisión de etiquetas de grupo en 5 anchos (v7 §0.2) ----------
   console.log('\n/huella — etiquetas de grupo sin traslape (5 anchos)');
