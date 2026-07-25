@@ -50,6 +50,11 @@
   --accent: var(--action);
   --accent-2: var(--ink-3);
   --accent-soft: var(--neutral-2);
+  /* Alto real del site-header (publicado en vivo por site-header.vue vía
+     ResizeObserver); el valor de respaldo cubre el primer frame antes de que
+     el observer mida. Lo usan los paneles sticky de página para pegarse
+     DEBAJO del header en vez de quedar tapados por él. */
+  --header-h: 64px;
 }
 
 /* Guarda contra scroll horizontal a nivel de viewport (no rompe position:sticky,
@@ -295,10 +300,30 @@ html { overflow-x: hidden; }
 @media (max-width: 720px) { .linea-track-wrap { height: 72px; } .linea-counters { gap: 16px; } }
 
 @media (max-width: 720px) {
-  /* Móvil (guion v7 §0.4): gráfico fijo en el tercio superior, pasos debajo. */
+  /* Móvil (guion v7 §0.4): gráfico fijo en el tercio superior, pasos debajo.
+     El panel se pega DEBAJO del site-header (que también es sticky top:0):
+     sin el offset, los dos "top:0" chocan y el header tapa el tercio superior
+     del gráfico ("se bloquea un head que cubre media pantalla"). La altura se
+     calcula contra el viewport real (100dvh, con svh/vh de respaldo) menos el
+     header, así el panel nunca se corta ni empuja el primer paso fuera de vista. */
   .scrolly { grid-template-columns: 1fr; gap: 0; }
-  .scrolly-graphic { position: sticky; top: 0; height: 48vh; z-index: 1; background: var(--bg); border-bottom: 1px solid var(--line); }
-  .unit-stage { height: 40vh; }
+  .scrolly-graphic {
+    position: sticky; top: var(--header-h); z-index: 1;
+    background: var(--bg); border-bottom: 1px solid var(--line);
+    height: calc(52vh - var(--header-h));
+    height: calc(52svh - var(--header-h));
+    height: calc(52dvh - var(--header-h));
+    max-height: calc(100vh - var(--header-h) - 88px);
+    min-height: 260px;
+  }
+  /* Deja ~56px para la leyenda (envuelve a 1-2 líneas) bajo la retícula. */
+  .unit-stage {
+    height: calc(52vh - var(--header-h) - 56px);
+    height: calc(52svh - var(--header-h) - 56px);
+    height: calc(52dvh - var(--header-h) - 56px);
+    max-height: calc(100vh - var(--header-h) - 144px);
+    min-height: 200px;
+  }
   /* Los cuadritos se reajustan (unitPx en JS); la leyenda envuelve en móvil. */
   .unit-legend { font-size: 11.5px; gap: 10px; }
   .viaje-stage { height: 34vh; }

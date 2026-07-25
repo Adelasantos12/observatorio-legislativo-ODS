@@ -19,7 +19,8 @@
   },
   "leyenda": {
     "minuta": "minuta",
-    "iniciativa": "iniciativa del Ejecutivo"
+    "iniciativa": "iniciativa del Ejecutivo",
+    "otrosOds": "Otros {n} objetivos"
   },
   "escenas": {
     "agenda": {

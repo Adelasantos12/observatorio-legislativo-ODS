@@ -375,46 +375,62 @@ function computePositions() {
   } else if ([2, 3, 4, 6, 7].includes(sc)) {
     const byOds = {};
     nodes.value.forEach((n) => { const k = n.ods || 'sin'; (byOds[k] = byOds[k] || []).push(n); });
-    const keys = Object.keys(byOds).sort((a, b) => byOds[b].length - byOds[a].length);
+    const allKeys = Object.keys(byOds).sort((a, b) => byOds[b].length - byOds[a].length);
     // E: la identidad del ODS nunca se trunca. Se intenta el layout con rótulo por
     // fila (ODS N · Nombre encima de su banda de color), encogiendo la celda para
-    // que el apilado quepa a lo alto. Si el panel es demasiado bajo (móvil), los
-    // 18 rótulos no caben, así que se cae a una rejilla compacta ordenada por ODS
-    // —el color agrupa— con la leyenda inferior explicando el color. Se decide por
-    // la ALTURA disponible (no por el ancho): así el escritorio conserva rótulos y
-    // el móvil nunca amontona los cuadritos.
+    // que el apilado quepa a lo alto. Si el panel es bajo (móvil), los 18 rótulos
+    // no caben todos: en vez de perder la identidad ODS (rejilla sin rótulo ni
+    // color reconocible), se colapsan los objetivos de MENOR conteo en una sola
+    // banda "Otros N objetivos" —siempre con su propio rótulo— hasta que el resto
+    // SÍ quepa, cada uno con su chip de color y su nombre. ODS 6 y "sin
+    // correspondencia" nunca se colapsan: E4 (singulares) los necesita nombrados
+    // siempre. Se decide por la ALTURA disponible (no por el ancho): el
+    // escritorio conserva los 18 rótulos completos y el móvil nunca amontona ni
+    // pierde el color de los ODS que sí puede mostrar con nombre.
     const LABEL_H = 20;
     const ROW_GAP = 3; // aire entre bandas de ODS (ajustado para que 18 quepan)
     const perRowFor = (c) => Math.max(4, Math.floor((w - 12) / c));
-    const labeledHeight = (c) => keys.reduce((y, k) => y + LABEL_H + Math.ceil(byOds[k].length / perRowFor(c)) * c + ROW_GAP, 0);
-    let labeledCell = 0;
-    for (let c = MAXCELL; c >= MINCELL; c--) { if (labeledHeight(c) <= h) { labeledCell = c; break; } }
+    const heightOf = (ks, map, c) => ks.reduce((y, k) => y + LABEL_H + Math.ceil(map[k].length / perRowFor(c)) * c + ROW_GAP, 0);
+    const pinned = ['6', 'sin'].filter((k) => byOds[k]);
+    const others = allKeys.filter((k) => !pinned.includes(k));
+    let labeledCell = 0; let shownKeys = allKeys; let groupsMap = byOds; let otrasGroups = 0;
+    for (let nOthers = others.length; nOthers >= 0 && !labeledCell; nOthers--) {
+      const keep = new Set([...pinned, ...others.slice(0, nOthers)]);
+      const collapsed = others.slice(nOthers);
+      const testMap = {}; const testKeys = [];
+      allKeys.forEach((k) => { if (keep.has(k)) { testMap[k] = byOds[k]; testKeys.push(k); } });
+      if (collapsed.length) { testMap.otras = collapsed.flatMap((k) => byOds[k]); testKeys.push('otras'); }
+      for (let c = MAXCELL; c >= MINCELL; c--) {
+        if (heightOf(testKeys, testMap, c) <= h) { labeledCell = c; shownKeys = testKeys; groupsMap = testMap; otrasGroups = collapsed.length; break; }
+      }
+    }
     if (labeledCell) {
       cell = labeledCell;
       const perRow = perRowFor(cell);
       const show = (sc === 2 || sc === 3);
       let y = 0;
-      keys.forEach((k) => {
-        const list = byOds[k];
+      shownKeys.forEach((k) => {
+        const list = groupsMap[k];
         const rows = Math.ceil(list.length / perRow);
         const cy = y + LABEL_H;
         list.forEach((n, i) => {
           out[n.id] = { x: 2 + (i % perRow) * cell, y: cy + Math.floor(i / perRow) * cell, dim: sc === 4 && !isSingular(n), glow: sc === 4 && isSingular(n) };
         });
         const isSin = k === 'sin';
+        const isOtras = k === 'otras';
         anno.push({
           kind: 'ods', key: 'ods' + k, x: 0, y, w: w - 8,
-          odsNum: isSin ? '' : String(k), color: isSin ? 'var(--ink-3)' : odsColor(k),
-          name: isSin ? 'Sin correspondencia' : ('ODS ' + k + ' · ' + odsCorto(k)),
+          odsNum: (isSin || isOtras) ? '' : String(k), color: (isSin || isOtras) ? 'var(--ink-3)' : odsColor(k),
+          name: isOtras ? fill(C.leyenda.otrosOds, { n: otrasGroups }) : (isSin ? 'Sin correspondencia' : ('ODS ' + k + ' · ' + odsCorto(k))),
           n: list.length,
           show: sc === 4 ? (k === '6' || k === 'sin') : (sc >= 6 ? false : show),
         });
         y += LABEL_H + rows * cell + ROW_GAP;
       });
     } else {
-      // Rejilla compacta ordenada por ODS (colores contiguos), centrada y sin
-      // rótulos por fila. Se reajusta a la altura del panel: nunca se amontona.
-      const ordered = keys.flatMap((k) => byOds[k]);
+      // Red de seguridad última (no debería alcanzarse con las 221 unidades del
+      // dataset actual): rejilla compacta ordenada por ODS, sin rótulo por fila.
+      const ordered = allKeys.flatMap((k) => byOds[k]);
       cell = fitCell(ordered.length, w, h);
       const cols = Math.max(6, Math.floor(w / cell));
       const rows = Math.ceil(ordered.length / cols);
