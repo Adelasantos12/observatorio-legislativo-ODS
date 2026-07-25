@@ -1,5 +1,5 @@
 <template>
-  <div class="huella-page" :class="{ 'no-anim': !animate }">
+  <div class="huella-page" :class="{ 'no-anim': !animate, 'linear-mobile': isMobile }">
     <!-- Sin datos: la historia nunca se dibuja con ceros del API (v4.1 §5) -->
     <div v-if="!ready" class="story-hero">
       <div class="kicker">{{ C.hero.kicker }}</div>
@@ -23,10 +23,13 @@
 
     <div class="story">
       <div class="scrolly">
-        <!-- Gráfico fijo (un solo panel; su estado se deriva del índice de paso, v7 §0.3) -->
+        <!-- Gráfico fijo (un solo panel; su estado se deriva del índice de paso, v7 §0.3).
+             En móvil (isMobile) se teleporta al slot del paso activo: layout lineal,
+             sin sticky, sin nada cortado ni pegado (v9 · bugs móvil #1/#2). -->
+        <Teleport :to="graphicTarget" :disabled="!isMobile" defer>
         <div class="scrolly-graphic" :data-state="graphicState">
           <div style="width:100%">
-            <div v-show="scene <= 4 || scene >= 6">
+            <div v-show="scene <= 4 || scene >= 6" class="unit-panel">
               <div ref="stageEl" class="unit-stage">
                 <div v-for="n in nodes" :key="n.id" class="unit"
                   :class="[n.type === 'min' ? 'is-min' : 'is-ini', { faint: scene === 1 && n.type === 'ini', 'has-ods': colored && n.ods, outline: outlineScene && n.ods, dim: pos[n.id] && pos[n.id].dim, glow: pos[n.id] && pos[n.id].glow }]"
@@ -56,13 +59,18 @@
                 <span class="nt-badge nt-badge--validado">● {{ C.escenas.agua.fichaBadge }}</span>
               </div>
               <p class="muted">{{ C.escenas.agua.fichaResumen }}</p>
+              <!-- data-label: en móvil (<992px) el reset de tipi-uikit apila las
+                   celdas en tarjeta; con data-label cada valor lleva su rótulo
+                   (Estándar/Disposición/Rol/Cobertura) en vez de texto suelto sin
+                   contexto (bug v2 #1: la tabla ancha ya no desborda ni se
+                   confunde). Desde 992px se ve como tabla normal (CSS nativo). -->
               <table class="nt-table" v-if="agua.length">
                 <thead><tr><th>Estándar</th><th>Disposición</th><th>Rol</th><th>Cobertura</th></tr></thead>
                 <tbody>
                   <tr v-for="(r,i) in agua.slice(0,6)" :key="i">
-                    <td>{{ r.estandar }}</td><td>{{ r.disposicion }}</td>
-                    <td><span :class="{muted: r.rol_correspondencia!=='sustantivo'}">{{ r.rol_correspondencia==='sustantivo'?'sustantivo':'contextual' }}</span></td>
-                    <td>{{ r.cobertura }}</td>
+                    <td data-label="Estándar">{{ r.estandar }}</td><td data-label="Disposición">{{ r.disposicion }}</td>
+                    <td data-label="Rol"><span :class="{muted: r.rol_correspondencia!=='sustantivo'}">{{ r.rol_correspondencia==='sustantivo'?'sustantivo':'contextual' }}</span></td>
+                    <td data-label="Cobertura">{{ r.cobertura }}</td>
                   </tr>
                 </tbody>
               </table>
@@ -84,16 +92,19 @@
             </div>
           </div>
         </div>
+        </Teleport>
 
-        <!-- Pasos de prosa (Acto I). Cada paso dispara un estado del panel. -->
+        <!-- Pasos de prosa (Acto I). Cada paso dispara un estado del panel; en móvil
+             cada paso trae su propio "graphic-slot" donde se teleporta el panel
+             activo (layout lineal, arriba del texto, sin sticky). -->
         <div class="scrolly-steps">
-          <section class="step" data-step="0" data-state="grid"><div class="step-card">
+          <section class="step" data-step="0" data-state="grid"><div class="graphic-slot" data-graphic-slot="a0"></div><div class="step-card">
             <h2>{{ C.escenas.agenda.titulo }}</h2>
             <p>{{ fill(C.escenas.agenda.p1, { minutas: nMinutas, iniciativas: nIniciativas }) }}</p>
             <p class="muted">{{ C.escenas.agenda.p2 }}</p>
           </div></section>
 
-          <section class="step" data-step="1" data-state="estatus"><div class="step-card">
+          <section class="step" data-step="1" data-state="estatus"><div class="graphic-slot" data-graphic-slot="a1"></div><div class="step-card">
             <h2>{{ C.escenas.estatus.titulo }}</h2>
             <p>{{ fill(C.escenas.estatus.p1, { dof: est.publicada_dof || 0, revisora: est.en_revisora || 0, devueltas: est.devuelta || 0 }) }}</p>
             <p>
@@ -104,23 +115,23 @@
           </div></section>
 
           <!-- E3 · beat 1: se ordenan por objetivo, todavía sin color -->
-          <section class="step" data-step="2" data-state="orden"><div class="step-card">
+          <section class="step" data-step="2" data-state="orden"><div class="graphic-slot" data-graphic-slot="a2"></div><div class="step-card">
             <h2>{{ C.escenas.hallazgo.titulo }}</h2>
             <p>{{ C.escenas.hallazgo.p1 }}</p>
           </div></section>
 
           <!-- E3 · beat 2: el momento del color -->
-          <section class="step" data-step="3" data-state="color"><div class="step-card">
+          <section class="step" data-step="3" data-state="color"><div class="graphic-slot" data-graphic-slot="a3"></div><div class="step-card">
             <p class="lede-color">{{ C.escenas.hallazgo.p2 }}</p>
           </div></section>
 
-          <section class="step" data-step="4" data-state="singulares"><div class="step-card">
+          <section class="step" data-step="4" data-state="singulares"><div class="graphic-slot" data-graphic-slot="a4"></div><div class="step-card">
             <h2>{{ C.escenas.singulares.titulo }}</h2>
             <p>{{ fill(C.escenas.singulares.p1, { sinOds: nSinOds }) }}</p>
             <p class="muted">{{ C.escenas.singulares.p2 }}</p>
           </div></section>
 
-          <section class="step" data-step="5" data-state="agua"><div class="step-card">
+          <section class="step" data-step="5" data-state="agua"><div class="graphic-slot" data-graphic-slot="a5"></div><div class="step-card">
             <h2>{{ C.escenas.agua.titulo }}</h2>
             <p>{{ C.escenas.agua.p1 }}</p>
             <p class="muted">{{ C.escenas.agua.p2 }}</p>
@@ -128,12 +139,12 @@
 
           <!-- B · La escena del registro (el puente / la tesis). El color se pierde
                (lo hecho sin registro) y vuelve con p3 (lo documentado). -->
-          <section v-if="C.escenas.registro" class="step" data-step="6" data-state="registro-sin"><div class="step-card">
+          <section v-if="C.escenas.registro" class="step" data-step="6" data-state="registro-sin"><div class="graphic-slot" data-graphic-slot="a6"></div><div class="step-card">
             <h2>{{ reg.titulo }}</h2>
             <p>{{ regP1.pre }}<router-link v-if="regP1.mid" :to="{ name: 'metodologia', hash: '#' + reg.p1ancla }">{{ regP1.mid }}</router-link>{{ regP1.post }}</p>
             <p class="muted">{{ regP2.pre }}<router-link v-if="regP2.mid" :to="{ name: 'metodologia', hash: '#' + reg.p2ancla }">{{ regP2.mid }}</router-link>{{ regP2.post }}</p>
           </div></section>
-          <section v-if="C.escenas.registro" class="step" data-step="7" data-state="registro-con"><div class="step-card">
+          <section v-if="C.escenas.registro" class="step" data-step="7" data-state="registro-con"><div class="graphic-slot" data-graphic-slot="a7"></div><div class="step-card">
             <p class="lede-color">{{ C.escenas.registro.p3 }}</p>
           </div></section>
         </div>
@@ -143,6 +154,7 @@
            viajera: la línea se dibuja sola y cada hito enciende su punto. -->
       <div v-if="C.linea" class="story linea-story">
       <div class="scrolly">
+        <Teleport :to="lineaGraphicTarget" :disabled="!isMobile" defer>
         <div class="scrolly-graphic" :data-state="'linea-' + lineaScene">
           <div style="width:100%">
             <div class="linea-stage">
@@ -164,8 +176,9 @@
             </div>
           </div>
         </div>
+        </Teleport>
         <div class="scrolly-steps">
-          <section v-for="(hi, i) in hitos" :key="i" class="step" :data-step="'l' + i" :data-state="'linea-' + i"><div class="step-card">
+          <section v-for="(hi, i) in hitos" :key="i" class="step" :data-step="'l' + i" :data-state="'linea-' + i"><div class="graphic-slot" :data-graphic-slot="'l' + i"></div><div class="step-card">
             <div class="linea-anio" :class="hi.t">{{ hi.anio }}</div>
             <p>{{ hitoTexto(hi) }}</p>
             <a v-if="hi.fuente" :href="hi.fuente" target="_blank" rel="noopener" class="linea-fuente">{{ C.linea.fuenteEtiqueta || 'fuente' }} ↗</a>
@@ -187,7 +200,23 @@
           <input v-model="fMeta" @input="loadIniciativas" :placeholder="C.explorador.metaPlaceholder" style="width:120px" />
           <button class="badge" @click="clearFilters">{{ C.explorador.limpiar }}</button>
         </div>
-        <table>
+        <!-- Móvil: tarjetas apiladas (bug v2 #4) — la tabla ancha no cabe en un
+             teléfono; escritorio conserva la tabla original. -->
+        <div v-if="isMobile" class="card-grid explorador-cards">
+          <div class="rec-card" v-for="i in iniciativas" :key="i.id" @click="goExpediente(i.id)">
+            <div class="clave">{{ C.explorador.colNum }} {{ i.num }}</div>
+            <div class="tema">{{ i.denominacion }}</div>
+            <div class="muted" v-if="i.tema">{{ i.tema }}</div>
+            <div class="meta-row">
+              <span v-if="i.ods_principal" class="ods-chip" :style="{background: odsColor(i.ods_principal)}">{{ i.ods_principal }}</span>
+              <span v-for="s in i.ods_secundarios" :key="s" class="ods-chip" :style="{background: odsColor(s), opacity:.6}">{{ s }}</span>
+              <span class="badge" :class="'badge--' + (i.confianza||'pendiente')">{{ i.confianza || C.explorador.sinCodificar }}</span>
+            </div>
+            <div class="muted" v-if="i.metas && i.metas.length">{{ i.metas.join(' · ') }}</div>
+            <div class="muted">{{ i.estatus }}</div>
+          </div>
+        </div>
+        <table v-else>
           <thead><tr><th>{{ C.explorador.colNum }}</th><th>{{ C.explorador.colDenominacion }}</th><th>{{ C.explorador.colOds }}</th><th>{{ C.explorador.colEstatus }}</th><th>{{ C.explorador.colConfianza }}</th></tr></thead>
           <tbody>
             <tr class="item" v-for="i in iniciativas" :key="i.id" @click="goExpediente(i.id)">
@@ -239,6 +268,14 @@ const ready = ref(false);
 const scene = ref(0);
 const lineaScene = ref(0);
 const animate = ref(true);
+// Layout LINEAL en móvil (bugs v2): el panel del gráfico deja de ser sticky y
+// se teleporta (Vue <Teleport>) al slot del paso activo, en flujo normal,
+// arriba de su texto. Así nada queda cortado ni pegado tapando lo siguiente.
+// El breakpoint coincide con el de identity.css (max-width:720px).
+const MOBILE_MQ = '(max-width: 720px)';
+const isMobile = ref(typeof window !== 'undefined' && window.matchMedia && window.matchMedia(MOBILE_MQ).matches);
+const graphicTarget = computed(() => '[data-graphic-slot="a' + scene.value + '"]');
+const lineaGraphicTarget = computed(() => '[data-graphic-slot="l' + lineaScene.value + '"]');
 // Layout por objetivo en E3/E4 (escenas 2-4). El color (teñido) llega en el
 // segundo beat de E3 (escena 3): ese es "el momento del color" (guion v7 E3).
 // Escenas con layout por objetivo. Incluye la escena del registro (6 y 7).
@@ -469,8 +506,16 @@ function loadIniciativas() {
   api.getHuellaIniciativas(params).then((d) => (iniciativas.value = d || []));
 }
 
+let mqMobile = null;
+function onMqMobile() { isMobile.value = mqMobile.matches; }
+
 onMounted(async () => {
   animate.value = !window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (window.matchMedia) {
+    mqMobile = window.matchMedia(MOBILE_MQ);
+    onMqMobile();
+    (mqMobile.addEventListener ? mqMobile.addEventListener.bind(mqMobile) : mqMobile.addListener.bind(mqMobile))('change', onMqMobile);
+  }
   cat.value = await api.getHuellaCatalogos();
   agg.value = await api.getHuellaEjecutivo();
   minAgg.value = await api.getMinutasResumen();
@@ -506,5 +551,9 @@ onMounted(async () => {
   document.querySelectorAll('.step').forEach((s) => io.observe(s));
 });
 
-onBeforeUnmount(() => { if (io) io.disconnect(); if (ro) ro.disconnect(); });
+onBeforeUnmount(() => {
+  if (io) io.disconnect();
+  if (ro) ro.disconnect();
+  if (mqMobile) (mqMobile.removeEventListener ? mqMobile.removeEventListener.bind(mqMobile) : mqMobile.removeListener.bind(mqMobile))('change', onMqMobile);
+});
 </script>
