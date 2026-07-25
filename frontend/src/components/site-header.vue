@@ -1,5 +1,5 @@
 <template>
-  <header class="site-header" :class="{ scrolled }">
+  <header class="site-header" :class="{ scrolled }" ref="headerEl">
     <div class="site-header__wrap">
       <!-- Escritorio: lockup completo; compacto al hacer scroll o en móvil -->
       <brand-lockup :to="{ name: 'huella' }" :compact="scrolled || isMobile" />
@@ -40,18 +40,36 @@ const links = computed(() => config.MENU[locale.value] || config.MENU.es);
 const open = ref(false);
 const scrolled = ref(false);
 const isMobile = ref(false);
+const headerEl = ref(null);
+let headerRo = null;
 
 const onScroll = () => { scrolled.value = window.scrollY > 24; };
 const onResize = () => { isMobile.value = window.matchMedia('(max-width: 720px)').matches; };
+// Publica la altura real del header como variable CSS global (--header-h): así
+// cualquier panel sticky de página (p. ej. el scrollytelling de /huella) puede
+// pegarse justo DEBAJO del header en vez de quedar tapado por él (choque de dos
+// position:sticky en top:0). Se mide en vivo porque la altura cambia entre el
+// header completo y el compacto (scroll/móvil).
+function publishHeaderHeight() {
+  if (headerEl.value) {
+    document.documentElement.style.setProperty('--header-h', headerEl.value.offsetHeight + 'px');
+  }
+}
 
 onMounted(() => {
   onScroll(); onResize();
   window.addEventListener('scroll', onScroll, { passive: true });
   window.addEventListener('resize', onResize);
+  publishHeaderHeight();
+  if (typeof ResizeObserver !== 'undefined' && headerEl.value) {
+    headerRo = new ResizeObserver(publishHeaderHeight);
+    headerRo.observe(headerEl.value);
+  }
 });
 onBeforeUnmount(() => {
   window.removeEventListener('scroll', onScroll);
   window.removeEventListener('resize', onResize);
+  if (headerRo) headerRo.disconnect();
 });
 </script>
 
