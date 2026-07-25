@@ -1,8 +1,8 @@
 {
   "_nota_autora": "VERSIÓN REVISADA POR LA AUTORA (22/jul/2026). Sustituye íntegro al es.json del PR #2. Cambios respecto a la versión de Code: hero.sub, escenas.singulares completa, escenas.agua.p1 y fichaResumen, nueva clave escenas.agua.contadorSinDato (usarla mientras no exista fuente del dato de armonización; NO mostrar 0 de 32), porque_importa.intro e items[3].cuerpo, metodologia.normtrace. Los {tokens} los rellena el componente con cifras vivas del API.",
   "marca": {
-    "nombre": "Observatorio Legislativo",
-    "tagline": "HUELLA 2030 · MÉXICO"
+    "nombre": "Huella 2030",
+    "tagline": "OBSERVATORIO LEGISLATIVO · MÉXICO"
   },
   "nav": {
     "huella": "Huella 2030",

@@ -72,15 +72,15 @@ export default {
   LOGO: '/img/anillo-ods.svg',
 
   DEFAULT_PAGE_TITLE: {
-    es: 'Escáner Legislativo MX — Escanea cualquier texto legislativo en clave ODS',
-    en: 'Escáner Legislativo MX — Scan any Mexican legislative text against the 2030 Agenda',
+    es: 'Huella 2030 — Escanea cualquier texto legislativo en clave ODS',
+    en: 'Huella 2030 — Scan any Mexican legislative text against the 2030 Agenda',
   },
   DEFAULT_METATAGS: {
     es: [
       {
         name: 'description',
         content:
-          'Escáner Legislativo MX etiqueta y visualiza en segundos cualquier texto legislativo mexicano en clave de Agenda 2030 y sus Objetivos de Desarrollo Sostenible (ODS), y traza su relación con marcos jurídicos e internacionales.',
+          'Huella 2030 etiqueta y visualiza en segundos cualquier texto legislativo mexicano en clave de Agenda 2030 y sus Objetivos de Desarrollo Sostenible (ODS), y traza su relación con marcos jurídicos e internacionales.',
       },
       {
         name: 'keywords',
@@ -97,7 +97,7 @@ export default {
       },
       {
         name: 'twitter:title',
-        content: 'Escáner Legislativo MX',
+        content: 'Huella 2030',
       },
       {
         name: 'twitter:description',
@@ -106,7 +106,7 @@ export default {
       },
       {
         property: 'og:title',
-        content: 'Escáner Legislativo MX',
+        content: 'Huella 2030',
       },
       {
         property: 'og:type',
@@ -123,14 +123,14 @@ export default {
       },
       {
         property: 'og:site_name',
-        content: 'Escáner Legislativo MX',
+        content: 'Huella 2030',
       },
     ],
     en: [
       {
         name: 'description',
         content:
-          'Escáner Legislativo MX tags and visualises any Mexican legislative text against the 2030 Agenda and its Sustainable Development Goals, and traces its relation to legal and international frameworks.',
+          'Huella 2030 tags and visualises any Mexican legislative text against the 2030 Agenda and its Sustainable Development Goals, and traces its relation to legal and international frameworks.',
       },
       {
         name: 'keywords',
@@ -147,7 +147,7 @@ export default {
       },
       {
         name: 'twitter:title',
-        content: 'Escáner Legislativo MX',
+        content: 'Huella 2030',
       },
       {
         name: 'twitter:description',
@@ -156,7 +156,7 @@ export default {
       },
       {
         property: 'og:title',
-        content: 'Escáner Legislativo MX',
+        content: 'Huella 2030',
       },
       {
         property: 'og:type',
@@ -173,7 +173,7 @@ export default {
       },
       {
         property: 'og:site_name',
-        content: 'Escáner Legislativo MX',
+        content: 'Huella 2030',
       },
     ],
   },
