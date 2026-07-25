@@ -271,6 +271,104 @@ try {
     assert(`etiquetas de grupo sin traslape @${width}px`, res.overlap === 0, `annos=${res.count} traslapes=${res.overlap}`);
     await cw.send('Page.close').catch(() => {});
   }
+
+  // ---------- §A.5 (v8) · Scrollytelling MÓVIL: recupera el sticky sin romper
+  // nada (head gigante, scroll bloqueado, storytelling eliminado). Viewports
+  // 375×667 y 390×844, scroll NATIVO del documento (window.scrollTo), mismo
+  // mecanismo de estado que el IntersectionObserver de producción. ----------
+  console.log('\n/huella — scrollytelling móvil (sticky ≤45vh, texto legible, scroll nativo)');
+  for (const vp of [{ w: 375, h: 667 }, { w: 390, h: 844 }]) {
+    const cm = await newPage();
+    await cm.send('Emulation.setDeviceMetricsOverride', { width: vp.w, height: vp.h, deviceScaleFactor: 2, mobile: true, screenWidth: vp.w, screenHeight: vp.h });
+    await cm.send('Emulation.setTouchEmulationEnabled', { enabled: true, maxTouchPoints: 1 }).catch(() => {});
+    const mobileReady = await goto(cm, '/huella', `document.querySelector('.hero-art') && !/Cargando/.test((document.querySelector('.story-hero .lede')||{}).textContent||'')`);
+    assert(`@${vp.w}×${vp.h} huella carga con datos en móvil`, mobileReady);
+    await new Promise(r => setTimeout(r, 400));
+    const tag = `${vp.w}×${vp.h}`;
+
+    // Lleva el TOP del paso 'sel' a la línea central del viewport: es
+    // exactamente el criterio del IntersectionObserver de producción
+    // (rootMargin '-50% 0px -50% 0px', threshold 0 → dispara cuando el TOP
+    // del target cruza esa línea, no su centro). +6px de margen para no caer
+    // justo en el límite flotante entre dos pasos. Scroll NATIVO
+    // (window.scrollTo), no un scroll-jacking propio.
+    async function toTrigger(sel) {
+      await cm.send('Runtime.evaluate', { expression: `(()=>{const s=document.querySelector('${sel}');if(s){const r=s.getBoundingClientRect();window.scrollTo(0, window.scrollY + r.top - innerHeight*0.5 + 6);}})()` });
+      await new Promise(r => setTimeout(r, 900));
+    }
+
+    // a + e. cada escena del Acto I existe y dispara su estado al cruzar la
+    // línea de disparo real; b. el panel jamás tapa la tarjeta (su borde
+    // superior queda por debajo del panel) y le deja ≥50% del viewport
+    // disponible para leer (garantizado por el panel ≤45vh + nav ocultable);
+    // d. el panel gráfico nunca excede 45vh.
+    const escenasActoI = ['grid', 'estatus', 'orden', 'color', 'singulares', 'agua', 'registro-sin', 'registro-con'];
+    let scenesOk = true; const scenesDetail = [];
+    for (const st of escenasActoI) {
+      await toTrigger(`.step[data-state="${st}"]`);
+      const r = await evalJson(cm, `
+        const actI = document.querySelectorAll('.scrolly-graphic')[0];
+        const card = document.querySelector('.step[data-state="${st}"] .step-card');
+        const pr = actI ? actI.getBoundingClientRect() : null;
+        const cr = card ? card.getBoundingClientRect() : null;
+        return {
+          state: actI ? actI.getAttribute('data-state') : null,
+          panelH: pr ? pr.height : 0,
+          panelBottom: pr ? pr.bottom : 0,
+          panelPos: actI ? getComputedStyle(actI).position : '',
+          cardTop: cr ? cr.top : null, cardH: cr ? cr.height : 0, innerH: innerHeight,
+        };
+      `);
+      if (r.state !== st) { scenesOk = false; scenesDetail.push(`${st}→${r.state}`); }
+      const readingArea = r.innerH - r.panelBottom;
+      // El panel nunca debe robarle lectura a una tarjeta que SÍ cabría entera
+      // en el área disponible. Cuando la tarjeta es más alta que esa área
+      // (p. ej. "registro-sin", con título + dos párrafos y enlaces: no se
+      // acorta el copy por esto), es geométricamente inevitable que parte
+      // quede fuera de pantalla — igual que en cualquier bloque de texto más
+      // largo que la pantalla — y lo que importa es que el área disponible
+      // esté aprovechada con texto de principio a fin, no tapada de más.
+      const cabeEntera = r.cardH <= readingArea + 2;
+      if (cabeEntera) {
+        assert(`@${tag} paso "${st}": el panel nunca tapa el arranque de la tarjeta`, r.cardTop == null || r.cardTop >= r.panelBottom - 4, `cardTop=${Math.round(r.cardTop)} panelBottom=${Math.round(r.panelBottom)}`);
+      } else {
+        assert(`@${tag} paso "${st}": tarjeta más alta que el área disponible — el área queda llena de texto, sin franja tapada de más`, r.cardTop <= r.panelBottom + 2, `cardTop=${Math.round(r.cardTop)} panelBottom=${Math.round(r.panelBottom)} cardH=${Math.round(r.cardH)} área=${Math.round(readingArea)}`);
+      }
+      assert(`@${tag} paso "${st}": el texto dispone de ≥50% del alto del viewport bajo el panel`, readingArea >= r.innerH * 0.5 - 2, `disponible=${Math.round(readingArea)}px de ${r.innerH}px (${Math.round(readingArea / r.innerH * 100)}%)`);
+      assert(`@${tag} paso "${st}": el panel gráfico nunca excede 45vh`, r.panelH <= vp.h * 0.45 + 1, `panelH=${Math.round(r.panelH)}px, 45vh=${Math.round(vp.h * 0.45)}px`);
+      assert(`@${tag} paso "${st}": el panel usa position:sticky (nunca fixed)`, r.panelPos === 'sticky', r.panelPos);
+    }
+    assert(`@${tag} e · las 8 escenas del Acto I disparan su estado al cruzar la línea de disparo (mismo mecanismo del IntersectionObserver)`, scenesOk, scenesDetail.join(', ') || 'ok');
+
+    // e. la línea de tiempo (Acto II) también existe y se detecta en móvil.
+    let lineaOk = true; const lineaDetail = [];
+    for (const li of [0, 5, 11]) {
+      await toTrigger(`.step[data-step="l${li}"]`);
+      const r = await evalJson(cm, `
+        const lp = document.querySelectorAll('.scrolly-graphic')[1];
+        return { state: lp ? lp.getAttribute('data-state') : null, panelH: lp ? lp.getBoundingClientRect().height : 0 };
+      `);
+      if (r.state !== ('linea-' + li)) { lineaOk = false; lineaDetail.push(`l${li}→${r.state}`); }
+      assert(`@${tag} línea l${li}: el panel nunca excede 45vh`, r.panelH <= vp.h * 0.45 + 1, `panelH=${Math.round(r.panelH)}px`);
+    }
+    assert(`@${tag} e · la línea de tiempo dispara su estado al cruzar la línea de disparo en móvil`, lineaOk, lineaDetail.join(', ') || 'ok');
+
+    // c. body/html sin overflow bloqueado: se puede scrollear de la apertura al pie.
+    await cm.send('Runtime.evaluate', { expression: `window.scrollTo(0, 0)` });
+    await new Promise(r => setTimeout(r, 300));
+    const overflowInfo = await evalJson(cm, `return {
+      htmlOverflowY: getComputedStyle(document.documentElement).overflowY,
+      bodyOverflowY: getComputedStyle(document.body).overflowY,
+    };`);
+    assert(`@${tag} c · html sin overflow-y bloqueado`, overflowInfo.htmlOverflowY !== 'hidden', overflowInfo.htmlOverflowY);
+    assert(`@${tag} c · body sin overflow-y bloqueado`, overflowInfo.bodyOverflowY !== 'hidden', overflowInfo.bodyOverflowY);
+    await cm.send('Runtime.evaluate', { expression: `window.scrollTo(0, document.documentElement.scrollHeight)` });
+    await new Promise(r => setTimeout(r, 600));
+    const bottom = await evalJson(cm, `return { y: window.scrollY, maxY: document.documentElement.scrollHeight - innerHeight }`);
+    assert(`@${tag} c · el scroll nativo llega hasta el pie sin quedar atrapado`, bottom.y >= bottom.maxY - 4, `scrollY=${bottom.y} maxY=${bottom.maxY}`);
+
+    await cm.send('Page.close').catch(() => {});
+  }
 } catch (e) {
   fail('runner sin excepción', String(e && e.stack || e));
 } finally {

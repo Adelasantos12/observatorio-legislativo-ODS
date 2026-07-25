@@ -50,11 +50,14 @@
   --accent: var(--action);
   --accent-2: var(--ink-3);
   --accent-soft: var(--neutral-2);
-  /* Alto real del site-header (publicado en vivo por site-header.vue vía
-     ResizeObserver); el valor de respaldo cubre el primer frame antes de que
-     el observer mida. Lo usan los paneles sticky de página para pegarse
-     DEBAJO del header en vez de quedar tapados por él. */
-  --header-h: 64px;
+  /* Alto real de la nav (publicado en vivo por site-header.vue vía
+     ResizeObserver, y actualizado en cada scroll cuando se oculta/reaparece
+     en móvil — v8 §A.3); el valor de respaldo cubre el primer frame antes de
+     que el observer mida. Lo usan los paneles sticky de página para pegarse
+     DEBAJO de la nav en vez de quedar tapados por ella. --header-h se
+     conserva como alias por compatibilidad. */
+  --nav-h: 64px;
+  --header-h: var(--nav-h);
 }
 
 /* Guarda contra scroll horizontal a nivel de viewport (no rompe position:sticky,
@@ -320,33 +323,53 @@ html { overflow-x: hidden; }
 @media (max-width: 720px) { .linea-track-wrap { height: 72px; } .linea-counters { gap: 16px; } }
 
 @media (max-width: 720px) {
-  /* Móvil (v9 · bugs v2 #1-#3): layout LINEAL, no sticky. El panel de altura
-     fija causaba contenido cortado (ficha del agua), un panel que se quedaba
-     pegado tapando lo siguiente (leyenda del registro) y escenas que no cabían
-     (el año de la línea de tiempo). En vez de eso, el gráfico de la escena
-     activa se teleporta (Vue <Teleport>, ver HuellaView.vue) al slot de su
-     propio paso: aparece en flujo normal, arriba de su texto, dimensionado a
-     su contenido. El scroll natural cuenta la historia; nada se bloquea. */
-  .scrolly { grid-template-columns: 1fr; gap: 0; }
+  /* Móvil (v8 §A · recuperación del scrollytelling): el patrón vuelve a ser
+     STICKY —el panel gráfico se queda fijo mientras el texto pasa por
+     debajo—, igual que escritorio, pero con la altura CONTENIDA que faltaba
+     antes: 40vh fijos (nunca más de 45vh), nunca 100vh. Eso es lo único que
+     había que arreglar; nada de layout lineal ni Teleport (eso SÍ eliminaba
+     el storytelling: inaceptable). El scroll sigue siendo el nativo del
+     documento — el panel no atrapa el touch ni el body queda con overflow
+     bloqueado (guardas: nada de position:fixed, nada de overflow:hidden
+     vertical, nada de height:100vh en el panel). */
+  .scrolly { grid-template-columns: 1fr; gap: 0; padding: 0 clamp(16px,5vw,56px); }
   .scrolly-steps { display: flex; flex-direction: column; }
-  .step {
-    display: flex; flex-direction: column; align-items: stretch;
-    justify-content: flex-start; min-height: 0; padding: 34px 0; gap: 14px;
+  .scrolly-graphic {
+    /* --nav-h la publica site-header.vue en vivo; baja a 0 cuando la nav se
+       oculta al scrollear hacia abajo, y sube de nuevo cuando reaparece
+       (v8 §A.3). height fija: el panel NUNCA excede 45vh (invariante e2e). */
+    top: var(--nav-h, 48px);
+    height: 40vh; max-height: 45vh; min-height: 0;
+    z-index: 5; background: var(--bg);
+    border-bottom: 1px solid var(--line);
+    transition: top .25s ease;
+    padding: 10px clamp(12px, 4vw, 20px);
+    box-sizing: border-box;
   }
-  .linear-mobile .scrolly-graphic {
-    position: static; top: auto; height: auto; max-height: none; min-height: 0;
-    display: block; background: none; border-bottom: none; z-index: auto;
+  .scrolly-graphic > div { width: 100%; height: 100%; display: flex; flex-direction: column; min-height: 0; }
+  /* El paso ocupa 65vh mínimo (invariante e2e §A.5.b): el texto siempre tiene
+     de sobra para leerse bajo el panel de 40vh. La tarjeta vive al fondo del
+     paso, como pide el guion: anclada (position:absolute; bottom:0) al fondo
+     del propio .step (position:relative la contiene — nunca se comporta como
+     fixed, nunca sale de su paso). display:block simple (no flex): la base de
+     escritorio usa `display:flex; align-items:center` para centrar la
+     tarjeta, y ese recentrado no aplica aquí. */
+  .step { position: relative; display: block; min-height: 65vh; padding: 0; }
+  .step-card { position: absolute; left: 0; right: 0; bottom: 16px; }
+  .unit-panel { flex: 1 1 auto; min-height: 0; display: flex; flex-direction: column; }
+  .unit-stage { flex: 1 1 auto; height: auto; min-height: 0; }
+  .unit-legend { flex: none; font-size: 11px; gap: 8px; margin-top: 6px; }
+  /* E5 · la ficha del agua: cabe DENTRO del panel de 40vh con su propio
+     scroll interno (no bloquea el scroll del documento — es un scroll
+     anidado normal, no scroll-jacking). Fallback si no cupiera del todo. */
+  .scrolly-graphic .card {
+    width: 100%; height: 100%; overflow-y: auto; -webkit-overflow-scrolling: touch;
+    overscroll-behavior: contain; box-sizing: border-box;
   }
-  /* Slot vacío (paso no activo): no ocupa espacio ni dibuja nada. */
-  .graphic-slot:empty { display: none; }
-  .linear-mobile .unit-panel {
-    border: 1px solid var(--line); border-radius: 12px; padding: 14px;
-    background: var(--bg);
-  }
-  .linear-mobile .unit-stage { height: clamp(230px, 48vh, 420px); }
-  /* Los cuadritos se reajustan (unitPx en JS); la leyenda envuelve en móvil. */
-  .unit-legend { font-size: 11.5px; gap: 10px; }
-  .viaje-stage { height: 34vh; }
+  /* Línea de tiempo (Acto II): mismo panel de 40vh, versión compacta. */
+  .linea-stage { padding: 0; }
+  .linea-anio-big { font-size: clamp(28px, 9vw, 40px); margin-bottom: 2px; }
+  .linea-counters { margin-top: 10px; gap: 12px; }
   .story-hero .sub { font-size: 17px; }
   /* Explorador (bug #4): tarjetas apiladas en vez de fila de tabla ancha. */
   .explorador-cards.card-grid { grid-template-columns: 1fr; gap: 12px; }
