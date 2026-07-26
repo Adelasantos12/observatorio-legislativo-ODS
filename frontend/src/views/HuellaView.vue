@@ -59,21 +59,11 @@
                 <span class="nt-badge nt-badge--validado">● {{ C.escenas.agua.fichaBadge }}</span>
               </div>
               <p class="muted">{{ C.escenas.agua.fichaResumen }}</p>
-              <!-- data-label: en móvil (<992px) el reset de tipi-uikit apila las
-                   celdas en tarjeta; con data-label cada valor lleva su rótulo
-                   (Estándar/Disposición/Rol/Cobertura) en vez de texto suelto sin
-                   contexto (bug v2 #1: la tabla ancha ya no desborda ni se
-                   confunde). Desde 992px se ve como tabla normal (CSS nativo). -->
-              <table class="nt-table" v-if="agua.length">
-                <thead><tr><th>Estándar</th><th>Disposición</th><th>Rol</th><th>Cobertura</th></tr></thead>
-                <tbody>
-                  <tr v-for="(r,i) in agua.slice(0,6)" :key="i">
-                    <td data-label="Estándar">{{ r.estandar }}</td><td data-label="Disposición">{{ r.disposicion }}</td>
-                    <td data-label="Rol"><span :class="{muted: r.rol_correspondencia!=='sustantivo'}">{{ r.rol_correspondencia==='sustantivo'?'sustantivo':'contextual' }}</span></td>
-                    <td data-label="Cobertura">{{ r.cobertura }}</td>
-                  </tr>
-                </tbody>
-              </table>
+              <!-- Vista previa compacta de la matriz NormTrace (patch v8 §B): las
+                   primeras filas, sin filtros ni toggle; cabe dentro del panel de
+                   40vh con su propio scroll interno (.scrolly-graphic .card). La
+                   ficha completa vive en /expedientes/:id. -->
+              <normtrace-matrix v-if="agua.length" :registros="agua" compact :preview-limit="8" />
               <!-- Serie abierta: armonización estatal (32 entidades). Sin fuente
                    del dato todavía, se muestra "en documentación", nunca "0 de 32". -->
               <div style="margin-top:14px">
@@ -247,6 +237,7 @@ import { ref, reactive, computed, onMounted, onBeforeUnmount, nextTick } from 'v
 import { useRouter } from 'vue-router';
 import api from '@/api';
 import { content as C, fill } from '@/content';
+import NormtraceMatrix from '@/components/normtrace-matrix.vue';
 import heroUrl from '@/assets/illustrations/hero_manchas_ods.svg?url';
 import apoyoUrl from '@/assets/illustrations/apoyo.svg?url';
 import ascensoUrl from '@/assets/illustrations/ascenso.svg?url';

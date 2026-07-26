@@ -54,30 +54,7 @@
         </div>
         <p class="muted">Fuente del texto: {{ nt.fuente_texto }} · marco {{ (nt.marco||'').toUpperCase() }} · {{ nt.registros.length }} registros.</p>
 
-        <div style="overflow-x:auto">
-        <table class="nt-table">
-          <thead><tr>
-            <th>Estándar</th><th>Disposición</th><th>Rol</th><th>Cobertura</th>
-            <th>Actor</th><th>Proc.</th><th>Coord.</th><th>Exig.</th><th>Salvag.</th><th>Feder.</th><th title="Aspectos que la propia ley deja abiertos para su desarrollo posterior.">Agenda</th>
-          </tr></thead>
-          <tbody>
-            <tr v-for="(r,i) in nt.registros" :key="i">
-              <td>{{ r.estandar }}</td>
-              <td>{{ r.disposicion }}</td>
-              <td><span :class="{muted: r.rol_correspondencia !== 'sustantivo'}">{{ rolCorto(r.rol_correspondencia) }}</span></td>
-              <td>{{ r.cobertura }}</td>
-              <td v-for="f in FITS" :key="f"><span class="nt-fit"><span class="nt-dot" :class="'nt-dot--'+r[f]"></span>{{ fitCorto(r[f]) }}</span></td>
-              <td class="muted" :title="r.tipo_brecha || ''">{{ agendaLabel(r.tipo_brecha) }}</td>
-            </tr>
-          </tbody>
-        </table>
-        </div>
-
-        <div v-if="anyNota" style="margin-top:10px">
-          <p class="muted" v-for="(r,i) in nt.registros.filter(x=>x.nota)" :key="'nt'+i">
-            <b>{{ r.estandar }} · {{ r.disposicion }}:</b> {{ r.nota }}
-          </p>
-        </div>
+        <normtrace-matrix :registros="nt.registros" :titulo="ini.denominacion" />
 
         <p style="margin-top:12px" v-if="nt.brief">
           <a href="#" @click.prevent="toggleBrief">{{ showBrief ? 'ocultar' : 'ver' }} el análisis completo (brief)</a>
@@ -100,6 +77,7 @@
 import { ref, computed, onMounted } from 'vue';
 import { useRoute } from 'vue-router';
 import api from '@/api';
+import NormtraceMatrix from '@/components/normtrace-matrix.vue';
 
 const route = useRoute();
 const loading = ref(true);
@@ -111,31 +89,14 @@ const metaMap = ref({});
 const nt = ref(null);
 const showBrief = ref(false);
 const briefMd = ref('');
-const FITS = ['actor_fit', 'procedimiento_fit', 'coordinacion_fit', 'enforcement_fit', 'salvaguarda_derechos_fit', 'federalismo_fit'];
 
 const ntValidado = computed(() => nt.value && nt.value.nivel_revision === 'validado_autora');
-const anyNota = computed(() => nt.value && nt.value.registros.some((r) => r.nota));
 const briefHtml = computed(() => renderMd(briefMd.value));
 
 function odsColor(n) { return (cat.value.ods[String(n)] || {}).color || 'var(--ink3)'; }
 function odsName(n) { return (cat.value.ods[String(n)] || {}).nombre_es || ('ODS ' + n); }
 function metaCorto(code) { return metaMap.value[code]?.nombre_corto_es || ''; }
 function metaOficial(code) { return metaMap.value[code]?.nombre_oficial_es || null; }
-
-// v7.1 D: la palabra "brecha" no aparece en ninguna vista. El dato interno
-// (tipo_brecha) no cambia; solo su presentación como "Agenda".
-const AGENDA_LABELS = {
-  brecha_procedimental: 'Oportunidad de fortalecimiento · procedimiento',
-  reconocimiento_sin_garantia: 'Oportunidad de fortalecimiento · exigibilidad',
-  brecha_presupuestal: 'Oportunidad de fortalecimiento · presupuesto',
-  brecha_de_implementacion: 'Oportunidad de fortalecimiento · implementación',
-  brecha_de_remision: 'Oportunidad de fortalecimiento · desarrollo normativo',
-  brecha_de_cobertura: 'Oportunidad de fortalecimiento · cobertura',
-  brecha_administrativa: 'Oportunidad de fortalecimiento · operación',
-};
-function agendaLabel(v) { return AGENDA_LABELS[v] || '—'; }
-function rolCorto(r) { return r === 'sustantivo' ? 'sustantivo' : 'contextual'; }
-function fitCorto(f) { return ({ fuerte: 'fuerte', medio: 'medio', debil: 'débil', no_aplica: 'n/a' })[f] || f; }
 
 async function toggleBrief() {
   showBrief.value = !showBrief.value;

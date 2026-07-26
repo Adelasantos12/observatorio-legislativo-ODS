@@ -117,6 +117,8 @@ try {
       hasFig: !!document.querySelector('.viaje-fig'),
       aguaBadge: agua ? agua.textContent.trim() : null,
       enlaceHref: enlace ? enlace.getAttribute('href') : null,
+      // v8 §B: vista previa compacta de la matriz NormTrace en la escena del agua.
+      aguaMatrixRows: document.querySelectorAll('.card .ntm-row').length,
     };
   `);
   const T = h.titulos;
@@ -149,6 +151,7 @@ try {
   assert('unit chart transiciona (transition-duration ≠ 0s)', h.td && h.td !== '0s', `td=${h.td}`);
   assert('ficha del agua con badge "Validado por la autora"', (h.aguaBadge||'').includes('Validado por la autora'), h.aguaBadge);
   assert('la tarjeta del agua enlaza a un expediente', !!h.enlaceHref && h.enlaceHref.includes('/expedientes/'), h.enlaceHref);
+  assert('la vista previa de la matriz del agua muestra sus primeras filas (v8 §B, ≤8)', h.aguaMatrixRows > 0 && h.aguaMatrixRows <= 8, `filas=${h.aguaMatrixRows}`);
 
   async function scrollToStep(sel) {
     await c.send('Runtime.evaluate', { expression: `(()=>{const s=document.querySelector('${sel}');if(s){const r=s.getBoundingClientRect();window.scrollTo(0, window.scrollY + r.top - innerHeight*0.4);}})()` });
@@ -197,11 +200,98 @@ try {
   const ficha = await goto(c, h.enlaceHref || '/expedientes/ini5', `!/Cargando expediente/.test(document.body.innerText) && document.querySelector('header h1')`);
   assert('la ficha del expediente carga (no queda en «Cargando»)', ficha);
   const f = await evalJson(c, `const t=document.body.innerText; return { nt: t.includes('Análisis NormTrace'), lga: t.includes('LGA'),
-    brecha: /brecha/i.test(t), agenda: t.includes('Agenda'), oportunidad: t.includes('Oportunidad de fortalecimiento') };`);
+    brecha: /brecha/i.test(t), oportunidad: t.includes('Oportunidad de fortalecimiento') };`);
   assert('la ficha muestra el análisis NormTrace', f.nt);
-  // D · la palabra "brecha" no aparece en ninguna vista; la columna es "Agenda"
+  // D · la palabra "brecha" no aparece en ninguna vista (vocabulario v7.1-D).
+  // Patch v8 §B: la matriz reemplaza la columna "Agenda" por el marcador ▸ y la
+  // hoja/panel de detalle; el vocabulario "Oportunidad de fortalecimiento" vive
+  // ahora en la leyenda de la matriz (siempre visible, sin necesidad de tocar
+  // una fila).
   assert('D · cero apariciones de "brecha" en la ficha', f.brecha === false);
-  assert('D · la columna se presenta como "Agenda" / "Oportunidad de fortalecimiento"', f.agenda && f.oportunidad);
+  assert('D · el vocabulario es "Oportunidad de fortalecimiento" (nunca "brecha")', f.oportunidad);
+
+  // ---------- v8 §B · matriz NormTrace (glifos, no tabla) — escritorio ----------
+  console.log('\n/expedientes/:id — matriz NormTrace (patch v8 §B), escritorio 1280px');
+  const NREGS = 34; // filas del snapshot dorado servido por el fixture (34 registros)
+  const matrixDesktop = await evalJson(c, `
+    const rows = document.querySelectorAll('.ntm-row');
+    const glyphs = document.querySelectorAll('.ntm-g[aria-label]');
+    const cellText = [...rows].some(r => /fuerte|medio|d(e|é)bil/i.test((r.querySelector('.ntm-cells')||{}).textContent||''));
+    return { rows: rows.length, glyphs: glyphs.length, cellText,
+      hasToggle: !!document.querySelector('.ntm-toggle'), hasCsv: !!document.querySelector('.ntm-csv') };
+  `);
+  assert('la matriz renderiza sus filas (34, dato vivo del fixture)', matrixDesktop.rows === NREGS, `rows=${matrixDesktop.rows}`);
+  assert('cada glifo trae aria-label (≥ filas × 7: cobertura + 6 dimensiones)', matrixDesktop.glyphs >= matrixDesktop.rows * 7, `glifos=${matrixDesktop.glyphs}`);
+  assert('ninguna celda de la matriz imprime "fuerte/medio/débil" (solo glifos con aria-label)', matrixDesktop.cellText === false);
+  assert('toggle "vista de tabla" presente', matrixDesktop.hasToggle);
+  assert('botón de descarga CSV presente', matrixDesktop.hasCsv);
+
+  // Vista de tabla: la alternativa textual completa (ahí SÍ hay palabras).
+  await c.send('Runtime.evaluate', { expression: `document.querySelector('.ntm-toggle').click()` });
+  await new Promise(r => setTimeout(r, 250));
+  const tablaMatriz = await evalJson(c, `return {
+    table: !!document.querySelector('.ntm-full-table'),
+    rows: document.querySelectorAll('.ntm-full-table tbody tr').length,
+    matrixHidden: !document.querySelector('.ntm-colhead'),
+  };`);
+  assert('la vista de tabla existe como alternativa textual completa (34 filas)', tablaMatriz.table && tablaMatriz.rows === NREGS, JSON.stringify(tablaMatriz));
+  await c.send('Runtime.evaluate', { expression: `document.querySelector('.ntm-toggle').click()` });
+  await new Promise(r => setTimeout(r, 250));
+
+  // Filtros: un chip a la vez, removible.
+  await c.send('Runtime.evaluate', { expression: `[...document.querySelectorAll('.ntm-chip')].find(b=>/procedimiento/i.test(b.textContent)).click()` });
+  await new Promise(r => setTimeout(r, 250));
+  const filtrado = await evalJson(c, `return { rows: document.querySelectorAll('.ntm-row').length, chipOn: !!document.querySelector('.ntm-chip.on') }`);
+  assert('el filtro por dimensión débil reduce las filas visibles', filtrado.rows > 0 && filtrado.rows < NREGS, `rows=${filtrado.rows}`);
+  assert('el chip activo queda marcado', filtrado.chipOn);
+  await c.send('Runtime.evaluate', { expression: `document.querySelector('.ntm-chip.on').click()` });
+  await new Promise(r => setTimeout(r, 250));
+  const sinFiltro = await evalJson(c, `return { rows: document.querySelectorAll('.ntm-row').length }`);
+  assert('el chip es removible (un segundo toque lo quita)', sinFiltro.rows === NREGS, `rows=${sinFiltro.rows}`);
+
+  // Tocar una fila abre el detalle con la nota (panel lateral en escritorio).
+  await c.send('Runtime.evaluate', { expression: `document.querySelector('.ntm-row').click()` });
+  await new Promise(r => setTimeout(r, 300));
+  const sheetDesktop = await evalJson(c, `
+    const sheet = document.querySelector('.ntm-sheet');
+    const r = sheet ? sheet.getBoundingClientRect() : null;
+    return { open: !!sheet, hasNote: !!(sheet && sheet.querySelector('.ntm-note')),
+      hasOportunidad: document.body.innerText.includes('Oportunidad de fortalecimiento'),
+      width: r ? r.width : 0, height: r ? r.height : 0 };
+  `);
+  assert('tocar una fila abre el detalle con su nota', sheetDesktop.open && sheetDesktop.hasNote, JSON.stringify(sheetDesktop));
+  assert('escritorio: el detalle es un panel lateral (ancho acotado, alto de pantalla)', sheetDesktop.width <= 420 && sheetDesktop.height >= 400, JSON.stringify(sheetDesktop));
+  await c.send('Runtime.evaluate', { expression: `document.querySelector('.ntm-close') && document.querySelector('.ntm-close').click()` });
+  await new Promise(r => setTimeout(r, 200));
+
+  // ---------- v8 §B · matriz NormTrace @375px (sin scroll horizontal) ----------
+  console.log('\n/expedientes/:id — matriz NormTrace @375px, sin scroll horizontal');
+  const cMobFicha = await newPage();
+  await cMobFicha.send('Emulation.setDeviceMetricsOverride', { width: 375, height: 812, deviceScaleFactor: 2, mobile: true, screenWidth: 375, screenHeight: 812 });
+  await cMobFicha.send('Emulation.setTouchEmulationEnabled', { enabled: true, maxTouchPoints: 1 }).catch(() => {});
+  await goto(cMobFicha, h.enlaceHref || '/expedientes/ini5', `document.querySelector('.ntm-row')`);
+  const mobMatrix = await evalJson(cMobFicha, `
+    const rows = document.querySelectorAll('.ntm-row');
+    const glyphs = document.querySelectorAll('.ntm-g[aria-label]');
+    const cellText = [...rows].some(r => /fuerte|medio|d(e|é)bil/i.test((r.querySelector('.ntm-cells')||{}).textContent||''));
+    return { rows: rows.length, glyphs: glyphs.length, cellText,
+      scrollW: document.documentElement.scrollWidth, clientW: document.documentElement.clientWidth };
+  `);
+  assert('@375 la matriz renderiza sus 34 filas', mobMatrix.rows === NREGS, `rows=${mobMatrix.rows}`);
+  assert('@375 la matriz se lee sin scroll horizontal de página', mobMatrix.scrollW <= mobMatrix.clientW + 1, JSON.stringify(mobMatrix));
+  assert('@375 ninguna celda imprime fuerte/medio/débil (solo glifos con aria-label)', mobMatrix.cellText === false);
+  assert('@375 los glifos traen aria-label (≥ filas × 7)', mobMatrix.glyphs >= mobMatrix.rows * 7, `glifos=${mobMatrix.glyphs}`);
+
+  await cMobFicha.send('Runtime.evaluate', { expression: `document.querySelector('.ntm-row').click()` });
+  await new Promise(r => setTimeout(r, 300));
+  const mobSheet = await evalJson(cMobFicha, `
+    const sheet = document.querySelector('.ntm-sheet');
+    const r = sheet ? sheet.getBoundingClientRect() : null;
+    return { open: !!sheet, hasNote: !!(sheet && sheet.querySelector('.ntm-note')), bottom: r ? r.bottom : 0, width: r ? r.width : 0 };
+  `);
+  assert('@375 tocar una fila abre la hoja inferior con su nota', mobSheet.open && mobSheet.hasNote, JSON.stringify(mobSheet));
+  assert('@375 la hoja se ancla al fondo con el ancho completo (hoja inferior, no panel)', mobSheet.bottom >= 812 - 4 && mobSheet.width >= 375 - 4, JSON.stringify(mobSheet));
+  await cMobFicha.send('Page.close').catch(() => {});
 
   // ---------- /minutas ----------
   console.log('\n/minutas — tarjetas dinámicas y filtros');
