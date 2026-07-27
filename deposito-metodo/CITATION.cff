@@ -18,9 +18,14 @@ authors:
   - family-names: "Santos Domínguez"
     given-names: "Adela Beatriz"
     orcid: "https://orcid.org/TODO-0000-0000-0000-0000"
-version: "0.1.0"
+version: "1.0.2"
 date-released: "2026-07-26"
+doi: "10.5281/zenodo.21631277"
 license: CC-BY-4.0
+identifiers:
+  - type: doi
+    value: "10.5281/zenodo.21631277"
+    description: "Registro en Zenodo de esta obra (versión 1.0.2)."
 keywords:
   - NormTrace
   - Agenda 2030
