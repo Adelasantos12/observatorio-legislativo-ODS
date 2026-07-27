@@ -36,26 +36,34 @@ keywords:
   - ODS 6
 repository-code: "https://github.com/Adelasantos12/observatorio-legislativo-ODS"
 references:
-  # Stack base reutilizado (Political Watch, AGPL-3.0). Complete las URL/DOI.
+  # Stack base reutilizado (Political Watch, AGPL-3.0).
   - type: software
     title: "escáner2030 / stack tipi (Political Watch)"
     notes: "Base de etiquetado por diccionario y stack FastAPI/Vue, AGPL-3.0."
     repository-code: "https://github.com/politicalwatch"
-  # Instancias previas del marco NormTrace (misma autora). Complete los DOI.
+  # Instancias previas del marco NormTrace (misma autora), en Zenodo.
+  # Datos verificados; solo falta el número de DOI de cada registro (TODO).
   - type: software
-    title: "NormTrace-CRPD: systematic tool for domestic normative alignment with the CRPD"
+    title: "NormTrace-CRPD: A systematic tool for assessing domestic normative alignment with the Convention on the Rights of Persons with Disabilities"
+    version: "2.1.0"
+    date-released: "2026-04-21"
+    notes: "Primera instancia del marco NormTrace (define el framework)."
     authors:
       - family-names: "Santos Domínguez"
         given-names: "Adela Beatriz"
     doi: "TODO-10.5281/zenodo.XXXXXXX"
   - type: software
-    title: "NormTrace-IHR: Legal Internalisation Mapping Infrastructure for the International Health Regulations"
+    title: "NormTrace-IHR: Legal Internalisation Mapping Infrastructure for International Health Regulations"
+    version: "1.0.0"
+    date-released: "2026-05-08"
     authors:
       - family-names: "Santos Domínguez"
         given-names: "Adela Beatriz"
     doi: "TODO-10.5281/zenodo.XXXXXXX"
   - type: software
-    title: "NormTrace-Political Rights: Legal-Institutional Activation Mapping (Mexico and Costa Rica)"
+    title: "NormTrace-Political Rights: Legal-Institutional Activation Mapping of Political Participation Rights in Mexico and Costa Rica"
+    version: "0.1.2"
+    date-released: "2026-07-10"
     authors:
       - family-names: "Santos Domínguez"
         given-names: "Adela Beatriz"

@@ -17,17 +17,20 @@ Organización: <https://github.com/politicalwatch>
 
 ## Marco NormTrace — instancias previas de la autora (CC BY 4.0)
 
-El protocolo NormTrace fue desarrollado por la autora y aplicado antes a otros
-instrumentos. Estas son sus instancias publicadas (completar los DOI de Zenodo):
+El protocolo NormTrace fue desarrollado por la autora (Santos Domínguez, Adela B.)
+y aplicado antes a otros instrumentos. Estas son sus instancias publicadas en
+Zenodo. Los datos están verificados; **falta el número de DOI de cada registro**
+(aparece en la página de cada uno en Zenodo, con formato `10.5281/zenodo.XXXXX`):
 
-- **NormTrace-CRPD** — alineación normativa doméstica con la Convención sobre los
-  Derechos de las Personas con Discapacidad (piloto México y Suiza).
+- **NormTrace-CRPD** — *A systematic tool for assessing domestic normative
+  alignment with the Convention on the Rights of Persons with Disabilities*
+  (v2.1.0, 21 abr 2026). Primera instancia del marco NormTrace (define el
+  framework); piloto México y Suiza. DOI: `TODO-10.5281/zenodo.XXXXXXX`
+- **NormTrace-IHR** — *Legal Internalisation Mapping Infrastructure for
+  International Health Regulations* (v1.0.0, 8 may 2026); piloto México.
   DOI: `TODO-10.5281/zenodo.XXXXXXX`
-- **NormTrace-IHR** — internalización jurídica del Reglamento Sanitario
-  Internacional (IHR 2005 + enmiendas 2024), piloto México.
-  DOI: `TODO-10.5281/zenodo.XXXXXXX`
-- **NormTrace-Political Rights** — activación legal-institucional de derechos de
-  participación política (México y Costa Rica).
+- **NormTrace-Political Rights** — *Legal-Institutional Activation Mapping of
+  Political Participation Rights in Mexico and Costa Rica* (v0.1.2, 10 jul 2026).
   DOI: `TODO-10.5281/zenodo.XXXXXXX`
 
 ## Este proyecto
