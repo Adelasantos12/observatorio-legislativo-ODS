@@ -1,0 +1,70 @@
+cff-version: 1.2.0
+message: "Si usa este trabajo, por favor cítelo como se indica abajo."
+title: "Huella 2030 — NormTrace aplicado a la correspondencia legislativa con la Agenda 2030 (México)"
+abstract: >
+  Método de trazabilidad normativa que lee iniciativas y leyes mexicanas frente a
+  los Objetivos de Desarrollo Sostenible (ODS) de la Agenda 2030 en dos capas:
+  (1) etiquetado por diccionario de vocabulario curado, heredado del stack tipi
+  de Political Watch (escáner2030); y (2) codificación estructural NormTrace por
+  unidad jurídica, que registra actor, procedimiento, coordinación, exigibilidad,
+  salvaguarda de derechos, reparto federal y tipo de oportunidad de
+  fortalecimiento. Produce una correspondencia trazable, con cita a la fuente y
+  estatus de revisión, entre el texto legal y los estándares de la Agenda 2030 y
+  del derecho internacional. No constituye dictamen jurídico ni evaluación de
+  cumplimiento. Incluye el ejemplo dorado validado por la autora (Ley General de
+  Aguas frente al ODS 6 y el derecho humano al agua).
+type: dataset
+authors:
+  - family-names: "Santos Domínguez"
+    given-names: "Adela Beatriz"
+    orcid: "https://orcid.org/TODO-0000-0000-0000-0000"
+version: "0.1.0"
+date-released: "2026-07-26"
+license: CC-BY-4.0
+keywords:
+  - NormTrace
+  - Agenda 2030
+  - Objetivos de Desarrollo Sostenible
+  - ODS
+  - correspondencia normativa
+  - trazabilidad jurídica
+  - legislación
+  - México
+  - Cámara de Diputados
+  - derechos humanos
+  - Ley General de Aguas
+  - ODS 6
+repository-code: "https://github.com/Adelasantos12/observatorio-legislativo-ODS"
+references:
+  # Stack base reutilizado (Political Watch, AGPL-3.0).
+  - type: software
+    title: "escáner2030 / stack tipi (Political Watch)"
+    notes: "Base de etiquetado por diccionario y stack FastAPI/Vue, AGPL-3.0."
+    repository-code: "https://github.com/politicalwatch"
+  # Instancias previas del marco NormTrace (misma autora), en Zenodo.
+  # Datos verificados; solo falta el número de DOI de cada registro (TODO).
+  - type: software
+    title: "NormTrace-CRPD: A systematic tool for assessing domestic normative alignment with the Convention on the Rights of Persons with Disabilities"
+    version: "2.1.0"
+    date-released: "2026-04-21"
+    notes: "Primera instancia del marco NormTrace (define el framework)."
+    authors:
+      - family-names: "Santos Domínguez"
+        given-names: "Adela Beatriz"
+    doi: "TODO-10.5281/zenodo.XXXXXXX"
+  - type: software
+    title: "NormTrace-IHR: Legal Internalisation Mapping Infrastructure for International Health Regulations"
+    version: "1.0.0"
+    date-released: "2026-05-08"
+    authors:
+      - family-names: "Santos Domínguez"
+        given-names: "Adela Beatriz"
+    doi: "TODO-10.5281/zenodo.XXXXXXX"
+  - type: software
+    title: "NormTrace-Political Rights: Legal-Institutional Activation Mapping of Political Participation Rights in Mexico and Costa Rica"
+    version: "0.1.2"
+    date-released: "2026-07-10"
+    authors:
+      - family-names: "Santos Domínguez"
+        given-names: "Adela Beatriz"
+    doi: "TODO-10.5281/zenodo.XXXXXXX"
