@@ -197,6 +197,23 @@ html { overflow-x: hidden; }
 .nt-badge--validado::before { background: var(--ink-2); }              /* lleno = validado */
 .nt-badge--preliminar::before { background: transparent; }            /* hueco = preliminar */
 .nt-badge--preliminar { color: var(--ink-2); }
+/* Escena del agua (v8): resumen ESTÁTICO de correspondencia por meta del ODS 6
+   (artículo↔meta). No interactivo —a diferencia de la matriz del expediente—:
+   cabe en el panel del storytelling y no perturba el scroll. */
+/* Ficha compacta para el panel de 40vh: título pequeño y en línea con el sello,
+   la correspondencia PRIMERO (lo que el lector debe ver sin scroll), el resumen
+   como pie de letra chica. Así el artículo↔meta queda siempre sobre el pliegue. */
+.agua-cab { display: flex; justify-content: space-between; align-items: baseline; gap: 8px; flex-wrap: wrap; }
+.agua-titulo { margin: 0; font-size: 16px; line-height: 1.25; letter-spacing: -0.01em; }
+.agua-resumen { font-size: 12px; margin: 8px 0 0; }
+.agua-corresp { margin-top: 10px; }
+.agua-corresp-h { font-size: 12px; color: var(--ink-2); font-weight: 600; margin-bottom: 6px; }
+/* Chips compactos: código de meta del ODS 6 + nº de disposiciones que le
+   corresponden. Envuelven en 2-3 líneas y caben en el panel de 40vh. */
+.agua-metas { display: flex; flex-wrap: wrap; gap: 6px; }
+.agua-meta-chip { display: inline-flex; align-items: baseline; gap: 5px; font-size: 12px; color: var(--ink); background: color-mix(in srgb, var(--ods6) 12%, transparent); border: 1px solid color-mix(in srgb, var(--ods6) 40%, transparent); border-radius: 999px; padding: 2px 9px; font-variant-numeric: tabular-nums; }
+.agua-meta-chip b { color: var(--ods6); font-weight: 700; }
+.agua-corresp-otras { margin-top: 8px; font-size: 12px; }
 /* Puntos de ajuste (fit): lleno / medio / vacío, en tinta */
 .nt-fit { display: inline-flex; align-items: center; gap: 6px; font-size: 12px; color: var(--ink-2); white-space: nowrap; }
 .nt-dot { width: 12px; height: 12px; border-radius: 50%; border: 2px solid var(--ink-2); flex: none; }

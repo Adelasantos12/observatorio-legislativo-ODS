@@ -53,17 +53,24 @@
             </div>
 
             <!-- E5: el caso del agua (invariante v6.2, no puede faltar) -->
-            <div v-show="scene === 5" class="card">
-              <div style="display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap">
-                <h3 style="margin:0">{{ C.escenas.agua.fichaTitulo }}</h3>
+            <div v-show="scene === 5" class="card agua-card">
+              <div class="agua-cab">
+                <h3 class="agua-titulo">{{ C.escenas.agua.fichaTitulo }}</h3>
                 <span class="nt-badge nt-badge--validado">● {{ C.escenas.agua.fichaBadge }}</span>
               </div>
-              <p class="muted">{{ C.escenas.agua.fichaResumen }}</p>
-              <!-- Vista previa compacta de la matriz NormTrace (patch v8 §B): las
-                   primeras filas, sin filtros ni toggle; cabe dentro del panel de
-                   40vh con su propio scroll interno (.scrolly-graphic .card). La
-                   ficha completa vive en /expedientes/:id. -->
-              <normtrace-matrix v-if="agua.length" :registros="agua" compact :preview-limit="8" />
+              <!-- En el storytelling NO va la matriz interactiva (su hoja de
+                   detalle rompía el scroll del panel): aquí, PRIMERO y visible sin
+                   scroll, el resumen estático de la correspondencia artículo↔meta
+                   del ODS 6. La matriz completa e interactiva vive en
+                   /expedientes/:id. -->
+              <div v-if="aguaMetas.length" class="agua-corresp">
+                <div class="agua-corresp-h">{{ C.escenas.agua.correspTitulo }}</div>
+                <div class="agua-metas">
+                  <span class="agua-meta-chip" v-for="m in aguaMetas" :key="m.codigo" :title="m.nombre"><b>{{ m.codigo }}</b> {{ m.n }}</span>
+                </div>
+                <p class="agua-corresp-otras muted" v-if="aguaOtras">{{ fill(C.escenas.agua.correspOtras, { n: aguaOtras }) }}</p>
+              </div>
+              <p class="muted agua-resumen">{{ C.escenas.agua.fichaResumen }}</p>
               <!-- Serie abierta: armonización estatal (32 entidades). Sin fuente
                    del dato todavía, se muestra "en documentación", nunca "0 de 32". -->
               <div style="margin-top:14px">
@@ -237,7 +244,6 @@ import { ref, reactive, computed, onMounted, onBeforeUnmount, nextTick } from 'v
 import { useRouter } from 'vue-router';
 import api from '@/api';
 import { content as C, fill } from '@/content';
-import NormtraceMatrix from '@/components/normtrace-matrix.vue';
 import heroUrl from '@/assets/illustrations/hero_manchas_ods.svg?url';
 import apoyoUrl from '@/assets/illustrations/apoyo.svg?url';
 import ascensoUrl from '@/assets/illustrations/ascenso.svg?url';
@@ -301,6 +307,22 @@ const nodes = ref([]);
 const pos = reactive({});
 const annotations = ref([]);
 const agua = ref([]);
+// Escena 5: resumen legible de correspondencia por meta del ODS 6 (artículo↔meta),
+// estático para el storytelling. Agrupa las disposiciones del dorado por meta 6.x;
+// las demás (OG 15 / derecho humano al agua) se cuentan aparte.
+const aguaMetas = computed(() => {
+  const m = new Map();
+  for (const r of agua.value) {
+    const mt = /^(ODS 6\.[0-9a-z]+)/i.exec(r.estandar || '');
+    if (!mt) continue;
+    const codigo = mt[1].replace(/^ODS\s+/i, ''); // "6.1", "6.a"…
+    const cur = m.get(codigo) || { codigo, nombre: r.estandar, n: 0 };
+    cur.n += 1;
+    m.set(codigo, cur);
+  }
+  return [...m.values()];
+});
+const aguaOtras = computed(() => agua.value.filter((r) => !/^ODS 6/.test(r.estandar || '')).length);
 const vitrina = ref(null);
 // Armonización estatal: sin fuente de dato todavía → null. La UI muestra "en
 // documentación" y las 32 casillas vacías; nunca un "0 de 32" (afirmación sin
