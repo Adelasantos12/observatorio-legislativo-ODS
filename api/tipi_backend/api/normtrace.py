@@ -25,6 +25,14 @@ DESCARGO = (
 _COL_ALIASES = {"disposicion_lga": "disposicion"}
 
 
+def _seccion_key(estandar):
+    """Clave de sección para agrupar la ficha: el código de meta ODS ("ODS 6.1")
+    agrupa todas sus filas; los demás estándares (OG 15, PIDESC, cadena federal)
+    son su propio texto completo. Sirve para canonicalizar `estandar`."""
+    m = re.match(r"\s*(ODS 6\.[0-9A-Za-z]+)", estandar or "")
+    return m.group(1) if m else (estandar or "")
+
+
 def _gold_dir():
     candidates = [
         os.environ.get("NORMTRACE_GOLD_DIR"),
@@ -71,6 +79,19 @@ def load_gold_run():
             row["tipo_brecha"] = _clean(row.get("tipo_brecha"))
             row["nota"] = _clean(row.get("nota"))
             registros.append(row)
+    # Canonicaliza `estandar`: las filas con código corto ("ODS 6.1") heredan el
+    # título completo de su meta ("ODS 6.1 Acceso universal…"), tal como el CSV
+    # solo lo escribe en la primera fila de cada sección. Así el frontend agrupa
+    # por sección por igualdad exacta (la matriz de la ficha, patch v8 §B). Es una
+    # normalización de la respuesta; el CSV no se modifica.
+    canon = {}
+    for r in registros:
+        k = _seccion_key(r.get("estandar"))
+        e = r.get("estandar") or ""
+        if len(e) > len(canon.get(k, "")):
+            canon[k] = e
+    for r in registros:
+        r["estandar"] = canon[_seccion_key(r.get("estandar"))]
     return {
         "nivel_revision": "validado_autora",
         "marco": "ods6",
