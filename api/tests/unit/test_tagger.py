@@ -113,12 +113,14 @@ def test_null_file_field_falls_back_to_text(client, sync_word_limit):
 
 
 def test_async_dispatch(client, monkeypatch):
-    """Texts >= TAGGER_MAX_WORDS are dispatched asynchronously (PROCESSING + task_id).
+    """Con TAGGER_ASYNC=True, textos >= TAGGER_MAX_WORDS se despachan asíncronos
+    (PROCESSING + task_id).
 
     The ``memory://`` broker (set in conftest) lets the real ``apply_async`` return a
     task id in-process — no Redis/worker, and the heavy task never actually runs — so
     we exercise the endpoint's genuine *dispatch decision* rather than a mock.
     """
+    monkeypatch.setattr(Config, "TAGGER_ASYNC", True)
     monkeypatch.setattr(Config, "TAGGER_MAX_WORDS", 10)
 
     res = client.post(
@@ -130,6 +132,35 @@ def test_async_dispatch(client, monkeypatch):
     assert body["status"] == "PROCESSING"
     assert isinstance(body["task_id"], str) and body["task_id"]
     assert "estimated_time" in body
+
+
+def test_documento_largo_corre_sincrono_sin_worker(client, monkeypatch):
+    """Por defecto (TAGGER_ASYNC=False), un documento por encima de TAGGER_MAX_WORDS
+    se procesa síncrono y responde SUCCESS en una sola petición —sin depender de un
+    worker de Celery—. Este es el arreglo del escáner en despliegues de un servicio:
+    antes cruzaba el umbral, se encolaba y nadie la procesaba ("Error desconocido")."""
+    assert Config.TAGGER_ASYNC is False  # el default seguro
+    monkeypatch.setattr(Config, "TAGGER_MAX_WORDS", 10)
+
+    text = read_scanner_text("w500.txt")  # bastante más de 10 palabras
+    res = client.post("/tagger/", data={"text": text, "knowledgebase": "politicas,ods"})
+    assert res.status_code == 200
+
+    body = res.json()
+    assert body["status"] == "SUCCESS"
+    assert "result" in body
+
+
+def test_documento_gigantesco_pide_dividir(client, monkeypatch):
+    """Tope duro del camino síncrono: por encima de TAGGER_SYNC_MAX_WORDS se responde
+    413 con ayuda, en vez de arriesgar un timeout de la petición HTTP."""
+    monkeypatch.setattr(Config, "TAGGER_SYNC_MAX_WORDS", 5)
+
+    res = client.post(
+        "/tagger/", data={"text": "palabra " * 20, "knowledgebase": "politicas,ods"}
+    )
+    assert res.status_code == 413
+    assert "dividir" in res.json()["detail"].lower() or "extenso" in res.json()["detail"].lower()
 
 
 def test_segment_legal_reports_units(client, sync_word_limit):

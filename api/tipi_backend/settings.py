@@ -49,6 +49,19 @@ class Config:
     # Celery asíncrona en vez de correr síncrono.
     TAGGER_MAX_WORDS = int(env.get("TAGGER_MAX_WORDS", "5000"))
 
+    # ¿Despachar a Celery cuando el texto supera TAGGER_MAX_WORDS? Requiere un
+    # worker de Celery + broker corriendo. En despliegues de un solo servicio
+    # (API + frontend, sin worker) se deja en False: TODO corre síncrono en el
+    # mismo proceso y el escáner responde en una sola petición. Actívalo con
+    # TAGGER_ASYNC=true solo cuando haya worker (si no, las tareas se encolan y
+    # nadie las procesa, y el escáner falla con documentos grandes).
+    TAGGER_ASYNC = _as_bool(env.get("TAGGER_ASYNC", "False"))
+
+    # Tope duro del camino síncrono: evita que una subida enorme agote el tiempo
+    # de la petición HTTP. Un documento legislativo real cabe de sobra; por
+    # encima se pide dividirlo.
+    TAGGER_SYNC_MAX_WORDS = int(env.get("TAGGER_SYNC_MAX_WORDS", "60000"))
+
     # --- Caché (Redis) ---
     CACHE = {
         "CACHE_REDIS_HOST": _cache_host,
