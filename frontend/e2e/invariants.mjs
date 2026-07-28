@@ -119,7 +119,7 @@ try {
       enlaceHref: enlace ? enlace.getAttribute('href') : null,
       // v8: la escena del agua muestra un resumen ESTÁTICO de correspondencia por
       // meta del ODS 6 (no la matriz interactiva, que rompía el scroll del panel).
-      aguaMetas: document.querySelectorAll('.card .agua-meta-chip').length,
+      aguaMetas: document.querySelectorAll('.card .agua-metas-lista li').length,
       aguaMatrizInteractiva: document.querySelectorAll('.card .ntm-row').length,
     };
   `);
@@ -153,7 +153,7 @@ try {
   assert('unit chart transiciona (transition-duration ≠ 0s)', h.td && h.td !== '0s', `td=${h.td}`);
   assert('ficha del agua con badge "Validado por la autora"', (h.aguaBadge||'').includes('Validado por la autora'), h.aguaBadge);
   assert('la tarjeta del agua enlaza a un expediente', !!h.enlaceHref && h.enlaceHref.includes('/expedientes/'), h.enlaceHref);
-  assert('la escena del agua muestra la correspondencia por meta del ODS 6 (resumen estático)', h.aguaMetas >= 6, `metas=${h.aguaMetas}`);
+  assert('la escena del agua lista los artículos que coinciden por meta del ODS 6 (resumen simple)', h.aguaMetas >= 6, `metas=${h.aguaMetas}`);
   assert('la escena del agua NO incrusta la matriz interactiva (no rompe el scroll del panel)', h.aguaMatrizInteractiva === 0, `filas=${h.aguaMatrizInteractiva}`);
 
   async function scrollToStep(sel) {

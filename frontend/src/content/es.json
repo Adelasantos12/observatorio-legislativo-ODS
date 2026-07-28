@@ -50,7 +50,7 @@
       "fichaTitulo": "Ley General de Aguas · ODS 6",
       "fichaBadge": "Validado por la autora",
       "fichaResumen": "La ley leída disposición por disposición contra las metas del ODS 6 y el derecho humano al agua: 34 correspondencias registradas.",
-      "correspTitulo": "Correspondencia por meta del ODS 6",
+      "correspTitulo": "La ley coincide con {n} metas del ODS 6",
       "correspOtras": "y {n} disposiciones ancladas en el derecho humano al agua",
       "contadorLabel": "Entidades que ya armonizaron",
       "contadorNota": "de 32",

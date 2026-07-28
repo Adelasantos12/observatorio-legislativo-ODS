@@ -58,22 +58,25 @@
                 <h3 class="agua-titulo">{{ C.escenas.agua.fichaTitulo }}</h3>
                 <span class="nt-badge nt-badge--validado">● {{ C.escenas.agua.fichaBadge }}</span>
               </div>
-              <!-- En el storytelling NO va la matriz interactiva (su hoja de
-                   detalle rompía el scroll del panel): aquí, PRIMERO y visible sin
-                   scroll, el resumen estático de la correspondencia artículo↔meta
-                   del ODS 6. La matriz completa e interactiva vive en
-                   /expedientes/:id. -->
+              <!-- En el storytelling, versión SIMPLE y en positivo: por cada meta
+                   del ODS 6, cuántos artículos de la ley coinciden. El "ver más"
+                   abre el detalle (la matriz completa artículo por artículo vive
+                   en /expedientes/:id). -->
               <div v-if="aguaMetas.length" class="agua-corresp">
-                <div class="agua-corresp-h">{{ C.escenas.agua.correspTitulo }}</div>
-                <div class="agua-metas">
-                  <span class="agua-meta-chip" v-for="m in aguaMetas" :key="m.codigo" :title="m.nombre"><b>{{ m.codigo }}</b> {{ m.n }}</span>
-                </div>
-                <p class="agua-corresp-otras muted" v-if="aguaOtras">{{ fill(C.escenas.agua.correspOtras, { n: aguaOtras }) }}</p>
+                <div class="agua-corresp-h">{{ fill(C.escenas.agua.correspTitulo, { n: aguaMetas.length }) }}</div>
+                <ul class="agua-metas-lista">
+                  <li v-for="m in aguaMetas" :key="m.codigo" :title="m.nombre">
+                    <span class="agua-meta-cod">Meta {{ m.codigo }}</span>
+                    <span class="agua-meta-n">{{ m.n }} {{ m.n === 1 ? 'artículo' : 'artículos' }}</span>
+                  </li>
+                </ul>
+                <p class="agua-vermas" v-if="vitrina">
+                  <router-link :to="{ name: 'expediente', params: { id: vitrina } }">{{ C.escenas.agua.enlace }}</router-link>
+                </p>
               </div>
-              <p class="muted agua-resumen">{{ C.escenas.agua.fichaResumen }}</p>
-              <!-- Serie abierta: armonización estatal (32 entidades). Sin fuente
-                   del dato todavía, se muestra "en documentación", nunca "0 de 32". -->
-              <div style="margin-top:14px">
+              <!-- Serie abierta: armonización estatal (32 entidades). Se queda tal
+                   cual, en documentación (nunca "0 de 32"). -->
+              <div class="agua-armo">
                 <div class="muted" style="margin-bottom:6px">
                   {{ C.escenas.agua.contadorLabel }} ·
                   <template v-if="armonizadas != null"><b>{{ armonizadas }}</b> {{ C.escenas.agua.contadorNota }}</template>
@@ -83,9 +86,6 @@
                   <span v-for="i in 32" :key="i" class="serie-box" :class="{ full: armonizadas != null && i <= armonizadas }"></span>
                 </div>
               </div>
-              <p style="margin-top:12px" v-if="vitrina">
-                <router-link :to="{ name: 'expediente', params: { id: vitrina } }">{{ C.escenas.agua.enlace }}</router-link>
-              </p>
             </div>
           </div>
         </div>
