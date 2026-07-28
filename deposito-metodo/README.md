@@ -1,6 +1,6 @@
 # Huella 2030 — NormTrace aplicado a la correspondencia legislativa con la Agenda 2030 (México)
 
-**Autora:** Adela B. Santos Domínguez · ORCID: `TODO-0000-0000-0000-0000`
+**Autora:** Adela B. Santos Domínguez · ORCID: [0000-0002-8691-0544](https://orcid.org/0000-0002-8691-0544)
 **Licencia:** Creative Commons Attribution 4.0 (CC BY 4.0) — ver [`LICENSE`](LICENSE)
 **Versión:** 1.0.2 · **DOI:** [10.5281/zenodo.21631277](https://doi.org/10.5281/zenodo.21631277) · **Estado:** versión preliminar en desarrollo
 
