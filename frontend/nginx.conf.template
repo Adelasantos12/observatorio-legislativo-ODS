@@ -19,6 +19,16 @@ server {
   add_header Permissions-Policy "geolocation=(), microphone=(), camera=(), interest-cohort=()" always;
   add_header Strict-Transport-Security "max-age=31536000; includeSubDomains" always;
 
+  # Archivos ocultos (.env, .git, .htaccess…): 404 explícito en vez del index.html
+  # de la SPA. Los bots rastrean estas rutas a ciegas; aquí no hay secretos (el
+  # .env real nunca entra al contenedor), pero devolver 404 corta el ruido y evita
+  # que un escaneo marque el sitio como si sirviera un .env. Se preserva
+  # /.well-known/ (retos ACME, etc.).
+  location ~ /\.(?!well-known/) {
+    deny all;
+    return 404;
+  }
+
   location / {
     try_files $uri $uri/ @rewrites;
   }
