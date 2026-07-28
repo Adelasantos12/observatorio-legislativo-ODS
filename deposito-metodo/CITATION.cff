@@ -47,7 +47,6 @@ references:
     notes: "Base de etiquetado por diccionario y stack FastAPI/Vue, AGPL-3.0."
     repository-code: "https://github.com/politicalwatch"
   # Instancias previas del marco NormTrace (misma autora), en Zenodo.
-  # Datos verificados; solo falta el número de DOI de cada registro (TODO).
   - type: software
     title: "NormTrace-CRPD: A systematic tool for assessing domestic normative alignment with the Convention on the Rights of Persons with Disabilities"
     version: "2.1.0"
@@ -56,7 +55,7 @@ references:
     authors:
       - family-names: "Santos Domínguez"
         given-names: "Adela Beatriz"
-    doi: "TODO-10.5281/zenodo.XXXXXXX"
+    doi: "10.5281/zenodo.19676921"
   - type: software
     title: "NormTrace-IHR: Legal Internalisation Mapping Infrastructure for International Health Regulations"
     version: "1.0.0"
@@ -64,7 +63,7 @@ references:
     authors:
       - family-names: "Santos Domínguez"
         given-names: "Adela Beatriz"
-    doi: "TODO-10.5281/zenodo.XXXXXXX"
+    doi: "10.5281/zenodo.20085169"
   - type: software
     title: "NormTrace-Political Rights: Legal-Institutional Activation Mapping of Political Participation Rights in Mexico and Costa Rica"
     version: "0.1.2"
@@ -72,4 +71,4 @@ references:
     authors:
       - family-names: "Santos Domínguez"
         given-names: "Adela Beatriz"
-    doi: "TODO-10.5281/zenodo.XXXXXXX"
+    doi: "10.5281/zenodo.21296393"

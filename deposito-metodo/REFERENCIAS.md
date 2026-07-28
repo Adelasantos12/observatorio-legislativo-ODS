@@ -19,19 +19,19 @@ Organización: <https://github.com/politicalwatch>
 
 El protocolo NormTrace fue desarrollado por la autora (Santos Domínguez, Adela B.)
 y aplicado antes a otros instrumentos. Estas son sus instancias publicadas en
-Zenodo. Los datos están verificados; **falta el número de DOI de cada registro**
-(aparece en la página de cada uno en Zenodo, con formato `10.5281/zenodo.XXXXX`):
+Zenodo:
 
 - **NormTrace-CRPD** — *A systematic tool for assessing domestic normative
   alignment with the Convention on the Rights of Persons with Disabilities*
   (v2.1.0, 21 abr 2026). Primera instancia del marco NormTrace (define el
-  framework); piloto México y Suiza. DOI: `TODO-10.5281/zenodo.XXXXXXX`
+  framework); piloto México y Suiza.
+  DOI: [10.5281/zenodo.19676921](https://doi.org/10.5281/zenodo.19676921)
 - **NormTrace-IHR** — *Legal Internalisation Mapping Infrastructure for
   International Health Regulations* (v1.0.0, 8 may 2026); piloto México.
-  DOI: `TODO-10.5281/zenodo.XXXXXXX`
+  DOI: [10.5281/zenodo.20085169](https://doi.org/10.5281/zenodo.20085169)
 - **NormTrace-Political Rights** — *Legal-Institutional Activation Mapping of
   Political Participation Rights in Mexico and Costa Rica* (v0.1.2, 10 jul 2026).
-  DOI: `TODO-10.5281/zenodo.XXXXXXX`
+  DOI: [10.5281/zenodo.21296393](https://doi.org/10.5281/zenodo.21296393)
 
 ## Este proyecto
 
