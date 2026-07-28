@@ -308,7 +308,10 @@ def extract(
 
         text_length = len(content.split())
 
-        if text_length >= Config.TAGGER_MAX_WORDS:
+        # Camino asíncrono (Celery) solo si está habilitado Y hay documento largo.
+        # Requiere worker + broker; deshabilitado por defecto (ver Config.TAGGER_ASYNC),
+        # así el escáner funciona en un despliegue de un solo servicio sin worker.
+        if Config.TAGGER_ASYNC and text_length >= Config.TAGGER_MAX_WORDS:
             task = tipi_tasks.tagger.extract_tags_from_text.apply_async((content, tags))
             eta_time = int((text_length / 1000) * 4)
             return {
@@ -316,6 +319,14 @@ def extract(
                 "task_id": task.id,
                 "estimated_time": eta_time,
             }
+
+        # Camino síncrono (por defecto): responde en una sola petición. Tope duro
+        # para no agotar el tiempo de la petición con una subida patológica.
+        if text_length > Config.TAGGER_SYNC_MAX_WORDS:
+            raise HTTPException(
+                status_code=413,
+                detail="El documento es demasiado extenso para procesarlo de una vez. Divídelo en partes y vuelve a intentarlo.",
+            )
 
         result = tipi_tasks.tagger.extract_tags_from_text(content, tags)
         result = filter_tags(result, kb)

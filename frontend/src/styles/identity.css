@@ -197,23 +197,30 @@ html { overflow-x: hidden; }
 .nt-badge--validado::before { background: var(--ink-2); }              /* lleno = validado */
 .nt-badge--preliminar::before { background: transparent; }            /* hueco = preliminar */
 .nt-badge--preliminar { color: var(--ink-2); }
-/* Escena del agua (v8): resumen ESTÁTICO de correspondencia por meta del ODS 6
-   (artículo↔meta). No interactivo —a diferencia de la matriz del expediente—:
-   cabe en el panel del storytelling y no perturba el scroll. */
-/* Ficha compacta para el panel de 40vh: título pequeño y en línea con el sello,
-   la correspondencia PRIMERO (lo que el lector debe ver sin scroll), el resumen
-   como pie de letra chica. Así el artículo↔meta queda siempre sobre el pliegue. */
+/* Escena del agua (v8.1): en el storytelling, versión SIMPLE y en positivo —por
+   cada meta del ODS 6, cuántos artículos de la ley coinciden—. Estática (no la
+   matriz interactiva del expediente): cabe en el panel de 40vh y no perturba el
+   scroll. El "ver más" abre el detalle artículo por artículo. */
+/* Ficha compacta: título pequeño y en línea con el sello; la lista de metas
+   PRIMERO (lo que el lector debe ver sin scroll). */
 .agua-cab { display: flex; justify-content: space-between; align-items: baseline; gap: 8px; flex-wrap: wrap; }
 .agua-titulo { margin: 0; font-size: 16px; line-height: 1.25; letter-spacing: -0.01em; }
-.agua-resumen { font-size: 12px; margin: 8px 0 0; }
 .agua-corresp { margin-top: 10px; }
-.agua-corresp-h { font-size: 12px; color: var(--ink-2); font-weight: 600; margin-bottom: 6px; }
-/* Chips compactos: código de meta del ODS 6 + nº de disposiciones que le
-   corresponden. Envuelven en 2-3 líneas y caben en el panel de 40vh. */
-.agua-metas { display: flex; flex-wrap: wrap; gap: 6px; }
-.agua-meta-chip { display: inline-flex; align-items: baseline; gap: 5px; font-size: 12px; color: var(--ink); background: color-mix(in srgb, var(--ods6) 12%, transparent); border: 1px solid color-mix(in srgb, var(--ods6) 40%, transparent); border-radius: 999px; padding: 2px 9px; font-variant-numeric: tabular-nums; }
-.agua-meta-chip b { color: var(--ods6); font-weight: 700; }
-.agua-corresp-otras { margin-top: 8px; font-size: 12px; }
+.agua-corresp-h { font-size: 13px; color: var(--ink); font-weight: 600; margin-bottom: 8px; }
+/* Lista meta del ODS 6 → nº de artículos que coinciden. Dos columnas para que
+   las 8 metas quepan en 4 filas dentro del panel de 40vh; una columna en muy
+   angosto. Sólo tinta (sin relleno de color): legible y sobrio. */
+.agua-metas-lista { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: 1fr 1fr; gap: 0 20px; }
+.agua-metas-lista li { display: flex; align-items: baseline; gap: 6px; padding: 3px 0; border-bottom: 1px solid var(--line); font-variant-numeric: tabular-nums; }
+/* Apaga el bullet decorativo que el reset del vendor pinta en los <li>. */
+.agua-metas-lista li::before, .agua-metas-lista li::marker { content: none; background: none; display: none; }
+.agua-meta-cod { font-size: 13px; color: var(--ink); font-weight: 600; white-space: nowrap; }
+/* Middot separador: evita que el código (…6.1) y el conteo (6…) se lean pegados. */
+.agua-meta-n { font-size: 12px; color: var(--ink-2); white-space: nowrap; }
+.agua-meta-n::before { content: "· "; color: var(--ink-3); }
+.agua-vermas { margin: 10px 0 0; font-size: 13px; }
+.agua-armo { margin-top: 14px; }
+@media (max-width: 300px) { .agua-metas-lista { grid-template-columns: 1fr; gap: 0; } }
 /* Puntos de ajuste (fit): lleno / medio / vacío, en tinta */
 .nt-fit { display: inline-flex; align-items: center; gap: 6px; font-size: 12px; color: var(--ink-2); white-space: nowrap; }
 .nt-dot { width: 12px; height: 12px; border-radius: 50%; border: 2px solid var(--ink-2); flex: none; }
