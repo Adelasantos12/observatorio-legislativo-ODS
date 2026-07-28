@@ -117,8 +117,10 @@ try {
       hasFig: !!document.querySelector('.viaje-fig'),
       aguaBadge: agua ? agua.textContent.trim() : null,
       enlaceHref: enlace ? enlace.getAttribute('href') : null,
-      // v8 §B: vista previa compacta de la matriz NormTrace en la escena del agua.
-      aguaMatrixRows: document.querySelectorAll('.card .ntm-row').length,
+      // v8: la escena del agua muestra un resumen ESTÁTICO de correspondencia por
+      // meta del ODS 6 (no la matriz interactiva, que rompía el scroll del panel).
+      aguaMetas: document.querySelectorAll('.card .agua-meta-chip').length,
+      aguaMatrizInteractiva: document.querySelectorAll('.card .ntm-row').length,
     };
   `);
   const T = h.titulos;
@@ -151,7 +153,8 @@ try {
   assert('unit chart transiciona (transition-duration ≠ 0s)', h.td && h.td !== '0s', `td=${h.td}`);
   assert('ficha del agua con badge "Validado por la autora"', (h.aguaBadge||'').includes('Validado por la autora'), h.aguaBadge);
   assert('la tarjeta del agua enlaza a un expediente', !!h.enlaceHref && h.enlaceHref.includes('/expedientes/'), h.enlaceHref);
-  assert('la vista previa de la matriz del agua muestra sus primeras filas (v8 §B, ≤8)', h.aguaMatrixRows > 0 && h.aguaMatrixRows <= 8, `filas=${h.aguaMatrixRows}`);
+  assert('la escena del agua muestra la correspondencia por meta del ODS 6 (resumen estático)', h.aguaMetas >= 6, `metas=${h.aguaMetas}`);
+  assert('la escena del agua NO incrusta la matriz interactiva (no rompe el scroll del panel)', h.aguaMatrizInteractiva === 0, `filas=${h.aguaMatrizInteractiva}`);
 
   async function scrollToStep(sel) {
     await c.send('Runtime.evaluate', { expression: `(()=>{const s=document.querySelector('${sel}');if(s){const r=s.getBoundingClientRect();window.scrollTo(0, window.scrollY + r.top - innerHeight*0.4);}})()` });

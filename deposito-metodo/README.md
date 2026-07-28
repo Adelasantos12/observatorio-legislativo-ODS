@@ -1,8 +1,8 @@
 # Huella 2030 — NormTrace aplicado a la correspondencia legislativa con la Agenda 2030 (México)
 
-**Autora:** Adela B. Santos Domínguez · ORCID: `TODO-0000-0000-0000-0000`
+**Autora:** Adela B. Santos Domínguez · ORCID: [0000-0002-8691-0544](https://orcid.org/0000-0002-8691-0544)
 **Licencia:** Creative Commons Attribution 4.0 (CC BY 4.0) — ver [`LICENSE`](LICENSE)
-**Versión:** 0.1.0 · **Estado:** versión preliminar en desarrollo
+**Versión:** 1.0.2 · **DOI:** [10.5281/zenodo.21631277](https://doi.org/10.5281/zenodo.21631277) · **Estado:** versión preliminar en desarrollo
 
 > Este directorio es un **depósito de método**: documenta el protocolo y su
 > aplicación a la legislación mexicana frente a los Objetivos de Desarrollo
@@ -84,8 +84,11 @@ del portal.
 
 ## Cómo citar
 
-Ver [`CITATION.cff`](CITATION.cff). Una vez depositado en Zenodo, cítese con el
-DOI que Zenodo asigne.
+> Santos Domínguez, A. B. (2026). *Huella 2030 — NormTrace aplicado a la
+> correspondencia legislativa con la Agenda 2030 (México)* (Version 1.0.2)
+> [Software]. Zenodo. https://doi.org/10.5281/zenodo.21631277
+
+Metadatos legibles por máquina en [`CITATION.cff`](CITATION.cff).
 
 ## Referencias a los repositorios
 
