@@ -93,6 +93,65 @@ def _first_marker(text_low: str, markers: list[str]) -> str | None:
     return None
 
 
+# Detección genérica de actor institucional, ADEMÁS de la lista específica de
+# siglas/órganos: captura "la Secretaría de Gobernación", "el Instituto Nacional
+# de Migración", "el Consejo de X", etc., que la lista fija nunca vería. Sigue
+# siendo determinista (misma entrada → misma salida).
+_ACTOR_GENERIC_RX = re.compile(
+    r"(?:[Ll]a|[Ee]l)\s+"
+    r"(?:Secretar[íi]a|Instituto|Comisi[óo]n|Consejo|Procuradur[íi]a|Fiscal[íi]a|"
+    r"Direcci[óo]n|Coordinaci[óo]n|Unidad|Organismo|Tribunal|Junta|Agencia|"
+    r"Suprema\s+Corte|Autoridad)"
+    r"(?:\s+(?:Nacional|Federal|General|Superior))?"
+    # Complemento "de <Nombre Propio…>": el objeto y sus continuaciones deben ir
+    # capitalizados (nombre propio), para no arrastrar el verbo que sigue.
+    r"(?:\s+(?:de|del|de\s+la|de\s+los|para)\s+"
+    r"[A-ZÁÉÍÓÚÑ]\w*"
+    r"(?:\s+(?:de\s+la\s+|de\s+los\s+|del\s+|de\s+|y\s+|e\s+)?[A-ZÁÉÍÓÚÑ]\w*){0,3})?"
+)
+
+
+def _detect_actor(text: str) -> str:
+    """Actor mencionado. Combina dos detectores deterministas y prefiere el
+    nombre más completo: (a) lista específica (siglas y órganos conocidos:
+    CONAGUA, COFEPRIS…, y catch-alls como «la Secretaría»); (b) patrón genérico
+    de órgano institucional con su nombre propio («la Secretaría de Gobernación»,
+    «el Instituto Nacional de Migración»). Devuelve el más largo para no quedarse
+    en el catch-all cuando el nombre completo está presente."""
+    m = _ACTOR_GENERIC_RX.search(text)
+    generic = re.sub(r"\s+", " ", m.group(0)).strip() if m else ""
+
+    low = text.lower()
+    hit = _first_marker(low, [a.lower() for a in _ACTORS])
+    specific = ""
+    if hit:
+        for a in _ACTORS:
+            if a.lower() == hit:
+                specific = a
+                break
+
+    if generic and len(generic) >= len(specific):
+        return generic
+    return specific
+
+
+def _clause(text: str, marker: str, before: int = 24, after: int = 90) -> str:
+    """Cita la FRASE de la disposición alrededor del marcador (no solo la palabra),
+    para que la celda diga algo verificable. Recorta y normaliza espacios."""
+    low = _unaccent(text.lower())
+    i = low.find(_unaccent(marker.lower()))
+    if i == -1:
+        return marker
+    start = max(0, i - before)
+    end = min(len(text), i + len(marker) + after)
+    frag = re.sub(r"\s+", " ", text[start:end]).strip()
+    if start > 0:
+        frag = "..." + frag
+    if end < len(text):
+        frag = frag + "..."
+    return frag
+
+
 def _heuristic_code(unit: dict) -> dict:
     """Codificador determinista (proveedor `mock`) basado en los marcadores §5.
 
@@ -102,14 +161,7 @@ def _heuristic_code(unit: dict) -> dict:
     text = unit.get("text", "") or ""
     low = text.lower()
 
-    actor = _first_marker(low, [a.lower() for a in _ACTORS])
-    # Recupera la forma original del actor detectado.
-    actor_surface = ""
-    if actor:
-        for a in _ACTORS:
-            if a.lower() == actor:
-                actor_surface = a
-                break
+    actor_surface = _detect_actor(text)
 
     duty_m = _first_marker(low, _DUTY)
     power_m = _first_marker(low, _POWER)
@@ -118,12 +170,14 @@ def _heuristic_code(unit: dict) -> dict:
     sanc_m = _first_marker(low, _SANCTION)
     rights_m = _first_marker(low, _RIGHTS)
 
-    duty = f"Deber (marcador: «{duty_m}»)" if duty_m else ""
-    power = f"Facultad/atribución (marcador: «{power_m}»)" if power_m else ""
-    procedure = f"Procedimiento (marcador: «{proc_m}»)" if proc_m else ""
-    coordination = f"Coordinación (marcador: «{coord_m}»)" if coord_m else ""
-    sanction = f"Sanción/medida (marcador: «{sanc_m}»)" if sanc_m else ""
-    rights = f"Salvaguarda de derechos (marcador: «{rights_m}»)" if rights_m else ""
+    # Cada campo cita la frase de la disposición (no solo la palabra-marcador),
+    # para que la codificación diga algo verificable de un vistazo.
+    duty = f"Deber: «{_clause(text, duty_m)}»" if duty_m else ""
+    power = f"Facultad: «{_clause(text, power_m)}»" if power_m else ""
+    procedure = f"Procedimiento: «{_clause(text, proc_m)}»" if proc_m else ""
+    coordination = f"Coordinación: «{_clause(text, coord_m)}»" if coord_m else ""
+    sanction = f"Sanción/medida: «{_clause(text, sanc_m)}»" if sanc_m else ""
+    rights = f"Salvaguarda: «{_clause(text, rights_m)}»" if rights_m else ""
 
     # Nivel de fuente (anclaje) heurístico.
     if "nom-" in low or "norma oficial" in low or "reglamento" in low:
