@@ -348,10 +348,18 @@ def extract(
                 "units_with_tags": len(hit),
                 "units": [{k: v for k, v in u.items() if k != "text"} for u in hit],
             }
-            # Etapa 3: encola la codificación estructural (cola normtrace).
+            # Etapa 3: codificación estructural NormTrace. Por defecto SÍNCRONA
+            # (Config.NORMTRACE_ASYNC=False): con el proveedor `mock` es un
+            # pipeline determinista y rápido (marcadores + JSON Schema), así que
+            # el bloque `structural` viaja en la misma respuesta —sin worker—.
+            # Con NORMTRACE_ASYNC=true se encola en la cola `normtrace` (para LLM
+            # real con worker) y se devuelve `normtrace_task_id` para sondear.
             if deep and hit:
-                task = tipi_tasks.normtrace.analyze_units.apply_async((hit,))
-                result["normtrace_task_id"] = task.id
+                if Config.NORMTRACE_ASYNC:
+                    task = tipi_tasks.normtrace.analyze_units.apply_async((hit,))
+                    result["normtrace_task_id"] = task.id
+                else:
+                    result["structural"] = tipi_tasks.normtrace.analyze_units(hit)
 
         return result
     except HTTPException:

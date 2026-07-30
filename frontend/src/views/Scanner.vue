@@ -203,8 +203,13 @@ function annotate() {
         excerptText.value = response.data.excerpt;
         inProgress.value = false;
         VueScrollTo.scrollTo('#result', 1500);
-        // Etapa 3: si se encoló la codificación NormTrace, sondea su resultado.
-        if (deepMode.value && response.data.normtrace_task_id) {
+        // Etapa 3 (codificación NormTrace). Dos modos:
+        // - síncrono (por defecto): el bloque `structural` viene en la misma
+        //   respuesta, se pinta de inmediato (sin worker ni sondeo).
+        // - asíncrono (con worker): se encola y se sondea por `normtrace_task_id`.
+        if (deepMode.value && response.data.structural) {
+          structural.value = response.data.structural;
+        } else if (deepMode.value && response.data.normtrace_task_id) {
           structuralInProgress.value = true;
           pollNormtrace(response.data.normtrace_task_id);
         }

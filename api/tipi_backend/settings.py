@@ -62,6 +62,15 @@ class Config:
     # encima se pide dividirlo.
     TAGGER_SYNC_MAX_WORDS = int(env.get("TAGGER_SYNC_MAX_WORDS", "60000"))
 
+    # --- NormTrace (etapa 3: codificación estructural profunda) ---
+    # ¿Despachar el análisis profundo a Celery? Requiere worker + broker. Por
+    # defecto False: corre SÍNCRONO en la misma petición y el bloque `structural`
+    # viaja en la respuesta. Con el proveedor por defecto (LLM_PROVIDER=mock) el
+    # codificador es determinista y rápido (marcadores + JSON Schema), así que el
+    # análisis es estable y no necesita worker. Actívalo (=true) solo si usas un
+    # LLM real y tienes worker, para no bloquear la petición HTTP con las llamadas.
+    NORMTRACE_ASYNC = _as_bool(env.get("NORMTRACE_ASYNC", "False"))
+
     # --- Caché (Redis) ---
     CACHE = {
         "CACHE_REDIS_HOST": _cache_host,
