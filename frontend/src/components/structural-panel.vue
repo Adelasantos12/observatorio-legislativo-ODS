@@ -2,9 +2,10 @@
   <div id="structural" class="structural-panel">
     <h4>{{ t('scanner.structural.title') }}</h4>
 
-    <!-- Descargo fijo: la codificación es preliminar y asistida por modelo. -->
+    <!-- Descargo honesto según el proveedor real: por reglas (mock, determinista)
+         o asistido por modelo de lenguaje. No se afirma "modelo" si son reglas. -->
     <tipi-message type="warning" icon>
-      {{ t('scanner.structural.disclaimer') }}
+      {{ disclaimer }}
     </tipi-message>
 
     <!-- Estado de carga (el análisis profundo llega después del rápido). -->
@@ -99,6 +100,14 @@ const props = defineProps({
 const { t, locale } = useI18n();
 
 const units = computed(() => props.structural?.units || []);
+
+// Aviso según el proveedor real: `mock` = reglas deterministas; cualquier otro
+// = modelo de lenguaje. Nunca decimos "modelo" cuando en realidad son reglas.
+const disclaimer = computed(() =>
+  props.structural?.provider === 'mock'
+    ? t('scanner.structural.disclaimerRules')
+    : t('scanner.structural.disclaimer'),
+);
 
 // Etiquetas legibles de la tipología de brechas (methodology_note §3).
 const GAP_LABELS = {
