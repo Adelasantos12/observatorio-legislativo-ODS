@@ -265,20 +265,58 @@ def test_ocr_pdf_degrada_con_gracia(monkeypatch):
     assert tagger._ocr_pdf("/no/existe.pdf") == ""
 
 
-def test_deep_enqueues_normtrace_and_returns_task_id(client, sync_word_limit):
-    """Con deep=true, la respuesta trae `segmentation` y encola la codificación
-    NormTrace devolviendo `normtrace_task_id` (broker memory:// del conftest)."""
-    texto = (
-        "Articulo Unico.- La Secretaría de Salud deberá garantizar el acceso a la "
-        "salud intercultural, en coordinación con las entidades federativas frente "
-        "al cambio climático.\n"
-    )
+DEEP_TEXTO = (
+    "Articulo Unico.- La Secretaría de Salud deberá garantizar el acceso a la "
+    "salud intercultural, en coordinación con las entidades federativas frente "
+    "al cambio climático.\n"
+)
+
+
+def test_deep_sincrono_devuelve_structural(client, sync_word_limit):
+    """Por defecto (NORMTRACE_ASYNC=False), deep=true corre la codificación
+    NormTrace SÍNCRONA y devuelve el bloque `structural` en la misma respuesta,
+    sin worker. Con el proveedor `mock` es determinista."""
+    assert Config.NORMTRACE_ASYNC is False  # el default seguro
     res = client.post(
         "/tagger/",
-        data={"text": texto, "knowledgebase": "ods", "deep": "true"},
+        data={"text": DEEP_TEXTO, "knowledgebase": "ods", "deep": "true"},
+    )
+    assert res.status_code == 200
+    body = res.json()
+    assert body["status"] == "SUCCESS"
+    assert body["segmentation"]["units_with_tags"] >= 1
+    assert "normtrace_task_id" not in body
+    structural = body.get("structural")
+    assert structural and structural["status"] == "SUCCESS"
+    assert structural["provider"] == "mock"
+    assert structural["units_analyzed"] >= 1
+    # Cada unidad codificada valida el contrato: campos de revisión SIEMPRE presentes.
+    for u in structural["units"]:
+        assert u["analysis"]["review_status"] == "needs_human_review"
+        assert u["analysis"]["confidence_level"] in ("low", "medium", "high")
+
+
+def test_deep_sincrono_es_determinista(client, sync_word_limit):
+    """El mismo texto por deep=true produce EXACTAMENTE el mismo `structural`
+    en dos corridas (pipeline determinista, no una IA que varía)."""
+    def corre():
+        r = client.post("/tagger/", data={"text": DEEP_TEXTO, "knowledgebase": "ods", "deep": "true"})
+        return r.json()["structural"]["units"]
+
+    assert corre() == corre()
+
+
+def test_deep_asincrono_encola_con_flag(client, sync_word_limit, monkeypatch):
+    """Con NORMTRACE_ASYNC=True, deep=true encola en la cola `normtrace` y
+    devuelve `normtrace_task_id` (broker memory:// del conftest)."""
+    monkeypatch.setattr(Config, "NORMTRACE_ASYNC", True)
+    res = client.post(
+        "/tagger/",
+        data={"text": DEEP_TEXTO, "knowledgebase": "ods", "deep": "true"},
     )
     assert res.status_code == 200
     body = res.json()
     assert body["status"] == "SUCCESS"
     assert body["segmentation"]["units_with_tags"] >= 1
     assert isinstance(body.get("normtrace_task_id"), str) and body["normtrace_task_id"]
+    assert "structural" not in body
