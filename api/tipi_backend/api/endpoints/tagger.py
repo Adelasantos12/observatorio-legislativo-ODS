@@ -303,7 +303,14 @@ def extract(
         content = ""
         if text:
             content = text
-        elif isinstance(file, UploadFile):
+        # OJO: no usar `isinstance(file, UploadFile)`. Con la firma unión
+        # (UploadFile | str | None), FastAPI construye el archivo como
+        # `starlette.datastructures.UploadFile`, que NO es instancia de
+        # `fastapi.UploadFile` (subclase) → el isinstance daba False y el escáner
+        # ignoraba TODO archivo subido (devolvía "sin coincidencias"). El `str`
+        # del tipo tolera el "null" que el frontend manda al pegar texto; por eso
+        # basta con: hay archivo si no es None ni una cadena.
+        elif file is not None and not isinstance(file, str):
             content = _extract_text_from_file(file)
 
         text_length = len(content.split())
