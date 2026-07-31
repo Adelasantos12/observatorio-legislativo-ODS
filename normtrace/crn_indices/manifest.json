@@ -1,0 +1,2282 @@
+{
+  "corpus": "CRN-PAIL-MX",
+  "normas": [
+    {
+      "norma": "CÓDIGO CIVIL FEDERAL",
+      "archivo": "Codigo_Civil_Federal.md",
+      "publicacion_dof": "1928-08-31",
+      "ultima_reforma_dof": "2025-11-14",
+      "estatus": "TEXTO VIGENTE"
+    },
+    {
+      "norma": "CÓDIGO FEDERAL DE PROCEDIMIENTOS CIVILES",
+      "archivo": "Codigo_Federal_de_Procedimientos_Civiles.md",
+      "publicacion_dof": "1943-02-24",
+      "ultima_reforma_dof": "2021-06-07",
+      "estatus": "SIN ESTATUS"
+    },
+    {
+      "norma": "CÓDIGO FISCAL DE LA FEDERACIÓN",
+      "archivo": "Codigo_Fiscal_de_la_Federacion.md",
+      "publicacion_dof": "1981-12-31",
+      "ultima_reforma_dof": "2025-11-14",
+      "estatus": "TEXTO VIGENTE"
+    },
+    {
+      "norma": "CÓDIGO MILITAR DE PROCEDIMIENTOS PENALES",
+      "archivo": "Codigo_Militar_de_Procedimientos_Penales.md",
+      "publicacion_dof": "2014-03-05",
+      "ultima_reforma_dof": "2025-11-14",
+      "estatus": "SIN ESTATUS"
+    },
+    {
+      "norma": "CÓDIGO NACIONAL DE PROCEDIMIENTOS CIVILES Y FAMILIARES",
+      "archivo": "Codigo_Nacional_de_Procedimientos_Civiles_y_Familiares.md",
+      "publicacion_dof": "2023-06-07",
+      "ultima_reforma_dof": "2026-01-15",
+      "estatus": "TEXTO VIGENTE"
+    },
+    {
+      "norma": "CÓDIGO NACIONAL DE PROCEDIMIENTOS PENALES",
+      "archivo": "Codigo_Nacional_de_Procedimientos_Penales.md",
+      "publicacion_dof": "2014-03-05",
+      "ultima_reforma_dof": "2025-11-28",
+      "estatus": "SIN ESTATUS"
+    },
+    {
+      "norma": "CÓDIGO PENAL FEDERAL",
+      "archivo": "Codigo_Penal_Federal.md",
+      "publicacion_dof": "1931-08-14",
+      "ultima_reforma_dof": "2025-11-28",
+      "estatus": "TEXTO VIGENTE"
+    },
+    {
+      "norma": "CÓDIGO DE COMERCIO",
+      "archivo": "Codigo_de_Comercio.md",
+      "publicacion_dof": "1889-12-13",
+      "ultima_reforma_dof": "2025-11-14",
+      "estatus": "TEXTO VIGENTE"
+    },
+    {
+      "norma": "CÓDIGO DE JUSTICIA MILITAR",
+      "archivo": "Codigo_de_Justicia_Militar.md",
+      "publicacion_dof": "1933-08-31",
+      "ultima_reforma_dof": "2025-07-16",
+      "estatus": "TEXTO VIGENTE"
+    },
+    {
+      "norma": "CONSTITUCIÓN POLÍTICA DE LOS ESTADOS UNIDOS MEXICANOS",
+      "archivo": "Constitucion_Politica.md",
+      "publicacion_dof": "1917-02-05",
+      "ultima_reforma_dof": "2026-03-03",
+      "estatus": "TEXTO VIGENTE"
+    },
+    {
+      "norma": "ESTATUTO DE GOBIERNO DEL DISTRITO FEDERAL",
+      "archivo": "Estatuto_de_Gobierno_del_Distrito_Federal.md",
+      "publicacion_dof": "1994-07-26",
+      "ultima_reforma_dof": "2014-06-27",
+      "estatus": "TEXTO VIGENTE"
+    },
+    {
+      "norma": "LEY QUE ESTABLECE, REFORMA Y ADICIONA LAS DISPOSICIONES RELATIVAS A DIVERSOS IMPUESTOS.",
+      "archivo": "Impuesto_Sobre_Servicios-Declarados_de_Interes_Publico-Empresas_Concesionarias.md",
+      "publicacion_dof": "1968-12-31",
+      "ultima_reforma_dof": null,
+      "estatus": "TEXTO VIGENTE",
+      "sin_reformas_probable": true
+    },
+    {
+      "norma": "LEY ADUANERA",
+      "archivo": "Ley_Aduanera.md",
+      "publicacion_dof": "1995-12-15",
+      "ultima_reforma_dof": "2025-11-19",
+      "estatus": "TEXTO VIGENTE"
+    },
+    {
+      "norma": "LEY AGRARIA",
+      "archivo": "Ley_Agraria.md",
+      "publicacion_dof": "1992-02-26",
+      "ultima_reforma_dof": "2025-11-14",
+      "estatus": "TEXTO VIGENTE"
+    },
+    {
+      "norma": "LEY FEDERAL CONTRA LA DELINCUENCIA ORGANIZADA",
+      "archivo": "Ley_Federal_contra_la_Delincuencia_Organizada.md",
+      "publicacion_dof": "1996-11-07",
+      "ultima_reforma_dof": "2025-11-28",
+      "estatus": "TEXTO VIGENTE"
+    },
+    {
+      "norma": "LEY FEDERAL DE ARMAS DE FUEGO Y EXPLOSIVOS",
+      "archivo": "Ley_Federal_de_Armas_de_Fuego_y_Explosivos.md",
+      "publicacion_dof": "1972-01-11",
+      "ultima_reforma_dof": "2025-05-29",
+      "estatus": "TEXTO VIGENTE"
+    },
+    {
+      "norma": "LEY FEDERAL DE AUSTERIDAD REPUBLICANA",
+      "archivo": "Ley_Federal_de_Austeridad_Republicana.md",
+      "publicacion_dof": "2019-11-19",
+      "ultima_reforma_dof": "2025-04-16",
+      "estatus": "TEXTO VIGENTE"
+    },
+    {
+      "norma": "LEY FEDERAL DE CINEMATOGRAFÍA",
+      "archivo": "Ley_Federal_de_Cinematografia.md",
+      "publicacion_dof": "1992-12-29",
+      "ultima_reforma_dof": "2021-03-22",
+      "estatus": "TEXTO VIGENTE"
+    },
+    {
+      "norma": "LEY FEDERAL DE COMPETENCIA ECONÓMICA",
+      "archivo": "Ley_Federal_de_Competencia_Economica.md",
+      "publicacion_dof": "2014-05-23",
+      "ultima_reforma_dof": "2025-11-14",
+      "estatus": "TEXTO VIGENTE"
+    },
+    {
+      "norma": "LEY FEDERAL DE CONSULTA POPULAR",
+      "archivo": "Ley_Federal_de_Consulta_Popular.md",
+      "publicacion_dof": "2014-03-14",
+      "ultima_reforma_dof": "2021-05-19",
+      "estatus": "TEXTO VIGENTE"
+    },
+    {
+      "norma": "LEY FEDERAL DE CORREDURÍA PÚBLICA",
+      "archivo": "Ley_Federal_de_Correduria_Publica.md",
+      "publicacion_dof": "1992-12-29",
+      "ultima_reforma_dof": "2012-04-09",
+      "estatus": "TEXTO VIGENTE"
+    },
+    {
+      "norma": "LEY FEDERAL DE DECLARACIÓN ESPECIAL DE AUSENCIA PARA PERSONAS DESAPARECIDAS",
+      "archivo": "Ley_Federal_de_Declaracion_Especial_de_Ausencia_para_Personas_Desaparecidas.md",
+      "publicacion_dof": "2018-06-22",
+      "ultima_reforma_dof": "2024-04-01",
+      "estatus": "TEXTO VIGENTE"
+    },
+    {
+      "norma": "LEY FEDERAL DE DEFENSORÍA PÚBLICA",
+      "archivo": "Ley_Federal_de_Defensoria_Publica.md",
+      "publicacion_dof": "1998-05-28",
+      "ultima_reforma_dof": "2024-04-01",
+      "estatus": "TEXTO VIGENTE"
+    },
+    {
+      "norma": "LEY FEDERAL DE DERECHOS",
+      "archivo": "Ley_Federal_de_Derechos.md",
+      "publicacion_dof": "1981-12-31",
+      "ultima_reforma_dof": "2025-11-07",
+      "estatus": "TEXTO VIGENTE"
+    },
+    {
+      "norma": "LA LEY FEDERAL DE DEUDA PUBLICA",
+      "archivo": "Ley_Federal_de_Deuda_Publica.md",
+      "publicacion_dof": "1976-12-31",
+      "ultima_reforma_dof": "2018-01-30",
+      "estatus": "TEXTO VIGENTE"
+    },
+    {
+      "norma": "LEY FEDERAL DE FOMENTO A LAS ACTIVIDADES REALIZADAS POR ORGANIZACIONES DE LA SOCIEDAD CIVIL",
+      "archivo": "Ley_Federal_de_Fomento_a_las_Actividades-por_Organizaciones_de_la_Sociedad_Civil.md",
+      "publicacion_dof": "2004-02-09",
+      "ultima_reforma_dof": "2024-04-01",
+      "estatus": "TEXTO VIGENTE"
+    },
+    {
+      "norma": "LEY FEDERAL DE JUEGOS Y SORTEOS",
+      "archivo": "Ley_Federal_de_Juegos_y_Sorteos.md",
+      "publicacion_dof": "1947-12-31",
+      "ultima_reforma_dof": null,
+      "estatus": "TEXTO VIGENTE",
+      "sin_reformas_probable": true
+    },
+    {
+      "norma": "LEY FEDERAL DE PRESUPUESTO Y RESPONSABILIDAD HACENDARIA",
+      "archivo": "Ley_Federal_de_Presupuesto_y_Responsabilidad_Hacendaria.md",
+      "publicacion_dof": "2006-03-30",
+      "ultima_reforma_dof": "2025-07-16",
+      "estatus": "TEXTO VIGENTE"
+    },
+    {
+      "norma": "LEY FEDERAL DE PROCEDIMIENTO ADMINISTRATIVO",
+      "archivo": "Ley_Federal_de_Procedimiento_Administrativo.md",
+      "publicacion_dof": "1994-08-04",
+      "ultima_reforma_dof": "2025-11-14",
+      "estatus": "TEXTO VIGENTE"
+    },
+    {
+      "norma": "LEY FEDERAL DE PROCEDIMIENTO CONTENCIOSO ADMINISTRATIVO",
+      "archivo": "Ley_Federal_de_Procedimiento_Contencioso_Administrativo.md",
+      "publicacion_dof": "2005-12-01",
+      "ultima_reforma_dof": "2025-11-14",
+      "estatus": "TEXTO VIGENTE"
+    },
+    {
+      "norma": "LEY FEDERAL DE PRODUCCIÓN, CERTIFICACIÓN Y COMERCIO DE SEMILLAS",
+      "archivo": "Ley_Federal_de_Produccion_Certificacion_y_Comercio_de_Semillas.md",
+      "publicacion_dof": "2007-06-15",
+      "ultima_reforma_dof": "2018-05-11",
+      "estatus": "TEXTO VIGENTE"
+    },
+    {
+      "norma": "LEY FEDERAL DE PROTECCIÓN DEL PATRIMONIO CULTURAL DE LOS PUEBLOS Y COMUNIDADES INDÍGENAS Y AFROMEXICANAS",
+      "archivo": "Ley_Federal_de_Proteccion-Patrimonio_Cultural-Pueblos-Comunidades_Indigenas_y_Afromexicanas.md",
+      "publicacion_dof": "2022-01-17",
+      "ultima_reforma_dof": "2025-11-14",
+      "estatus": "TEXTO VIGENTE"
+    },
+    {
+      "norma": "LEY FEDERAL DE PROTECCIÓN A LA PROPIEDAD INDUSTRIAL",
+      "archivo": "Ley_Federal_de_Proteccion_a_la_Propiedad_Industrial.md",
+      "publicacion_dof": "2020-07-01",
+      "ultima_reforma_dof": "2026-01-15",
+      "estatus": "TEXTO VIGENTE"
+    },
+    {
+      "norma": "LEY FEDERAL DE PROTECCIÓN AL CONSUMIDOR",
+      "archivo": "Ley_Federal_de_Proteccion_al_Consumidor.md",
+      "publicacion_dof": "1992-12-24",
+      "ultima_reforma_dof": "2025-12-12",
+      "estatus": "TEXTO VIGENTE"
+    },
+    {
+      "norma": "LEY FEDERAL DE PROTECCIÓN DE DATOS PERSONALES EN POSESIÓN DE LOS PARTICULARES",
+      "archivo": "Ley_Federal_de_Proteccion_de_Datos_Personales-Posesion-Particulares.md",
+      "publicacion_dof": "2025-03-20",
+      "ultima_reforma_dof": "2025-11-14",
+      "estatus": "TEXTO VIGENTE"
+    },
+    {
+      "norma": "LEY FEDERAL DE REMUNERACIONES DE LOS SERVIDORES PÚBLICOS",
+      "archivo": "Ley_Federal_de_Remuneraciones_de_los_Servidores_Publicos.md",
+      "publicacion_dof": "2018-11-05",
+      "ultima_reforma_dof": null,
+      "estatus": "TEXTO VIGENTE",
+      "sin_reformas_probable": true
+    },
+    {
+      "norma": "LEY FEDERAL DE RESPONSABILIDAD AMBIENTAL",
+      "archivo": "Ley_Federal_de_Responsabilidad_Ambiental.md",
+      "publicacion_dof": "2013-06-07",
+      "ultima_reforma_dof": "2025-11-14",
+      "estatus": "TEXTO VIGENTE"
+    },
+    {
+      "norma": "LEY FEDERAL DE RESPONSABILIDAD PATRIMONIAL DEL ESTADO",
+      "archivo": "Ley_Federal_de_Responsabilidad_Patrimonial_del_Estado.md",
+      "publicacion_dof": "2004-12-31",
+      "ultima_reforma_dof": "2023-12-29",
+      "estatus": "TEXTO VIGENTE"
+    },
+    {
+      "norma": "LEY FEDERAL DE RESPONSABILIDADES DE LOS SERVIDORES PÚBLICOS",
+      "archivo": "Ley_Federal_de_Responsabilidades_de_los_Servidores.md",
+      "publicacion_dof": "1982-12-31",
+      "ultima_reforma_dof": "2024-04-01",
+      "estatus": "TEXTO VIGENTE"
+    },
+    {
+      "norma": "LEY FEDERAL DE REVOCACIÓN DE MANDATO",
+      "archivo": "Ley_Federal_de_Revocacion_de_Mandato.md",
+      "publicacion_dof": "2021-09-14",
+      "ultima_reforma_dof": null,
+      "estatus": "TEXTO VIGENTE",
+      "sin_reformas_probable": true
+    },
+    {
+      "norma": "LEY FEDERAL DE SANIDAD ANIMAL",
+      "archivo": "Ley_Federal_de_Sanidad_Animal.md",
+      "publicacion_dof": "2007-07-25",
+      "ultima_reforma_dof": "2024-05-21",
+      "estatus": "TEXTO VIGENTE"
+    },
+    {
+      "norma": "LEY FEDERAL DE SANIDAD VEGETAL",
+      "archivo": "Ley_Federal_de_Sanidad_Vegetal.md",
+      "publicacion_dof": "1994-01-05",
+      "ultima_reforma_dof": "2022-05-11",
+      "estatus": "TEXTO VIGENTE"
+    },
+    {
+      "norma": "LEY FEDERAL DE SEGURIDAD PRIVADA",
+      "archivo": "Ley_Federal_de_Seguridad_Privada.md",
+      "publicacion_dof": "2006-07-06",
+      "ultima_reforma_dof": "2011-10-17",
+      "estatus": "TEXTO VIGENTE"
+    },
+    {
+      "norma": "LEY FEDERAL DE VARIEDADES VEGETALES",
+      "archivo": "Ley_Federal_de_Variedades_Vegetales.md",
+      "publicacion_dof": "1996-10-25",
+      "ultima_reforma_dof": "2022-05-11",
+      "estatus": "TEXTO VIGENTE"
+    },
+    {
+      "norma": "LEY FEDERAL DE ZONAS ECONÓMICAS ESPECIALES",
+      "archivo": "Ley_Federal_de_Zonas_Economicas_Especiales.md",
+      "publicacion_dof": "2016-06-01",
+      "ultima_reforma_dof": "2024-04-01",
+      "estatus": "TEXTO VIGENTE"
+    },
+    {
+      "norma": "LEY FEDERAL DE LAS ENTIDADES PARAESTATALES",
+      "archivo": "Ley_Federal_de_las_Entidades_Paraestatales.md",
+      "publicacion_dof": "1986-05-14",
+      "ultima_reforma_dof": "2025-07-16",
+      "estatus": "TEXTO VIGENTE"
+    },
+    {
+      "norma": "LEY FEDERAL DE LOS DERECHOS DEL CONTRIBUYENTE",
+      "archivo": "Ley_Federal_de_los_Derechos_del_Contribuyente.md",
+      "publicacion_dof": "2005-06-23",
+      "ultima_reforma_dof": null,
+      "estatus": "TEXTO VIGENTE",
+      "sin_reformas_probable": true
+    },
+    {
+      "norma": "LEY FEDERAL DE LOS TRABAJADORES AL SERVICIO DEL ESTADO, REGLAMENTARIA DEL",
+      "archivo": "Ley_Federal_de_los_Trabajadores_al_Servicio_del_Estado_Reglamentaria-Apartado_B-Articulo_123.md",
+      "publicacion_dof": "1963-12-28",
+      "ultima_reforma_dof": "2026-01-15",
+      "estatus": "TEXTO VIGENTE"
+    },
+    {
+      "norma": "LEY FEDERAL DEL DERECHO DE AUTOR",
+      "archivo": "Ley_Federal_del_Derecho_de_Autor.md",
+      "publicacion_dof": "1996-12-24",
+      "ultima_reforma_dof": "2026-01-15",
+      "estatus": "TEXTO VIGENTE"
+    },
+    {
+      "norma": "LEY FEDERAL DEL IMPUESTO SOBRE AUTOMÓVILES NUEVOS",
+      "archivo": "Ley_Federal_del_Impuesto_sobre_Automoviles_Nuevos.md",
+      "publicacion_dof": "1996-12-30",
+      "ultima_reforma_dof": "2021-11-12",
+      "estatus": "TEXTO VIGENTE"
+    },
+    {
+      "norma": "LEY FEDERAL DEL MAR",
+      "archivo": "Ley_Federal_del_Mar.md",
+      "publicacion_dof": "1986-01-08",
+      "ultima_reforma_dof": null,
+      "estatus": "TEXTO VIGENTE",
+      "sin_reformas_probable": true
+    },
+    {
+      "norma": "LEY FEDERAL DEL TRABAJO",
+      "archivo": "Ley_Federal_del_Trabajo.md",
+      "publicacion_dof": "1970-04-01",
+      "ultima_reforma_dof": "2026-01-15",
+      "estatus": "TEXTO VIGENTE"
+    },
+    {
+      "norma": "LEY FEDERAL PARA PREVENIR Y ELIMINAR LA DISCRIMINACIÓN",
+      "archivo": "Ley_Federal_para_Prevenir_y_Eliminar_la_Discriminacion.md",
+      "publicacion_dof": "2003-06-11",
+      "ultima_reforma_dof": "2025-11-14",
+      "estatus": "TEXTO VIGENTE"
+    },
+    {
+      "norma": "LEY FEDERAL PARA PREVENIR Y SANCIONAR LOS DELITOS COMETIDOS EN MATERIA DE HIDROCARBUROS",
+      "archivo": "Ley_Federal_para_Prevenir_y_Sancionar_los_Delitos-Materia_de_Hidrocarburos.md",
+      "publicacion_dof": "2016-01-12",
+      "ultima_reforma_dof": "2021-11-12",
+      "estatus": "TEXTO VIGENTE"
+    },
+    {
+      "norma": "LEY FEDERAL PARA EL CONTROL DE PRECURSORES QUÍMICOS, PRODUCTOS QUÍMICOS ESENCIALES Y MÁQUINAS PARA ELABORAR CÁPSULAS, TABLETAS Y/O COMPRIMIDOS",
+      "archivo": "Ley_Federal_para_el_Control-Precursores_Quimicos_Productos-Maquinas-Capsulas_Tabletas-Comprimidos.md",
+      "publicacion_dof": "1997-12-26",
+      "ultima_reforma_dof": "2023-05-03",
+      "estatus": "TEXTO VIGENTE"
+    },
+    {
+      "norma": "LEY FEDERAL PARA EL CONTROL DE SUSTANCIAS QUÍMICAS SUSCEPTIBLES DE DESVÍO PARA LA FABRICACIÓN DE ARMAS QUÍMICAS",
+      "archivo": "Ley_Federal_para_el_Control_de_Sustancias_Quimicas-Armas_Quimicas.md",
+      "publicacion_dof": "2009-06-09",
+      "ultima_reforma_dof": "2025-11-14",
+      "estatus": "TEXTO VIGENTE"
+    },
+    {
+      "norma": "LEY FEDERAL PARA EL FOMENTO DE LA MICROINDUSTRIA Y LA ACTIVIDAD ARTESANAL",
+      "archivo": "Ley_Federal_para_el_Fomento_de_la_Microindustria_y_la_Actividad_Artesanal.md",
+      "publicacion_dof": "1988-01-26",
+      "ultima_reforma_dof": "2023-03-27",
+      "estatus": "TEXTO VIGENTE Últimas reformas publicadas DOF 27-03-2023",
+      "fuente_reforma": "cuerpo_del_documento"
+    },
+    {
+      "norma": "LEY FEDERAL PARA EL FOMENTO Y PROTECCIÓN DEL MAÍZ NATIVO",
+      "archivo": "Ley_Federal_para_el_Fomento_y_Proteccion_del_Maiz_Nativo.md",
+      "publicacion_dof": "2020-04-13",
+      "ultima_reforma_dof": null,
+      "estatus": "TEXTO VIGENTE",
+      "sin_reformas_probable": true
+    },
+    {
+      "norma": "LEY FEDERAL PARA LA ADMINISTRACIÓN Y ENAJENACIÓN DE BIENES DEL SECTOR PÚBLICO",
+      "archivo": "Ley_Federal_para_la_Administracion_y_Enajenacion_de_Bienes_del_Sector.md",
+      "publicacion_dof": "2002-12-19",
+      "ultima_reforma_dof": "2024-04-30",
+      "estatus": "TEXTO VIGENTE"
+    },
+    {
+      "norma": "LEY FEDERAL PARA LA PREVENCIÓN E IDENTIFICACIÓN DE OPERACIONES CON RECURSOS DE PROCEDENCIA ILÍCITA",
+      "archivo": "Ley_Federal_para_la_Prevencion_e_Identificacion_de_Operaciones-Recursos-Procedencia_Ilicita.md",
+      "publicacion_dof": "2012-10-17",
+      "ultima_reforma_dof": "2025-07-16",
+      "estatus": "TEXTO VIGENTE"
+    },
+    {
+      "norma": "LEY FEDERAL PARA LA PROTECCIÓN A PERSONAS QUE INTERVIENEN EN EL PROCEDIMIENTO PENAL",
+      "archivo": "Ley_Federal_para_la_Proteccion_a_Personas-Intervienen-Procedimiento_Penal.md",
+      "publicacion_dof": "2012-06-08",
+      "ultima_reforma_dof": "2021-05-20",
+      "estatus": "TEXTO VIGENTE"
+    },
+    {
+      "norma": "LEY FEDERAL SOBRE MONUMENTOS Y ZONAS ARQUEOLÓGICOS, ARTÍSTICOS E HISTÓRICOS",
+      "archivo": "Ley_Federal_sobre_Monumentos_y_Zonas_Arqueologicos_Artisticos_e_Historicos.md",
+      "publicacion_dof": "1972-05-06",
+      "ultima_reforma_dof": "2025-11-14",
+      "estatus": "TEXTO VIGENTE"
+    },
+    {
+      "norma": "SE EXPIDE LA LEY GENERAL DE ACCESO DE LAS MUJERES A UNA VIDA LIBRE DE VIOLENCIAS.",
+      "archivo": "Ley_General_de_Acceso_de_las_Mujeres_a_una_Vida_Libre_de_Violencias.md",
+      "publicacion_dof": "2007-02-01",
+      "ultima_reforma_dof": "2026-01-15",
+      "estatus": "TEXTO VIGENTE"
+    },
+    {
+      "norma": "LEY GENERAL DE AGUAS",
+      "archivo": "Ley_General_de_Aguas.md",
+      "publicacion_dof": "2025-12-11",
+      "ultima_reforma_dof": null,
+      "estatus": "TEXTO VIGENTE",
+      "sin_reformas_probable": true
+    },
+    {
+      "norma": "LEY GENERAL DE ARCHIVOS",
+      "archivo": "Ley_General_de_Archivos.md",
+      "publicacion_dof": "2018-06-15",
+      "ultima_reforma_dof": "2025-11-14",
+      "estatus": "TEXTO VIGENTE"
+    },
+    {
+      "norma": "LEY GENERAL DE ASENTAMIENTOS HUMANOS, ORDENAMIENTO TERRITORIAL Y DESARROLLO URBANO",
+      "archivo": "Ley_General_de_Asentamientos_Humanos_Ordenamiento_Territorial-Desarrollo_Urbano.md",
+      "publicacion_dof": "2016-11-28",
+      "ultima_reforma_dof": "2024-04-01",
+      "estatus": "TEXTO VIGENTE"
+    },
+    {
+      "norma": "LEY GENERAL DE BIBLIOTECAS",
+      "archivo": "Ley_General_de_Bibliotecas.md",
+      "publicacion_dof": "2021-06-01",
+      "ultima_reforma_dof": "2023-11-29",
+      "estatus": "TEXTO VIGENTE"
+    },
+    {
+      "norma": "LEY GENERAL DE BIENES NACIONALES",
+      "archivo": "Ley_General_de_Bienes_Nacionales.md",
+      "publicacion_dof": "2004-05-20",
+      "ultima_reforma_dof": "2025-11-14",
+      "estatus": "TEXTO VIGENTE"
+    },
+    {
+      "norma": "LEY GENERAL DE CAMBIO CLIMÁTICO",
+      "archivo": "Ley_General_de_Cambio_Climatico.md",
+      "publicacion_dof": "2012-06-06",
+      "ultima_reforma_dof": "2024-04-01",
+      "estatus": "TEXTO VIGENTE"
+    },
+    {
+      "norma": "LEY GENERAL DE COMUNICACIÓN SOCIAL",
+      "archivo": "Ley_General_de_Comunicacion_Social.md",
+      "publicacion_dof": "2018-05-11",
+      "ultima_reforma_dof": "2024-04-01",
+      "estatus": "TEXTO VIGENTE"
+    },
+    {
+      "norma": "LEY GENERAL DE CONTABILIDAD GUBERNAMENTAL",
+      "archivo": "Ley_General_de_Contabilidad_Gubernamental.md",
+      "publicacion_dof": "2008-12-31",
+      "ultima_reforma_dof": "2025-07-16",
+      "estatus": "TEXTO VIGENTE"
+    },
+    {
+      "norma": "LEY GENERAL DE CULTURA FÍSICA Y DEPORTE",
+      "archivo": "Ley_General_de_Cultura_Fisica_y_Deporte.md",
+      "publicacion_dof": "2013-06-07",
+      "ultima_reforma_dof": "2025-11-14",
+      "estatus": "TEXTO VIGENTE"
+    },
+    {
+      "norma": "LEY GENERAL DE CULTURA Y DERECHOS CULTURALES",
+      "archivo": "Ley_General_de_Cultura_y_Derechos_Culturales.md",
+      "publicacion_dof": "2017-06-19",
+      "ultima_reforma_dof": "2026-01-15",
+      "estatus": "TEXTO VIGENTE"
+    },
+    {
+      "norma": "LEY GENERAL DE DERECHOS LINGÜÍSTICOS DE LOS PUEBLOS INDÍGENAS",
+      "archivo": "Ley_General_de_Derechos_Linguisticos_de_los_Pueblos_Indigenas.md",
+      "publicacion_dof": "2003-03-13",
+      "ultima_reforma_dof": "2023-10-18",
+      "estatus": "TEXTO VIGENTE"
+    },
+    {
+      "norma": "LEY GENERAL DE DESARROLLO FORESTAL SUSTENTABLE",
+      "archivo": "Ley_General_de_Desarrollo_Forestal_Sustentable.md",
+      "publicacion_dof": "2018-06-05",
+      "ultima_reforma_dof": "2024-04-01",
+      "estatus": "TEXTO VIGENTE"
+    },
+    {
+      "norma": "LEY GENERAL DE DESARROLLO SOCIAL",
+      "archivo": "Ley_General_de_Desarrollo_Social.md",
+      "publicacion_dof": "2004-01-20",
+      "ultima_reforma_dof": "2026-01-15",
+      "estatus": "TEXTO VIGENTE"
+    },
+    {
+      "norma": "LEY GENERAL DE ECONOMÍA CIRCULAR",
+      "archivo": "Ley_General_de_Economia_Circular.md",
+      "publicacion_dof": "2026-01-19",
+      "ultima_reforma_dof": null,
+      "estatus": "TEXTO VIGENTE",
+      "sin_reformas_probable": true
+    },
+    {
+      "norma": "LEY GENERAL DE EDUCACIÓN",
+      "archivo": "Ley_General_de_Educacion.md",
+      "publicacion_dof": "2019-09-30",
+      "ultima_reforma_dof": "2026-01-15",
+      "estatus": "TEXTO VIGENTE"
+    },
+    {
+      "norma": "LEY GENERAL DE EDUCACIÓN SUPERIOR",
+      "archivo": "Ley_General_de_Educacion_Superior.md",
+      "publicacion_dof": "2021-04-20",
+      "ultima_reforma_dof": null,
+      "estatus": "TEXTO VIGENTE",
+      "sin_reformas_probable": true
+    },
+    {
+      "norma": "LEY GENERAL DE INSTITUCIONES Y PROCEDIMIENTOS ELECTORALES",
+      "archivo": "Ley_General_de_Instituciones_y_Procedimientos_Electorales.md",
+      "publicacion_dof": "2014-05-23",
+      "ultima_reforma_dof": "2024-10-14",
+      "estatus": "TEXTO VIGENTE"
+    },
+    {
+      "norma": "LEY GENERAL DE MECANISMOS ALTERNATIVOS DE SOLUCIÓN DE CONTROVERSIAS",
+      "archivo": "Ley_General_de_Mecanismos_Alternativos_de_Solucion_de_Controversias.md",
+      "publicacion_dof": "2024-01-26",
+      "ultima_reforma_dof": null,
+      "estatus": "TEXTO VIGENTE",
+      "sin_reformas_probable": true
+    },
+    {
+      "norma": "LEY GENERAL DE MOVILIDAD Y SEGURIDAD VIAL",
+      "archivo": "Ley_General_de_Movilidad_y_Seguridad_Vial.md",
+      "publicacion_dof": "2022-05-17",
+      "ultima_reforma_dof": "2023-12-29",
+      "estatus": "TEXTO VIGENTE"
+    },
+    {
+      "norma": "LEY GENERAL DE ORGANIZACIONES Y ACTIVIDADES AUXILIARES DEL CRÉDITO",
+      "archivo": "Ley_General_de_Organizaciones_y_Actividades_Auxiliares_del_Credito.md",
+      "publicacion_dof": "1985-01-14",
+      "ultima_reforma_dof": "2025-11-14",
+      "estatus": "TEXTO VIGENTE"
+    },
+    {
+      "norma": "LEY GENERAL DE PARTIDOS POLÍTICOS",
+      "archivo": "Ley_General_de_Partidos_Politicos.md",
+      "publicacion_dof": "2023-11-24",
+      "ultima_reforma_dof": "2023-03-02",
+      "estatus": "TEXTO VIGENTE Sentencia de la SCJN con declaratoria de invalidez del Decreto de reforma DOF 02-03-2023, publicada en el Diario Oficial de la Federación el 24 de noviembre de 2023"
+    },
+    {
+      "norma": "LEY GENERAL DE PESCA Y ACUACULTURA SUSTENTABLES",
+      "archivo": "Ley_General_de_Pesca_y_Acuacultura.md",
+      "publicacion_dof": "2007-07-24",
+      "ultima_reforma_dof": "2024-04-01",
+      "estatus": "TEXTO VIGENTE"
+    },
+    {
+      "norma": "LEY GENERAL DE POBLACIÓN",
+      "archivo": "Ley_General_de_Poblacion.md",
+      "publicacion_dof": "1974-01-07",
+      "ultima_reforma_dof": "2025-07-16",
+      "estatus": "TEXTO VIGENTE"
+    },
+    {
+      "norma": "LEY GENERAL DE PRESTACIÓN DE SERVICIOS PARA LA ATENCIÓN, CUIDADO Y DESARROLLO INTEGRAL INFANTIL",
+      "archivo": "Ley_General_de_Prestacion_de_Servicios_para_la_Atencion_Cuidado-Desarrollo_Integral_Infantil.md",
+      "publicacion_dof": "2011-10-24",
+      "ultima_reforma_dof": "2024-04-01",
+      "estatus": "TEXTO VIGENTE"
+    },
+    {
+      "norma": "LEY GENERAL DE PROTECCIÓN CIVIL",
+      "archivo": "Ley_General_de_Proteccion_Civil.md",
+      "publicacion_dof": "2012-06-06",
+      "ultima_reforma_dof": "2023-12-21",
+      "estatus": "TEXTO VIGENTE"
+    },
+    {
+      "norma": "LEY GENERAL DE PROTECCIÓN DE DATOS PERSONALES EN POSESIÓN DE SUJETOS OBLIGADOS",
+      "archivo": "Ley_General_de_Proteccion_de_Datos_Personales-Posesion-Sujetos_Obligados.md",
+      "publicacion_dof": "2025-03-20",
+      "ultima_reforma_dof": "2025-11-14",
+      "estatus": "TEXTO VIGENTE"
+    },
+    {
+      "norma": "LEY GENERAL DE RESPONSABILIDADES ADMINISTRATIVAS",
+      "archivo": "Ley_General_de_Responsabilidades_Administrativas.md",
+      "publicacion_dof": "2016-07-18",
+      "ultima_reforma_dof": "2025-12-15",
+      "estatus": "TEXTO VIGENTE"
+    },
+    {
+      "norma": "LEY GENERAL DE SALUD",
+      "archivo": "Ley_General_de_Salud.md",
+      "publicacion_dof": "1984-02-07",
+      "ultima_reforma_dof": "2026-01-15",
+      "estatus": "TEXTO VIGENTE Últimas reformas publicadas DOF 15-01-2026",
+      "fuente_reforma": "cuerpo_del_documento"
+    },
+    {
+      "norma": "LEY GENERAL DE SOCIEDADES COOPERATIVAS",
+      "archivo": "Ley_General_de_Sociedades_Cooperativas.md",
+      "publicacion_dof": "1994-08-03",
+      "ultima_reforma_dof": "2025-04-16",
+      "estatus": "TEXTO VIGENTE"
+    },
+    {
+      "norma": "LEY GENERAL DE SOCIEDADES MERCANTILES",
+      "archivo": "Ley_General_de_Sociedades_Mercantiles.md",
+      "publicacion_dof": "1934-08-04",
+      "ultima_reforma_dof": "2023-10-20",
+      "estatus": "TEXTO VIGENTE"
+    },
+    {
+      "norma": "LEY GENERAL DE TÍTULOS Y OPERACIONES DE CRÉDITO",
+      "archivo": "Ley_General_de_Titulos_y_Operaciones_de_Credito.md",
+      "publicacion_dof": "1932-08-27",
+      "ultima_reforma_dof": "2024-03-26",
+      "estatus": "TEXTO VIGENTE"
+    },
+    {
+      "norma": "LEY GENERAL DE TRANSPARENCIA Y ACCESO A LA INFORMACIÓN PÚBLICA",
+      "archivo": "Ley_General_de_Transparencia_y_Acceso_a_la_Informacion_Publica.md",
+      "publicacion_dof": "2025-03-20",
+      "ultima_reforma_dof": null,
+      "estatus": "TEXTO VIGENTE",
+      "sin_reformas_probable": true
+    },
+    {
+      "norma": "LEY GENERAL DE TURISMO",
+      "archivo": "Ley_General_de_Turismo.md",
+      "publicacion_dof": "2009-06-17",
+      "ultima_reforma_dof": "2025-11-14",
+      "estatus": "TEXTO VIGENTE"
+    },
+    {
+      "norma": "LEY GENERAL DE VÍCTIMAS",
+      "archivo": "Ley_General_de_Victimas.md",
+      "publicacion_dof": "2013-01-09",
+      "ultima_reforma_dof": "2024-04-01",
+      "estatus": "TEXTO VIGENTE"
+    },
+    {
+      "norma": "LEY GENERAL DE VIDA SILVESTRE",
+      "archivo": "Ley_General_de_Vida_Silvestre.md",
+      "publicacion_dof": "2000-07-03",
+      "ultima_reforma_dof": "2025-07-16",
+      "estatus": "TEXTO VIGENTE"
+    },
+    {
+      "norma": "LEY GENERAL DE LA ALIMENTACIÓN ADECUADA Y SOSTENIBLE",
+      "archivo": "Ley_General_de_la_Alimentacion_Adecuada_y_Sostenible.md",
+      "publicacion_dof": "2024-04-17",
+      "ultima_reforma_dof": null,
+      "estatus": "TEXTO VIGENTE",
+      "sin_reformas_probable": true
+    },
+    {
+      "norma": "LEY GENERAL DE LOS DERECHOS DE NIÑAS, NIÑOS Y ADOLESCENTES",
+      "archivo": "Ley_General_de_los_Derechos_de_Ninas_Ninos_y_Adolescentes.md",
+      "publicacion_dof": "2014-12-04",
+      "ultima_reforma_dof": "2026-01-15",
+      "estatus": "TEXTO VIGENTE"
+    },
+    {
+      "norma": "LEY GENERAL DE LOS MEDIOS DE IMPUGNACIÓN EN MATERIA ELECTORAL",
+      "archivo": "Ley_General_de_los_Medios_de_Impugnacion_en_Materia_Electoral.md",
+      "publicacion_dof": "2023-11-24",
+      "ultima_reforma_dof": null,
+      "estatus": "SIN ESTATUS",
+      "sin_reformas_probable": true
+    },
+    {
+      "norma": "LEY GENERAL DEL EQUILIBRIO ECOLÓGICO Y LA PROTECCIÓN AL AMBIENTE",
+      "archivo": "Ley_General_del_Equilibrio_Ecologico_y_la_Proteccion_al_Ambiente.md",
+      "publicacion_dof": "1988-01-28",
+      "ultima_reforma_dof": "2026-01-19",
+      "estatus": "TEXTO VIGENTE"
+    },
+    {
+      "norma": "LEY GENERAL DEL SISTEMA NACIONAL ANTICORRUPCIÓN",
+      "archivo": "Ley_General_del_Sistema_Nacional_Anticorrupcion.md",
+      "publicacion_dof": "2016-07-18",
+      "ultima_reforma_dof": "2021-05-20",
+      "estatus": "TEXTO VIGENTE"
+    },
+    {
+      "norma": "LEY GENERAL DEL SISTEMA NACIONAL DE SEGURIDAD PÚBLICA",
+      "archivo": "Ley_General_del_Sistema_Nacional_de_Seguridad_Publica.md",
+      "publicacion_dof": "2025-07-16",
+      "ultima_reforma_dof": null,
+      "estatus": "TEXTO VIGENTE",
+      "sin_reformas_probable": true
+    },
+    {
+      "norma": "LEY GENERAL DEL SISTEMA DE MEDIOS DE IMPUGNACIÓN EN MATERIA ELECTORAL",
+      "archivo": "Ley_General_del_Sistema_de_Medios_de_Impugnacion-Materia_Electoral.md",
+      "publicacion_dof": "2023-11-24",
+      "ultima_reforma_dof": "2025-11-14",
+      "estatus": "TEXTO VIGENTE"
+    },
+    {
+      "norma": "LEY GENERAL DEL SISTEMA PARA LA CARRERA DE LAS MAESTRAS Y LOS MAESTROS",
+      "archivo": "Ley_General_del_Sistema_para_la_Carrera_de_las_Maestras_y_los_Maestros.md",
+      "publicacion_dof": "2019-09-30",
+      "ultima_reforma_dof": null,
+      "estatus": "TEXTO VIGENTE",
+      "sin_reformas_probable": true
+    },
+    {
+      "norma": "LEY GENERAL EN MATERIA DE DELITOS ELECTORALES",
+      "archivo": "Ley_General_en_Materia_de_Delitos_Electorales.md",
+      "publicacion_dof": "2014-05-23",
+      "ultima_reforma_dof": "2021-05-20",
+      "estatus": "TEXTO VIGENTE"
+    },
+    {
+      "norma": "LEY GENERAL EN MATERIA DE DESAPARICIÓN FORZADA DE PERSONAS, DESAPARICIÓN COMETIDA POR PARTICULARES Y DEL SISTEMA NACIONAL DE BÚSQUEDA DE PERSONAS",
+      "archivo": "Ley_General_en_Materia_de_Desaparicion_Forzada_de_Personas-Particulares-Sistema_Nacional_de_Busqueda.md",
+      "publicacion_dof": "2017-11-17",
+      "ultima_reforma_dof": "2025-07-16",
+      "estatus": "TEXTO VIGENTE"
+    },
+    {
+      "norma": "LEY GENERAL EN MATERIA DE HUMANIDADES, CIENCIAS, TECNOLOGÍAS E INNOVACIÓN",
+      "archivo": "Ley_General_en_materia_de_Humanidades_Ciencias_Tecnologias-Innovacion.md",
+      "publicacion_dof": "2023-05-08",
+      "ultima_reforma_dof": null,
+      "estatus": "TEXTO VIGENTE",
+      "sin_reformas_probable": true
+    },
+    {
+      "norma": "LEY GENERAL PARA PREVENIR Y SANCIONAR LOS DELITOS EN MATERIA DE SECUESTRO, REGLAMENTARIA DE LA FRACCIÓN XXI DEL",
+      "archivo": "Ley_General_para_Prevenir-Sancionar-Delitos-Materia-Secuestro_Reglamentaria-Fraccion_XXI-Articulo_73.md",
+      "publicacion_dof": "2010-11-30",
+      "ultima_reforma_dof": "2021-05-20",
+      "estatus": "TEXTO VIGENTE"
+    },
+    {
+      "norma": "LEY GENERAL PARA PREVENIR, INVESTIGAR Y SANCIONAR LOS DELITOS EN MATERIA DE EXTORSIÓN, REGLAMENTARIA DE LA FRACCIÓN XXI DEL ARTÍCULO 73 DE LA CONSTITUCIÓN POLÍTICA DE LOS ESTADOS UNIDOS",
+      "archivo": "Ley_General_para_Prevenir_Investigar-Sancionar-Delitos-Materia_de_Extorsion-Fraccion_XXI-Articulo_73.md",
+      "publicacion_dof": "2025-11-28",
+      "ultima_reforma_dof": null,
+      "estatus": "TEXTO VIGENTE",
+      "sin_reformas_probable": true
+    },
+    {
+      "norma": "LEY GENERAL PARA PREVENIR, INVESTIGAR Y SANCIONAR LA TORTURA Y OTROS TRATOS O PENAS CRUELES, INHUMANOS O DEGRADANTES",
+      "archivo": "Ley_General_para_Prevenir_Investigar-Sancionar_la_Tortura-Tratos-Penas_Crueles_Inhumanos-Degradantes.md",
+      "publicacion_dof": "2017-06-26",
+      "ultima_reforma_dof": "2022-04-28",
+      "estatus": "TEXTO VIGENTE"
+    },
+    {
+      "norma": "LEY GENERAL PARA PREVENIR, SANCIONAR Y ERRADICAR LOS DELITOS EN MATERIA DE TRATA DE PERSONAS Y PARA LA PROTECCIÓN Y ASISTENCIA A LAS VÍCTIMAS DE ESTOS DELITOS",
+      "archivo": "Ley_General_para_Prevenir_Sancionar-Erradicar-Delitos-Materia_de_Trata_de_Personas-Victimas.md",
+      "publicacion_dof": "2012-06-14",
+      "ultima_reforma_dof": "2025-11-14",
+      "estatus": "TEXTO VIGENTE"
+    },
+    {
+      "norma": "LEY GENERAL PARA EL CONTROL DEL TABACO",
+      "archivo": "Ley_General_para_el_Control_del_Tabaco.md",
+      "publicacion_dof": "2008-05-30",
+      "ultima_reforma_dof": "2022-02-17",
+      "estatus": "TEXTO VIGENTE"
+    },
+    {
+      "norma": "LEY GENERAL PARA LA ATENCIÓN Y PROTECCIÓN A PERSONAS CON LA CONDICIÓN DEL ESPECTRO AUTISTA",
+      "archivo": "Ley_General_para_la_Atencion_y_Proteccion_a_Personas-Condicion-Espectro_Autista.md",
+      "publicacion_dof": "2015-04-30",
+      "ultima_reforma_dof": null,
+      "estatus": "TEXTO VIGENTE",
+      "sin_reformas_probable": true
+    },
+    {
+      "norma": "LEY GENERAL PARA LA DETECCIÓN OPORTUNA DEL CÁNCER EN LA INFANCIA Y LA ADOLESCENCIA",
+      "archivo": "Ley_General_para_la_Deteccion_Oportuna_del_Cancer-Infancia_y-Adolescencia.md",
+      "publicacion_dof": "2021-01-07",
+      "ultima_reforma_dof": null,
+      "estatus": "TEXTO VIGENTE",
+      "sin_reformas_probable": true
+    },
+    {
+      "norma": "SE EXPIDE LA LEY GENERAL PARA LA IGUALDAD SUSTANTIVA ENTRE MUJERES Y HOMBRES.",
+      "archivo": "Ley_General_para_la_Igualdad_Sustantiva_entre_Mujeres_y_Hombres.md",
+      "publicacion_dof": "2006-08-02",
+      "ultima_reforma_dof": "2026-01-15",
+      "estatus": "TEXTO VIGENTE"
+    },
+    {
+      "norma": "LEY GENERAL PARA LA INCLUSIÓN DE LAS PERSONAS CON DISCAPACIDAD",
+      "archivo": "Ley_General_para_la_Inclusion_de_las_Personas_con_Discapacidad.md",
+      "publicacion_dof": "2011-05-30",
+      "ultima_reforma_dof": "2024-06-14",
+      "estatus": "TEXTO VIGENTE"
+    },
+    {
+      "norma": "LEY GENERAL PARA LA PREVENCIÓN SOCIAL DE LA VIOLENCIA Y LA DELINCUENCIA",
+      "archivo": "Ley_General_para_la_Prevencion_Social_de_la_Violencia_y_la_Delincuencia.md",
+      "publicacion_dof": "2012-01-24",
+      "ultima_reforma_dof": "2021-05-04",
+      "estatus": "TEXTO VIGENTE"
+    },
+    {
+      "norma": "LEY GENERAL PARA LA PREVENCIÓN Y GESTIÓN INTEGRAL DE LOS RESIDUOS",
+      "archivo": "Ley_General_para_la_Prevencion_y_Gestion_Integral_de_los_Residuos.md",
+      "publicacion_dof": "2003-10-08",
+      "ultima_reforma_dof": "2026-01-19",
+      "estatus": "TEXTO VIGENTE"
+    },
+    {
+      "norma": "LEY MONETARIA DE LOS ESTADOS UNIDOS MEXICANOS",
+      "archivo": "Ley_Monetaria.md",
+      "publicacion_dof": "1931-07-27",
+      "ultima_reforma_dof": "2026-01-19",
+      "estatus": "TEXTO VIGENTE Últimas reformas publicadas DOF 19-01-2026",
+      "fuente_reforma": "cuerpo_del_documento"
+    },
+    {
+      "norma": "LEY NACIONAL DE EJECUCIÓN PENAL",
+      "archivo": "Ley_Nacional_de_Ejecucion_Penal.md",
+      "publicacion_dof": "2016-06-16",
+      "ultima_reforma_dof": "2024-04-01",
+      "estatus": "TEXTO VIGENTE"
+    },
+    {
+      "norma": "LEY NACIONAL DE EXTINCIÓN DE DOMINIO",
+      "archivo": "Ley_Nacional_de_Extincion_de_Dominio.md",
+      "publicacion_dof": "2019-08-09",
+      "ultima_reforma_dof": "2025-11-28",
+      "estatus": "TEXTO VIGENTE"
+    },
+    {
+      "norma": "LEY NACIONAL DE MECANISMOS ALTERNATIVOS DE SOLUCIÓN DE CONTROVERSIAS EN MATERIA PENAL",
+      "archivo": "Ley_Nacional_de_Mecanismos_Alternativos_de_Solucion_de_Controversias-Materia_Penal.md",
+      "publicacion_dof": "2014-12-29",
+      "ultima_reforma_dof": "2024-04-01",
+      "estatus": "TEXTO VIGENTE"
+    },
+    {
+      "norma": "LEY NACIONAL DEL REGISTRO DE DETENCIONES",
+      "archivo": "Ley_Nacional_del_Registro_de_Detenciones.md",
+      "publicacion_dof": "2019-05-27",
+      "ultima_reforma_dof": null,
+      "estatus": "TEXTO VIGENTE",
+      "sin_reformas_probable": true
+    },
+    {
+      "norma": "LEY NACIONAL DEL SISTEMA INTEGRAL DE JUSTICIA PENAL PARA ADOLESCENTES",
+      "archivo": "Ley_Nacional_del_Sistema_Integral_de_Justicia_Penal_para_Adolescentes.md",
+      "publicacion_dof": "2016-06-16",
+      "ultima_reforma_dof": "2022-12-20",
+      "estatus": "TEXTO VIGENTE"
+    },
+    {
+      "norma": "LEY NACIONAL PARA ELIMINAR TRÁMITES BUROCRÁTICOS",
+      "archivo": "Ley_Nacional_para_Eliminar_Tramites_Burocraticos.md",
+      "publicacion_dof": "2025-07-16",
+      "ultima_reforma_dof": null,
+      "estatus": "TEXTO VIGENTE",
+      "sin_reformas_probable": true
+    },
+    {
+      "norma": "LEY NACIONAL SOBRE EL USO DE LA FUERZA",
+      "archivo": "Ley_Nacional_sobre_el_Uso_de_la_Fuerza.md",
+      "publicacion_dof": "2019-05-27",
+      "ultima_reforma_dof": "2024-01-24",
+      "estatus": "TEXTO VIGENTE"
+    },
+    {
+      "norma": "LEY ORGÁNICA DE NACIONAL FINANCIERA",
+      "archivo": "Ley_Organica_de_Nacional_Financiera.md",
+      "publicacion_dof": "1986-12-26",
+      "ultima_reforma_dof": "2014-01-10",
+      "estatus": "TEXTO VIGENTE"
+    },
+    {
+      "norma": "LEY ORGÁNICA DE SOCIEDAD HIPOTECARIA FEDERAL",
+      "archivo": "Ley_Organica_de_Sociedad_Hipotecaria.md",
+      "publicacion_dof": "2001-10-11",
+      "ultima_reforma_dof": "2024-04-01",
+      "estatus": "TEXTO VIGENTE"
+    },
+    {
+      "norma": "LEY ORGÁNICA DE LA ADMINISTRACIÓN PÚBLICA FEDERAL",
+      "archivo": "Ley_Organica_de_la_Administracion_Publica.md",
+      "publicacion_dof": "1976-12-29",
+      "ultima_reforma_dof": "2025-07-16",
+      "estatus": "TEXTO VIGENTE Últimas reformas publicadas DOF 16-07-2025",
+      "fuente_reforma": "cuerpo_del_documento"
+    },
+    {
+      "norma": "LEY ORGÁNICA DE LA ARMADA DE MÉXICO",
+      "archivo": "Ley_Organica_de_la_Armada.md",
+      "publicacion_dof": "2025-11-07",
+      "ultima_reforma_dof": null,
+      "estatus": "TEXTO VIGENTE",
+      "sin_reformas_probable": true
+    },
+    {
+      "norma": "LEY ORGÁNICA DE LA PROCURADURÍA GENERAL DE JUSTICIA DEL DISTRITO FEDERAL",
+      "archivo": "Ley_Organica_de_la_Procuraduria_General_de_Justicia_del_Distrito_Federal.md",
+      "publicacion_dof": "2011-06-20",
+      "ultima_reforma_dof": null,
+      "estatus": "TEXTO VIGENTE",
+      "sin_reformas_probable": true
+    },
+    {
+      "norma": "LEY ORGÁNICA DE LA PROCURADURÍA DE LA DEFENSA DEL CONTRIBUYENTE",
+      "archivo": "Ley_Organica_de_la_Procuraduria_de_la_Defensa_del_Contribuyente.md",
+      "publicacion_dof": "2006-09-04",
+      "ultima_reforma_dof": "2022-05-11",
+      "estatus": "TEXTO VIGENTE"
+    },
+    {
+      "norma": "LEY ORGÁNICA DE LA UNIVERSIDAD AUTÓNOMA AGRARIA ANTONIO NARRO",
+      "archivo": "Ley_Organica_de_la_Universidad_Autonoma_Agraria_Antonio_Narro.md",
+      "publicacion_dof": "2026-04-26",
+      "ultima_reforma_dof": "sin reforma, Nueva Ley publicada en el Diario Oficial de la Federación el 26 de abril 2006",
+      "estatus": "TEXTO VIGENTE"
+    },
+    {
+      "norma": "LEY ORGÁNICA DE LA UNIVERSIDAD AUTÓNOMA METROPOLITANA",
+      "archivo": "Ley_Organica_de_la_Universidad_Autonoma_Metropolitana.md",
+      "publicacion_dof": "1973-12-17",
+      "ultima_reforma_dof": null,
+      "estatus": "TEXTO VIGENTE",
+      "sin_reformas_probable": true
+    },
+    {
+      "norma": "LEY ORGÁNICA DE LA UNIVERSIDAD NACIONAL AUTÓNOMA DE MÉXICO",
+      "archivo": "Ley_Organica_de_la_Universidad_Nacional_Autonoma_de_Mexico.md",
+      "publicacion_dof": "1945-01-06",
+      "ultima_reforma_dof": null,
+      "estatus": "TEXTO VIGENTE",
+      "sin_reformas_probable": true
+    },
+    {
+      "norma": "LEY ORGÁNICA DE LOS TRIBUNALES AGRARIOS",
+      "archivo": "Ley_Organica_de_los_Tribunales_Agrarios.md",
+      "publicacion_dof": "1992-02-26",
+      "ultima_reforma_dof": "1998-01-23",
+      "estatus": "TEXTO VIGENTE"
+    },
+    {
+      "norma": "LEY ORGÁNICA DEL BANCO NACIONAL DE COMERCIO EXTERIOR",
+      "archivo": "Ley_Organica_del_Banco_Nacional_de_Comercio_Exterior.md",
+      "publicacion_dof": "1986-01-20",
+      "ultima_reforma_dof": "2024-04-01",
+      "estatus": "TEXTO VIGENTE"
+    },
+    {
+      "norma": "LEY ORGÁNICA DEL BANCO NACIONAL DE OBRAS Y SERVICIOS PÚBLICOS",
+      "archivo": "Ley_Organica_del_Banco_Nacional_de_Obras_y_Servicios.md",
+      "publicacion_dof": "1986-01-20",
+      "ultima_reforma_dof": "2024-04-01",
+      "estatus": "TEXTO VIGENTE."
+    },
+    {
+      "norma": "LEY ORGÁNICA DEL BANCO NACIONAL DEL EJÉRCITO, FUERZA AÉREA Y ARMADA",
+      "archivo": "Ley_Organica_del_Banco_Nacional_del_Ejercito_Fuerza_Aerea_y_Armada.md",
+      "publicacion_dof": "1986-01-13",
+      "ultima_reforma_dof": "2014-01-10",
+      "estatus": "TEXTO VIGENTE"
+    },
+    {
+      "norma": "LEY ORGÁNICA DEL BANCO DEL BIENESTAR",
+      "archivo": "Ley_Organica_del_Banco_del_Bienestar.md",
+      "publicacion_dof": "2001-06-01",
+      "ultima_reforma_dof": "2019-07-19",
+      "estatus": "TEXTO VIGENTE"
+    },
+    {
+      "norma": "LEY ORGÁNICA DEL CENTRO FEDERAL DE CONCILIACIÓN Y REGISTRO LABORAL",
+      "archivo": "Ley_Organica_del_Centro_Federal_de_Conciliacion_y_Registro_Laboral.md",
+      "publicacion_dof": "2020-01-06",
+      "ultima_reforma_dof": null,
+      "estatus": "TEXTO VIGENTE",
+      "sin_reformas_probable": true
+    },
+    {
+      "norma": "LEY ORGÁNICA DEL CONGRESO GENERAL DE LOS ESTADOS UNIDOS MEXICANOS",
+      "archivo": "Ley_Organica_del_Congreso.md",
+      "publicacion_dof": "1999-09-03",
+      "ultima_reforma_dof": "2025-07-07",
+      "estatus": "TEXTO VIGENTE"
+    },
+    {
+      "norma": "LEY ORGÁNICA DEL EJÉRCITO Y FUERZA AÉREA MEXICANOS",
+      "archivo": "Ley_Organica_del_Ejercito_y_Fuerza_Aerea.md",
+      "publicacion_dof": "1986-12-26",
+      "ultima_reforma_dof": "2025-07-16",
+      "estatus": "TEXTO VIGENTE"
+    },
+    {
+      "norma": "LEY ORGÁNICA DEL INSTITUTO NACIONAL DE ANTROPOLOGÍA E HISTORIA",
+      "archivo": "Ley_Organica_del_Instituto_Nacional_de_Antropologia_e_Historia.md",
+      "publicacion_dof": "1939-02-03",
+      "ultima_reforma_dof": "2015-12-17",
+      "estatus": "TEXTO VIGENTE"
+    },
+    {
+      "norma": "LEY ORGÁNICA DEL INSTITUTO POLITÉCNICO NACIONAL",
+      "archivo": "Ley_Organica_del_Instituto_Politecnico_Nacional.md",
+      "publicacion_dof": "1981-12-29",
+      "ultima_reforma_dof": null,
+      "estatus": "TEXTO VIGENTE",
+      "sin_reformas_probable": true
+    },
+    {
+      "norma": "LEY ORGÁNICA DEL PODER JUDICIAL DE LA FEDERACIÓN",
+      "archivo": "Ley_Organica_del_Poder_Judicial.md",
+      "publicacion_dof": "2024-12-20",
+      "ultima_reforma_dof": "2025-11-28",
+      "estatus": "TEXTO VIGENTE"
+    },
+    {
+      "norma": "LEY ORGÁNICA DEL SEMINARIO DE CULTURA MEXICANA",
+      "archivo": "Ley_Organica_del_Seminario_de_Cultura.md",
+      "publicacion_dof": "1949-12-31",
+      "ultima_reforma_dof": "2022-05-11",
+      "estatus": "TEXTO VIGENTE"
+    },
+    {
+      "norma": "LEY ORGÁNICA DEL TRIBUNAL FEDERAL DE JUSTICIA ADMINISTRATIVA",
+      "archivo": "Ley_Organica_del_Tribunal_Federal_de_Justicia_Administrativa.md",
+      "publicacion_dof": "2016-07-18",
+      "ultima_reforma_dof": "2025-10-16",
+      "estatus": "TEXTO VIGENTE"
+    },
+    {
+      "norma": "LEY REGLAMENTARIA DE LA FRACCION V DEL ARTICULO 76",
+      "archivo": "Ley_Reglamentaria_de_la_Fraccion_V_del_Articulo_76.md",
+      "publicacion_dof": "1978-12-29",
+      "ultima_reforma_dof": null,
+      "estatus": "TEXTO VIGENTE",
+      "sin_reformas_probable": true
+    },
+    {
+      "norma": "LEY REGLAMENTARIA DE LA FRACCIÓN XIII BIS DEL APARTADO B, DEL ARTÍCULO 123 DE LA CONSTITUCIÓN POLÍTICA DE LOS ESTADOS UNIDOS MEXICANOS",
+      "archivo": "Ley_Reglamentaria_de_la_Fraccion_XIII_Bis_del_Apartado_B_del_Articulo_123.md",
+      "publicacion_dof": "1983-12-30",
+      "ultima_reforma_dof": "2025-11-14",
+      "estatus": "TEXTO VIGENTE"
+    },
+    {
+      "norma": "LEY REGLAMENTARIA DE LA FRACCIÓN XVIII DEL ARTÍCULO 73 CONSTITUCIONAL, EN LO QUE SE REFIERE A LA FACULTAD DEL CONGRESO PARA DICTAR REGLAS PARA DETERMINAR EL VALOR RELATIVO DE LA MONEDA EXTRANJERA",
+      "archivo": "Ley_Reglamentaria_de_la_Fraccion_XVIII_del_Articulo_73-Valor-Moneda_Extranjera.md",
+      "publicacion_dof": "1982-12-27",
+      "ultima_reforma_dof": null,
+      "estatus": "TEXTO VIGENTE",
+      "sin_reformas_probable": true
+    },
+    {
+      "norma": "LEY REGLAMENTARIA DE LA FRACCIÓN VI DEL Artículo 76",
+      "archivo": "Ley_Reglamentaria_de_la_fraccion_VI_del_articulo_76.md",
+      "publicacion_dof": "2007-08-31",
+      "ultima_reforma_dof": "2025-11-14",
+      "estatus": "TEXTO VIGENTE"
+    },
+    {
+      "norma": "LEY REGLAMENTARIA DE LAS FRACCIONES I Y II DEL ARTÍCULO 105 DE LA CONSTITUCIÓN POLÍTICA DE LOS ESTADOS UNIDOS MEXICANOS",
+      "archivo": "Ley_Reglamentaria_de_las_fracciones_I_y_II_del_Articulo_105.md",
+      "publicacion_dof": "1995-05-11",
+      "ultima_reforma_dof": "2025-11-14",
+      "estatus": "TEXTO VIGENTE"
+    },
+    {
+      "norma": "LEY REGLAMENTARIA DEL ARTÍCULO 27 CONSTITUCIONAL EN MATERIA NUCLEAR",
+      "archivo": "Ley_Reglamentaria_del_Articulo_27-Materia_Nuclear.md",
+      "publicacion_dof": "1985-02-04",
+      "ultima_reforma_dof": "2012-04-09",
+      "estatus": "TEXTO VIGENTE"
+    },
+    {
+      "norma": "LEY REGLAMENTARIA DEL ARTÍCULO 3o. DE LA CONSTITUCIÓN POLÍTICA DE LOS ESTADOS UNIDOS MEXICANOS, EN MATERIA DE MEJORA CONTINUA DE LA EDUCACIÓN",
+      "archivo": "Ley_Reglamentaria_del_Articulo_3o-materia-Mejora_Continua_de_la_Educacion.md",
+      "publicacion_dof": "2019-09-30",
+      "ultima_reforma_dof": null,
+      "estatus": "TEXTO VIGENTE",
+      "sin_reformas_probable": true
+    },
+    {
+      "norma": "LEY REGLAMENTARIA DEL ARTÍCULO 5o. CONSTITUCIONAL, RELATIVO AL EJERCICIO DE LAS PROFESIONES EN LA CIUDAD DE MÉXICO",
+      "archivo": "Ley_Reglamentaria_del_Articulo_5o-ejercicio-profesiones-Ciudad_de_Mexico.md",
+      "publicacion_dof": "1945-05-26",
+      "ultima_reforma_dof": "2018-01-19",
+      "estatus": "TEXTO VIGENTE"
+    },
+    {
+      "norma": "LEY REGLAMENTARIA DEL ARTÍCULO 6o., PÁRRAFO PRIMERO",
+      "archivo": "Ley_Reglamentaria_del_Articulo_6o_parrafo_primero-Materia-Derecho_de_Replica.md",
+      "publicacion_dof": "2015-11-04",
+      "ultima_reforma_dof": "2025-11-14",
+      "estatus": "TEXTO VIGENTE"
+    },
+    {
+      "norma": "LEY REGLAMENTARIA DEL SERVICIO FERROVIARIO",
+      "archivo": "Ley_Reglamentaria_del_Servicio_Ferroviario.md",
+      "publicacion_dof": "1995-05-12",
+      "ultima_reforma_dof": "2025-11-14",
+      "estatus": "TEXTO VIGENTE"
+    },
+    {
+      "norma": "LEY DE ADQUISICIONES, ARRENDAMIENTOS Y SERVICIOS DEL SECTOR PÚBLICO",
+      "archivo": "Ley_de_Adquisiciones_Arrendamientos_y_Servicios.md",
+      "publicacion_dof": "2025-04-16",
+      "ultima_reforma_dof": null,
+      "estatus": "TEXTO VIGENTE",
+      "sin_reformas_probable": true
+    },
+    {
+      "norma": "LEY DE AEROPUERTOS",
+      "archivo": "Ley_de_Aeropuertos.md",
+      "publicacion_dof": "1995-12-22",
+      "ultima_reforma_dof": "2025-11-14",
+      "estatus": "TEXTO VIGENTE"
+    },
+    {
+      "norma": "LEY DE AGUAS NACIONALES",
+      "archivo": "Ley_de_Aguas_Nacionales.md",
+      "publicacion_dof": "1992-12-01",
+      "ultima_reforma_dof": "2025-12-11",
+      "estatus": "TEXTO VIGENTE"
+    },
+    {
+      "norma": "LEY DE AHORRO Y CRÉDITO POPULAR",
+      "archivo": "Ley_de_Ahorro_y_Credito_Popular.md",
+      "publicacion_dof": "2001-06-04",
+      "ultima_reforma_dof": "2025-11-14",
+      "estatus": "TEXTO VIGENTE"
+    },
+    {
+      "norma": "LEY DE AMNISTÍA",
+      "archivo": "Ley_de_Amnistia.md",
+      "publicacion_dof": "2020-04-22",
+      "ultima_reforma_dof": "2024-06-14",
+      "estatus": "TEXTO VIGENTE"
+    },
+    {
+      "norma": "LEY DE AMNISTÍA DE 1994",
+      "archivo": "Ley_de_Amnistia_1994.md",
+      "publicacion_dof": "1994-01-22",
+      "ultima_reforma_dof": null,
+      "estatus": "TEXTO VIGENTE",
+      "sin_reformas_probable": true
+    },
+    {
+      "norma": "LEY DE AMPARO, REGLAMENTARIA DE LOS ARTÍCULOS 103 Y 107 DE LA CONSTITUCIÓN POLÍTICA DE LOS ESTADOS UNIDOS MEXICANOS",
+      "archivo": "Ley_de_Amparo_Reglamentaria-Articulos_103_y_107.md",
+      "publicacion_dof": "2013-04-02",
+      "ultima_reforma_dof": "2025-10-16",
+      "estatus": "TEXTO VIGENTE"
+    },
+    {
+      "norma": "LEY DE ASCENSOS DE LA ARMADA DE MÉXICO",
+      "archivo": "Ley_de_Ascensos_de_la_Armada.md",
+      "publicacion_dof": "2004-06-25",
+      "ultima_reforma_dof": "2025-12-17",
+      "estatus": "TEXTO VIGENTE"
+    },
+    {
+      "norma": "LEY DE ASCENSOS Y RECOMPENSAS DEL EJÉRCITO, FUERZA AÉREA Y GUARDIA NACIONAL",
+      "archivo": "Ley_de_Ascensos_y_Recompensas_del_Ejercito_Fuerza_Aerea_y_Guardia_Nacional.md",
+      "publicacion_dof": "2003-10-30",
+      "ultima_reforma_dof": "2025-07-16",
+      "estatus": "TEXTO VIGENTE"
+    },
+    {
+      "norma": "LEY DE ASISTENCIA SOCIAL",
+      "archivo": "Ley_de_Asistencia_Social.md",
+      "publicacion_dof": "2004-09-02",
+      "ultima_reforma_dof": "2024-04-01",
+      "estatus": "TEXTO VIGENTE"
+    },
+    {
+      "norma": "LEY DE ASOCIACIONES PÚBLICO PRIVADAS",
+      "archivo": "Ley_de_Asociaciones_Publico_Privadas.md",
+      "publicacion_dof": "2012-01-16",
+      "ultima_reforma_dof": "2025-11-14",
+      "estatus": "TEXTO VIGENTE"
+    },
+    {
+      "norma": "LEY DE ASOCIACIONES RELIGIOSAS Y CULTO PÚBLICO",
+      "archivo": "Ley_de_Asociaciones_Religiosas_y_Culto.md",
+      "publicacion_dof": "1992-07-15",
+      "ultima_reforma_dof": "2025-11-14",
+      "estatus": "TEXTO VIGENTE"
+    },
+    {
+      "norma": "LEY DE AVIACIÓN CIVIL",
+      "archivo": "Ley_de_Aviacion_Civil.md",
+      "publicacion_dof": "1995-05-12",
+      "ultima_reforma_dof": "2025-11-14",
+      "estatus": "TEXTO VIGENTE"
+    },
+    {
+      "norma": "LEY DE AYUDA ALIMENTARIA PARA LOS TRABAJADORES",
+      "archivo": "Ley_de_Ayuda_Alimentaria_para_los_Trabajadores.md",
+      "publicacion_dof": "2011-01-17",
+      "ultima_reforma_dof": null,
+      "estatus": "TEXTO VIGENTE",
+      "sin_reformas_probable": true
+    },
+    {
+      "norma": "LEY DE BIOCOMBUSTIBLES",
+      "archivo": "Ley_de_Biocombustibles.md",
+      "publicacion_dof": "2025-03-18",
+      "ultima_reforma_dof": null,
+      "estatus": "TEXTO VIGENTE",
+      "sin_reformas_probable": true
+    },
+    {
+      "norma": "LEY DE BIOSEGURIDAD DE ORGANISMOS GENÉTICAMENTE MODIFICADOS",
+      "archivo": "Ley_de_Bioseguridad_de_Organismos_Geneticamente_Modificados.md",
+      "publicacion_dof": "2005-03-18",
+      "ultima_reforma_dof": "2022-05-11",
+      "estatus": "TEXTO VIGENTE"
+    },
+    {
+      "norma": "LEY DE CÁMARAS EMPRESARIALES Y SUS CONFEDERACIONES",
+      "archivo": "Ley_de_Camaras_Empresariales_y_sus_Confederaciones.md",
+      "publicacion_dof": "2005-01-20",
+      "ultima_reforma_dof": "2019-04-12",
+      "estatus": "TEXTO VIGENTE"
+    },
+    {
+      "norma": "LEY DE CAMINOS, PUENTES Y AUTOTRANSPORTE FEDERAL",
+      "archivo": "Ley_de_Caminos_Puentes_y_Autotransporte.md",
+      "publicacion_dof": "1993-12-22",
+      "ultima_reforma_dof": "2025-11-14",
+      "estatus": "TEXTO VIGENTE"
+    },
+    {
+      "norma": "LEY DE CAPITALIZACIÓN DEL PROCAMPO",
+      "archivo": "Ley_de_Capitalizacion_del_Procampo.md",
+      "publicacion_dof": "2001-12-31",
+      "ultima_reforma_dof": null,
+      "estatus": "TEXTO VIGENTE",
+      "sin_reformas_probable": true
+    },
+    {
+      "norma": "LEY DE CARRERA JUDICIAL DEL PODER JUDICIAL DE LA FEDERACIÓN",
+      "archivo": "Ley_de_Carrera_Judicial_del_Poder_Judicial.md",
+      "publicacion_dof": "2025-01-02",
+      "ultima_reforma_dof": null,
+      "estatus": "TEXTO VIGENTE",
+      "sin_reformas_probable": true
+    },
+    {
+      "norma": "LEY DE COMERCIO EXTERIOR",
+      "archivo": "Ley_de_Comercio_Exterior.md",
+      "publicacion_dof": "1993-07-27",
+      "ultima_reforma_dof": "2006-12-21",
+      "estatus": "TEXTO VIGENTE"
+    },
+    {
+      "norma": "LEY DE CONCURSOS MERCANTILES",
+      "archivo": "Ley_de_Concursos_Mercantiles.md",
+      "publicacion_dof": "2000-05-12",
+      "ultima_reforma_dof": "2025-11-14",
+      "estatus": "TEXTO VIGENTE"
+    },
+    {
+      "norma": "LEY DE CONTRIBUCIÓN DE MEJORAS POR OBRAS PÚBLICAS FEDERALES DE INFRAESTRUCTURA HIDRÁULICA",
+      "archivo": "Ley_de_Contribucion_de_Mejoras_por_Obras_Publicas-de_Infraestructura_Hidraulica.md",
+      "publicacion_dof": "1990-12-26",
+      "ultima_reforma_dof": null,
+      "estatus": "TEXTO VIGENTE",
+      "sin_reformas_probable": true
+    },
+    {
+      "norma": "LEY DE COOPERACIÓN INTERNACIONAL PARA EL DESARROLLO",
+      "archivo": "Ley_de_Cooperacion_Internacional_para_el_Desarrollo.md",
+      "publicacion_dof": "2011-04-06",
+      "ultima_reforma_dof": "2020-11-06",
+      "estatus": "TEXTO VIGENTE"
+    },
+    {
+      "norma": "LEY DE COORDINACIÓN FISCAL",
+      "archivo": "Ley_de_Coordinacion_Fiscal.md",
+      "publicacion_dof": "1978-12-27",
+      "ultima_reforma_dof": "2024-01-03",
+      "estatus": "TEXTO VIGENTE"
+    },
+    {
+      "norma": "LEY DE DESARROLLO RURAL SUSTENTABLE",
+      "archivo": "Ley_de_Desarrollo_Rural_Sustentable.md",
+      "publicacion_dof": "2001-12-07",
+      "ultima_reforma_dof": "2024-06-07",
+      "estatus": "TEXTO VIGENTE"
+    },
+    {
+      "norma": "LEY DE DESARROLLO SUSTENTABLE DE LA CAFETICULTURA",
+      "archivo": "Ley_de_Desarrollo_Sustentable_de_la_Cafeticultura.md",
+      "publicacion_dof": "2025-12-19",
+      "ultima_reforma_dof": null,
+      "estatus": "TEXTO VIGENTE a partir del 17-06-2026",
+      "sin_reformas_probable": true
+    },
+    {
+      "norma": "LEY DE DESARROLLO SUSTENTABLE DE LA CAÑA DE AZÚCAR",
+      "archivo": "Ley_de_Desarrollo_Sustentable_de_la_Cana_de_Azucar.md",
+      "publicacion_dof": "2005-08-22",
+      "ultima_reforma_dof": "2025-11-14",
+      "estatus": "TEXTO VIGENTE"
+    },
+    {
+      "norma": "LEY DE DISCIPLINA FINANCIERA DE LAS ENTIDADES FEDERATIVAS Y LOS MUNICIPIOS",
+      "archivo": "Ley_de_Disciplina_Financiera_de_las_Entidades_Federativas_y_los_Municipios.md",
+      "publicacion_dof": "2016-04-27",
+      "ultima_reforma_dof": "2022-05-10",
+      "estatus": "TEXTO VIGENTE"
+    },
+    {
+      "norma": "LEY DE DISCIPLINA DEL EJÉRCITO, FUERZA AÉREA Y GUARDIA NACIONAL",
+      "archivo": "Ley_de_Disciplina_del_Ejercito_Fuerza_Aerea_y_Guardia_Nacional.md",
+      "publicacion_dof": "1926-03-15",
+      "ultima_reforma_dof": "2025-07-16",
+      "estatus": "TEXTO VIGENTE"
+    },
+    {
+      "norma": "LEY DE DISCIPLINA PARA EL PERSONAL DE LA ARMADA DE MÉXICO",
+      "archivo": "Ley_de_Disciplina_para_el_Personal_de_la_Armada.md",
+      "publicacion_dof": "2002-12-13",
+      "ultima_reforma_dof": null,
+      "estatus": "TEXTO VIGENTE",
+      "sin_reformas_probable": true
+    },
+    {
+      "norma": "LEY DE EDUCACIÓN MILITAR DEL EJÉRCITO, FUERZA AÉREA Y GUARDIA NACIONAL",
+      "archivo": "Ley_de_Educacion_Militar_del_Ejercito_Fuerza_Aerea_y_Guardia_Nacional.md",
+      "publicacion_dof": "2005-12-23",
+      "ultima_reforma_dof": "2025-07-16",
+      "estatus": "TEXTO VIGENTE"
+    },
+    {
+      "norma": "LEY DE EDUCACIÓN NAVAL",
+      "archivo": "Ley_de_Educacion_Naval.md",
+      "publicacion_dof": "2019-03-12",
+      "ultima_reforma_dof": "2023-03-24",
+      "estatus": "TEXTO VIGENTE"
+    },
+    {
+      "norma": "LEY DE ENERGÍA PARA EL CAMPO",
+      "archivo": "Ley_de_Energia_para_el_Campo.md",
+      "publicacion_dof": "2002-12-30",
+      "ultima_reforma_dof": "2012-12-28",
+      "estatus": "TEXTO VIGENTE"
+    },
+    {
+      "norma": "LEY DE EXPROPIACIÓN",
+      "archivo": "Ley_de_Expropiacion.md",
+      "publicacion_dof": "1936-11-25",
+      "ultima_reforma_dof": "2012-01-27",
+      "estatus": "TEXTO VIGENTE"
+    },
+    {
+      "norma": "LEY DE EXTRADICIÓN INTERNACIONAL",
+      "archivo": "Ley_de_Extradicion_Internacional.md",
+      "publicacion_dof": "1975-12-29",
+      "ultima_reforma_dof": "2021-05-20",
+      "estatus": "TEXTO VIGENTE"
+    },
+    {
+      "norma": "LEY DE FIRMA ELECTRÓNICA AVANZADA",
+      "archivo": "Ley_de_Firma_Electronica_Avanzada.md",
+      "publicacion_dof": "2012-01-11",
+      "ultima_reforma_dof": "2025-11-14",
+      "estatus": "TEXTO VIGENTE"
+    },
+    {
+      "norma": "LEY DE FISCALIZACIÓN Y RENDICIÓN DE CUENTAS DE LA FEDERACIÓN",
+      "archivo": "Ley_de_Fiscalizacion_y_Rendicion_de_Cuentas_de_la_Federacion.md",
+      "publicacion_dof": "2016-07-18",
+      "ultima_reforma_dof": "2021-05-20",
+      "estatus": "TEXTO VIGENTE"
+    },
+    {
+      "norma": "LEY DE FOMENTO A LA CONFIANZA CIUDADANA",
+      "archivo": "Ley_de_Fomento_a_la_Confianza_Ciudadana.md",
+      "publicacion_dof": "2020-01-20",
+      "ultima_reforma_dof": null,
+      "estatus": "TEXTO VIGENTE",
+      "sin_reformas_probable": true
+    },
+    {
+      "norma": "LEY DE FOMENTO A LA INDUSTRIA VITIVINÍCOLA",
+      "archivo": "Ley_de_Fomento_a_la_Industria_Vitivinicola.md",
+      "publicacion_dof": "2018-05-23",
+      "ultima_reforma_dof": null,
+      "estatus": "TEXTO VIGENTE",
+      "sin_reformas_probable": true
+    },
+    {
+      "norma": "LEY DE FOMENTO PARA LA LECTURA Y EL",
+      "archivo": "Ley_de_Fomento_para_la_Lectura_y_el_Libro.md",
+      "publicacion_dof": "2008-07-24",
+      "ultima_reforma_dof": "2023-11-29",
+      "estatus": "TEXTO VIGENTE"
+    },
+    {
+      "norma": "LEY DE FONDOS DE ASEGURAMIENTO AGROPECUARIO Y RURAL",
+      "archivo": "Ley_de_Fondos_de_Aseguramiento_Agropecuario_y_Rural.md",
+      "publicacion_dof": "2005-05-13",
+      "ultima_reforma_dof": "2025-11-14",
+      "estatus": "TEXTO VIGENTE"
+    },
+    {
+      "norma": "SE EXPIDE LA LEY DE FONDOS DE INVERSIÓN",
+      "archivo": "Ley_de_Fondos_de_Inversion.md",
+      "publicacion_dof": "2001-06-04",
+      "ultima_reforma_dof": "2025-11-14",
+      "estatus": "TEXTO VIGENTE"
+    },
+    {
+      "norma": "LEY DE GEOTERMIA",
+      "archivo": "Ley_de_Geotermia.md",
+      "publicacion_dof": "2025-03-18",
+      "ultima_reforma_dof": null,
+      "estatus": "TEXTO VIGENTE",
+      "sin_reformas_probable": true
+    },
+    {
+      "norma": "LEY DE INFRAESTRUCTURA DE LA CALIDAD",
+      "archivo": "Ley_de_Infraestructura_de_la_Calidad.md",
+      "publicacion_dof": "2020-07-01",
+      "ultima_reforma_dof": null,
+      "estatus": "TEXTO VIGENTE",
+      "sin_reformas_probable": true
+    },
+    {
+      "norma": "LEY DE INGRESOS DE LA FEDERACIÓN PARA EL EJERCICIO FISCAL DE 2026",
+      "archivo": "Ley_de_Ingresos_2026.md",
+      "publicacion_dof": "2025-11-07",
+      "ultima_reforma_dof": null,
+      "estatus": "TEXTO VIGENTE a partir del 01-01-2026",
+      "sin_reformas_probable": true
+    },
+    {
+      "norma": "LEY DE INGRESOS SOBRE HIDROCARBUROS",
+      "archivo": "Ley_de_Ingresos_sobre_Hidrocarburos.md",
+      "publicacion_dof": "2014-08-11",
+      "ultima_reforma_dof": "2025-03-18",
+      "estatus": "TEXTO VIGENTE"
+    },
+    {
+      "norma": "LEY DE INSTITUCIONES DE CRÉDITO",
+      "archivo": "Ley_de_Instituciones_de_Credito.md",
+      "publicacion_dof": "1990-07-18",
+      "ultima_reforma_dof": "2025-11-14",
+      "estatus": "TEXTO VIGENTE"
+    },
+    {
+      "norma": "LEY DE INSTITUCIONES DE SEGUROS Y DE FIANZAS",
+      "archivo": "Ley_de_Instituciones_de_Seguros_y_de_Fianzas.md",
+      "publicacion_dof": "2013-04-04",
+      "ultima_reforma_dof": "2025-11-14",
+      "estatus": "TEXTO VIGENTE"
+    },
+    {
+      "norma": "LEY DE INVERSIÓN EXTRANJERA",
+      "archivo": "Ley_de_Inversion_Extranjera.md",
+      "publicacion_dof": "1993-12-27",
+      "ultima_reforma_dof": "2024-05-27",
+      "estatus": "TEXTO VIGENTE"
+    },
+    {
+      "norma": "LEY DE MIGRACIÓN",
+      "archivo": "Ley_de_Migracion.md",
+      "publicacion_dof": "2011-05-25",
+      "ultima_reforma_dof": "2026-01-15",
+      "estatus": "TEXTO VIGENTE"
+    },
+    {
+      "norma": "LEY DE MINERÍA",
+      "archivo": "Ley_de_Mineria.md",
+      "publicacion_dof": "1992-06-26",
+      "ultima_reforma_dof": "2023-05-08",
+      "estatus": "TEXTO VIGENTE"
+    },
+    {
+      "norma": "LEY DE NACIONALIDAD",
+      "archivo": "Ley_de_Nacionalidad.md",
+      "publicacion_dof": "1998-01-23",
+      "ultima_reforma_dof": "2012-04-23",
+      "estatus": "TEXTO VIGENTE"
+    },
+    {
+      "norma": "LEY DE NAVEGACIÓN Y COMERCIO MARÍTIMOS",
+      "archivo": "Ley_de_Navegacion_y_Comercio_Maritimos.md",
+      "publicacion_dof": "2006-06-01",
+      "ultima_reforma_dof": "2025-11-14",
+      "estatus": "TEXTO VIGENTE"
+    },
+    {
+      "norma": "LEY DE OBRAS PÚBLICAS Y SERVICIOS RELACIONADOS CON LAS MISMAS",
+      "archivo": "Ley_de_Obras_Publicas_y_Servicios.md",
+      "publicacion_dof": "2000-01-04",
+      "ultima_reforma_dof": "2025-11-14",
+      "estatus": "TEXTO VIGENTE"
+    },
+    {
+      "norma": "LEY DE ORGANIZACIONES GANADERAS",
+      "archivo": "Ley_de_Organizaciones_Ganaderas.md",
+      "publicacion_dof": "1999-01-06",
+      "ultima_reforma_dof": "2012-04-09",
+      "estatus": "TEXTO VIGENTE"
+    },
+    {
+      "norma": "LEY DE PLANEACIÓN",
+      "archivo": "Ley_de_Planeacion.md",
+      "publicacion_dof": "1983-01-05",
+      "ultima_reforma_dof": "2026-01-15",
+      "estatus": "TEXTO VIGENTE"
+    },
+    {
+      "norma": "LEY DE PLANEACIÓN Y TRANSICIÓN ENERGÉTICA",
+      "archivo": "Ley_de_Planeacion_y_Transicion_Energetica.md",
+      "publicacion_dof": "2025-03-18",
+      "ultima_reforma_dof": null,
+      "estatus": "TEXTO VIGENTE",
+      "sin_reformas_probable": true
+    },
+    {
+      "norma": "LEY DE PREMIOS, ESTÍMULOS Y RECOMPENSAS CIVILES",
+      "archivo": "Ley_de_Premios_Estimulos_y_Recompensas_Civiles.md",
+      "publicacion_dof": "1975-12-31",
+      "ultima_reforma_dof": "2024-04-01",
+      "estatus": "TEXTO VIGENTE"
+    },
+    {
+      "norma": "LEY DE PRODUCTOS ORGÁNICOS",
+      "archivo": "Ley_de_Productos_Organicos.md",
+      "publicacion_dof": "2006-02-07",
+      "ultima_reforma_dof": null,
+      "estatus": "TEXTO VIGENTE",
+      "sin_reformas_probable": true
+    },
+    {
+      "norma": "LEY DE PROTECCIÓN AL AHORRO BANCARIO",
+      "archivo": "Ley_de_Proteccion_al_Ahorro_Bancario.md",
+      "publicacion_dof": "1999-01-19",
+      "ultima_reforma_dof": "2022-05-11",
+      "estatus": "TEXTO VIGENTE"
+    },
+    {
+      "norma": "LEY DE PROTECCIÓN AL COMERCIO Y LA INVERSIÓN DE NORMAS EXTRANJERAS QUE CONTRAVENGAN EL DERECHO INTERNACIONAL",
+      "archivo": "Ley_de_Proteccion_al_Comercio_y_la_Inversion-Normas_Extranjeras-Derecho_Internacional.md",
+      "publicacion_dof": "1996-10-23",
+      "ultima_reforma_dof": "2012-04-09",
+      "estatus": "TEXTO VIGENTE"
+    },
+    {
+      "norma": "LEY DE PROTECCIÓN DEL ESPACIO AÉREO MEXICANO",
+      "archivo": "Ley_de_Proteccion_del_Espacio_Aereo_Mexicano.md",
+      "publicacion_dof": "2023-03-01",
+      "ultima_reforma_dof": null,
+      "estatus": "TEXTO VIGENTE",
+      "sin_reformas_probable": true
+    },
+    {
+      "norma": "LEY DE PROTECCIÓN Y DEFENSA AL USUARIO DE SERVICIOS FINANCIEROS",
+      "archivo": "Ley_de_Proteccion_y_Defensa_al_Usuario_de_Servicios_Financieros.md",
+      "publicacion_dof": "1999-01-18",
+      "ultima_reforma_dof": "2025-11-14",
+      "estatus": "TEXTO VIGENTE"
+    },
+    {
+      "norma": "LEY DE PUERTOS",
+      "archivo": "Ley_de_Puertos.md",
+      "publicacion_dof": "1993-07-19",
+      "ultima_reforma_dof": "2020-12-07",
+      "estatus": "TEXTO VIGENTE"
+    },
+    {
+      "norma": "LEY DE RECOMPENSAS DE LA ARMADA DE MÉXICO",
+      "archivo": "Ley_de_Recompensas_de_la_Armada.md",
+      "publicacion_dof": "1985-01-14",
+      "ultima_reforma_dof": "2021-11-22",
+      "estatus": "TEXTO VIGENTE"
+    },
+    {
+      "norma": "LEY DE RESPONSABILIDAD CIVIL POR DAÑOS NUCLEARES",
+      "archivo": "Ley_de_Responsabilidad_Civil_por_Danos_Nucleares.md",
+      "publicacion_dof": "1974-12-31",
+      "ultima_reforma_dof": "2025-11-14",
+      "estatus": "TEXTO VIGENTE"
+    },
+    {
+      "norma": "LEY DE SEGURIDAD INTERIOR",
+      "archivo": "Ley_de_Seguridad_Interior.md",
+      "publicacion_dof": "2017-12-21",
+      "ultima_reforma_dof": null,
+      "estatus": "SIN ESTATUS",
+      "sin_reformas_probable": true
+    },
+    {
+      "norma": "LEY DE SEGURIDAD NACIONAL",
+      "archivo": "Ley_de_Seguridad_Nacional.md",
+      "publicacion_dof": "2005-01-31",
+      "ultima_reforma_dof": "2025-11-14",
+      "estatus": "TEXTO VIGENTE"
+    },
+    {
+      "norma": "LEY DE SISTEMAS DE PAGOS",
+      "archivo": "Ley_de_Sistemas_de_Pagos.md",
+      "publicacion_dof": "2002-12-12",
+      "ultima_reforma_dof": "2025-11-14",
+      "estatus": "TEXTO VIGENTE"
+    },
+    {
+      "norma": "LEY DE SOCIEDADES DE RESPONSABILIDAD LIMITADA DE INTERÉS PÚBLICO",
+      "archivo": "Ley_de_Sociedades_de_Responsabilidad_Limitada_de_Interes.md",
+      "publicacion_dof": "1934-08-31",
+      "ultima_reforma_dof": "2012-04-09",
+      "estatus": "TEXTO VIGENTE"
+    },
+    {
+      "norma": "LEY DE SOCIEDADES DE SOLIDARIDAD SOCIAL",
+      "archivo": "Ley_de_Sociedades_de_Solidaridad_Social.md",
+      "publicacion_dof": "1976-05-27",
+      "ultima_reforma_dof": "2018-04-24",
+      "estatus": "TEXTO VIGENTE"
+    },
+    {
+      "norma": "LEY DE TESORERÍA DE LA FEDERACIÓN",
+      "archivo": "Ley_de_Tesoreria_de_la_Federacion.md",
+      "publicacion_dof": "2015-12-30",
+      "ultima_reforma_dof": null,
+      "estatus": "TEXTO VIGENTE",
+      "sin_reformas_probable": true
+    },
+    {
+      "norma": "LEY DE TRANSPARENCIA Y DE FOMENTO A LA COMPETENCIA EN EL CRÉDITO GARANTIZADO",
+      "archivo": "Ley_de_Transparencia_y_de_Fomento_a_la_Competencia_en_el_Credito_Garantizado.md",
+      "publicacion_dof": "2002-12-30",
+      "ultima_reforma_dof": "2014-01-10",
+      "estatus": "TEXTO VIGENTE"
+    },
+    {
+      "norma": "LEY DE UNIONES DE CRÉDITO",
+      "archivo": "Ley_de_Uniones_de_Credito.md",
+      "publicacion_dof": "2008-08-20",
+      "ultima_reforma_dof": "2025-11-14",
+      "estatus": "TEXTO VIGENTE"
+    },
+    {
+      "norma": "LEY DE VERTIMIENTOS EN LAS ZONAS MARINAS MEXICANAS",
+      "archivo": "Ley_de_Vertimientos_en_las_Zonas_Marinas.md",
+      "publicacion_dof": "2014-01-17",
+      "ultima_reforma_dof": "2025-11-14",
+      "estatus": "TEXTO VIGENTE"
+    },
+    {
+      "norma": "LEY DE VÍAS GENERALES DE COMUNICACIÓN",
+      "archivo": "Ley_de_Vias_Generales_de_Comunicacion.md",
+      "publicacion_dof": "1940-02-19",
+      "ultima_reforma_dof": "2025-11-14",
+      "estatus": "TEXTO VIGENTE"
+    },
+    {
+      "norma": "LEY DE VIVIENDA",
+      "archivo": "Ley_de_Vivienda.md",
+      "publicacion_dof": "2006-06-27",
+      "ultima_reforma_dof": "2026-01-15",
+      "estatus": "TEXTO VIGENTE"
+    },
+    {
+      "norma": "LEY DE LA AGENCIA NACIONAL DE SEGURIDAD INDUSTRIAL Y DE PROTECCIÓN AL MEDIO AMBIENTE DEL SECTOR HIDROCARBUROS",
+      "archivo": "Ley_de_la_Agencia_Nacional_de_Seguridad_Industrial-Medio_Ambiente-Sector_Hidrocarburos.md",
+      "publicacion_dof": "2014-08-11",
+      "ultima_reforma_dof": "2022-05-11",
+      "estatus": "TEXTO VIGENTE"
+    },
+    {
+      "norma": "LEY DE LA CASA DE MONEDA DE MÉXICO",
+      "archivo": "Ley_de_la_Casa_de_Moneda.md",
+      "publicacion_dof": "1986-01-20",
+      "ultima_reforma_dof": "2022-05-11",
+      "estatus": "TEXTO VIGENTE"
+    },
+    {
+      "norma": "LEY DE LA COMISIÓN NACIONAL BANCARIA Y DE VALORES",
+      "archivo": "Ley_de_la_Comision_Nacional_Bancaria_y_de_Valores.md",
+      "publicacion_dof": "1995-04-28",
+      "ultima_reforma_dof": "2022-05-11",
+      "estatus": "TEXTO VIGENTE"
+    },
+    {
+      "norma": "LEY DE LA COMISIÓN NACIONAL DE ENERGÍA",
+      "archivo": "Ley_de_la_Comision_Nacional_de_Energia.md",
+      "publicacion_dof": "2025-03-18",
+      "ultima_reforma_dof": null,
+      "estatus": "TEXTO VIGENTE",
+      "sin_reformas_probable": true
+    },
+    {
+      "norma": "LEY DE LA COMISIÓN NACIONAL DE LOS DERECHOS HUMANOS",
+      "archivo": "Ley_de_la_Comision_Nacional_de_los_Derechos_Humanos.md",
+      "publicacion_dof": "1992-06-29",
+      "ultima_reforma_dof": "2024-04-01",
+      "estatus": "TEXTO VIGENTE Últimas reformas publicadas DOF 01-04-2024",
+      "fuente_reforma": "cuerpo_del_documento"
+    },
+    {
+      "norma": "SE EXPIDE LA LEY DE LA ECONOMÍA SOCIAL Y SOLIDARIA",
+      "archivo": "Ley_de_la_Economia_Social_y_Solidaria.md",
+      "publicacion_dof": "2012-05-23",
+      "ultima_reforma_dof": "2025-04-16",
+      "estatus": "TEXTO VIGENTE"
+    },
+    {
+      "norma": "LEY DE LA EMPRESA PÚBLICA DEL ESTADO, COMISIÓN FEDERAL DE ELECTRICIDAD",
+      "archivo": "Ley_de_la_Empresa_Publica_del_Estado_Comision_Federal_de_Electricidad.md",
+      "publicacion_dof": "2025-03-18",
+      "ultima_reforma_dof": null,
+      "estatus": "TEXTO VIGENTE",
+      "sin_reformas_probable": true
+    },
+    {
+      "norma": "LEY DE LA EMPRESA PÚBLICA DEL ESTADO, PETRÓLEOS MEXICANOS",
+      "archivo": "Ley_de_la_Empresa_Publica_del_Estado_Petroleos_Mexicanos.md",
+      "publicacion_dof": "2025-03-18",
+      "ultima_reforma_dof": null,
+      "estatus": "TEXTO VIGENTE",
+      "sin_reformas_probable": true
+    },
+    {
+      "norma": "LEY DE LA FISCALÍA GENERAL DE LA REPÚBLICA",
+      "archivo": "Ley_de_la_Fiscalia_General_de_la_Republica.md",
+      "publicacion_dof": "2021-05-20",
+      "ultima_reforma_dof": "2025-11-14",
+      "estatus": "TEXTO VIGENTE"
+    },
+    {
+      "norma": "LEY DE LA GUARDIA NACIONAL",
+      "archivo": "Ley_de_la_Guardia_Nacional.md",
+      "publicacion_dof": "2025-07-16",
+      "ultima_reforma_dof": null,
+      "estatus": "TEXTO VIGENTE",
+      "sin_reformas_probable": true
+    },
+    {
+      "norma": "LEY DE LA POLICÍA FEDERAL",
+      "archivo": "Ley_de_la_Policia_Federal.md",
+      "publicacion_dof": "2009-06-01",
+      "ultima_reforma_dof": "2025-11-14",
+      "estatus": "TEXTO VIGENTE"
+    },
+    {
+      "norma": "LEY DE LOS DERECHOS DE LAS PERSONAS ADULTAS MAYORES",
+      "archivo": "Ley_de_los_Derechos_de_las_Personas_Adultas_Mayores.md",
+      "publicacion_dof": "2002-06-25",
+      "ultima_reforma_dof": "2024-06-14",
+      "estatus": "TEXTO VIGENTE"
+    },
+    {
+      "norma": "LEY DE LOS HUSOS HORARIOS EN LOS ESTADOS UNIDOS MEXICANOS",
+      "archivo": "Ley_de_los_Husos_Horarios_en_los_Estados_Unidos_Mexicanos.md",
+      "publicacion_dof": "2022-10-28",
+      "ultima_reforma_dof": "2022-11-29",
+      "estatus": "TEXTO VIGENTE"
+    },
+    {
+      "norma": "LEY DE LOS IMPUESTOS GENERALES DE IMPORTACIÓN Y DE EXPORTACIÓN",
+      "archivo": "Ley_de_los_Impuestos_Generales_de_Importacion_y_de_Exportacion-2022.md",
+      "publicacion_dof": "2022-06-07",
+      "ultima_reforma_dof": "2025-12-29",
+      "estatus": "TEXTO VIGENTE"
+    },
+    {
+      "norma": "LEY DE LOS INSTITUTOS NACIONALES DE SALUD",
+      "archivo": "Ley_de_los_Institutos_Nacionales_de_Salud.md",
+      "publicacion_dof": "2000-05-26",
+      "ultima_reforma_dof": "2022-05-11",
+      "estatus": "TEXTO VIGENTE"
+    },
+    {
+      "norma": "LEY DE LOS SISTEMAS DE AHORRO PARA EL RETIRO",
+      "archivo": "Ley_de_los_Sistemas_de_Ahorro_para_el_Retiro.md",
+      "publicacion_dof": "1996-05-23",
+      "ultima_reforma_dof": "2025-11-14",
+      "estatus": "TEXTO VIGENTE"
+    },
+    {
+      "norma": "LEY DEL BANCO DE MÉXICO",
+      "archivo": "Ley_del_Banco_de_Mexico.md",
+      "publicacion_dof": "1993-12-23",
+      "ultima_reforma_dof": "2014-01-10",
+      "estatus": "TEXTO VIGENTE"
+    },
+    {
+      "norma": "LEY DEL DIARIO OFICIAL DE LA FEDERACIÓN Y GACETAS GUBERNAMENTALES",
+      "archivo": "Ley_del_Diario_Oficial_de_la_Federacion_y_Gacetas.md",
+      "publicacion_dof": "1986-12-24",
+      "ultima_reforma_dof": "2019-05-31",
+      "estatus": "TEXTO VIGENTE"
+    },
+    {
+      "norma": "LEY DEL FONDO MEXICANO DEL PETRÓLEO PARA LA ESTABILIZACIÓN Y EL DESARROLLO",
+      "archivo": "Ley_del_Fondo_Mexicano_del_Petroleo_para_la_Estabilizacion_y_el_Desarrollo.md",
+      "publicacion_dof": "2014-08-11",
+      "ultima_reforma_dof": "2025-03-18",
+      "estatus": "TEXTO VIGENTE"
+    },
+    {
+      "norma": "LEY DEL IMPUESTO ESPECIAL SOBRE PRODUCCIÓN Y SERVICIOS",
+      "archivo": "Ley_del_Impuesto_Especial_sobre_Produccion_y_Servicios.md",
+      "publicacion_dof": "1980-12-30",
+      "ultima_reforma_dof": "2025-11-07",
+      "estatus": "TEXTO VIGENTE"
+    },
+    {
+      "norma": "LEY DEL IMPUESTO AL VALOR AGREGADO",
+      "archivo": "Ley_del_Impuesto_al_Valor_Agregado.md",
+      "publicacion_dof": "1978-12-29",
+      "ultima_reforma_dof": "2021-11-12",
+      "estatus": "TEXTO VIGENTE"
+    },
+    {
+      "norma": "LEY DEL IMPUESTO SOBRE LA RENTA",
+      "archivo": "Ley_del_Impuesto_sobre_la_Renta.md",
+      "publicacion_dof": "2013-12-11",
+      "ultima_reforma_dof": "2024-04-01",
+      "estatus": "TEXTO VIGENTE"
+    },
+    {
+      "norma": "LEY DEL INSTITUTO MEXICANO DE LA JUVENTUD",
+      "archivo": "Ley_del_Instituto_Mexicano_de_la_Juventud.md",
+      "publicacion_dof": "1999-01-06",
+      "ultima_reforma_dof": "2024-04-01",
+      "estatus": "TEXTO VIGENTE"
+    },
+    {
+      "norma": "LEY DEL INSTITUTO NACIONAL DE LOS PUEBLOS INDÍGENAS",
+      "archivo": "Ley_del_Instituto_Nacional_de_los_Pueblos_Indigenas.md",
+      "publicacion_dof": "2018-12-04",
+      "ultima_reforma_dof": "2023-12-29",
+      "estatus": "TEXTO VIGENTE"
+    },
+    {
+      "norma": "LEY DEL INSTITUTO DE SEGURIDAD SOCIAL PARA LAS FUERZAS ARMADAS MEXICANAS",
+      "archivo": "Ley_del_Instituto_de_Seguridad_Social_para_las_Fuerzas_Armadas.md",
+      "publicacion_dof": "2003-07-09",
+      "ultima_reforma_dof": "2025-11-14",
+      "estatus": "TEXTO VIGENTE"
+    },
+    {
+      "norma": "LEY DEL INSTITUTO DE SEGURIDAD Y SERVICIOS SOCIALES DE LOS TRABAJADORES DEL ESTADO",
+      "archivo": "Ley_del_Instituto_de_Seguridad_y_Servicios_Sociales_de_los_Trabajadores.md",
+      "publicacion_dof": "2007-03-31",
+      "ultima_reforma_dof": "2026-01-15",
+      "estatus": "TEXTO VIGENTE"
+    },
+    {
+      "norma": "LEY DEL INSTITUTO DEL FONDO NACIONAL DE LA VIVIENDA PARA LOS TRABAJADORES",
+      "archivo": "Ley_del_Instituto_del_Fondo_Nacional_de_la_Vivienda.md",
+      "publicacion_dof": "1972-04-24",
+      "ultima_reforma_dof": "2025-02-21",
+      "estatus": "TEXTO VIGENTE"
+    },
+    {
+      "norma": "LEY DEL INSTITUTO DEL FONDO NACIONAL PARA EL CONSUMO DE LOS TRABAJADORES",
+      "archivo": "Ley_del_Instituto_del_Fondo_Nacional_para_el_Consumo_de_los_Trabajadores.md",
+      "publicacion_dof": "2006-04-24",
+      "ultima_reforma_dof": "2024-01-03",
+      "estatus": "TEXTO VIGENTE"
+    },
+    {
+      "norma": "LEY DEL MERCADO DE VALORES",
+      "archivo": "Ley_del_Mercado_de_Valores.md",
+      "publicacion_dof": "2005-12-30",
+      "ultima_reforma_dof": "2025-11-14",
+      "estatus": "TEXTO VIGENTE"
+    },
+    {
+      "norma": "LEY DEL REGISTRO PÚBLICO VEHICULAR",
+      "archivo": "Ley_del_Registro_Publico_Vehicular.md",
+      "publicacion_dof": "2004-09-01",
+      "ultima_reforma_dof": "2021-05-20",
+      "estatus": "TEXTO VIGENTE"
+    },
+    {
+      "norma": "LEY DEL SECTOR ELÉCTRICO",
+      "archivo": "Ley_del_Sector_Electrico.md",
+      "publicacion_dof": "2025-03-18",
+      "ultima_reforma_dof": null,
+      "estatus": "TEXTO VIGENTE",
+      "sin_reformas_probable": true
+    },
+    {
+      "norma": "LEY DEL SECTOR HIDROCARBUROS",
+      "archivo": "Ley_del_Sector_Hidrocarburos.md",
+      "publicacion_dof": "2025-03-18",
+      "ultima_reforma_dof": null,
+      "estatus": "TEXTO VIGENTE",
+      "sin_reformas_probable": true
+    },
+    {
+      "norma": "LEY DEL SEGURO SOCIAL",
+      "archivo": "Ley_del_Seguro_Social.md",
+      "publicacion_dof": "1995-12-21",
+      "ultima_reforma_dof": "2026-01-15",
+      "estatus": "TEXTO VIGENTE"
+    },
+    {
+      "norma": "LEY DEL SERVICIO EXTERIOR MEXICANO",
+      "archivo": "Ley_del_Servicio_Exterior_Mexicano.md",
+      "publicacion_dof": "1994-01-04",
+      "ultima_reforma_dof": "2018-04-19",
+      "estatus": "TEXTO VIGENTE"
+    },
+    {
+      "norma": "LEY DEL SERVICIO MILITAR",
+      "archivo": "Ley_del_Servicio_Militar.md",
+      "publicacion_dof": "1940-09-11",
+      "ultima_reforma_dof": "2022-05-18",
+      "estatus": "TEXTO VIGENTE"
+    },
+    {
+      "norma": "LEY DEL SERVICIO POSTAL MEXICANO",
+      "archivo": "Ley_del_Servicio_Postal_Mexicano.md",
+      "publicacion_dof": "1986-12-24",
+      "ultima_reforma_dof": "2023-01-19",
+      "estatus": "TEXTO VIGENTE"
+    },
+    {
+      "norma": "LEY DEL SERVICIO PROFESIONAL DE CARRERA EN LA ADMINISTRACIÓN PÚBLICA FEDERAL",
+      "archivo": "Ley_del_Servicio_Profesional_de_Carrera_en_la_Administracion.md",
+      "publicacion_dof": "2003-04-10",
+      "ultima_reforma_dof": "2006-01-09",
+      "estatus": "TEXTO VIGENTE"
+    },
+    {
+      "norma": "LEY DEL SERVICIO DE ADMINISTRACIÓN TRIBUTARIA",
+      "archivo": "Ley_del_Servicio_de_Administracion_Tributaria.md",
+      "publicacion_dof": "1995-12-15",
+      "ultima_reforma_dof": "2018-12-04",
+      "estatus": "TEXTO VIGENTE"
+    },
+    {
+      "norma": "LEY DEL SISTEMA NACIONAL DE INFORMACIÓN ESTADÍSTICA Y GEOGRÁFICA",
+      "archivo": "Ley_del_Sistema_Nacional_de_Informacion_Estadistica_y_Geografica.md",
+      "publicacion_dof": "2008-04-16",
+      "ultima_reforma_dof": "2025-11-14",
+      "estatus": "TEXTO VIGENTE"
+    },
+    {
+      "norma": "LEY DEL SISTEMA NACIONAL DE INVESTIGACIÓN E INTELIGENCIA EN MATERIA DE SEGURIDAD PÚBLICA",
+      "archivo": "Ley_del_Sistema_Nacional_de_Investigacion_e_Inteligencia-Materia_de_Seguridad_Publica.md",
+      "publicacion_dof": "2025-07-16",
+      "ultima_reforma_dof": null,
+      "estatus": "TEXTO VIGENTE",
+      "sin_reformas_probable": true
+    },
+    {
+      "norma": "LEY DEL SISTEMA PÚBLICO DE RADIODIFUSIÓN DEL ESTADO MEXICANO",
+      "archivo": "Ley_del_Sistema_Publico_de_Radiodifusion_del_Estado.md",
+      "publicacion_dof": "2014-07-14",
+      "ultima_reforma_dof": "2025-11-14",
+      "estatus": "TEXTO VIGENTE"
+    },
+    {
+      "norma": "LEY EN MATERIA DE TELECOMUNICACIONES Y RADIODIFUSIÓN",
+      "archivo": "Ley_en_Materia_de_Telecomunicaciones_y_Radiodifusion.md",
+      "publicacion_dof": "2025-07-16",
+      "ultima_reforma_dof": null,
+      "estatus": "TEXTO VIGENTE",
+      "sin_reformas_probable": true
+    },
+    {
+      "norma": "LEY PARA CONSERVAR LA NEUTRALIDAD DEL PAÍS",
+      "archivo": "Ley_para_Conservar_la_Neutralidad_del_Pais.md",
+      "publicacion_dof": "1939-11-10",
+      "ultima_reforma_dof": "2018-06-21",
+      "estatus": "TEXTO VIGENTE"
+    },
+    {
+      "norma": "LEY PARA DETERMINAR EL VALOR DE LA UNIDAD DE MEDIDA Y ACTUALIZACIÓN",
+      "archivo": "Ley_para_Determinar_el_Valor_de_la_Unidad_de_Medida_y_Actualizacion.md",
+      "publicacion_dof": "2016-12-30",
+      "ultima_reforma_dof": null,
+      "estatus": "TEXTO VIGENTE",
+      "sin_reformas_probable": true
+    },
+    {
+      "norma": "LEY PARA IMPULSAR EL INCREMENTO SOSTENIDO DE LA PRODUCTIVIDAD Y LA COMPETITIVIDAD DE LA ECONOMÍA NACIONAL",
+      "archivo": "Ley_para_Impulsar_el_Incremento_Sostenido_de_la_Productividad_y_la_Competitividad-Economia.md",
+      "publicacion_dof": "2015-05-06",
+      "ultima_reforma_dof": "2024-04-17",
+      "estatus": "TEXTO VIGENTE"
+    },
+    {
+      "norma": "LEY PARA REGULAR LAS ACTIVIDADES DE LAS SOCIEDADES COOPERATIVAS DE AHORRO Y PRÉSTAMO",
+      "archivo": "Ley_para_Regular_las_Actividades_de_las_Sociedades_Cooperativas_de_Ahorro_y_Prestamo.md",
+      "publicacion_dof": "2009-08-13",
+      "ultima_reforma_dof": "2025-11-14",
+      "estatus": "TEXTO VIGENTE"
+    },
+    {
+      "norma": "LEY PARA REGULAR LAS AGRUPACIONES FINANCIERAS",
+      "archivo": "Ley_para_Regular_las_Agrupaciones_Financieras.md",
+      "publicacion_dof": "2014-01-10",
+      "ultima_reforma_dof": "2025-11-14",
+      "estatus": "TEXTO VIGENTE"
+    },
+    {
+      "norma": "LEY PARA REGULAR LAS INSTITUCIONES DE TECNOLOGÍA FINANCIERA",
+      "archivo": "Ley_para_Regular_las_Instituciones_de_Tecnologia_Financiera.md",
+      "publicacion_dof": "2018-03-09",
+      "ultima_reforma_dof": "2025-11-14",
+      "estatus": "TEXTO VIGENTE"
+    },
+    {
+      "norma": "LEY PARA REGULAR LAS SOCIEDADES DE INFORMACIÓN CREDITICIA",
+      "archivo": "Ley_para_Regular_las_Sociedades_de_Informacion_Crediticia.md",
+      "publicacion_dof": "2002-01-15",
+      "ultima_reforma_dof": "2024-01-24",
+      "estatus": "TEXTO VIGENTE"
+    },
+    {
+      "norma": "LEY PARA EL DESARROLLO DE LA COMPETITIVIDAD DE LA MICRO, PEQUEÑA Y MEDIANA EMPRESA",
+      "archivo": "Ley_para_el_Desarrollo_de_la_Competitividad_de_la_Micro_Pequena_y_Mediana_Empresa.md",
+      "publicacion_dof": "2002-12-30",
+      "ultima_reforma_dof": "2023-10-20",
+      "estatus": "TEXTO VIGENTE"
+    },
+    {
+      "norma": "LEY PARA EL DIÁLOGO, LA CONCILIACIÓN Y LA PAZ DIGNA EN CHIAPAS",
+      "archivo": "Ley_para_el_Dialogo_la_Conciliacion_y_la_Paz_Digna_en_Chiapas.md",
+      "publicacion_dof": "1995-03-11",
+      "ultima_reforma_dof": null,
+      "estatus": "TEXTO VIGENTE",
+      "sin_reformas_probable": true
+    },
+    {
+      "norma": "LEY PARA EL USO Y PROTECCIÓN DE LA DENOMINACIÓN Y DEL EMBLEMA DE LA CRUZ ROJA",
+      "archivo": "Ley_para_el_uso_y_proteccion_de_la_denominacion-emblema_de_la_Cruz Roja.md",
+      "publicacion_dof": "2007-03-23",
+      "ultima_reforma_dof": null,
+      "estatus": "TEXTO VIGENTE",
+      "sin_reformas_probable": true
+    },
+    {
+      "norma": "LEY PARA LA COMPROBACIÓN, AJUSTE Y CÓMPUTO DE SERVICIOS DE LA ARMADA DE MÉXICO",
+      "archivo": "Ley_para_la_Comprobacion_Ajuste_y_Computo_de_Servicios_de_la_Armada.md",
+      "publicacion_dof": "2004-06-14",
+      "ultima_reforma_dof": "2009-06-12",
+      "estatus": "TEXTO VIGENTE"
+    },
+    {
+      "norma": "LEY PARA LA COMPROBACIÓN, AJUSTE Y CÓMPUTO DE SERVICIOS EN EL EJÉRCITO Y FUERZA AÉREA MEXICANOS",
+      "archivo": "Ley_para_la_Comprobacion_Ajuste_y_Computo_de_Servicios_en_el_Ejercito_y_Fuerza_Aerea.md",
+      "publicacion_dof": "2006-02-09",
+      "ultima_reforma_dof": "2024-05-03",
+      "estatus": "TEXTO VIGENTE"
+    },
+    {
+      "norma": "LEY PARA LA PROTECCIÓN DE PERSONAS DEFENSORAS DE DERECHOS HUMANOS Y PERIODISTAS",
+      "archivo": "Ley_para_la_Proteccion_de_Personas_Defensoras_de_Derechos_Humanos_y_Periodistas.md",
+      "publicacion_dof": "2012-06-25",
+      "ultima_reforma_dof": "2022-04-28",
+      "estatus": "TEXTO VIGENTE"
+    },
+    {
+      "norma": "LEY PARA LA TRANSPARENCIA, PREVENCIÓN Y COMBATE DE PRÁCTICAS INDEBIDAS EN MATERIA DE CONTRATACIÓN DE PUBLICIDAD",
+      "archivo": "Ley_para_la_Transparencia-Prevencion-Combate-Materia_de_Contratacion_de_Publicidad.md",
+      "publicacion_dof": "2023-12-22",
+      "ultima_reforma_dof": null,
+      "estatus": "SIN ESTATUS",
+      "sin_reformas_probable": true
+    },
+    {
+      "norma": "LEY PARA LA TRANSPARENCIA Y ORDENAMIENTO DE LOS SERVICIOS FINANCIEROS",
+      "archivo": "Ley_para_la_Transparencia_y_Ordenamiento_de_los_Servicios_Financieros.md",
+      "publicacion_dof": "2007-06-15",
+      "ultima_reforma_dof": "2025-11-14",
+      "estatus": "TEXTO VIGENTE"
+    },
+    {
+      "norma": "LEY QUE APRUEBA LA ADHESIÓN DE MÉXICO AL CONVENIO CONSTITUTIVO DEL BANCO DE DESARROLLO DEL CARIBE Y SU EJECUCIÓN",
+      "archivo": "Ley_que_Aprueba_la_Adhesion-Convenio_Constitutivo-Banco_de_Desarrollo_del_Caribe.md",
+      "publicacion_dof": "1982-01-05",
+      "ultima_reforma_dof": "2014-12-29",
+      "estatus": "TEXTO VIGENTE"
+    },
+    {
+      "norma": "LEY QUE CREA LA UNIVERSIDAD DEL EJÉRCITO Y FUERZA AÉREA",
+      "archivo": "Ley_que_Crea_la_Universidad_del_Ejercito_y_Fuerza_Aerea.md",
+      "publicacion_dof": "1975-12-29",
+      "ultima_reforma_dof": null,
+      "estatus": "TEXTO VIGENTE",
+      "sin_reformas_probable": true
+    },
+    {
+      "norma": "LEY QUE DECLARA RESERVAS MINERAS NACIONALES LOS YACIMIENTOS DE URANIO, TORIO Y LAS DEMÁS SUBSTANCIAS DE LAS CUALES SE OBTENGAN ISÓTOPOS HENDIBLES QUE PUEDAN PRODUCIR ENERGÍA NUCLEAR",
+      "archivo": "Ley_que_Declara_Reservas_Mineras-Yacimientos-Uranio_Torio-Substancias-Isotopos-Energia_Nuclear.md",
+      "publicacion_dof": "1950-01-26",
+      "ultima_reforma_dof": "1972-01-12",
+      "estatus": "TEXTO VIGENTE"
+    },
+    {
+      "norma": "LEY QUE ESTABLECE BASES PARA LA EJECUCIÓN EN MÉXICO, POR EL PODER EJECUTIVO FEDERAL, DEL CONVENIO CONSTITUTIVO DE LA ASOCIACIÓN INTERNACIONAL DE FOMENTO",
+      "archivo": "Ley_que_Establece_Bases-Convenio_Constitutivo-Asociacion_Internacional_de_Fomento.md",
+      "publicacion_dof": "1960-12-31",
+      "ultima_reforma_dof": "2025-06-06",
+      "estatus": "TEXTO VIGENTE"
+    },
+    {
+      "norma": "LEY QUE ESTABLECE BASES PARA LA EJECUCIÓN EN MÉXICO, POR EL PODER EJECUTIVO FEDERAL, DEL CONVENIO CONSTITUTIVO DEL BANCO INTERAMERICANO DE DESARROLLO",
+      "archivo": "Ley_que_Establece_Bases-Convenio_Constitutivo-Banco_Interamericano_de_Desarrollo.md",
+      "publicacion_dof": "1959-12-19",
+      "ultima_reforma_dof": "2014-12-29",
+      "estatus": "TEXTO VIGENTE"
+    },
+    {
+      "norma": "LEY QUE CREA EL FONDO DE GARANTÍA Y FOMENTO PARA LA AGRICULTURA, GANADERÍA Y AVICULTURA",
+      "archivo": "Ley_que_crea_el_Fondo_de_Garantia_y_Fomento_a_la_Agricultura_Ganaderia_y_Avicultura.md",
+      "publicacion_dof": "1954-12-31",
+      "ultima_reforma_dof": "2012-04-09",
+      "estatus": "TEXTO VIGENTE"
+    },
+    {
+      "norma": "LEY QUE CREA EL INSTITUTO NACIONAL DE BELLAS ARTES Y LITERATURA",
+      "archivo": "Ley_que_crea_el_Instituto_Nacional_de_Bellas_Artes_y_Literatura.md",
+      "publicacion_dof": "1946-12-31",
+      "ultima_reforma_dof": "2015-12-17",
+      "estatus": "TEXTO VIGENTE"
+    },
+    {
+      "norma": "LEY QUE CREA LA AGENCIA ESPACIAL MEXICANA",
+      "archivo": "Ley_que_crea_la_Agencia_Espacial_Mexicana.md",
+      "publicacion_dof": "2010-07-30",
+      "ultima_reforma_dof": null,
+      "estatus": "TEXTO VIGENTE",
+      "sin_reformas_probable": true
+    },
+    {
+      "norma": "LEY QUE CREA LA UNIVERSIDAD AUTÓNOMA CHAPINGO",
+      "archivo": "Ley_que_crea_la_Universidad_Autonoma_Chapingo.md",
+      "publicacion_dof": "1974-12-30",
+      "ultima_reforma_dof": "1977-12-30",
+      "estatus": "TEXTO VIGENTE"
+    },
+    {
+      "norma": "LEY SOBRE CÁMARAS AGRÍCOLAS, QUE EN LO SUCESIVO SE DENOMINARÁN ASOCIACIONES AGRÍCOLAS",
+      "archivo": "Ley_sobre_Camaras_Agricolas-Asociaciones_Agricolas.md",
+      "publicacion_dof": "1932-08-27",
+      "ultima_reforma_dof": "2012-04-09",
+      "estatus": "TEXTO VIGENTE"
+    },
+    {
+      "norma": "SE EXPIDE LA LEY SOBRE REFUGIADOS Y PROTECCIÓN COMPLEMENTARIA Y SE REFORMAN, ADICIONAN Y DEROGAN DIVERSAS DISPOSICIONES DE LA LEY GENERAL DE POBLACIÓN.",
+      "archivo": "Ley_sobre_Refugiados_Proteccion_Complementaria_y_Asilo_Politico.md",
+      "publicacion_dof": "2011-01-27",
+      "ultima_reforma_dof": "2022-02-18",
+      "estatus": "TEXTO VIGENTE"
+    },
+    {
+      "norma": "LEY SOBRE EL CONTRATO DE SEGURO",
+      "archivo": "Ley_sobre_el_Contrato_de_Seguro.md",
+      "publicacion_dof": "1935-08-31",
+      "ultima_reforma_dof": "2013-04-04",
+      "estatus": "TEXTO VIGENTE"
+    },
+    {
+      "norma": "LEY SOBRE EL ESCUDO, LA BANDERA Y EL HIMNO NACIONALES",
+      "archivo": "Ley_sobre_el_Escudo_la_Bandera_y_el_Himno.md",
+      "publicacion_dof": "1984-02-08",
+      "ultima_reforma_dof": "2025-07-21",
+      "estatus": "TEXTO VIGENTE"
+    },
+    {
+      "norma": "LEY SOBRE LA APROBACIÓN DE TRATADOS INTERNACIONALES EN MATERIA ECONÓMICA",
+      "archivo": "Ley_sobre_la_Aprobacion_de_Tratados_Internacionales_en_Materia_Economica.md",
+      "publicacion_dof": "2004-09-02",
+      "ultima_reforma_dof": null,
+      "estatus": "TEXTO VIGENTE",
+      "sin_reformas_probable": true
+    },
+    {
+      "norma": "LEY SOBRE LA CELEBRACIÓN DE TRATADOS",
+      "archivo": "Ley_sobre_la_Celebracion_de_Tratados.md",
+      "publicacion_dof": "1992-01-02",
+      "ultima_reforma_dof": "2025-11-14",
+      "estatus": "TEXTO VIGENTE"
+    },
+    {
+      "norma": "ORDENANZA GENERAL DE LA ARMADA",
+      "archivo": "Ordenanza_General_de_la_Armada.md",
+      "publicacion_dof": "1912-01-08",
+      "ultima_reforma_dof": "2000-10-19",
+      "estatus": "TEXTO VIGENTE"
+    },
+    {
+      "norma": "PRESUPUESTO DE EGRESOS DE LA FEDERACIÓN PARA EL EJERCICIO FISCAL 2026",
+      "archivo": "Presupuesto_de_Egresos_2026.md",
+      "publicacion_dof": "2025-11-21",
+      "ultima_reforma_dof": null,
+      "estatus": "TEXTO VIGENTE a partir del 01/01/2026 Nuevo Presupuesto publicado en el Diario Oficial de la Federación el 21 de noviembre de 2025",
+      "sin_reformas_probable": true
+    },
+    {
+      "norma": "REGLAMENTO DE LA CÁMARA DE DIPUTADOS",
+      "archivo": "Reglamento_de_la_Camara_de_Diputados.md",
+      "publicacion_dof": "2010-12-24",
+      "ultima_reforma_dof": "2025-05-07",
+      "estatus": "TEXTO VIGENTE"
+    },
+    {
+      "norma": "REGLAMENTO DEL SENADO DE LA REPÚBLICA",
+      "archivo": "Reglamento_del_Senado.md",
+      "publicacion_dof": "2010-06-04",
+      "ultima_reforma_dof": "2024-12-06",
+      "estatus": "TEXTO VIGENTE"
+    },
+    {
+      "norma": "REGLAMENTO PARA EL GOBIERNO INTERIOR DEL CONGRESO GENERAL DE LOS ESTADOS UNIDOS MEXICANOS",
+      "archivo": "Reglamento_para_el_Gobierno_Interior_del_Congreso.md",
+      "publicacion_dof": "1934-03-20",
+      "ultima_reforma_dof": "2010-12-24",
+      "estatus": "TEXTO VIGENTE"
+    }
+  ],
+  "advertencias": []
+}
