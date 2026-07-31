@@ -241,3 +241,11 @@ funcionando; las verificaciones de la capa CSN (contra corpus) se emiten
 **Alternativa — volumen (para índices muy grandes):** si algún día el corpus
 crece a decenas de MB y no conviene en git, genera los índices aparte, móntalos
 en un volumen de Railway y apunta `PAIL_INDICES_PATH` a esa ruta.
+
+**Pasada de juicio LLM (opcional).** Con `pail_llm=true`, las verificaciones de
+juicio (las que requieren criterio, ~28) se resuelven con un modelo de lenguaje,
+ceñido a la evidencia extraída. Usa **el mismo proveedor que el codificador
+NormTrace**: define en el servicio `api` (y `worker` si es async)
+`LLM_PROVIDER=anthropic` (u `openai`) y `LLM_API_KEY`. Con eso la **cobertura**
+del dictamen sube y deja de ser `PRELIMINAR_COBERTURA_INSUFICIENTE`. Sin clave,
+PAIL corre igual pero esas verificaciones quedan sin evaluar (cobertura baja).
