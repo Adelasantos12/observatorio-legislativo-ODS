@@ -11,6 +11,5 @@ mongo-data/
 .normtrace_cache/
 
 # Corpus CRN del módulo PAIL: índices y vault NO van a git (se montan en volumen)
-crn_indices/
-*.crn_indices/
+/crn_indices/
 legal_analysis_vault/
