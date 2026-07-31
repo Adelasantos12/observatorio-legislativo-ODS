@@ -1,0 +1,387 @@
+{
+ "protocolo": "PAIL-MX",
+ "version": "2.0",
+ "fecha": "2026-07-31",
+ "descripcion": "Protocolo de análisis ex ante de iniciativas legislativas: rulebook como datos. Capas: nucleo_triaje y csn corren siempre; mtl es seleccionable; racionalidad requiere juicio (LLM) con criterio embebido.",
+ "resultados_validos": [
+  "CUMPLE",
+  "PARCIAL",
+  "INCUMPLE",
+  "NO_APLICA",
+  "NO_EVALUABLE",
+  "NO_VERIFICABLE",
+  "PENDIENTE_JUICIO"
+ ],
+ "regla_evidencia": "Toda calificación distinta de CUMPLE exige cita literal con ubicación; comparaciones con derecho vigente exigen formato CRN-3 (norma, artículo, cita, última reforma de norma y unidad, estatus) resuelto contra el corpus; nunca de memoria.",
+ "agregacion": {
+  "bloqueante_global": "Un INCUMPLE con severidad BLOQUEANTE => dictamen NO_VIABLE_EN_SUS_TERMINOS",
+  "modulo_deficiente": ">=3 INCUMPLE MAYOR en una capa => capa DEFICIENTE",
+  "dictamenes": [
+   "VIABLE",
+   "VIABLE_CON_MODIFICACIONES",
+   "NO_VIABLE_EN_SUS_TERMINOS"
+  ],
+  "no_compensacion": "Las capas no se promedian entre sí; los conflictos interniveles se registran, no se resuelven por promedio"
+ },
+ "verificaciones": [
+  {
+   "id": "T-01",
+   "capa": "nucleo_triaje",
+   "nombre": "Tipo de instrumento",
+   "criterio": "Clasificar: ley_nueva | reforma | decreto | reforma_constitucional.",
+   "severidad": "CONTEXTO",
+   "tipo": "heuristica",
+   "metodo": "regex_tipo_instrumento"
+  },
+  {
+   "id": "T-03",
+   "capa": "nucleo_triaje",
+   "nombre": "Partes presentes",
+   "criterio": "Detectar exposición de motivos, articulado y régimen transitorio; registrar ausencias.",
+   "severidad": "MAYOR",
+   "tipo": "determinista",
+   "metodo": "regex_partes"
+  },
+  {
+   "id": "T-04",
+   "capa": "nucleo_triaje",
+   "nombre": "Titular de la iniciativa",
+   "criterio": "Quien presenta tiene facultad de iniciativa (art. 71 CPEUM o equivalente).",
+   "severidad": "BLOQUEANTE",
+   "tipo": "juicio"
+  },
+  {
+   "id": "TL-01",
+   "capa": "mtl",
+   "nombre": "Denominación",
+   "criterio": "Nombre identifica la materia sin ambigüedad, no duplica ley vigente (verificar contra manifiesto CRN), fórmula convencional.",
+   "severidad": "MAYOR",
+   "tipo": "heuristica",
+   "metodo": "denominacion_vs_manifiesto"
+  },
+  {
+   "id": "TL-02",
+   "capa": "mtl",
+   "nombre": "Exposición de motivos funcional",
+   "criterio": "Razona problema, causas, alternativas y vía legislativa; no parafrasea el articulado.",
+   "severidad": "MAYOR",
+   "tipo": "juicio"
+  },
+  {
+   "id": "TL-03",
+   "capa": "mtl",
+   "nombre": "Correspondencia motivos-articulado",
+   "criterio": "Sin soluciones anunciadas ausentes del articulado ni disposiciones sustantivas sin motivación.",
+   "severidad": "MAYOR",
+   "tipo": "juicio"
+  },
+  {
+   "id": "TL-04",
+   "capa": "mtl",
+   "nombre": "Pertinencia de divisiones mayores",
+   "criterio": "Libros solo en códigos; títulos solo en leyes muy extensas o de importancia institucional, nunca sustituyendo capítulos; capítulos unitarios por materia.",
+   "severidad": "MENOR",
+   "tipo": "juicio"
+  },
+  {
+   "id": "TL-05",
+   "capa": "mtl",
+   "nombre": "Numeración progresiva y uniforme",
+   "criterio": "Artículos en arábigos progresivos únicos sin saltos ni duplicados; capítulos en romanos; criterio uniforme.",
+   "severidad": "MENOR",
+   "tipo": "determinista",
+   "metodo": "numeracion_articulos"
+  },
+  {
+   "id": "TL-06",
+   "capa": "mtl",
+   "nombre": "Unidad temática del artículo",
+   "criterio": "Un tema por artículo; máximo razonable 4 párrafos; párrafo único sin numerar.",
+   "severidad": "MAYOR",
+   "tipo": "determinista",
+   "metodo": "parrafos_por_articulo"
+  },
+  {
+   "id": "TL-07",
+   "capa": "mtl",
+   "nombre": "Formato de fracciones",
+   "criterio": "Fracciones en romanos con punto y coma; penúltima termina en ', y'; progresión sin saltos.",
+   "severidad": "MENOR",
+   "tipo": "determinista",
+   "metodo": "formato_fracciones"
+  },
+  {
+   "id": "TL-09",
+   "capa": "mtl",
+   "nombre": "Técnica de reforma parcial",
+   "criterio": "El decreto identifica con precisión qué reforma/adiciona/deroga y reproduce íntegra la unidad modificada.",
+   "severidad": "MAYOR",
+   "tipo": "heuristica",
+   "metodo": "enunciado_reforma"
+  },
+  {
+   "id": "TL-10",
+   "capa": "mtl",
+   "nombre": "Régimen transitorio completo",
+   "criterio": "Entrada en vigor presente; derogaciones expresas — la cláusula exclusivamente genérica ('se derogan todas las disposiciones que se opongan') es hallazgo.",
+   "severidad": "MAYOR",
+   "tipo": "determinista",
+   "metodo": "transitorios"
+  },
+  {
+   "id": "TL-11",
+   "capa": "mtl",
+   "nombre": "Mandatos transitorios con plazo",
+   "criterio": "Todo mandato de emitir/expedir/instalar/armonizar fija plazo y sujeto obligado.",
+   "severidad": "MAYOR",
+   "tipo": "determinista",
+   "metodo": "mandatos_sin_plazo"
+  },
+  {
+   "id": "R1-01",
+   "capa": "mtl",
+   "nombre": "Claridad sintáctica",
+   "criterio": "Sin oraciones >60 palabras, dobles negaciones ni pasivas que oculten al obligado; citar cada instancia.",
+   "severidad": "MENOR",
+   "tipo": "determinista",
+   "metodo": "oraciones_largas"
+  },
+  {
+   "id": "R1-02",
+   "capa": "mtl",
+   "nombre": "Taxatividad sancionadora",
+   "criterio": "En normas que imponen sanciones: conducta y consecuencia determinadas o determinables sin discreción abierta.",
+   "severidad": "BLOQUEANTE",
+   "tipo": "juicio"
+  },
+  {
+   "id": "R1-03",
+   "capa": "mtl",
+   "nombre": "Consistencia terminológica",
+   "criterio": "Un concepto = un término; un término = un concepto; tabla de colisiones.",
+   "severidad": "MAYOR",
+   "tipo": "juicio"
+  },
+  {
+   "id": "R1-04",
+   "capa": "mtl",
+   "nombre": "Definiciones",
+   "criterio": "Glosario si hay términos técnicos; sin normas escondidas en definiciones.",
+   "severidad": "MENOR",
+   "tipo": "juicio"
+  },
+  {
+   "id": "R1-05",
+   "capa": "mtl",
+   "nombre": "Remisiones inteligibles",
+   "criterio": "Toda remisión identifica su objeto con exactitud; sin circulares ni a disposiciones inexistentes (existencia la resuelve CSN-06).",
+   "severidad": "MAYOR",
+   "tipo": "juicio"
+  },
+  {
+   "id": "CSN-02",
+   "capa": "csn",
+   "nombre": "Duplicidades",
+   "criterio": "Disposiciones que reiteran normas vigentes del corpus, incluida reproducción constitucional. Cita CRN-3.",
+   "severidad": "MENOR",
+   "tipo": "juicio"
+  },
+  {
+   "id": "CSN-03",
+   "capa": "csn",
+   "nombre": "Antinomias",
+   "criterio": "Contradicciones con normas del corpus de la misma materia no resueltas por derogación expresa. Cita CRN-3.",
+   "severidad": "MAYOR",
+   "tipo": "juicio"
+  },
+  {
+   "id": "CSN-04",
+   "capa": "csn",
+   "nombre": "Armonización (remisiones entrantes)",
+   "criterio": "Por cada unidad reformada/derogada: normas del corpus que la citan = candidatas a modificación conforme; entrante no atendida = hallazgo.",
+   "severidad": "MAYOR",
+   "tipo": "determinista",
+   "metodo": "inbound_corpus"
+  },
+  {
+   "id": "CSN-05",
+   "capa": "csn",
+   "nombre": "Precisión de remisiones salientes",
+   "criterio": "Proporción de remisiones artículo-a-artículo vs en bloque; predominio del bloque = mandato sin ruta operativa (indicador de cableado).",
+   "severidad": "ANALITICO",
+   "tipo": "determinista",
+   "metodo": "remisiones_salientes"
+  },
+  {
+   "id": "CSN-06",
+   "capa": "csn",
+   "nombre": "Vigencia de lo citado",
+   "criterio": "Toda norma invocada se verifica en el manifiesto: estatus y última reforma; invocar norma abrogada = MAYOR; ausente del corpus = NO_VERIFICABLE.",
+   "severidad": "MAYOR",
+   "tipo": "determinista",
+   "metodo": "vigencia_invocadas"
+  },
+  {
+   "id": "R2-01",
+   "capa": "racionalidad",
+   "nombre": "Competencia",
+   "criterio": "La materia corresponde al órgano que legisla (federal/local/concurrente).",
+   "severidad": "BLOQUEANTE",
+   "tipo": "juicio"
+  },
+  {
+   "id": "R2-02",
+   "capa": "racionalidad",
+   "nombre": "Reserva de ley",
+   "criterio": "Nada reservado a ley se delega al reglamento; nada reglamentario se petrifica en ley.",
+   "severidad": "BLOQUEANTE",
+   "tipo": "juicio"
+  },
+  {
+   "id": "R2-03",
+   "capa": "racionalidad",
+   "nombre": "Habilitaciones reglamentarias",
+   "criterio": "Por habilitación: alcance, órgano preciso, fórmula imperativa/facultativa, plazo si imperativa; en blanco = MAYOR; deslegalización de reserva = BLOQUEANTE.",
+   "severidad": "MAYOR",
+   "tipo": "heuristica",
+   "metodo": "habilitaciones"
+  },
+  {
+   "id": "R2-06",
+   "capa": "racionalidad",
+   "nombre": "Lagunas estructurales",
+   "criterio": "Matriz conducta-sujeto-consecuencia-garantía completa: obligación con obligado, facultad con titular, procedimiento con autoridad/plazos, sanción con vía de impugnación.",
+   "severidad": "MAYOR",
+   "tipo": "juicio"
+  },
+  {
+   "id": "R2-07",
+   "capa": "racionalidad",
+   "nombre": "Retroactividad",
+   "criterio": "Ninguna disposición opera retroactivamente en perjuicio.",
+   "severidad": "BLOQUEANTE",
+   "tipo": "juicio"
+  },
+  {
+   "id": "R3-01",
+   "capa": "racionalidad",
+   "nombre": "Destinatarios identificables",
+   "criterio": "Los obligados pueden saber que lo están y qué se les exige.",
+   "severidad": "MAYOR",
+   "tipo": "juicio"
+  },
+  {
+   "id": "R3-03",
+   "capa": "racionalidad",
+   "nombre": "Capacidad institucional",
+   "criterio": "Órganos/registros/procedimientos nuevos con operador, estructura y plazo.",
+   "severidad": "MAYOR",
+   "tipo": "juicio"
+  },
+  {
+   "id": "R3-04",
+   "capa": "racionalidad",
+   "nombre": "Suficiencia presupuestaria",
+   "criterio": "Obligaciones con costo tienen fuente o impacto razonado; 'sin impacto' con estructura nueva = implausible.",
+   "severidad": "MAYOR",
+   "tipo": "heuristica",
+   "metodo": "impacto_presupuestal"
+  },
+  {
+   "id": "R3-06",
+   "capa": "racionalidad",
+   "nombre": "Legislación simbólica",
+   "criterio": "Patrón fines grandilocuentes + obligaciones vagas + sin recursos + sin sanciones operables; hipótesis con evidencia, no suma.",
+   "severidad": "ANALITICO",
+   "tipo": "juicio"
+  },
+  {
+   "id": "R4-01",
+   "capa": "racionalidad",
+   "nombre": "Fines verificables",
+   "criterio": "La exposición formula fines evaluables, no solo declaraciones de valor.",
+   "severidad": "MAYOR",
+   "tipo": "juicio"
+  },
+  {
+   "id": "R4-02",
+   "capa": "racionalidad",
+   "nombre": "Diagnóstico con evidencia",
+   "criterio": "Problema acreditado con datos/estudios citados y verificables.",
+   "severidad": "MAYOR",
+   "tipo": "juicio"
+  },
+  {
+   "id": "R4-03",
+   "capa": "racionalidad",
+   "nombre": "Nexo medios-fines",
+   "criterio": "Cada fin con disposiciones que lo sirven y mecanismo causal; fin sin medio y medio sin fin se registran.",
+   "severidad": "MAYOR",
+   "tipo": "juicio"
+  },
+  {
+   "id": "R5-00",
+   "capa": "racionalidad",
+   "nombre": "Intensidad de escrutinio",
+   "criterio": "Fijar estándar: estricto (categoría sospechosa o núcleo de derecho) u ordinario/deferente; toda calificación posterior bajo ese estándar.",
+   "severidad": "PARAMETRO",
+   "tipo": "juicio"
+  },
+  {
+   "id": "R5-01",
+   "capa": "racionalidad",
+   "nombre": "Intervención en derechos",
+   "criterio": "Inventario de disposiciones que restringen/condicionan derechos; vacío => R5-02..05 NO_APLICA.",
+   "severidad": "CONTEXTO",
+   "tipo": "juicio"
+  },
+  {
+   "id": "R5-02",
+   "capa": "racionalidad",
+   "nombre": "Fin legítimo",
+   "criterio": "Fin constitucionalmente admisible y explicitado.",
+   "severidad": "BLOQUEANTE",
+   "tipo": "juicio"
+  },
+  {
+   "id": "R5-03",
+   "capa": "racionalidad",
+   "nombre": "Idoneidad",
+   "criterio": "La medida conduce siquiera parcialmente al fin (nexo empírico plausible).",
+   "severidad": "MAYOR",
+   "tipo": "juicio"
+  },
+  {
+   "id": "R5-04",
+   "capa": "racionalidad",
+   "nombre": "Necesidad",
+   "criterio": "Sin alternativa igualmente eficaz y menos lesiva; si la exposición no la descartó, registrarlo.",
+   "severidad": "MAYOR",
+   "tipo": "juicio"
+  },
+  {
+   "id": "R5-05",
+   "capa": "racionalidad",
+   "nombre": "Proporcionalidad estricta",
+   "criterio": "Afectación no manifiestamente superior al beneficio; ponderación en una frase citable.",
+   "severidad": "MAYOR",
+   "tipo": "juicio"
+  },
+  {
+   "id": "R5-05a",
+   "capa": "racionalidad",
+   "nombre": "Carril penal (art. 22)",
+   "criterio": "Si crea/modifica delitos o penas: (a) proporcionalidad de la pena con tabla comparativa contra el corpus; (b) ultima ratio; (c) remisión a R1-02 y R2-02. Sustituye R5-03..05 para medir la pena.",
+   "severidad": "MAYOR",
+   "tipo": "juicio"
+  },
+  {
+   "id": "R5-06",
+   "capa": "racionalidad",
+   "nombre": "Igualdad y no discriminación",
+   "criterio": "Exclusiones implícitas, categorías sospechosas, perspectiva de género e interseccional.",
+   "severidad": "MAYOR",
+   "tipo": "juicio"
+  }
+ ]
+}

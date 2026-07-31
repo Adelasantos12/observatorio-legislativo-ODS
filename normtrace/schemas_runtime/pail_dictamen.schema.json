@@ -1,0 +1,87 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "pail_dictamen.schema.json",
+  "title": "PAIL-MX — dictamen de análisis ex ante de iniciativa",
+  "description": "Contrato de salida del motor pail_engine (protocolo PAIL-MX v2). Derivado de dictamen_ejemplo.json. Los objetos de verificación admiten campos adicionales por capa (p. ej. armonizacion_candidata, indicador_cableado, normas_invocadas, criterio_para_llm).",
+  "type": "object",
+  "required": [
+    "protocolo",
+    "version_rulebook",
+    "modulo_mtl_activo",
+    "articulos_detectados",
+    "contexto",
+    "verificaciones",
+    "dictamen_por_capa",
+    "dictamen_global"
+  ],
+  "additionalProperties": true,
+  "properties": {
+    "protocolo": { "type": "string" },
+    "version_rulebook": { "type": "string" },
+    "modulo_mtl_activo": { "type": "boolean" },
+    "articulos_detectados": { "type": "integer", "minimum": 0 },
+    "contexto": { "type": "object" },
+    "verificaciones": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "capa", "nombre", "tipo", "resultado", "severidad", "evidencia"],
+        "additionalProperties": true,
+        "properties": {
+          "id": { "type": "string" },
+          "capa": {
+            "type": "string",
+            "enum": ["nucleo_triaje", "mtl", "csn", "racionalidad"]
+          },
+          "nombre": { "type": "string" },
+          "tipo": {
+            "type": "string",
+            "enum": ["determinista", "heuristica", "juicio"]
+          },
+          "resultado": {
+            "type": "string",
+            "enum": [
+              "CUMPLE",
+              "PARCIAL",
+              "INCUMPLE",
+              "NO_APLICA",
+              "NO_EVALUABLE",
+              "NO_VERIFICABLE",
+              "PENDIENTE_JUICIO"
+            ]
+          },
+          "severidad": {
+            "type": "string",
+            "enum": ["BLOQUEANTE", "MAYOR", "MENOR", "ANALITICO", "CONTEXTO", "PARAMETRO"]
+          },
+          "evidencia": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "cita": { "type": "string" },
+                "ubicacion": { "type": "string" },
+                "fuente": { "type": "string" }
+              }
+            }
+          },
+          "explicacion": { "type": "string" }
+        }
+      }
+    },
+    "dictamen_por_capa": {
+      "type": "object",
+      "additionalProperties": { "type": "string" }
+    },
+    "dictamen_global": {
+      "type": "string",
+      "enum": [
+        "VIABLE",
+        "VIABLE_CON_MODIFICACIONES",
+        "NO_VIABLE_EN_SUS_TERMINOS",
+        "PRELIMINAR_PENDIENTE_JUICIO"
+      ]
+    },
+    "nota": { "type": "string" }
+  }
+}
