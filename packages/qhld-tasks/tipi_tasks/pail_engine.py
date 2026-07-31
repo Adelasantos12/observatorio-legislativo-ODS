@@ -260,42 +260,87 @@ METODOS_CORPUS = {"vigencia_invocadas": chk_vigencia, "inbound_corpus": chk_inbo
 
 # ---------- agregación y dictamen ----------
 
-def dictaminar(hallazgos):
+def dictaminar(hallazgos, sin_articulado=False):
+    EVALUADOS = ("CUMPLE", "PARCIAL", "INCUMPLE", "NO_APLICA")
     bloq = [h for h in hallazgos if h["resultado"] == "INCUMPLE" and h["severidad"] == "BLOQUEANTE"]
+    bloq_pend = [h for h in hallazgos if h["severidad"] == "BLOQUEANTE" and h["resultado"] not in EVALUADOS]
+    n_eval = sum(1 for h in hallazgos if h["resultado"] in EVALUADOS)
+    cobertura = round(n_eval / len(hallazgos), 2) if hallazgos else 0.0
     capas = {}
     for h in hallazgos:
         capas.setdefault(h["capa"], []).append(h)
     por_capa = {k: ("DEFICIENTE" if sum(1 for h in v if h["resultado"] == "INCUMPLE" and h["severidad"] == "MAYOR") >= 3
-                    else "PENDIENTE_JUICIO" if any(h["resultado"] == "PENDIENTE_JUICIO" for h in v)
+                    else "SIN_EVALUAR" if not any(h["resultado"] in EVALUADOS for h in v)
                     else "ACEPTABLE") for k, v in capas.items()}
-    if bloq:
+    if sin_articulado:
+        glob = "NO_EVALUABLE_INSUMO"
+    elif bloq:
         glob = "NO_VIABLE_EN_SUS_TERMINOS"
+    elif cobertura < 0.5 or bloq_pend:
+        glob = "PRELIMINAR_COBERTURA_INSUFICIENTE"
     elif any(v == "DEFICIENTE" for v in por_capa.values()):
         glob = "VIABLE_CON_MODIFICACIONES"
-    elif any(v == "PENDIENTE_JUICIO" for v in por_capa.values()):
-        glob = "PRELIMINAR_PENDIENTE_JUICIO"
     else:
         glob = "VIABLE"
-    return por_capa, glob
+    return por_capa, glob, cobertura
+
+ORDEN_SEV = {"BLOQUEANTE": 0, "MAYOR": 1, "MENOR": 2, "ANALITICO": 3}
+
+def resumen_ejecutivo(hallazgos, cobertura, sin_articulado):
+    red = sorted([h for h in hallazgos if h["resultado"] in ("INCUMPLE", "PARCIAL")
+                  and h["severidad"] in ("BLOQUEANTE", "MAYOR")],
+                 key=lambda h: (ORDEN_SEV.get(h["severidad"], 9), h["resultado"] != "INCUMPLE"))
+    oport = [h for h in hallazgos if (h["resultado"] == "PARCIAL" and h["severidad"] == "MENOR")
+             or (h["severidad"] == "ANALITICO" and h.get("indicador_cableado"))
+             or h.get("armonizacion_candidata")]
+    def fila(h):
+        return {"id": h["id"], "verificacion": h["nombre"], "severidad": h["severidad"],
+                "resultado": h["resultado"],
+                "hallazgo": h["explicacion"] or h["nombre"],
+                "evidencia_muestra": (h["evidencia"][0] if h["evidencia"] else None),
+                "armonizacion": h.get("armonizacion_candidata"),
+                "cableado": h.get("indicador_cableado")}
+    pend = [h for h in hallazgos if h["resultado"] in ("PENDIENTE_JUICIO", "NO_EVALUABLE", "NO_VERIFICABLE")]
+    razones = {}
+    for h in pend:
+        razones[h["explicacion"] or h["resultado"]] = razones.get(h["explicacion"] or h["resultado"], 0) + 1
+    return {"nota_insumo": ("El texto no contiene articulado segmentable: verificar que el documento sea una "
+                            "iniciativa o proyecto de decreto (no una opinión, dictamen o nota) o reportar el "
+                            "formato para ajustar el segmentador.") if sin_articulado else None,
+            "red_flags": [fila(h) for h in red],
+            "areas_oportunidad": [fila(h) for h in oport],
+            "cobertura_evaluada": cobertura,
+            "sin_evaluar": {"total": len(pend),
+                            "razones": sorted(razones.items(), key=lambda x: -x[1])[:3]}}
+
+DEPENDEN_DE_ARTICULADO = {"numeracion_articulos", "parrafos_por_articulo", "formato_fracciones",
+                          "oraciones_largas", "transitorios", "mandatos_sin_plazo"}
 
 def analizar(texto, rulebook, indices=None, mtl=False):
     P = segmentar(texto)
     ctx, hs = {}, []
+    sin_articulado = not P["articulos"]
     for c in rulebook["verificaciones"]:
         if c["capa"] == "mtl" and not mtl:
             continue
         met = c.get("metodo")
+        if sin_articulado and (met in DEPENDEN_DE_ARTICULADO or c["tipo"] == "juicio"):
+            hs.append(hallazgo(c, "NO_EVALUABLE", [],
+                               "Sin articulado segmentable: el insumo no parece una iniciativa o su formato no fue reconocido"))
+            continue
         if met in METODOS:
             hs.append(METODOS[met](c, P, ctx))
         elif met in METODOS_CORPUS:
             hs.append(METODOS_CORPUS[met](c, P, ctx, indices))
         else:
             hs.append(hallazgo(c, "PENDIENTE_JUICIO"))
-    por_capa, glob = dictaminar(hs)
+    por_capa, glob, cobertura = dictaminar(hs, sin_articulado)
     return {"protocolo": rulebook["protocolo"], "version_rulebook": rulebook["version"],
             "modulo_mtl_activo": mtl, "articulos_detectados": len(P["articulos"]),
+            "resumen": resumen_ejecutivo(hs, cobertura, sin_articulado),
             "contexto": ctx, "verificaciones": hs,
             "dictamen_por_capa": por_capa, "dictamen_global": glob,
+            "cobertura_evaluada": cobertura,
             "nota": "Las verificaciones PENDIENTE_JUICIO llevan criterio_para_llm embebido: resolverlas con LLM y re-agregar."}
 
 def main():

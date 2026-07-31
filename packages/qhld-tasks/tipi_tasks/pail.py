@@ -128,10 +128,17 @@ def _resolver_juicios(dictamen: dict) -> dict:
             h["explicacion"] = "el modelo no devolvió un resultado válido con la evidencia provista"
         h.pop("criterio_para_llm", None)
         resueltos += 1
-    # Re-agregación con la función del propio motor (no se reimplementa).
-    por_capa, glob = pail_engine.dictaminar(dictamen["verificaciones"])
+    # Re-agregación con las funciones del propio motor (no se reimplementan): el
+    # dictamen y el bloque `resumen` se recalculan sobre los resultados ya resueltos,
+    # así sube la cobertura y bajan las verificaciones sin evaluar.
+    sin_articulado = dictamen.get("articulos_detectados", 0) == 0
+    por_capa, glob, cobertura = pail_engine.dictaminar(
+        dictamen["verificaciones"], sin_articulado)
     dictamen["dictamen_por_capa"] = por_capa
     dictamen["dictamen_global"] = glob
+    dictamen["cobertura_evaluada"] = cobertura
+    dictamen["resumen"] = pail_engine.resumen_ejecutivo(
+        dictamen["verificaciones"], cobertura, sin_articulado)
     dictamen["nota"] = (
         f"Pasada de juicio LLM aplicada: {resueltos} verificacion(es) resuelta(s) "
         "solo con la evidencia extraída y las citas del corpus."

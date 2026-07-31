@@ -161,6 +161,37 @@ def test_pasada_llm_resuelve_y_reagrega(monkeypatch, con_indices):
     assert pail.validate_dictamen(d) == []
 
 
+def test_bloque_resumen_presente(con_indices):
+    """Motor v2.1: el dictamen trae el bloque `resumen` (red flags, oportunidades,
+    cobertura, sin evaluar)."""
+    d = pail.analizar_texto(INICIATIVA, mtl=True)
+    r = d["resumen"]
+    assert set(r) >= {"red_flags", "areas_oportunidad", "cobertura_evaluada", "sin_evaluar"}
+    assert isinstance(r["sin_evaluar"]["total"], int)
+    assert 0 <= d["cobertura_evaluada"] <= 1
+
+
+def test_cobertura_insuficiente_no_es_viable(con_indices):
+    """Sin pasada LLM, las 28 de juicio quedan pendientes → cobertura < 0.5 →
+    el dictamen NUNCA es VIABLE (es PRELIMINAR_COBERTURA_INSUFICIENTE)."""
+    d = pail.analizar_texto(INICIATIVA, mtl=True)
+    assert d["cobertura_evaluada"] < 0.5
+    assert d["dictamen_global"] == "PRELIMINAR_COBERTURA_INSUFICIENTE"
+
+
+def test_puerta_de_insumo_sin_articulado(con_indices):
+    """Un texto sin articulado segmentable (una nota, no una iniciativa) →
+    NO_EVALUABLE_INSUMO con nota_insumo, sin CUMPLE vacuos."""
+    nota = "Esta es una opinión sobre política fiscal. No contiene articulado."
+    d = pail.analizar_texto(nota, mtl=True)
+    assert d["dictamen_global"] == "NO_EVALUABLE_INSUMO"
+    assert d["resumen"]["nota_insumo"]
+    assert d["articulos_detectados"] == 0
+    # No hay CUMPLE de relleno cuando no hay insumo evaluable.
+    assert not any(v["resultado"] == "CUMPLE" for v in d["verificaciones"])
+    assert pail.validate_dictamen(d) == []
+
+
 def test_llm_sin_evidencia_suficiente_es_no_evaluable(monkeypatch, con_indices):
     # El modelo responde algo inválido → la envoltura lo marca NO_EVALUABLE.
     monkeypatch.setattr(config, "LLM_PROVIDER", "anthropic")

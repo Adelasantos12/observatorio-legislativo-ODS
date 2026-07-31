@@ -2,7 +2,232 @@
  "protocolo": "PAIL-MX",
  "version_rulebook": "2.0",
  "modulo_mtl_activo": true,
- "articulos_detectados": 2,
+ "articulos_detectados": 1,
+ "resumen": {
+  "nota_insumo": null,
+  "red_flags": [
+   {
+    "id": "TL-11",
+    "verificacion": "Mandatos transitorios con plazo",
+    "severidad": "MAYOR",
+    "resultado": "INCUMPLE",
+    "hallazgo": "Mandatos transitorios sin plazo",
+    "evidencia_muestra": {
+     "cita": "deberá emitir las disposiciones reglamentarias del Registro Nacional de Denuncias Fiscales.",
+     "ubicacion": "transitorios",
+     "fuente": "iniciativa"
+    },
+    "armonizacion": null,
+    "cableado": null
+   }
+  ],
+  "areas_oportunidad": [
+   {
+    "id": "CSN-04",
+    "verificacion": "Armonización (remisiones entrantes)",
+    "severidad": "MAYOR",
+    "resultado": "PENDIENTE_JUICIO",
+    "hallazgo": "174 remisiones entrantes: verificar si el decreto o sus transitorios las atienden",
+    "evidencia_muestra": null,
+    "armonizacion": [
+     {
+      "norma": "CÓDIGO MILITAR DE PROCEDIMIENTOS PENALES",
+      "desde_articulo": "167"
+     },
+     {
+      "norma": "CÓDIGO NACIONAL DE PROCEDIMIENTOS PENALES",
+      "desde_articulo": "167"
+     },
+     {
+      "norma": "LEY ADUANERA",
+      "desde_articulo": "121"
+     },
+     {
+      "norma": "LEY ADUANERA",
+      "desde_articulo": "?"
+     },
+     {
+      "norma": "LEY DE AGUAS NACIONALES",
+      "desde_articulo": "12 BIS 6"
+     },
+     {
+      "norma": "LEY DE AGUAS NACIONALES",
+      "desde_articulo": "124"
+     },
+     {
+      "norma": "LEY DE AGUAS NACIONALES",
+      "desde_articulo": "9"
+     },
+     {
+      "norma": "LEY DE AHORRO Y CRÉDITO POPULAR",
+      "desde_articulo": "130"
+     },
+     {
+      "norma": "LEY DE AHORRO Y CRÉDITO POPULAR",
+      "desde_articulo": "23"
+     },
+     {
+      "norma": "LEY DE AHORRO Y CRÉDITO POPULAR",
+      "desde_articulo": "8o"
+     },
+     {
+      "norma": "LEY DE AHORRO Y CRÉDITO POPULAR",
+      "desde_articulo": "96"
+     },
+     {
+      "norma": "LEY DE COMERCIO EXTERIOR",
+      "desde_articulo": "63"
+     },
+     {
+      "norma": "LEY DE COMERCIO EXTERIOR",
+      "desde_articulo": "65"
+     },
+     {
+      "norma": "LEY DE COMERCIO EXTERIOR",
+      "desde_articulo": "85"
+     },
+     {
+      "norma": "LEY DE COMERCIO EXTERIOR",
+      "desde_articulo": "95"
+     },
+     {
+      "norma": "LEY DE COMERCIO EXTERIOR",
+      "desde_articulo": "98"
+     },
+     {
+      "norma": "LEY DE CONTRIBUCIÓN DE MEJORAS POR OBRAS PÚBLICAS FEDERALES DE INFRAESTRUCTURA HIDRÁULICA",
+      "desde_articulo": "11"
+     },
+     {
+      "norma": "LEY DE COORDINACIÓN FISCAL",
+      "desde_articulo": "10-A"
+     },
+     {
+      "norma": "LEY DE COORDINACIÓN FISCAL",
+      "desde_articulo": "11-A"
+     },
+     {
+      "norma": "LEY DE FISCALIZACIÓN Y RENDICIÓN DE CUENTAS DE LA FEDERACIÓN",
+      "desde_articulo": "10"
+     },
+     {
+      "norma": "LEY DE FISCALIZACIÓN Y RENDICIÓN DE CUENTAS DE LA FEDERACIÓN",
+      "desde_articulo": "17"
+     },
+     {
+      "norma": "LEY DE FISCALIZACIÓN Y RENDICIÓN DE CUENTAS DE LA FEDERACIÓN",
+      "desde_articulo": "7"
+     },
+     {
+      "norma": "LEY DE FISCALIZACIÓN Y RENDICIÓN DE CUENTAS DE LA FEDERACIÓN",
+      "desde_articulo": "77"
+     },
+     {
+      "norma": "LEY DE FOMENTO A LA CONFIANZA CIUDADANA",
+      "desde_articulo": "1"
+     },
+     {
+      "norma": "LEY DE INGRESOS DE LA FEDERACIÓN PARA EL EJERCICIO FISCAL DE 2026",
+      "desde_articulo": "11"
+     },
+     {
+      "norma": "LEY DE INGRESOS DE LA FEDERACIÓN PARA EL EJERCICIO FISCAL DE 2026",
+      "desde_articulo": "21"
+     },
+     {
+      "norma": "LEY DE INGRESOS DE LA FEDERACIÓN PARA EL EJERCICIO FISCAL DE 2026",
+      "desde_articulo": "34"
+     },
+     {
+      "norma": "LEY DE INSTITUCIONES DE CRÉDITO",
+      "desde_articulo": "109 Bis 1"
+     },
+     {
+      "norma": "LEY DE INSTITUCIONES DE CRÉDITO",
+      "desde_articulo": "222"
+     },
+     {
+      "norma": "LEY DE INSTITUCIONES DE CRÉDITO",
+      "desde_articulo": "24"
+     },
+     {
+      "norma": "LEY DE INSTITUCIONES DE CRÉDITO",
+      "desde_articulo": "6o"
+     },
+     {
+      "norma": "LEY DE INSTITUCIONES DE SEGUROS Y DE FIANZAS",
+      "desde_articulo": "2"
+     },
+     {
+      "norma": "LEY DE INSTITUCIONES DE SEGUROS Y DE FIANZAS",
+      "desde_articulo": "276"
+     },
+     {
+      "norma": "LEY DE INSTITUCIONES DE SEGUROS Y DE FIANZAS",
+      "desde_articulo": "278"
+     },
+     {
+      "norma": "LEY DE INSTITUCIONES DE SEGUROS Y DE FIANZAS",
+      "desde_articulo": "282"
+     },
+     {
+      "norma": "LEY DE INSTITUCIONES DE SEGUROS Y DE FIANZAS",
+      "desde_articulo": "283"
+     },
+     {
+      "norma": "LEY DE INSTITUCIONES DE SEGUROS Y DE FIANZAS",
+      "desde_articulo": "337"
+     },
+     {
+      "norma": "LEY DE INSTITUCIONES DE SEGUROS Y DE FIANZAS",
+      "desde_articulo": "396"
+     },
+     {
+      "norma": "LEY DE INSTITUCIONES DE SEGUROS Y DE FIANZAS",
+      "desde_articulo": "481"
+     },
+     {
+      "norma": "LEY DE INSTITUCIONES DE SEGUROS Y DE FIANZAS",
+      "desde_articulo": "58"
+     }
+    ],
+    "cableado": null
+   },
+   {
+    "id": "CSN-05",
+    "verificacion": "Precisión de remisiones salientes",
+    "severidad": "ANALITICO",
+    "resultado": "CUMPLE",
+    "hallazgo": "Remisiones: 1 a artículo, 0 en bloque",
+    "evidencia_muestra": null,
+    "armonizacion": null,
+    "cableado": {
+     "a_articulo": 1,
+     "en_bloque": 0,
+     "proporcion_bloque": 0.0,
+     "lectura": "cableado aceptable"
+    }
+   }
+  ],
+  "cobertura_evaluada": 0.26,
+  "sin_evaluar": {
+   "total": 32,
+   "razones": [
+    [
+     "PENDIENTE_JUICIO",
+     30
+    ],
+    [
+     "174 remisiones entrantes: verificar si el decreto o sus transitorios las atienden",
+     1
+    ],
+    [
+     "Habilitaciones detectadas; el juicio (alcance, órgano, plazo, reserva) requiere LLM",
+     1
+    ]
+   ]
+  }
+ },
  "contexto": {
   "tipo_instrumento": "reforma",
   "enunciado_reforma": "SE REFORMA EL ARTÍCULO 100 DEL CÓDIGO FISCAL DE LA FEDERACIÓN\n\nEXPOSICIÓN DE MOTIVOS\n\nLa presente iniciativa atiende la necesidad de fortalecer el combate a los delitos fiscales",
@@ -110,16 +335,10 @@
    "capa": "mtl",
    "nombre": "Formato de fracciones",
    "tipo": "determinista",
-   "resultado": "PARCIAL",
+   "resultado": "CUMPLE",
    "severidad": "MENOR",
-   "evidencia": [
-    {
-     "cita": "Artículo 100., fr. II: «…Integrar el expediente»",
-     "ubicacion": "línea 11",
-     "fuente": "iniciativa"
-    }
-   ],
-   "explicacion": "Penúltima fracción sin la fórmula ', y'"
+   "evidencia": [],
+   "explicacion": ""
   },
   {
    "id": "TL-09",
@@ -142,15 +361,9 @@
    "capa": "mtl",
    "nombre": "Régimen transitorio completo",
    "tipo": "determinista",
-   "resultado": "PARCIAL",
+   "resultado": "CUMPLE",
    "severidad": "MAYOR",
-   "evidencia": [
-    {
-     "cita": "Se derogan todas las disposiciones que se opongan al presente Decreto",
-     "ubicacion": "transitorios — derogación exclusivamente genérica",
-     "fuente": "iniciativa"
-    }
-   ],
+   "evidencia": [],
    "explicacion": ""
   },
   {
@@ -174,16 +387,10 @@
    "capa": "mtl",
    "nombre": "Claridad sintáctica",
    "tipo": "determinista",
-   "resultado": "PARCIAL",
+   "resultado": "CUMPLE",
    "severidad": "MENOR",
-   "evidencia": [
-    {
-     "cita": "El derecho a formular la querella, la declaratoria y la declaratoria de perjuicio de la Secretaría de Hacienda y Crédito Público precluye y, por lo tanto, se extingue la acción penal, en cinco años, que se computarán a partir de la comisión del delito, salvo que la autoridad competente, mediante det",
-     "ubicacion": "Artículo 100. (línea 11) — 123 palabras",
-     "fuente": "iniciativa"
-    }
-   ],
-   "explicacion": "1 oración(es) superan el umbral de 60 palabras"
+   "evidencia": [],
+   "explicacion": ""
   },
   {
    "id": "R1-02",
@@ -259,16 +466,168 @@
    "resultado": "PENDIENTE_JUICIO",
    "severidad": "MAYOR",
    "evidencia": [],
-   "explicacion": "2 remisiones entrantes: verificar si el decreto o sus transitorios las atienden",
+   "explicacion": "174 remisiones entrantes: verificar si el decreto o sus transitorios las atienden",
    "norma_objetivo": "CÓDIGO FISCAL DE LA FEDERACIÓN",
    "armonizacion_candidata": [
+    {
+     "norma": "CÓDIGO MILITAR DE PROCEDIMIENTOS PENALES",
+     "desde_articulo": "167"
+    },
     {
      "norma": "CÓDIGO NACIONAL DE PROCEDIMIENTOS PENALES",
      "desde_articulo": "167"
     },
     {
-     "norma": "CÓDIGO NACIONAL DE PROCEDIMIENTOS PENALES [Codigo_Nacional_de_Procedimientos_Penales]",
-     "desde_articulo": "167"
+     "norma": "LEY ADUANERA",
+     "desde_articulo": "121"
+    },
+    {
+     "norma": "LEY ADUANERA",
+     "desde_articulo": "?"
+    },
+    {
+     "norma": "LEY DE AGUAS NACIONALES",
+     "desde_articulo": "12 BIS 6"
+    },
+    {
+     "norma": "LEY DE AGUAS NACIONALES",
+     "desde_articulo": "124"
+    },
+    {
+     "norma": "LEY DE AGUAS NACIONALES",
+     "desde_articulo": "9"
+    },
+    {
+     "norma": "LEY DE AHORRO Y CRÉDITO POPULAR",
+     "desde_articulo": "130"
+    },
+    {
+     "norma": "LEY DE AHORRO Y CRÉDITO POPULAR",
+     "desde_articulo": "23"
+    },
+    {
+     "norma": "LEY DE AHORRO Y CRÉDITO POPULAR",
+     "desde_articulo": "8o"
+    },
+    {
+     "norma": "LEY DE AHORRO Y CRÉDITO POPULAR",
+     "desde_articulo": "96"
+    },
+    {
+     "norma": "LEY DE COMERCIO EXTERIOR",
+     "desde_articulo": "63"
+    },
+    {
+     "norma": "LEY DE COMERCIO EXTERIOR",
+     "desde_articulo": "65"
+    },
+    {
+     "norma": "LEY DE COMERCIO EXTERIOR",
+     "desde_articulo": "85"
+    },
+    {
+     "norma": "LEY DE COMERCIO EXTERIOR",
+     "desde_articulo": "95"
+    },
+    {
+     "norma": "LEY DE COMERCIO EXTERIOR",
+     "desde_articulo": "98"
+    },
+    {
+     "norma": "LEY DE CONTRIBUCIÓN DE MEJORAS POR OBRAS PÚBLICAS FEDERALES DE INFRAESTRUCTURA HIDRÁULICA",
+     "desde_articulo": "11"
+    },
+    {
+     "norma": "LEY DE COORDINACIÓN FISCAL",
+     "desde_articulo": "10-A"
+    },
+    {
+     "norma": "LEY DE COORDINACIÓN FISCAL",
+     "desde_articulo": "11-A"
+    },
+    {
+     "norma": "LEY DE FISCALIZACIÓN Y RENDICIÓN DE CUENTAS DE LA FEDERACIÓN",
+     "desde_articulo": "10"
+    },
+    {
+     "norma": "LEY DE FISCALIZACIÓN Y RENDICIÓN DE CUENTAS DE LA FEDERACIÓN",
+     "desde_articulo": "17"
+    },
+    {
+     "norma": "LEY DE FISCALIZACIÓN Y RENDICIÓN DE CUENTAS DE LA FEDERACIÓN",
+     "desde_articulo": "7"
+    },
+    {
+     "norma": "LEY DE FISCALIZACIÓN Y RENDICIÓN DE CUENTAS DE LA FEDERACIÓN",
+     "desde_articulo": "77"
+    },
+    {
+     "norma": "LEY DE FOMENTO A LA CONFIANZA CIUDADANA",
+     "desde_articulo": "1"
+    },
+    {
+     "norma": "LEY DE INGRESOS DE LA FEDERACIÓN PARA EL EJERCICIO FISCAL DE 2026",
+     "desde_articulo": "11"
+    },
+    {
+     "norma": "LEY DE INGRESOS DE LA FEDERACIÓN PARA EL EJERCICIO FISCAL DE 2026",
+     "desde_articulo": "21"
+    },
+    {
+     "norma": "LEY DE INGRESOS DE LA FEDERACIÓN PARA EL EJERCICIO FISCAL DE 2026",
+     "desde_articulo": "34"
+    },
+    {
+     "norma": "LEY DE INSTITUCIONES DE CRÉDITO",
+     "desde_articulo": "109 Bis 1"
+    },
+    {
+     "norma": "LEY DE INSTITUCIONES DE CRÉDITO",
+     "desde_articulo": "222"
+    },
+    {
+     "norma": "LEY DE INSTITUCIONES DE CRÉDITO",
+     "desde_articulo": "24"
+    },
+    {
+     "norma": "LEY DE INSTITUCIONES DE CRÉDITO",
+     "desde_articulo": "6o"
+    },
+    {
+     "norma": "LEY DE INSTITUCIONES DE SEGUROS Y DE FIANZAS",
+     "desde_articulo": "2"
+    },
+    {
+     "norma": "LEY DE INSTITUCIONES DE SEGUROS Y DE FIANZAS",
+     "desde_articulo": "276"
+    },
+    {
+     "norma": "LEY DE INSTITUCIONES DE SEGUROS Y DE FIANZAS",
+     "desde_articulo": "278"
+    },
+    {
+     "norma": "LEY DE INSTITUCIONES DE SEGUROS Y DE FIANZAS",
+     "desde_articulo": "282"
+    },
+    {
+     "norma": "LEY DE INSTITUCIONES DE SEGUROS Y DE FIANZAS",
+     "desde_articulo": "283"
+    },
+    {
+     "norma": "LEY DE INSTITUCIONES DE SEGUROS Y DE FIANZAS",
+     "desde_articulo": "337"
+    },
+    {
+     "norma": "LEY DE INSTITUCIONES DE SEGUROS Y DE FIANZAS",
+     "desde_articulo": "396"
+    },
+    {
+     "norma": "LEY DE INSTITUCIONES DE SEGUROS Y DE FIANZAS",
+     "desde_articulo": "481"
+    },
+    {
+     "norma": "LEY DE INSTITUCIONES DE SEGUROS Y DE FIANZAS",
+     "desde_articulo": "58"
     }
    ]
   },
@@ -280,9 +639,9 @@
    "resultado": "CUMPLE",
    "severidad": "ANALITICO",
    "evidencia": [],
-   "explicacion": "Remisiones: 2 a artículo, 0 en bloque",
+   "explicacion": "Remisiones: 1 a artículo, 0 en bloque",
    "indicador_cableado": {
-    "a_articulo": 2,
+    "a_articulo": 1,
     "en_bloque": 0,
     "proporcion_bloque": 0.0,
     "lectura": "cableado aceptable"
@@ -534,11 +893,12 @@
   }
  ],
  "dictamen_por_capa": {
-  "nucleo_triaje": "PENDIENTE_JUICIO",
-  "mtl": "PENDIENTE_JUICIO",
-  "csn": "PENDIENTE_JUICIO",
-  "racionalidad": "PENDIENTE_JUICIO"
+  "nucleo_triaje": "ACEPTABLE",
+  "mtl": "ACEPTABLE",
+  "csn": "ACEPTABLE",
+  "racionalidad": "SIN_EVALUAR"
  },
- "dictamen_global": "PRELIMINAR_PENDIENTE_JUICIO",
+ "dictamen_global": "PRELIMINAR_COBERTURA_INSUFICIENTE",
+ "cobertura_evaluada": 0.26,
  "nota": "Las verificaciones PENDIENTE_JUICIO llevan criterio_para_llm embebido: resolverlas con LLM y re-agregar."
 }
