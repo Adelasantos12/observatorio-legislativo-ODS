@@ -9,10 +9,12 @@
     "version_rulebook",
     "modulo_mtl_activo",
     "articulos_detectados",
+    "resumen",
     "contexto",
     "verificaciones",
     "dictamen_por_capa",
-    "dictamen_global"
+    "dictamen_global",
+    "cobertura_evaluada"
   ],
   "additionalProperties": true,
   "properties": {
@@ -20,6 +22,28 @@
     "version_rulebook": { "type": "string" },
     "modulo_mtl_activo": { "type": "boolean" },
     "articulos_detectados": { "type": "integer", "minimum": 0 },
+    "cobertura_evaluada": { "type": "number", "minimum": 0, "maximum": 1 },
+    "resumen": {
+      "type": "object",
+      "description": "Bloque ejecutivo (motor v2.1): red flags priorizadas, áreas de oportunidad, cobertura y verificaciones sin evaluar.",
+      "required": ["red_flags", "areas_oportunidad", "cobertura_evaluada", "sin_evaluar"],
+      "additionalProperties": true,
+      "properties": {
+        "nota_insumo": { "type": ["string", "null"] },
+        "red_flags": { "type": "array", "items": { "type": "object" } },
+        "areas_oportunidad": { "type": "array", "items": { "type": "object" } },
+        "cobertura_evaluada": { "type": "number", "minimum": 0, "maximum": 1 },
+        "sin_evaluar": {
+          "type": "object",
+          "required": ["total", "razones"],
+          "additionalProperties": true,
+          "properties": {
+            "total": { "type": "integer", "minimum": 0 },
+            "razones": { "type": "array" }
+          }
+        }
+      }
+    },
     "contexto": { "type": "object" },
     "verificaciones": {
       "type": "array",
@@ -79,7 +103,8 @@
         "VIABLE",
         "VIABLE_CON_MODIFICACIONES",
         "NO_VIABLE_EN_SUS_TERMINOS",
-        "PRELIMINAR_PENDIENTE_JUICIO"
+        "NO_EVALUABLE_INSUMO",
+        "PRELIMINAR_COBERTURA_INSUFICIENTE"
       ]
     },
     "nota": { "type": "string" }
