@@ -277,6 +277,8 @@ def extract(
     knowledgebase: Annotated[str, Form()] = "",
     segment: Annotated[str, Form()] = "",
     deep: Annotated[bool, Form()] = False,
+    pail: Annotated[bool, Form()] = False,
+    pail_llm: Annotated[bool, Form()] = False,
 ):
     """Etiqueta el texto y devuelve los temas (ODS) y etiquetas que coinciden.
 
@@ -286,6 +288,11 @@ def extract(
     Con `deep=true` encola además la codificación estructural NormTrace (etapa 3,
     asíncrona) de las unidades con tags y devuelve `normtrace_task_id`; el bloque
     `structural` se recupera en `GET /tagger/deep/{id}` cuando termina.
+
+    Con `pail=true` añade el bloque `pail` (módulo seleccionable de técnica
+    legislativa + sistematización normativa, protocolo PAIL-MX); con `pail_llm=true`
+    resuelve además las verificaciones de juicio con el LLM. Default OFF: con
+    `pail=false` el flujo ODS/tagger no cambia.
     """
     try:
         # Blank knowledgebase = no filter (all public KBs), matching Flask's default.
@@ -360,6 +367,19 @@ def extract(
                     result["normtrace_task_id"] = task.id
                 else:
                     result["structural"] = tipi_tasks.normtrace.analyze_units(hit)
+
+        # Módulo SELECCIONABLE PAIL (técnica legislativa + sistematización). OFF por
+        # defecto: con pail=false no toca el flujo ODS/tagger. Con pail=true corre el
+        # motor PAIL-MX sobre el texto (síncrono por defecto, como el codificador);
+        # con pail_llm=true resuelve además las verificaciones de juicio con el LLM.
+        if pail and content:
+            if Config.PAIL_ASYNC:
+                task = tipi_tasks.pail.analyze_initiative.apply_async(
+                    (content, True, pail_llm))
+                result["pail_task_id"] = task.id
+            else:
+                result["pail"] = tipi_tasks.pail.analyze_initiative(
+                    content, True, pail_llm)
 
         return result
     except HTTPException:

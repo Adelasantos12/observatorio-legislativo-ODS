@@ -1,0 +1,544 @@
+{
+ "protocolo": "PAIL-MX",
+ "version_rulebook": "2.0",
+ "modulo_mtl_activo": true,
+ "articulos_detectados": 2,
+ "contexto": {
+  "tipo_instrumento": "reforma",
+  "enunciado_reforma": "SE REFORMA EL ARTÍCULO 100 DEL CÓDIGO FISCAL DE LA FEDERACIÓN\n\nEXPOSICIÓN DE MOTIVOS\n\nLa presente iniciativa atiende la necesidad de fortalecer el combate a los delitos fiscales",
+  "normas_invocadas": [
+   "CÓDIGO FISCAL DE LA FEDERACIÓN"
+  ]
+ },
+ "verificaciones": [
+  {
+   "id": "T-01",
+   "capa": "nucleo_triaje",
+   "nombre": "Tipo de instrumento",
+   "tipo": "heuristica",
+   "resultado": "CUMPLE",
+   "severidad": "CONTEXTO",
+   "evidencia": [],
+   "explicacion": "tipo_instrumento=reforma"
+  },
+  {
+   "id": "T-03",
+   "capa": "nucleo_triaje",
+   "nombre": "Partes presentes",
+   "tipo": "determinista",
+   "resultado": "CUMPLE",
+   "severidad": "MAYOR",
+   "evidencia": [],
+   "explicacion": ""
+  },
+  {
+   "id": "T-04",
+   "capa": "nucleo_triaje",
+   "nombre": "Titular de la iniciativa",
+   "tipo": "juicio",
+   "resultado": "PENDIENTE_JUICIO",
+   "severidad": "BLOQUEANTE",
+   "evidencia": [],
+   "explicacion": "",
+   "criterio_para_llm": "Quien presenta tiene facultad de iniciativa (art. 71 CPEUM o equivalente)."
+  },
+  {
+   "id": "TL-01",
+   "capa": "mtl",
+   "nombre": "Denominación",
+   "tipo": "heuristica",
+   "resultado": "PENDIENTE_JUICIO",
+   "severidad": "MAYOR",
+   "evidencia": [],
+   "explicacion": ""
+  },
+  {
+   "id": "TL-02",
+   "capa": "mtl",
+   "nombre": "Exposición de motivos funcional",
+   "tipo": "juicio",
+   "resultado": "PENDIENTE_JUICIO",
+   "severidad": "MAYOR",
+   "evidencia": [],
+   "explicacion": "",
+   "criterio_para_llm": "Razona problema, causas, alternativas y vía legislativa; no parafrasea el articulado."
+  },
+  {
+   "id": "TL-03",
+   "capa": "mtl",
+   "nombre": "Correspondencia motivos-articulado",
+   "tipo": "juicio",
+   "resultado": "PENDIENTE_JUICIO",
+   "severidad": "MAYOR",
+   "evidencia": [],
+   "explicacion": "",
+   "criterio_para_llm": "Sin soluciones anunciadas ausentes del articulado ni disposiciones sustantivas sin motivación."
+  },
+  {
+   "id": "TL-04",
+   "capa": "mtl",
+   "nombre": "Pertinencia de divisiones mayores",
+   "tipo": "juicio",
+   "resultado": "PENDIENTE_JUICIO",
+   "severidad": "MENOR",
+   "evidencia": [],
+   "explicacion": "",
+   "criterio_para_llm": "Libros solo en códigos; títulos solo en leyes muy extensas o de importancia institucional, nunca sustituyendo capítulos; capítulos unitarios por materia."
+  },
+  {
+   "id": "TL-05",
+   "capa": "mtl",
+   "nombre": "Numeración progresiva y uniforme",
+   "tipo": "determinista",
+   "resultado": "CUMPLE",
+   "severidad": "MENOR",
+   "evidencia": [],
+   "explicacion": ""
+  },
+  {
+   "id": "TL-06",
+   "capa": "mtl",
+   "nombre": "Unidad temática del artículo",
+   "tipo": "determinista",
+   "resultado": "CUMPLE",
+   "severidad": "MAYOR",
+   "evidencia": [],
+   "explicacion": ""
+  },
+  {
+   "id": "TL-07",
+   "capa": "mtl",
+   "nombre": "Formato de fracciones",
+   "tipo": "determinista",
+   "resultado": "PARCIAL",
+   "severidad": "MENOR",
+   "evidencia": [
+    {
+     "cita": "Artículo 100., fr. II: «…Integrar el expediente»",
+     "ubicacion": "línea 11",
+     "fuente": "iniciativa"
+    }
+   ],
+   "explicacion": "Penúltima fracción sin la fórmula ', y'"
+  },
+  {
+   "id": "TL-09",
+   "capa": "mtl",
+   "nombre": "Técnica de reforma parcial",
+   "tipo": "heuristica",
+   "resultado": "CUMPLE",
+   "severidad": "MAYOR",
+   "evidencia": [
+    {
+     "cita": "SE REFORMA EL ARTÍCULO 100 DEL CÓDIGO FISCAL DE LA FEDERACIÓN\n\nEXPOSICIÓN DE MOTIVOS\n\nLa presente iniciativa atiende la necesidad de fortalecer el combate a los delitos fiscales",
+     "ubicacion": "proemio del decreto",
+     "fuente": "iniciativa"
+    }
+   ],
+   "explicacion": ""
+  },
+  {
+   "id": "TL-10",
+   "capa": "mtl",
+   "nombre": "Régimen transitorio completo",
+   "tipo": "determinista",
+   "resultado": "PARCIAL",
+   "severidad": "MAYOR",
+   "evidencia": [
+    {
+     "cita": "Se derogan todas las disposiciones que se opongan al presente Decreto",
+     "ubicacion": "transitorios — derogación exclusivamente genérica",
+     "fuente": "iniciativa"
+    }
+   ],
+   "explicacion": ""
+  },
+  {
+   "id": "TL-11",
+   "capa": "mtl",
+   "nombre": "Mandatos transitorios con plazo",
+   "tipo": "determinista",
+   "resultado": "INCUMPLE",
+   "severidad": "MAYOR",
+   "evidencia": [
+    {
+     "cita": "deberá emitir las disposiciones reglamentarias del Registro Nacional de Denuncias Fiscales.",
+     "ubicacion": "transitorios",
+     "fuente": "iniciativa"
+    }
+   ],
+   "explicacion": "Mandatos transitorios sin plazo"
+  },
+  {
+   "id": "R1-01",
+   "capa": "mtl",
+   "nombre": "Claridad sintáctica",
+   "tipo": "determinista",
+   "resultado": "PARCIAL",
+   "severidad": "MENOR",
+   "evidencia": [
+    {
+     "cita": "El derecho a formular la querella, la declaratoria y la declaratoria de perjuicio de la Secretaría de Hacienda y Crédito Público precluye y, por lo tanto, se extingue la acción penal, en cinco años, que se computarán a partir de la comisión del delito, salvo que la autoridad competente, mediante det",
+     "ubicacion": "Artículo 100. (línea 11) — 123 palabras",
+     "fuente": "iniciativa"
+    }
+   ],
+   "explicacion": "1 oración(es) superan el umbral de 60 palabras"
+  },
+  {
+   "id": "R1-02",
+   "capa": "mtl",
+   "nombre": "Taxatividad sancionadora",
+   "tipo": "juicio",
+   "resultado": "PENDIENTE_JUICIO",
+   "severidad": "BLOQUEANTE",
+   "evidencia": [],
+   "explicacion": "",
+   "criterio_para_llm": "En normas que imponen sanciones: conducta y consecuencia determinadas o determinables sin discreción abierta."
+  },
+  {
+   "id": "R1-03",
+   "capa": "mtl",
+   "nombre": "Consistencia terminológica",
+   "tipo": "juicio",
+   "resultado": "PENDIENTE_JUICIO",
+   "severidad": "MAYOR",
+   "evidencia": [],
+   "explicacion": "",
+   "criterio_para_llm": "Un concepto = un término; un término = un concepto; tabla de colisiones."
+  },
+  {
+   "id": "R1-04",
+   "capa": "mtl",
+   "nombre": "Definiciones",
+   "tipo": "juicio",
+   "resultado": "PENDIENTE_JUICIO",
+   "severidad": "MENOR",
+   "evidencia": [],
+   "explicacion": "",
+   "criterio_para_llm": "Glosario si hay términos técnicos; sin normas escondidas en definiciones."
+  },
+  {
+   "id": "R1-05",
+   "capa": "mtl",
+   "nombre": "Remisiones inteligibles",
+   "tipo": "juicio",
+   "resultado": "PENDIENTE_JUICIO",
+   "severidad": "MAYOR",
+   "evidencia": [],
+   "explicacion": "",
+   "criterio_para_llm": "Toda remisión identifica su objeto con exactitud; sin circulares ni a disposiciones inexistentes (existencia la resuelve CSN-06)."
+  },
+  {
+   "id": "CSN-02",
+   "capa": "csn",
+   "nombre": "Duplicidades",
+   "tipo": "juicio",
+   "resultado": "PENDIENTE_JUICIO",
+   "severidad": "MENOR",
+   "evidencia": [],
+   "explicacion": "",
+   "criterio_para_llm": "Disposiciones que reiteran normas vigentes del corpus, incluida reproducción constitucional. Cita CRN-3."
+  },
+  {
+   "id": "CSN-03",
+   "capa": "csn",
+   "nombre": "Antinomias",
+   "tipo": "juicio",
+   "resultado": "PENDIENTE_JUICIO",
+   "severidad": "MAYOR",
+   "evidencia": [],
+   "explicacion": "",
+   "criterio_para_llm": "Contradicciones con normas del corpus de la misma materia no resueltas por derogación expresa. Cita CRN-3."
+  },
+  {
+   "id": "CSN-04",
+   "capa": "csn",
+   "nombre": "Armonización (remisiones entrantes)",
+   "tipo": "determinista",
+   "resultado": "PENDIENTE_JUICIO",
+   "severidad": "MAYOR",
+   "evidencia": [],
+   "explicacion": "2 remisiones entrantes: verificar si el decreto o sus transitorios las atienden",
+   "norma_objetivo": "CÓDIGO FISCAL DE LA FEDERACIÓN",
+   "armonizacion_candidata": [
+    {
+     "norma": "CÓDIGO NACIONAL DE PROCEDIMIENTOS PENALES",
+     "desde_articulo": "167"
+    },
+    {
+     "norma": "CÓDIGO NACIONAL DE PROCEDIMIENTOS PENALES [Codigo_Nacional_de_Procedimientos_Penales]",
+     "desde_articulo": "167"
+    }
+   ]
+  },
+  {
+   "id": "CSN-05",
+   "capa": "csn",
+   "nombre": "Precisión de remisiones salientes",
+   "tipo": "determinista",
+   "resultado": "CUMPLE",
+   "severidad": "ANALITICO",
+   "evidencia": [],
+   "explicacion": "Remisiones: 2 a artículo, 0 en bloque",
+   "indicador_cableado": {
+    "a_articulo": 2,
+    "en_bloque": 0,
+    "proporcion_bloque": 0.0,
+    "lectura": "cableado aceptable"
+   }
+  },
+  {
+   "id": "CSN-06",
+   "capa": "csn",
+   "nombre": "Vigencia de lo citado",
+   "tipo": "determinista",
+   "resultado": "CUMPLE",
+   "severidad": "MAYOR",
+   "evidencia": [],
+   "explicacion": "",
+   "normas_invocadas": [
+    {
+     "norma": "CÓDIGO FISCAL DE LA FEDERACIÓN",
+     "ultima_reforma": "2025-11-14",
+     "estatus": "TEXTO VIGENTE"
+    }
+   ],
+   "invocaciones_problema": []
+  },
+  {
+   "id": "R2-01",
+   "capa": "racionalidad",
+   "nombre": "Competencia",
+   "tipo": "juicio",
+   "resultado": "PENDIENTE_JUICIO",
+   "severidad": "BLOQUEANTE",
+   "evidencia": [],
+   "explicacion": "",
+   "criterio_para_llm": "La materia corresponde al órgano que legisla (federal/local/concurrente)."
+  },
+  {
+   "id": "R2-02",
+   "capa": "racionalidad",
+   "nombre": "Reserva de ley",
+   "tipo": "juicio",
+   "resultado": "PENDIENTE_JUICIO",
+   "severidad": "BLOQUEANTE",
+   "evidencia": [],
+   "explicacion": "",
+   "criterio_para_llm": "Nada reservado a ley se delega al reglamento; nada reglamentario se petrifica en ley."
+  },
+  {
+   "id": "R2-03",
+   "capa": "racionalidad",
+   "nombre": "Habilitaciones reglamentarias",
+   "tipo": "heuristica",
+   "resultado": "PENDIENTE_JUICIO",
+   "severidad": "MAYOR",
+   "evidencia": [
+    {
+     "cita": "reglamento.",
+     "ubicacion": "articulado",
+     "fuente": "iniciativa"
+    }
+   ],
+   "explicacion": "Habilitaciones detectadas; el juicio (alcance, órgano, plazo, reserva) requiere LLM",
+   "criterio_para_llm": "Por habilitación: alcance, órgano preciso, fórmula imperativa/facultativa, plazo si imperativa; en blanco = MAYOR; deslegalización de reserva = BLOQUEANTE."
+  },
+  {
+   "id": "R2-06",
+   "capa": "racionalidad",
+   "nombre": "Lagunas estructurales",
+   "tipo": "juicio",
+   "resultado": "PENDIENTE_JUICIO",
+   "severidad": "MAYOR",
+   "evidencia": [],
+   "explicacion": "",
+   "criterio_para_llm": "Matriz conducta-sujeto-consecuencia-garantía completa: obligación con obligado, facultad con titular, procedimiento con autoridad/plazos, sanción con vía de impugnación."
+  },
+  {
+   "id": "R2-07",
+   "capa": "racionalidad",
+   "nombre": "Retroactividad",
+   "tipo": "juicio",
+   "resultado": "PENDIENTE_JUICIO",
+   "severidad": "BLOQUEANTE",
+   "evidencia": [],
+   "explicacion": "",
+   "criterio_para_llm": "Ninguna disposición opera retroactivamente en perjuicio."
+  },
+  {
+   "id": "R3-01",
+   "capa": "racionalidad",
+   "nombre": "Destinatarios identificables",
+   "tipo": "juicio",
+   "resultado": "PENDIENTE_JUICIO",
+   "severidad": "MAYOR",
+   "evidencia": [],
+   "explicacion": "",
+   "criterio_para_llm": "Los obligados pueden saber que lo están y qué se les exige."
+  },
+  {
+   "id": "R3-03",
+   "capa": "racionalidad",
+   "nombre": "Capacidad institucional",
+   "tipo": "juicio",
+   "resultado": "PENDIENTE_JUICIO",
+   "severidad": "MAYOR",
+   "evidencia": [],
+   "explicacion": "",
+   "criterio_para_llm": "Órganos/registros/procedimientos nuevos con operador, estructura y plazo."
+  },
+  {
+   "id": "R3-04",
+   "capa": "racionalidad",
+   "nombre": "Suficiencia presupuestaria",
+   "tipo": "heuristica",
+   "resultado": "PENDIENTE_JUICIO",
+   "severidad": "MAYOR",
+   "evidencia": [],
+   "explicacion": "",
+   "criterio_para_llm": "Obligaciones con costo tienen fuente o impacto razonado; 'sin impacto' con estructura nueva = implausible."
+  },
+  {
+   "id": "R3-06",
+   "capa": "racionalidad",
+   "nombre": "Legislación simbólica",
+   "tipo": "juicio",
+   "resultado": "PENDIENTE_JUICIO",
+   "severidad": "ANALITICO",
+   "evidencia": [],
+   "explicacion": "",
+   "criterio_para_llm": "Patrón fines grandilocuentes + obligaciones vagas + sin recursos + sin sanciones operables; hipótesis con evidencia, no suma."
+  },
+  {
+   "id": "R4-01",
+   "capa": "racionalidad",
+   "nombre": "Fines verificables",
+   "tipo": "juicio",
+   "resultado": "PENDIENTE_JUICIO",
+   "severidad": "MAYOR",
+   "evidencia": [],
+   "explicacion": "",
+   "criterio_para_llm": "La exposición formula fines evaluables, no solo declaraciones de valor."
+  },
+  {
+   "id": "R4-02",
+   "capa": "racionalidad",
+   "nombre": "Diagnóstico con evidencia",
+   "tipo": "juicio",
+   "resultado": "PENDIENTE_JUICIO",
+   "severidad": "MAYOR",
+   "evidencia": [],
+   "explicacion": "",
+   "criterio_para_llm": "Problema acreditado con datos/estudios citados y verificables."
+  },
+  {
+   "id": "R4-03",
+   "capa": "racionalidad",
+   "nombre": "Nexo medios-fines",
+   "tipo": "juicio",
+   "resultado": "PENDIENTE_JUICIO",
+   "severidad": "MAYOR",
+   "evidencia": [],
+   "explicacion": "",
+   "criterio_para_llm": "Cada fin con disposiciones que lo sirven y mecanismo causal; fin sin medio y medio sin fin se registran."
+  },
+  {
+   "id": "R5-00",
+   "capa": "racionalidad",
+   "nombre": "Intensidad de escrutinio",
+   "tipo": "juicio",
+   "resultado": "PENDIENTE_JUICIO",
+   "severidad": "PARAMETRO",
+   "evidencia": [],
+   "explicacion": "",
+   "criterio_para_llm": "Fijar estándar: estricto (categoría sospechosa o núcleo de derecho) u ordinario/deferente; toda calificación posterior bajo ese estándar."
+  },
+  {
+   "id": "R5-01",
+   "capa": "racionalidad",
+   "nombre": "Intervención en derechos",
+   "tipo": "juicio",
+   "resultado": "PENDIENTE_JUICIO",
+   "severidad": "CONTEXTO",
+   "evidencia": [],
+   "explicacion": "",
+   "criterio_para_llm": "Inventario de disposiciones que restringen/condicionan derechos; vacío => R5-02..05 NO_APLICA."
+  },
+  {
+   "id": "R5-02",
+   "capa": "racionalidad",
+   "nombre": "Fin legítimo",
+   "tipo": "juicio",
+   "resultado": "PENDIENTE_JUICIO",
+   "severidad": "BLOQUEANTE",
+   "evidencia": [],
+   "explicacion": "",
+   "criterio_para_llm": "Fin constitucionalmente admisible y explicitado."
+  },
+  {
+   "id": "R5-03",
+   "capa": "racionalidad",
+   "nombre": "Idoneidad",
+   "tipo": "juicio",
+   "resultado": "PENDIENTE_JUICIO",
+   "severidad": "MAYOR",
+   "evidencia": [],
+   "explicacion": "",
+   "criterio_para_llm": "La medida conduce siquiera parcialmente al fin (nexo empírico plausible)."
+  },
+  {
+   "id": "R5-04",
+   "capa": "racionalidad",
+   "nombre": "Necesidad",
+   "tipo": "juicio",
+   "resultado": "PENDIENTE_JUICIO",
+   "severidad": "MAYOR",
+   "evidencia": [],
+   "explicacion": "",
+   "criterio_para_llm": "Sin alternativa igualmente eficaz y menos lesiva; si la exposición no la descartó, registrarlo."
+  },
+  {
+   "id": "R5-05",
+   "capa": "racionalidad",
+   "nombre": "Proporcionalidad estricta",
+   "tipo": "juicio",
+   "resultado": "PENDIENTE_JUICIO",
+   "severidad": "MAYOR",
+   "evidencia": [],
+   "explicacion": "",
+   "criterio_para_llm": "Afectación no manifiestamente superior al beneficio; ponderación en una frase citable."
+  },
+  {
+   "id": "R5-05a",
+   "capa": "racionalidad",
+   "nombre": "Carril penal (art. 22)",
+   "tipo": "juicio",
+   "resultado": "PENDIENTE_JUICIO",
+   "severidad": "MAYOR",
+   "evidencia": [],
+   "explicacion": "",
+   "criterio_para_llm": "Si crea/modifica delitos o penas: (a) proporcionalidad de la pena con tabla comparativa contra el corpus; (b) ultima ratio; (c) remisión a R1-02 y R2-02. Sustituye R5-03..05 para medir la pena."
+  },
+  {
+   "id": "R5-06",
+   "capa": "racionalidad",
+   "nombre": "Igualdad y no discriminación",
+   "tipo": "juicio",
+   "resultado": "PENDIENTE_JUICIO",
+   "severidad": "MAYOR",
+   "evidencia": [],
+   "explicacion": "",
+   "criterio_para_llm": "Exclusiones implícitas, categorías sospechosas, perspectiva de género e interseccional."
+  }
+ ],
+ "dictamen_por_capa": {
+  "nucleo_triaje": "PENDIENTE_JUICIO",
+  "mtl": "PENDIENTE_JUICIO",
+  "csn": "PENDIENTE_JUICIO",
+  "racionalidad": "PENDIENTE_JUICIO"
+ },
+ "dictamen_global": "PRELIMINAR_PENDIENTE_JUICIO",
+ "nota": "Las verificaciones PENDIENTE_JUICIO llevan criterio_para_llm embebido: resolverlas con LLM y re-agregar."
+}

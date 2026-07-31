@@ -71,6 +71,12 @@ class Config:
     # LLM real y tienes worker, para no bloquear la petición HTTP con las llamadas.
     NORMTRACE_ASYNC = _as_bool(env.get("NORMTRACE_ASYNC", "False"))
 
+    # --- PAIL-MX (módulo seleccionable: técnica legislativa + sistematización) ---
+    # ¿Despachar el análisis PAIL a Celery? Igual que NORMTRACE_ASYNC: por defecto
+    # False (síncrono en la misma petición, sin worker). El módulo está OFF salvo
+    # que el escáner reciba pail=true; con pail=false no afecta al flujo actual.
+    PAIL_ASYNC = _as_bool(env.get("PAIL_ASYNC", "False"))
+
     # --- Caché (Redis) ---
     CACHE = {
         "CACHE_REDIS_HOST": _cache_host,

@@ -27,8 +27,12 @@ beat_schedule = {
 }
 
 app.conf.beat_schedule = beat_schedule
-# La codificación NormTrace va a su propia cola para no bloquear el tagger.
-_TASK_ROUTES = {"normtrace.analyze_units": {"queue": "normtrace"}}
+# La codificación NormTrace y el análisis PAIL van a su propia cola para no
+# bloquear el tagger (solo aplica si se despachan asíncronos, con worker).
+_TASK_ROUTES = {
+    "normtrace.analyze_units": {"queue": "normtrace"},
+    "pail.analyze_initiative": {"queue": "pail"},
+}
 app.conf.task_routes = _TASK_ROUTES
 
 # Resiliencia de arranque: en un PaaS el broker puede no estar listo cuando el
@@ -55,3 +59,4 @@ from .tagger import *
 from .validate import *
 from .scanned import *
 from . import normtrace
+from . import pail
