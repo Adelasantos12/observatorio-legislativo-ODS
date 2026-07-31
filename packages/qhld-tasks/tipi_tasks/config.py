@@ -44,6 +44,21 @@ _DEFAULT_SCHEMA = str(
 )
 NORMTRACE_SCHEMA = env.get('NORMTRACE_SCHEMA', _DEFAULT_SCHEMA)
 
+# --- PAIL-MX (análisis ex ante de iniciativas; módulo seleccionable) ----------
+# Rulebook (43 verificaciones) y esquema de salida: fuente de verdad de la autora
+# en normtrace/schemas_runtime/; el motor los LEE, nunca los edita.
+PAIL_PROTOCOL = env.get('PAIL_PROTOCOL', str(
+    _REPO_ROOT / "normtrace" / "schemas_runtime" / "pail_protocol.json"))
+PAIL_SCHEMA = env.get('PAIL_SCHEMA', str(
+    _REPO_ROOT / "normtrace" / "schemas_runtime" / "pail_dictamen.schema.json"))
+# Ruta de los índices del corpus CRN (manifest/articles/crossrefs.json). Las 315
+# leyes NO van a git: se generan con crn_indexer sobre el vault y se montan en un
+# volumen en producción (ver docs/DEPLOY_RAILWAY.md). Vacío o sin índices → la capa
+# CSN degrada sola a NO_VERIFICABLE (lo maneja el motor, no se envuelve).
+PAIL_INDICES_PATH = env.get('PAIL_INDICES_PATH', '')
+# Tope de llamadas LLM por dictamen en la pasada de juicio (control de costo).
+PAIL_LLM_MAX_JUICIOS = int(env.get('PAIL_LLM_MAX_JUICIOS', '40'))
+
 TEMPLATE_DIR = env.get('TEMPLATE_DIR', None)
 # validation timeout in days
 VALIDATION_TIMEOUT = int(env.get('VALIDATION_TIMEOUT', '30'))
