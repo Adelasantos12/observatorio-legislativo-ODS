@@ -49,6 +49,18 @@
             <br />
             <small class="u-color-secondary">{{ t('scanner.deep.hint') }}</small>
           </p>
+          <p class="c-input-label u-block">
+            <label>
+              <input type="checkbox" v-model="pailMode" :disabled="inProgress" />
+              {{ t('scanner.pail.toggle') }}
+            </label>
+            <br />
+            <small class="u-color-secondary">{{ t('scanner.pail.hint') }}</small>
+            <label v-if="pailMode" class="u-block" style="margin-top:6px">
+              <input type="checkbox" v-model="pailLlm" :disabled="inProgress" />
+              <small>{{ t('scanner.pail.llmToggle') }}</small>
+            </label>
+          </p>
           <p>
             <button
               id="start"
@@ -101,6 +113,13 @@
             :loading="structuralInProgress"
           />
 
+          <!-- Módulo seleccionable PAIL: técnica legislativa + sistematización. -->
+          <pail-panel
+            v-if="pailMode && (pailInProgress || pail)"
+            :dictamen="pail"
+            :loading="pailInProgress"
+          />
+
           <!-- Begin CTAs -->
           <div
             class="o-grid o-grid--wide o-grid--center u-bg-primary-light u-padding-top-8 u-padding-bottom-8 u-margin-top-8"
@@ -134,6 +153,7 @@ import {
 } from '@politicalwatch/tipi-uikit';
 import ScannerVisualizations from '@/components/scanner-visualizations.vue';
 import StructuralPanel from '@/components/structural-panel.vue';
+import PailPanel from '@/components/pail-panel.vue';
 import Swal from 'sweetalert2';
 import VueScrollTo from 'vue-scrollto';
 import ClipboardJS from 'clipboard';
@@ -155,6 +175,12 @@ const scanned = ref({});
 const deepMode = ref(false);
 const structural = ref(null);
 const structuralInProgress = ref(false);
+
+// Módulo seleccionable PAIL (técnica legislativa + sistematización).
+const pailMode = ref(false);
+const pailLlm = ref(false);
+const pail = ref(null);
+const pailInProgress = ref(false);
 
 const subtitle = computed(() => {
   return estimatedTime.value
@@ -180,6 +206,8 @@ function cleanResult() {
   errors.value = null;
   structural.value = null;
   structuralInProgress.value = false;
+  pail.value = null;
+  pailInProgress.value = false;
 }
 
 function cleanTextAndResult() {
@@ -195,13 +223,26 @@ function annotate() {
   cleanResult();
   inProgress.value = true;
 
+  if (pailMode.value) pailInProgress.value = true;
+
   api
-    .annotate(inputText.value, inputFile.value, deepMode.value)
+    .annotate(
+      inputText.value,
+      inputFile.value,
+      deepMode.value,
+      pailMode.value,
+      pailLlm.value,
+    )
     .then((response) => {
       if (response.data.status === 'SUCCESS') {
         result.value = response.data.result;
         excerptText.value = response.data.excerpt;
         inProgress.value = false;
+        // Módulo PAIL (síncrono): el dictamen viene en la misma respuesta.
+        if (pailMode.value && response.data.pail) {
+          pail.value = response.data.pail;
+        }
+        pailInProgress.value = false;
         VueScrollTo.scrollTo('#result', 1500);
         // Etapa 3 (codificación NormTrace). Dos modos:
         // - síncrono (por defecto): el bloque `structural` viene en la misma
@@ -236,6 +277,7 @@ function annotate() {
           'Error desconocido';
       }
       inProgress.value = false;
+      pailInProgress.value = false;
     });
 }
 

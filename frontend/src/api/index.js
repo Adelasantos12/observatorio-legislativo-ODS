@@ -30,7 +30,7 @@ export default {
       return [config.URL, '/topics/', topicId].join('');
     }
   },
-  annotate(text, file, deep = false) {
+  annotate(text, file, deep = false, pail = false, pailLlm = false) {
     let formData = new FormData();
     formData.append('text', text);
     formData.append('file', file);
@@ -39,6 +39,11 @@ export default {
       // Etapa 2 (segmentación) + etapa 3 (codificación NormTrace asíncrona).
       formData.append('segment', 'legal');
       formData.append('deep', 'true');
+    }
+    if (pail) {
+      // Módulo seleccionable PAIL (técnica legislativa + sistematización).
+      formData.append('pail', 'true');
+      if (pailLlm) formData.append('pail_llm', 'true');
     }
 
     return axios.post(getEndpoint(), formData);
