@@ -202,3 +202,36 @@ curl "https://<api>.up.railway.app/minutas/" | head -c 300           # minutas !
 - Escalado: el `worker` puede replicarse; el `-B` (beat) debe correr en **una
   sola** réplica para no duplicar tareas periódicas. Si escalas el worker,
   separa un servicio `beat` (`celery -A tipi_tasks beat`) y quita `-B` del worker.
+
+## 6. Corpus CRN para el módulo PAIL (opcional)
+
+El módulo seleccionable **PAIL** (técnica legislativa + sistematización) usa un
+corpus de leyes federales indexado. **El corpus NO va a git**: son ~315 leyes
+en Markdown (el *vault*), fuera del repositorio.
+
+**Volumen de datos.** El vault de origen (~315 `.md`) pesa del orden de decenas
+de MB; los índices generados (`manifest.json`, `articles.json`, `crossrefs.json`)
+son unos pocos MB. En Railway se montan en un **volumen persistente**, no en la
+imagen (los `Dockerfile` hornean código, no datos).
+
+**Generar los índices** (una vez, desde el vault, en tu máquina o en el volumen):
+
+```bash
+python3 packages/qhld-tasks/tipi_tasks/crn_indexer.py index "<ruta_al_vault>" "<ruta_indices>"
+# reporta: Normas | Artículos | Remisiones | Advertencias
+```
+
+**Variables de entorno** (servicio `api` y, si se despacha async, `worker`):
+
+| Variable | Descripción | Default |
+|---|---|---|
+| `PAIL_INDICES_PATH` | Ruta de los índices CRN (carpeta con los 3 `.json`). | vacío |
+| `PAIL_ASYNC` | Despachar PAIL a Celery (requiere worker). | `False` (síncrono) |
+| `PAIL_PROTOCOL` | Ruta del rulebook. | `normtrace/schemas_runtime/pail_protocol.json` |
+| `PAIL_SCHEMA` | Ruta del esquema de salida. | `normtrace/schemas_runtime/pail_dictamen.schema.json` |
+| `PAIL_LLM_MAX_JUICIOS` | Tope de llamadas LLM por dictamen (con `pail_llm=true`). | `40` |
+
+**Sin `PAIL_INDICES_PATH` (o sin índices):** el módulo sigue funcionando; las
+verificaciones de la capa CSN (contra corpus) se emiten `NO_VERIFICABLE` — el
+motor degrada solo, no falla. El resto del dictamen (técnica legislativa,
+triaje) corre normal.
