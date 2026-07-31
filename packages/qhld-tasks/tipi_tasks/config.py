@@ -51,11 +51,14 @@ PAIL_PROTOCOL = env.get('PAIL_PROTOCOL', str(
     _REPO_ROOT / "normtrace" / "schemas_runtime" / "pail_protocol.json"))
 PAIL_SCHEMA = env.get('PAIL_SCHEMA', str(
     _REPO_ROOT / "normtrace" / "schemas_runtime" / "pail_dictamen.schema.json"))
-# Ruta de los índices del corpus CRN (manifest/articles/crossrefs.json). Las 315
-# leyes NO van a git: se generan con crn_indexer sobre el vault y se montan en un
-# volumen en producción (ver docs/DEPLOY_RAILWAY.md). Vacío o sin índices → la capa
-# CSN degrada sola a NO_VERIFICABLE (lo maneja el motor, no se envuelve).
-PAIL_INDICES_PATH = env.get('PAIL_INDICES_PATH', '')
+# Ruta de los índices del corpus CRN (manifest/articles/crossrefs.json). Por
+# defecto los lee de normtrace/crn_indices/ (índices compactos ~6 MB que SÍ van al
+# repo y viajan en la imagen); el VAULT de origen (315 leyes .md) no va a git. Se
+# puede sobreescribir con PAIL_INDICES_PATH (p. ej. un volumen). Si la carpeta no
+# existe o está vacía, la capa CSN degrada sola a NO_VERIFICABLE (lo maneja el
+# motor, no se envuelve). Ver docs/DEPLOY_RAILWAY.md.
+PAIL_INDICES_PATH = env.get('PAIL_INDICES_PATH', str(
+    _REPO_ROOT / "normtrace" / "crn_indices"))
 # Tope de llamadas LLM por dictamen en la pasada de juicio (control de costo).
 PAIL_LLM_MAX_JUICIOS = int(env.get('PAIL_LLM_MAX_JUICIOS', '40'))
 
