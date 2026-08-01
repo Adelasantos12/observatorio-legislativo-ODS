@@ -168,8 +168,17 @@ def _ocr_pdf(path: str) -> str:
     except ImportError:
         logging.warning("OCR de PDF no disponible: instala pdf2image y pytesseract.")
         return ""
-    max_pages = int(os.environ.get("TAGGER_OCR_MAX_PAGES", "20"))
-    dpi = int(os.environ.get("TAGGER_OCR_DPI", "200"))
+
+    try:
+        max_pages = int(os.environ.get("TAGGER_OCR_MAX_PAGES", "20") or "20")
+    except ValueError:
+        max_pages = 20
+
+    try:
+        dpi = int(os.environ.get("TAGGER_OCR_DPI", "200") or "200")
+    except ValueError:
+        dpi = 200
+
     try:
         images = convert_from_path(path, dpi=dpi, first_page=1, last_page=max_pages)
     except Exception as exc:
@@ -215,6 +224,7 @@ def _extract_text_from_file(file: UploadFile) -> str:
     suffix = splitext(file.filename or "")[1] or (".pdf" if kind == "pdf" else "")
     with tempfile.NamedTemporaryFile(prefix="tipiscanner_", suffix=suffix) as f:
         f.write(raw)
+        f.flush()
         f.seek(0)
         if kind == "txt":
             text = _decode_text(raw)
@@ -385,7 +395,7 @@ def extract(
     except HTTPException:
         raise
     except Exception as e:
-        log.error(e)
+        log.error("Internal server error in extract endpoint", exc_info=True)
         raise HTTPException(status_code=500, detail="Internal server error")
 
 
