@@ -194,6 +194,22 @@ def test_normaliza_encabezado_a_media_linea(con_indices):
     assert pail.analizar_texto(solo_ref, mtl=True)["articulos_detectados"] == 0
 
 
+def test_normaliza_encabezado_entrecomillado(con_indices):
+    """El texto reformado va entrecomillado y la extracción de PDF pega la comilla
+    al encabezado (“Artículo 111.”); debe segmentarse igual, y el chapeau
+    'Artículo único:' (minúscula, dos puntos) también."""
+    texto = (
+        'DECRETO por el que se reforma la Ley de Migración.\n\n'
+        'Artículo único: se reforman los artículos 109 y 111 para quedar como sigue:\n\n'
+        '“Artículo 109. Todo presentado tendrá derecho a la asistencia consular.”\n\n'
+        '“Artículo 111. El Instituto resolverá en un plazo de 15 días.”\n\n'
+        'TRANSITORIOS\nPrimero. Entrará en vigor al día siguiente.'
+    )
+    d = pail.analizar_texto(texto, mtl=True)
+    assert d["articulos_detectados"] >= 2
+    assert d["dictamen_global"] != "NO_EVALUABLE_INSUMO"
+
+
 def test_puerta_de_insumo_sin_articulado(con_indices):
     """Un texto sin articulado segmentable (una nota, no una iniciativa) →
     NO_EVALUABLE_INSUMO con nota_insumo, sin CUMPLE vacuos."""

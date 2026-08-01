@@ -170,22 +170,30 @@ def _resolver_juicios(dictamen: dict) -> dict:
 
 # --- Normalización del insumo (envoltorio, no toca el motor) ------------------
 
-# Encabezado de artículo del decreto que la extracción de PDF suele dejar a media
-# línea ("...para quedar como sigue: Artículo 11. ..."). Se re-ancla a inicio de
-# línea para que el segmentador del motor lo reconozca. Solo se promueve el
-# encabezado CAPITALIZADO ("Artículo" con A mayúscula) precedido de un signo de
-# cierre (. : ; )), que en un decreto es casi siempre un encabezado, no una
-# remisión (esas van en minúscula: "el artículo 27 de la Ley..."). No se toca la
-# lógica del motor: solo se mejora la forma del texto de entrada.
-_ART_A_INICIO = re.compile(
-    r"(?<=[\.\:;\)])[ \t]+(Art[íi]culo\s+(?:\d|[ÚU]nico|Primero|Segundo|Tercero|"
-    r"Cuarto|Quinto|Sexto|S[eé]ptimo|Octavo|Noveno|D[eé]cimo))"
-)
+# La extracción de PDF ensucia los encabezados de artículo del decreto y el
+# segmentador del motor exige "Artículo" a inicio de línea. Se normaliza el texto
+# de entrada (SIN tocar la lógica del motor) para tres patrones reales de la
+# Gaceta: (1) el texto reformado va entrecomillado, así que el encabezado queda
+# pegado a una comilla de apertura («"Artículo 111.»); (2) el encabezado quedó a
+# media línea tras un signo de cierre; (3) el chapeau "Artículo único:" en
+# minúscula y con dos puntos. NO se promueven remisiones en minúscula
+# ("el artículo 71 de la Constitución"), que no son encabezados.
+_COMILLAS = "“”«»‹›\"'`"
+_ENCABEZADO = (r"(?:\d|[ÚU]nico|Primero|Segundo|Tercero|Cuarto|Quinto|Sexto|"
+               r"S[eé]ptimo|Octavo|Noveno|D[eé]cimo)")
+_ART_LINEA_COMILLA = re.compile(rf"(?m)^[ \t{re.escape(_COMILLAS)}]+(Art[íi]culo\s)")
+_ART_MEDIA_LINEA = re.compile(
+    rf"(?<=[\.\:;\)])[ \t{re.escape(_COMILLAS)}]*(Art[íi]culo\s+{_ENCABEZADO})")
+_ART_UNICO_MIN = re.compile(r"(Art[íi]culo\s+)[úu]nico\s*[:.]")
 
 
 def _normalizar_insumo(texto: str) -> str:
-    """Ancla los encabezados de artículo a inicio de línea (ver _ART_A_INICIO)."""
-    return _ART_A_INICIO.sub(lambda m: "\n" + m.group(1), texto)
+    """Limpia los encabezados de artículo para que el segmentador del motor los
+    reconozca (ver arriba), sin alterar el motor ni crear artículos falsos."""
+    texto = _ART_LINEA_COMILLA.sub(r"\1", texto)
+    texto = _ART_MEDIA_LINEA.sub(lambda m: "\n" + m.group(1), texto)
+    texto = _ART_UNICO_MIN.sub(r"\1Único.", texto)
+    return texto
 
 
 # --- API de la etapa ----------------------------------------------------------
