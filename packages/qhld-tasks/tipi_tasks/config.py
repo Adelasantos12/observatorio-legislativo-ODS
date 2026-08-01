@@ -62,6 +62,9 @@ PAIL_INDICES_PATH = env.get('PAIL_INDICES_PATH', str(
     _REPO_ROOT / "normtrace" / "crn_indices"))
 # Tope de llamadas LLM por dictamen en la pasada de juicio (control de costo).
 PAIL_LLM_MAX_JUICIOS = int(env.get('PAIL_LLM_MAX_JUICIOS', '40'))
+# Concurrencia de la pasada de juicio: las verificaciones se resuelven en paralelo
+# para no exceder el tiempo de la petición HTTP con decenas de llamadas seguidas.
+PAIL_LLM_CONCURRENCY = int(env.get('PAIL_LLM_CONCURRENCY', '6'))
 
 TEMPLATE_DIR = env.get('TEMPLATE_DIR', None)
 # validation timeout in days

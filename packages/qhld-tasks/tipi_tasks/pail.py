@@ -20,6 +20,7 @@ Contrato (INTEGRACION):
 
 import json
 import re
+from concurrent.futures import ThreadPoolExecutor
 from functools import lru_cache
 from pathlib import Path
 
@@ -97,25 +98,12 @@ def _juicio_user(h: dict, contexto: dict) -> str:
     )
 
 
-def _resolver_juicios(dictamen: dict) -> dict:
-    """Resuelve las PENDIENTE_JUICIO con el LLM y re-agrega con el motor."""
-    rb = _rulebook()
-    validos = set(rb["resultados_validos"])
-    system = _juicio_system(rb)
-    resueltos = 0
-    for h in dictamen["verificaciones"]:
-        if h.get("resultado") != "PENDIENTE_JUICIO":
-            continue
-        if resueltos >= config.PAIL_LLM_MAX_JUICIOS:
-            break
-        try:
-            text = llm.complete(system, _juicio_user(h, dictamen.get("contexto", {})))
-        except Exception as e:  # noqa: BLE001 — fallo del proveedor: no bloquea el dictamen
-            h["resultado"] = "NO_EVALUABLE"
-            h["explicacion"] = f"juicio no resuelto (proveedor LLM: {e})"
-            h.pop("criterio_para_llm", None)
-            resueltos += 1
-            continue
+def _resolver_una(h: dict, system: str, contexto: dict, validos: set) -> str | None:
+    """Resuelve UNA verificación con el LLM. Muta `h` in situ y devuelve el mensaje
+    de error del proveedor si lo hubo (para superficie/diagnóstico), o None."""
+    err = None
+    try:
+        text = llm.complete(system, _juicio_user(h, contexto))
         data = _parse_json(text) or {}
         res = data.get("resultado")
         if res in validos and res != "PENDIENTE_JUICIO":
@@ -126,8 +114,34 @@ def _resolver_juicios(dictamen: dict) -> dict:
         else:
             h["resultado"] = "NO_EVALUABLE"
             h["explicacion"] = "el modelo no devolvió un resultado válido con la evidencia provista"
-        h.pop("criterio_para_llm", None)
-        resueltos += 1
+    except Exception as e:  # noqa: BLE001 — fallo del proveedor: no bloquea el dictamen
+        h["resultado"] = "NO_EVALUABLE"
+        h["explicacion"] = f"juicio no resuelto (proveedor LLM: {e})"
+        err = str(e)
+    h.pop("criterio_para_llm", None)
+    return err
+
+
+def _resolver_juicios(dictamen: dict) -> dict:
+    """Resuelve las PENDIENTE_JUICIO con el LLM (EN PARALELO, para no exceder el
+    tiempo de la petición con decenas de llamadas secuenciales) y re-agrega con el
+    motor. Si el proveedor falla de forma sistémica (clave/modelo/cuota), se
+    expone `llm_error` para diagnóstico en vez de dejar todo en NO_EVALUABLE mudo."""
+    rb = _rulebook()
+    validos = set(rb["resultados_validos"])
+    system = _juicio_system(rb)
+    contexto = dictamen.get("contexto", {})
+    pendientes = [h for h in dictamen["verificaciones"]
+                  if h.get("resultado") == "PENDIENTE_JUICIO"][:config.PAIL_LLM_MAX_JUICIOS]
+
+    errores = []
+    if pendientes:
+        max_workers = max(1, min(config.PAIL_LLM_CONCURRENCY, len(pendientes)))
+        with ThreadPoolExecutor(max_workers=max_workers) as ex:
+            for err in ex.map(lambda h: _resolver_una(h, system, contexto, validos), pendientes):
+                if err:
+                    errores.append(err)
+
     # Re-agregación con las funciones del propio motor (no se reimplementan): el
     # dictamen y el bloque `resumen` se recalculan sobre los resultados ya resueltos,
     # así sube la cobertura y bajan las verificaciones sin evaluar.
@@ -139,10 +153,18 @@ def _resolver_juicios(dictamen: dict) -> dict:
     dictamen["cobertura_evaluada"] = cobertura
     dictamen["resumen"] = pail_engine.resumen_ejecutivo(
         dictamen["verificaciones"], cobertura, sin_articulado)
+    resueltas = len(pendientes) - len(errores)
     dictamen["nota"] = (
-        f"Pasada de juicio LLM aplicada: {resueltos} verificacion(es) resuelta(s) "
+        f"Pasada de juicio LLM: {resueltas}/{len(pendientes)} verificacion(es) resuelta(s) "
         "solo con la evidencia extraída y las citas del corpus."
     )
+    if errores:
+        # Error sistémico del proveedor: se expone el primer mensaje real (p. ej.
+        # 'HTTP 404: model ... not found' o 'API key not valid') para diagnóstico.
+        dictamen["llm_error"] = (
+            f"{len(errores)}/{len(pendientes)} verificaciones no se pudieron evaluar con el "
+            f"LLM. Revisa LLM_PROVIDER/LLM_MODEL/LLM_API_KEY. Primer error: {errores[0][:300]}"
+        )
     return dictamen
 
 
