@@ -168,13 +168,33 @@ def _resolver_juicios(dictamen: dict) -> dict:
     return dictamen
 
 
+# --- Normalización del insumo (envoltorio, no toca el motor) ------------------
+
+# Encabezado de artículo del decreto que la extracción de PDF suele dejar a media
+# línea ("...para quedar como sigue: Artículo 11. ..."). Se re-ancla a inicio de
+# línea para que el segmentador del motor lo reconozca. Solo se promueve el
+# encabezado CAPITALIZADO ("Artículo" con A mayúscula) precedido de un signo de
+# cierre (. : ; )), que en un decreto es casi siempre un encabezado, no una
+# remisión (esas van en minúscula: "el artículo 27 de la Ley..."). No se toca la
+# lógica del motor: solo se mejora la forma del texto de entrada.
+_ART_A_INICIO = re.compile(
+    r"(?<=[\.\:;\)])[ \t]+(Art[íi]culo\s+(?:\d|[ÚU]nico|Primero|Segundo|Tercero|"
+    r"Cuarto|Quinto|Sexto|S[eé]ptimo|Octavo|Noveno|D[eé]cimo))"
+)
+
+
+def _normalizar_insumo(texto: str) -> str:
+    """Ancla los encabezados de artículo a inicio de línea (ver _ART_A_INICIO)."""
+    return _ART_A_INICIO.sub(lambda m: "\n" + m.group(1), texto)
+
+
 # --- API de la etapa ----------------------------------------------------------
 
 def analizar_texto(texto: str, mtl: bool = True, llm_juicio: bool = False) -> dict:
     """Corre el motor sobre `texto` y devuelve el dictamen. Con `llm_juicio=True`
     resuelve las PENDIENTE_JUICIO. Valida contra el esquema y adjunta los avisos
     de validación si los hubiera (no debería, si el esquema y el motor coinciden)."""
-    dictamen = pail_engine.analizar(texto, _rulebook(), _indices(), mtl)
+    dictamen = pail_engine.analizar(_normalizar_insumo(texto), _rulebook(), _indices(), mtl)
     if llm_juicio:
         dictamen = _resolver_juicios(dictamen)
     errores = validate_dictamen(dictamen)
