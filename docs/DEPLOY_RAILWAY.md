@@ -245,7 +245,15 @@ en un volumen de Railway y apunta `PAIL_INDICES_PATH` a esa ruta.
 **Pasada de juicio LLM (opcional).** Con `pail_llm=true`, las verificaciones de
 juicio (las que requieren criterio, ~28) se resuelven con un modelo de lenguaje,
 ceñido a la evidencia extraída. Usa **el mismo proveedor que el codificador
-NormTrace**: define en el servicio `api` (y `worker` si es async)
-`LLM_PROVIDER=anthropic` (u `openai`) y `LLM_API_KEY`. Con eso la **cobertura**
-del dictamen sube y deja de ser `PRELIMINAR_COBERTURA_INSUFICIENTE`. Sin clave,
-PAIL corre igual pero esas verificaciones quedan sin evaluar (cobertura baja).
+NormTrace**: define en el servicio `api` (y `worker` si es async) `LLM_PROVIDER`,
+`LLM_API_KEY` y (opcional) `LLM_MODEL`. Proveedores soportados y su modelo típico:
+
+| `LLM_PROVIDER` | `LLM_API_KEY` | `LLM_MODEL` (ejemplo) |
+|---|---|---|
+| `anthropic` | clave de Anthropic | `claude-sonnet-5` |
+| `openai` | clave de OpenAI | `gpt-4o-mini` |
+| `gemini` | clave de Google AI Studio | `gemini-1.5-flash` o `gemini-2.0-flash` |
+
+Con la clave puesta, la **cobertura** del dictamen sube y deja de ser
+`PRELIMINAR_COBERTURA_INSUFICIENTE`. Sin clave, PAIL corre igual pero esas
+verificaciones quedan sin evaluar (cobertura baja).

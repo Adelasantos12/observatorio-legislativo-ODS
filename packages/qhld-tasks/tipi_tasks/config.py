@@ -14,8 +14,9 @@ RESULT_BACKEND = resolve_broker(env.get('RESULT_BACKEND'), 3, 'redis://redis:637
 # --- NormTrace (codificación estructural por LLM, fase F4) --------------------
 # Proveedor de LLM. "mock" (por defecto) usa un codificador heurístico local
 # determinista: no requiere clave ni dependencias de pago, y deja el sistema
-# ejecutable y testeable sin gastar tokens. "anthropic"/"openai" llaman al
-# proveedor real vía HTTP usando LLM_API_KEY.
+# ejecutable y testeable sin gastar tokens. "anthropic" | "openai" | "gemini"
+# llaman al proveedor real vía HTTP usando LLM_API_KEY. Con LLM_MODEL se elige el
+# modelo (p. ej. gemini-1.5-flash, gemini-2.0-flash, gpt-4o-mini, claude-sonnet-5).
 LLM_PROVIDER = env.get('LLM_PROVIDER', 'mock')
 LLM_MODEL = env.get('LLM_MODEL', '')
 LLM_API_KEY = env.get('LLM_API_KEY', '')

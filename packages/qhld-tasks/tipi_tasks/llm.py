@@ -32,6 +32,8 @@ def complete(system: str, user: str) -> str:
         return _anthropic(system, user)
     if provider == "openai":
         return _openai(system, user)
+    if provider == "gemini":
+        return _gemini(system, user)
     raise LLMError(f"Proveedor LLM no soportado: {provider!r}")
 
 
@@ -91,3 +93,30 @@ def _openai(system: str, user: str) -> str:
         return body["choices"][0]["message"]["content"]
     except (KeyError, IndexError, TypeError) as e:
         raise LLMError(f"Respuesta inesperada de OpenAI: {e}")
+
+
+def _gemini(system: str, user: str) -> str:
+    # API de Google (Gemini). La clave va en el header x-goog-api-key (no en la
+    # URL, para no filtrarla en logs). system_instruction lleva el blindaje;
+    # temperature 0 para estabilidad.
+    base = config.LLM_API_BASE or "https://generativelanguage.googleapis.com"
+    model = config.LLM_MODEL or "gemini-1.5-flash"
+    body = _post_json(
+        f"{base}/v1beta/models/{model}:generateContent",
+        {
+            "content-type": "application/json",
+            "x-goog-api-key": config.LLM_API_KEY,
+        },
+        {
+            "system_instruction": {"parts": [{"text": system}]},
+            "contents": [{"role": "user", "parts": [{"text": user}]}],
+            "generationConfig": {"temperature": 0, "maxOutputTokens": 1024},
+        },
+    )
+    try:
+        return "".join(
+            part.get("text", "")
+            for part in body["candidates"][0]["content"]["parts"]
+        )
+    except (KeyError, IndexError, TypeError) as e:
+        raise LLMError(f"Respuesta inesperada de Gemini: {e}")
