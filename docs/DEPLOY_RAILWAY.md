@@ -252,7 +252,7 @@ NormTrace**: define en el servicio `api` (y `worker` si es async) `LLM_PROVIDER`
 |---|---|---|
 | `anthropic` | clave de Anthropic | `claude-sonnet-5` |
 | `openai` | clave de OpenAI | `gpt-4o-mini` |
-| `gemini` | clave de Google AI Studio | `gemini-1.5-flash` o `gemini-2.0-flash` |
+| `gemini` | clave de Google AI Studio | `gemini-2.5-flash` (o `gemini-flash-latest`) |
 
 Con la clave puesta, la **cobertura** del dictamen sube y deja de ser
 `PRELIMINAR_COBERTURA_INSUFICIENTE`. Sin clave, PAIL corre igual pero esas

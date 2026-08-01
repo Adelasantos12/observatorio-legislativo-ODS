@@ -109,7 +109,10 @@ def _gemini(system: str, user: str) -> str:
     # URL, para no filtrarla en logs). system_instruction lleva el blindaje;
     # temperature 0 para estabilidad.
     base = config.LLM_API_BASE or "https://generativelanguage.googleapis.com"
-    model = config.LLM_MODEL or "gemini-2.0-flash"
+    # Google retira modelos versionados con frecuencia (1.5-flash y 2.0-flash ya
+    # están fuera). Default a uno vigente; se puede sobreescribir con LLM_MODEL
+    # (p. ej. gemini-flash-latest, que Google mantiene apuntando al flash actual).
+    model = config.LLM_MODEL or "gemini-2.5-flash"
     body = _post_json(
         f"{base}/v1beta/models/{model}:generateContent",
         {
@@ -119,7 +122,9 @@ def _gemini(system: str, user: str) -> str:
         {
             "system_instruction": {"parts": [{"text": system}]},
             "contents": [{"role": "user", "parts": [{"text": user}]}],
-            "generationConfig": {"temperature": 0, "maxOutputTokens": 2048},
+            # maxOutputTokens holgado: los modelos 2.5 gastan tokens en "thinking"
+            # antes del texto; con poco margen devolverían respuesta vacía.
+            "generationConfig": {"temperature": 0, "maxOutputTokens": 4096},
         },
     )
     if isinstance(body, dict) and body.get("error"):
