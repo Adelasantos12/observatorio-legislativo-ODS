@@ -192,6 +192,22 @@ def test_puerta_de_insumo_sin_articulado(con_indices):
     assert pail.validate_dictamen(d) == []
 
 
+def test_llm_error_sistemico_se_expone(monkeypatch, con_indices):
+    """Si el proveedor falla (clave/modelo/cuota), el dictamen expone `llm_error`
+    con el motivo real en vez de dejar todo en NO_EVALUABLE sin explicación."""
+    def boom(system, user):
+        raise Exception("HTTP 404 del proveedor LLM: model gemini-1.5-flash not found")
+
+    monkeypatch.setattr(config, "LLM_PROVIDER", "gemini")
+    monkeypatch.setattr(config, "LLM_API_KEY", "x")
+    monkeypatch.setattr(pail.llm, "complete", boom)
+
+    d = pail.analizar_texto(INICIATIVA, mtl=True, llm_juicio=True)
+    assert "llm_error" in d
+    assert "404" in d["llm_error"] or "not found" in d["llm_error"]
+    assert pail.validate_dictamen(d) == []
+
+
 def test_llm_sin_evidencia_suficiente_es_no_evaluable(monkeypatch, con_indices):
     # El modelo responde algo inválido → la envoltura lo marca NO_EVALUABLE.
     monkeypatch.setattr(config, "LLM_PROVIDER", "anthropic")
