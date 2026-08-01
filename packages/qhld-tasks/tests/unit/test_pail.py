@@ -179,6 +179,21 @@ def test_cobertura_insuficiente_no_es_viable(con_indices):
     assert d["dictamen_global"] == "PRELIMINAR_COBERTURA_INSUFICIENTE"
 
 
+def test_normaliza_encabezado_a_media_linea(con_indices):
+    """La extracción de PDF suele dejar el encabezado del artículo a media línea
+    ('...para quedar como sigue: Artículo 11. ...'); el envoltorio lo re-ancla para
+    que el motor lo segmente, sin promover remisiones en minúscula."""
+    midline = ("DECRETO. Se reforma el artículo 11 para quedar como sigue: "
+               "Artículo 11. Todos los habitantes tienen derecho a la cultura. "
+               "TRANSITORIOS Primero. Entrará en vigor al día siguiente.")
+    d = pail.analizar_texto(midline, mtl=True)
+    assert d["articulos_detectados"] >= 1
+    assert d["dictamen_global"] != "NO_EVALUABLE_INSUMO"
+    # Una remisión en minúscula no debe convertirse en artículo.
+    solo_ref = "Con fundamento en el artículo 71 fracción II de la Constitución."
+    assert pail.analizar_texto(solo_ref, mtl=True)["articulos_detectados"] == 0
+
+
 def test_puerta_de_insumo_sin_articulado(con_indices):
     """Un texto sin articulado segmentable (una nota, no una iniciativa) →
     NO_EVALUABLE_INSUMO con nota_insumo, sin CUMPLE vacuos."""
