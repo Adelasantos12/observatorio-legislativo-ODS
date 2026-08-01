@@ -17,6 +17,11 @@
         </span>
       </p>
 
+      <!-- Aviso de fallo del LLM (clave/modelo/cuota): visible para diagnóstico. -->
+      <tipi-message v-if="dictamen.llm_error" type="error" icon>
+        {{ dictamen.llm_error }}
+      </tipi-message>
+
       <!-- 1.b. Puerta de insumo: si el texto no es una iniciativa, banner único y nada de tablas. -->
       <tipi-message v-if="notaInsumo" type="error" icon>
         {{ notaInsumo }}
