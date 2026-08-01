@@ -86,38 +86,40 @@
         <p v-if="sinEvaluar.total" class="pail-panel__pending u-color-secondary">
           {{ fill(t('scanner.pail.pending'), { n: sinEvaluar.total, reason: razonPrincipal }) }}
         </p>
-
-        <!-- 4. Detalle completo en acordeón colapsado. -->
-        <details class="pail-panel__audit u-no-print">
-          <summary>{{ t('scanner.pail.auditDetail') }} ({{ dictamen.verificaciones.length }})</summary>
-          <table class="scanner-table pail-panel__table">
-            <thead>
-              <tr>
-                <th>{{ t('scanner.pail.col.id') }}</th>
-                <th>{{ t('scanner.pail.col.check') }}</th>
-                <th>{{ t('scanner.pail.col.layer') }}</th>
-                <th>{{ t('scanner.pail.col.result') }}</th>
-                <th>{{ t('scanner.pail.col.severity') }}</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr v-for="v in dictamen.verificaciones" :key="v.id">
-                <td :data-label="t('scanner.pail.col.id')"><strong>{{ v.id }}</strong></td>
-                <td :data-label="t('scanner.pail.col.check')">{{ v.nombre }}</td>
-                <td :data-label="t('scanner.pail.col.layer')">{{ capaLabel(v.capa) }}</td>
-                <td :data-label="t('scanner.pail.col.result')">
-                  <span class="badge" :class="'badge--' + resultClass(v.resultado)">{{ v.resultado }}</span>
-                </td>
-                <td :data-label="t('scanner.pail.col.severity')">{{ v.severidad }}</td>
-              </tr>
-            </tbody>
-          </table>
-        </details>
-
-        <button class="c-button c-button--primary u-no-print" @click.prevent="exportPdf">
-          {{ t('scanner.pail.export') }}
-        </button>
       </template>
+
+      <!-- 4. Detalle de auditoría en acordeón. Siempre visible: incluso en
+           NO_EVALUABLE_INSUMO muestra qué verificaciones sí corrieron (triaje,
+           sistematización) para que el análisis nunca quede "vacío". -->
+      <details class="pail-panel__audit u-no-print">
+        <summary>{{ t('scanner.pail.auditDetail') }} ({{ dictamen.verificaciones.length }})</summary>
+        <table class="scanner-table pail-panel__table">
+          <thead>
+            <tr>
+              <th>{{ t('scanner.pail.col.id') }}</th>
+              <th>{{ t('scanner.pail.col.check') }}</th>
+              <th>{{ t('scanner.pail.col.layer') }}</th>
+              <th>{{ t('scanner.pail.col.result') }}</th>
+              <th>{{ t('scanner.pail.col.severity') }}</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr v-for="v in dictamen.verificaciones" :key="v.id">
+              <td :data-label="t('scanner.pail.col.id')"><strong>{{ v.id }}</strong></td>
+              <td :data-label="t('scanner.pail.col.check')">{{ v.nombre }}</td>
+              <td :data-label="t('scanner.pail.col.layer')">{{ capaLabel(v.capa) }}</td>
+              <td :data-label="t('scanner.pail.col.result')">
+                <span class="badge" :class="'badge--' + resultClass(v.resultado)">{{ v.resultado }}</span>
+              </td>
+              <td :data-label="t('scanner.pail.col.severity')">{{ v.severidad }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </details>
+
+      <button class="c-button c-button--primary u-no-print" @click.prevent="exportPdf">
+        {{ t('scanner.pail.export') }}
+      </button>
     </template>
   </div>
 </template>
