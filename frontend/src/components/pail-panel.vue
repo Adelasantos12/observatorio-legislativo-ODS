@@ -28,7 +28,7 @@
       </tipi-message>
 
       <template v-else>
-        <!-- 2. Red flags (lo que hay que arreglar), priorizadas. -->
+        <!-- 2. Red flags (lo que hay que arreglar), priorizadas, con qué hacer. -->
         <h5>{{ t('scanner.pail.redFlagsTitle') }}</h5>
         <p v-if="!redFlags.length" class="u-color-secondary">{{ t('scanner.pail.noRedFlags') }}</p>
         <table v-else class="scanner-table pail-panel__table">
@@ -37,7 +37,7 @@
               <th>{{ t('scanner.pail.col.severity') }}</th>
               <th>{{ t('scanner.pail.col.check') }}</th>
               <th>{{ t('scanner.pail.col.finding') }}</th>
-              <th>{{ t('scanner.pail.col.evidence') }}</th>
+              <th>{{ t('scanner.pail.col.action') }}</th>
             </tr>
           </thead>
           <tbody>
@@ -46,41 +46,72 @@
                 <span class="badge" :class="'badge--' + sevClass(f.severidad)">{{ f.severidad }}</span>
               </td>
               <td :data-label="t('scanner.pail.col.check')"><strong>{{ f.verificacion }}</strong><br /><small class="u-color-secondary">{{ f.id }}</small></td>
-              <td :data-label="t('scanner.pail.col.finding')">{{ f.hallazgo }}</td>
-              <td :data-label="t('scanner.pail.col.evidence')">
-                <template v-if="f.evidencia_muestra">«{{ f.evidencia_muestra.cita }}»<br /><small class="u-color-secondary">{{ f.evidencia_muestra.ubicacion }}</small></template>
-                <span v-else class="u-color-secondary">—</span>
+              <td :data-label="t('scanner.pail.col.finding')">
+                {{ f.hallazgo }}
+                <template v-if="f.evidencia_muestra"><br /><small class="u-color-secondary">«{{ f.evidencia_muestra.cita }}» · {{ f.evidencia_muestra.ubicacion }}</small></template>
+              </td>
+              <td :data-label="t('scanner.pail.col.action')">
+                <span v-if="f.recomendacion">{{ f.recomendacion }}</span>
+                <span v-else class="u-color-secondary">{{ t('scanner.pail.actionPending') }}</span>
               </td>
             </tr>
           </tbody>
         </table>
 
-        <!-- 2.b. Áreas de oportunidad (incluye armonización y cableado). -->
+        <!-- 2.b. Áreas de fortalecimiento, con qué hacer. -->
         <h5>{{ t('scanner.pail.opportunitiesTitle') }}</h5>
         <p v-if="!oportunidades.length" class="u-color-secondary">{{ t('scanner.pail.noOpportunities') }}</p>
         <table v-else class="scanner-table pail-panel__table">
           <thead>
             <tr>
               <th>{{ t('scanner.pail.col.check') }}</th>
-              <th>{{ t('scanner.pail.col.detail') }}</th>
+              <th>{{ t('scanner.pail.col.finding') }}</th>
+              <th>{{ t('scanner.pail.col.action') }}</th>
             </tr>
           </thead>
           <tbody>
             <tr v-for="f in oportunidades" :key="f.id">
               <td :data-label="t('scanner.pail.col.check')"><strong>{{ f.verificacion }}</strong><br /><small class="u-color-secondary">{{ f.id }}</small></td>
-              <td :data-label="t('scanner.pail.col.detail')">
+              <td :data-label="t('scanner.pail.col.finding')">
                 <span>{{ f.hallazgo }}</span>
-                <template v-if="f.armonizacion && f.armonizacion.length">
-                  <br /><small><strong>{{ fill(t('scanner.pail.harmonize'), { n: f.armonizacion.length }) }}:</strong>
-                  {{ f.armonizacion.slice(0, 8).map((a) => a.norma).join('; ') }}{{ f.armonizacion.length > 8 ? '…' : '' }}</small>
-                </template>
                 <template v-if="f.cableado">
-                  <br /><small class="u-color-secondary">{{ t('scanner.pail.wiring') }}: {{ f.cableado.a_articulo }} a artículo · {{ f.cableado.en_bloque }} en bloque — {{ f.cableado.lectura }}</small>
+                  <br /><small class="u-color-secondary">{{ t('scanner.pail.wiring') }}: {{ f.cableado.a_articulo }} a artículo, {{ f.cableado.en_bloque }} en bloque · {{ f.cableado.lectura }}</small>
                 </template>
+              </td>
+              <td :data-label="t('scanner.pail.col.action')">
+                <span v-if="f.recomendacion">{{ f.recomendacion }}</span>
+                <span v-else class="u-color-secondary">{{ t('scanner.pail.actionPending') }}</span>
               </td>
             </tr>
           </tbody>
         </table>
+
+        <!-- 2.c. Conexión con el ordenamiento: el mapa de leyes que un legislador
+             necesita para saber qué tocar (qué modifica, qué cita, qué armonizar). -->
+        <template v-if="conexiones.norma_objetivo || conexiones.total_citadas || conexiones.total_armonizar">
+          <h5>{{ t('scanner.pail.connectionsTitle') }}</h5>
+          <p v-if="conexiones.norma_objetivo" class="pail-panel__objetivo">
+            {{ t('scanner.pail.modifies') }}: <strong>{{ conexiones.norma_objetivo }}</strong>
+          </p>
+
+          <template v-if="conexiones.total_citadas">
+            <p class="pail-panel__conn-lead">{{ fill(t('scanner.pail.citedLead'), { n: conexiones.total_citadas }) }}</p>
+            <ul class="pail-panel__conn">
+              <li v-for="(n, i) in conexiones.normas_citadas" :key="'c' + i">
+                {{ n.norma }}
+                <small v-if="n.ultima_reforma" class="u-color-secondary"> · {{ t('scanner.pail.lastReform') }} {{ n.ultima_reforma }}</small>
+              </li>
+            </ul>
+          </template>
+
+          <template v-if="conexiones.total_armonizar">
+            <p class="pail-panel__conn-lead">{{ fill(t('scanner.pail.harmonizeLead'), { n: conexiones.total_armonizar }) }}</p>
+            <ul class="pail-panel__conn">
+              <li v-for="(a, i) in conexiones.armonizar" :key="'a' + i">{{ a.norma }}</li>
+            </ul>
+            <p class="u-color-secondary"><small>{{ t('scanner.pail.harmonizeNote') }}</small></p>
+          </template>
+        </template>
 
         <!-- 3. Sin evaluar: UNA sola línea, con la razón principal. -->
         <p v-if="sinEvaluar.total" class="pail-panel__pending u-color-secondary">
@@ -149,6 +180,7 @@ function capaLabel(c) {
 }
 
 const resumen = computed(() => props.dictamen?.resumen || {});
+const conexiones = computed(() => props.dictamen?.conexiones || {});
 const notaInsumo = computed(() => resumen.value.nota_insumo || null);
 const redFlags = computed(() => resumen.value.red_flags || []);
 const oportunidades = computed(() => resumen.value.areas_oportunidad || []);
@@ -215,6 +247,19 @@ function exportPdf() {
     margin: 0.5rem 0 1.5rem;
     padding-left: 0.75rem;
     border-left: 3px solid #d68910;
+  }
+  &__objetivo {
+    margin: 0.5rem 0;
+  }
+  &__conn-lead {
+    margin: 1rem 0 0.25rem;
+    font-size: 0.92rem;
+  }
+  &__conn {
+    margin: 0 0 0.75rem;
+    padding-left: 1.1rem;
+    font-size: 0.88rem;
+    li { margin: 0.15rem 0; }
   }
   &__audit {
     margin: 1rem 0;

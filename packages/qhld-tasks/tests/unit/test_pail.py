@@ -239,6 +239,102 @@ def test_llm_error_sistemico_se_expone(monkeypatch, con_indices):
     assert pail.validate_dictamen(d) == []
 
 
+# --- Insumo PDF real: espacios dobles + decreto enterrado tras exposición larga --
+
+INICIATIVA_PDF = (
+    "INICIATIVA  QUE  REFORMA  EL  ARTÍCULO  100  DEL  CÓDIGO  FISCAL  DE  LA  FEDERACIÓN\n\n"
+    "Quien  suscribe,  con  fundamento  en  los  artículos  71  y  72  de  la  Constitución,\n\n"
+    "Exposición de Motivos\n\n"
+    + ("El  combate  a  los  delitos  fiscales  exige  claridad  procesal  y  certeza. " * 45)
+    + "\n\nPor lo expuesto, someto el siguiente proyecto de:\n\n"
+    "Decreto  por  el  que  se  reforma  el  artículo  100  del  Código  Fiscal  de  la  "
+    "Federación\n\n"
+    "Único.  Se  reforma  el  artículo  100  para  quedar  como  sigue:\n\n"
+    "Artículo 100. El derecho a formular la querella se extingue en cinco años.\n\n"
+    "TRANSITORIOS\n\n"
+    "Primero. El presente Decreto entrará en vigor al día siguiente de su publicación.\n"
+)
+
+
+def test_normaliza_espacios_dobles_y_decreto_enterrado(con_indices):
+    """La extracción de PDF mete espacios dobles ('se  reforma') y deja la cláusula
+    del decreto tras una exposición larga. El envoltorio colapsa el whitespace y
+    antepone la cláusula para que el motor clasifique el tipo (reforma), no
+    indeterminado, y siga viendo un solo artículo (sin crear falsos)."""
+    d = pail.analizar_texto(INICIATIVA_PDF, mtl=True)
+    assert d["contexto"].get("tipo_instrumento") == "reforma"
+    assert d["articulos_detectados"] == 1
+    assert d["dictamen_global"] != "NO_EVALUABLE_INSUMO"
+
+
+def test_conexiones_mapea_leyes_citadas_y_armonizacion(con_indices):
+    """El bloque `conexiones` responde 'con qué leyes se conecta': la norma que
+    modifica, las que cita (con vigencia, CSN-06) y las candidatas a armonización
+    (CSN-04). El CNPP del vault cita el art. 100 del CFF → debe salir como candidata."""
+    d = pail.analizar_texto(INICIATIVA_PDF, mtl=True)
+    cx = d["conexiones"]
+    assert cx["norma_objetivo"] and "CÓDIGO FISCAL" in cx["norma_objetivo"]
+    assert cx["total_citadas"] >= 1
+    assert any("FISCAL" in c["norma"] for c in cx["normas_citadas"])
+    assert any("PROCEDIMIENTOS PENALES" in a["norma"] for a in cx["armonizar"])
+
+
+MULTI_LEY = (
+    "INICIATIVA  QUE  REFORMA  DIVERSAS  DISPOSICIONES\n\n"
+    "Exposición de Motivos\n\n" + ("Contexto  del  problema  planteado. " * 40) + "\n\n"
+    "Decreto  por  el  que  se  reforman  y  adicionan  diversas  disposiciones  del  "
+    "Código  Fiscal  de  la  Federación  y  del  Código  Nacional  de  Procedimientos  "
+    "Penales\n\n"
+    "Primero.  Se  reforma  el  artículo  100  del  Código  Fiscal  de  la  Federación,  "
+    "para  quedar  como  sigue:\n\n"
+    "Artículo 100. El derecho a formular la querella se extingue en cinco años.\n\n"
+    "TRANSITORIOS\n\nPrimero. Entrará en vigor al día siguiente.\n"
+)
+
+
+def test_multi_ley_se_clasifica_como_reforma(con_indices):
+    """Un decreto que reforma varias leyes se detecta como reforma (no queda
+    indeterminado) y produce norma objetivo, no NO_APLICA."""
+    d = pail.analizar_texto(MULTI_LEY, mtl=True)
+    assert d["contexto"].get("tipo_instrumento") == "reforma"
+    assert d["conexiones"]["norma_objetivo"]
+
+
+def test_juicio_recibe_el_texto_de_la_iniciativa(monkeypatch, con_indices):
+    """El LLM debe recibir el articulado propuesto como evidencia: sin él, el blindaje
+    deja todo en NO_EVALUABLE y el análisis 'no dice nada'."""
+    capt = {}
+
+    def fake_complete(system, user):
+        capt["user"] = user
+        return json.dumps({"resultado": "CUMPLE", "explicacion": "ok",
+                           "recomendacion": "mantener la redacción actual"})
+
+    monkeypatch.setattr(config, "LLM_PROVIDER", "anthropic")
+    monkeypatch.setattr(config, "LLM_API_KEY", "x")
+    monkeypatch.setattr(pail.llm, "complete", fake_complete)
+
+    pail.analizar_texto(INICIATIVA, mtl=True, llm_juicio=True)
+    assert "ARTICULADO PROPUESTO" in capt["user"]
+    assert "Artículo 100" in capt["user"]
+
+
+def test_recomendacion_del_llm_llega_al_resumen(monkeypatch, con_indices):
+    """La recomendación (qué hacer) que devuelve el LLM se cuelga en las filas del
+    resumen para que el panel muestre acción, no solo un código."""
+    def fake_complete(system, user):
+        return json.dumps({"resultado": "PARCIAL", "explicacion": "falta precisión",
+                           "recomendacion": "acotar la conducta sancionable"})
+
+    monkeypatch.setattr(config, "LLM_PROVIDER", "anthropic")
+    monkeypatch.setattr(config, "LLM_API_KEY", "x")
+    monkeypatch.setattr(pail.llm, "complete", fake_complete)
+
+    d = pail.analizar_texto(INICIATIVA, mtl=True, llm_juicio=True)
+    filas = d["resumen"]["red_flags"] + d["resumen"]["areas_oportunidad"]
+    assert any(f.get("recomendacion") == "acotar la conducta sancionable" for f in filas)
+
+
 def test_llm_sin_evidencia_suficiente_es_no_evaluable(monkeypatch, con_indices):
     # El modelo responde algo inválido → la envoltura lo marca NO_EVALUABLE.
     monkeypatch.setattr(config, "LLM_PROVIDER", "anthropic")
