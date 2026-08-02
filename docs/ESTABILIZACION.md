@@ -7,9 +7,10 @@ seguridad). No sustituye a `CLAUDE.md`; lo complementa con disciplina de proceso
 ## Punto estable (baseline)
 
 - **Rama de trabajo:** `claude/adenda-v5-1-ods-identity-2mrqvp`.
-- **`main` estable:** commit `0646f26` (incluye #37, #38 y #39: segmentación de
-  encabezados, normalización de PDF + armonización viva + panel legible, y OCR
-  ante glifos sin mapear).
+- **`main` estable:** commit `ab28a94` (incluye #37–#39: segmentación de
+  encabezados, normalización de PDF + armonización viva + panel legible y OCR ante
+  glifos sin mapear; #41: rate-limit del escáner + lectura de subida acotada; #42:
+  CI de backend).
 - **Estado de pruebas en el baseline:**
   - `packages/qhld-tasks` (unidad): verde.
   - `api` (unidad): verde.
@@ -71,19 +72,31 @@ modo que `main` es ancestro de la rama y los PRs siguientes muestran diffs limpi
 | Insumo sin articulado (no es iniciativa) | `qhld-tasks` | `tests/unit/test_pail.py::test_puerta_de_insumo_sin_articulado` |
 | PDF con glifos sin mapear `(cid:N)`: no disparaba OCR (0 ODS, 0 articulado) | `api` | `tests/unit/test_tagger.py::test_pdf_basura_cid_cae_a_ocr` |
 
-## Puertas de CI → despliegue (acción de configuración pendiente)
+## Puertas de CI → despliegue
 
-Estas requieren permisos de administrador del repo y del panel de Railway; se
-listan para completar la regla 5:
+**CI existente (automatizada).** Todo PR corre los checks de su ámbito antes de
+fusionar:
 
-1. **Protección de rama en `main`:** exigir que los checks de CI pasen antes de
+- Frontend: `invariants` (e2e), `content-check`, `identidad-ods`, `hex-retirados`.
+- Backend: `backend-ci` (`api` + `qhld-tasks`, suites de unidad) — añadida en #42.
+- NormTrace: `normtrace-eval` (candado del dorado).
+
+**Configuración pendiente (requiere admin del repo y de Railway)** para cerrar la
+regla 5 end-to-end:
+
+1. **Protección de rama en `main`:** marcar esos checks como obligatorios antes de
    fusionar, y prohibir push directo (solo vía PR).
 2. **Railway:** desplegar desde `main` solo tras la fusión, o activar la espera de
    checks, para que ningún commit sin CI llegue a producción.
 
 ## Pendiente de verificación en staging (regla 7)
 
-- **#39 (OCR ante glifos `cid`):** mergeado en `main` `0646f26`. Falta redeploy del
-  servicio `api` y **verificar en la URL real** subiendo el PDF afectado
-  (`asun_4895947`): debe extraer texto por OCR (~60 s, 23 páginas) y devolver ODS,
-  NormTrace y PAIL con articulado (24 unidades en la prueba de laboratorio).
+Mergeados en `main` `ab28a94`, aún sin verificar en la URL real tras el redeploy
+del servicio `api`:
+
+- **#39 (OCR ante glifos `cid`):** subir el PDF afectado (`asun_4895947`); debe
+  extraer texto por OCR (~60 s, 23 páginas) y devolver ODS, NormTrace y PAIL con
+  articulado (24 unidades en la prueba de laboratorio).
+- **#41 (rate-limit `TAGGER_RATE_LIMIT`):** confirmar que el escaneo normal sigue
+  fluido; si tras el proxy de Railway el límite se ve restrictivo (IP compartida),
+  ajustar el valor por variable de entorno.
