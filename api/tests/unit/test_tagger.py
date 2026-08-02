@@ -211,6 +211,31 @@ class _FakeUpload:
         self.filename = filename
 
 
+def test_escaner_tiene_rate_limit(client, monkeypatch):
+    """El endpoint del escáner es caro (OCR ~60 s, decenas de llamadas LLM de pago)
+    y anónimo: debe limitar por IP para evitar DoS y amplificación de costo.
+    Regresión del hallazgo de seguridad (antes no tenía ningún límite)."""
+    monkeypatch.setattr(Config, "TAGGER_RATE_LIMIT", "2/minute")
+    data = {"text": "escaneo de prueba", "knowledgebase": "ods"}
+    assert client.post("/tagger/", data=data).status_code == 200
+    assert client.post("/tagger/", data=data).status_code == 200
+    assert client.post("/tagger/", data=data).status_code == 429
+
+
+def test_archivo_supera_tope_se_rechaza(monkeypatch):
+    """Aunque no venga Content-Length (subida chunked que evade el middleware), la
+    lectura acotada rechaza un archivo por encima del tope sin cargarlo entero en
+    memoria. Regresión del hallazgo de seguridad."""
+    from fastapi import HTTPException
+    from tipi_backend.api.endpoints import tagger
+
+    monkeypatch.setattr(Config, "MAX_CONTENT_LENGTH", 10)
+    up = _FakeUpload(b"%PDF-1.4 " + b"A" * 100, "application/pdf", "grande.pdf")
+    with pytest.raises(HTTPException) as exc:
+        tagger._extract_text_from_file(up)
+    assert exc.value.status_code == 413
+
+
 def test_pdf_imagen_cae_a_ocr(monkeypatch):
     """Un PDF sin capa de texto (pdfminer devuelve vacío) usa el respaldo OCR."""
     from tipi_backend.api.endpoints import tagger

@@ -8,7 +8,7 @@ import tempfile
 from os.path import splitext
 from typing import Annotated
 
-from fastapi import APIRouter, File, Form, HTTPException, Query, UploadFile
+from fastapi import APIRouter, File, Form, HTTPException, Query, Request, UploadFile
 from fastapi.responses import JSONResponse
 from pdfminer.high_level import extract_text as extract_pdf_text
 from docx import Document
@@ -19,6 +19,7 @@ from legal_segmenter import segment as segment_legal
 import tipi_tasks
 from tipi_backend.api import cache
 from tipi_backend.api.business import get_tags, get_kbs
+from tipi_backend.api.ratelimit import limiter
 from tipi_backend.api.request_models import KbQuery
 from tipi_backend.settings import Config
 
@@ -224,7 +225,13 @@ def _extract_text_from_file(file: UploadFile) -> str:
     - Foto o imagen (jpg/png/tiff/…) -> OCR directo.
     El objetivo: si el documento tiene texto legible por una persona, lo sacamos.
     """
-    raw = file.file.read()
+    # Lectura acotada: el middleware `limit_upload_size` rechaza por Content-Length,
+    # pero una subida chunked sin ese header lo evadiría. Se lee un byte de más que
+    # el tope y, si se excede, se rechaza sin cargar el archivo entero en memoria.
+    limite = Config.MAX_CONTENT_LENGTH
+    raw = file.file.read(limite + 1)
+    if len(raw) > limite:
+        raise HTTPException(status_code=413, detail="El archivo supera el tamaño máximo permitido.")
     kind = _sniff_kind(raw[:16], file.filename or "", file.content_type or "")
     suffix = splitext(file.filename or "")[1] or (".pdf" if kind == "pdf" else "")
     with tempfile.NamedTemporaryFile(prefix="tipiscanner_", suffix=suffix) as f:
@@ -289,7 +296,9 @@ def _extract_text_from_file(file: UploadFile) -> str:
 
 
 @router.post("/")
+@limiter.limit(lambda: Config.TAGGER_RATE_LIMIT)
 def extract(
+    request: Request,
     text: Annotated[str, Form()] = "",
     file: Annotated[UploadFile | str | None, File()] = None,
     knowledgebase: Annotated[str, Form()] = "",

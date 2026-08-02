@@ -62,6 +62,13 @@ class Config:
     # encima se pide dividirlo.
     TAGGER_SYNC_MAX_WORDS = int(env.get("TAGGER_SYNC_MAX_WORDS", "60000"))
 
+    # Límite de peticiones al escáner por IP. Es el endpoint caro (OCR de ~60 s y,
+    # con pail_llm, decenas de llamadas LLM de pago): sin tope, un cliente anónimo
+    # podría agotar CPU y presupuesto. Se lee por petición (permite ajustarlo en
+    # caliente). Nota: tras un proxy inverso, el limiter ve la IP del proxy salvo
+    # que se propague X-Forwarded-For; ajusta el valor según tu despliegue.
+    TAGGER_RATE_LIMIT = env.get("TAGGER_RATE_LIMIT", "60/minute")
+
     # --- NormTrace (etapa 3: codificación estructural profunda) ---
     # ¿Despachar el análisis profundo a Celery? Requiere worker + broker. Por
     # defecto False: corre SÍNCRONO en la misma petición y el bloque `structural`
