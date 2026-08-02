@@ -101,11 +101,25 @@ def _word_count(text: str) -> int:
     return len(re.findall(r"[A-Za-zÁÉÍÓÚÜÑáéíóúüñ]{2,}", text or ""))
 
 
+_CID_RE = re.compile(r"\(cid:\d+\)")
+
+
 def _looks_thin(text: str) -> bool:
-    """¿El texto extraído es esencialmente vacío? (PDF escaneado sin capa de
-    texto, o con una capa de basura). Umbral en palabras, no en caracteres: un
-    escaneo puede traer >20 chars de ruido y aun así no tener contenido real."""
-    return _word_count(text) < 6
+    """¿El texto extraído es esencialmente vacío o basura? Dispara el OCR de
+    respaldo. Dos casos reales de la Gaceta:
+      (1) PDF escaneado sin capa de texto: poquísimas palabras legibles.
+      (2) PDF con fuente incrustada sin tabla ToUnicode: pdfminer devuelve miles
+          de tokens '(cid:N)' —glifos sin mapear, ilegibles— que engañan a un
+          conteo ingenuo de palabras ('cid' cuenta como palabra) y hacían que el
+          OCR NUNCA se disparara, pasando basura al etiquetador y a PAIL.
+    Se descuentan los '(cid:N)': si dominan sobre las palabras legibles, o quedan
+    menos de 6 palabras reales, se trata como vacío."""
+    text = text or ""
+    cid = len(_CID_RE.findall(text))
+    real = _word_count(_CID_RE.sub(" ", text))
+    if cid and cid > real:
+        return True
+    return real < 6
 
 
 def _sniff_kind(head: bytes, filename: str, mimetype: str) -> str:
@@ -220,12 +234,16 @@ def _extract_text_from_file(file: UploadFile) -> str:
             text = _decode_text(raw)
         elif kind == "pdf":
             text = (extract_pdf_text(f.name) or "").strip()
-            # PDF escaneado o con capa de texto pobre -> OCR; nos quedamos con el
-            # resultado que traiga más palabras legibles.
+            # PDF escaneado, o con capa de texto pobre/basura (fuente sin ToUnicode)
+            # -> OCR; nos quedamos con el que traiga más palabras LEGIBLES: el conteo
+            # se hace sobre el texto sin los tokens '(cid:N)', que no son palabras.
             if _looks_thin(text):
                 ocr_text = _ocr_pdf(f.name)
-                if _word_count(ocr_text) > _word_count(text):
+                if _word_count(ocr_text) > _word_count(_CID_RE.sub(" ", text)):
                     text = ocr_text
+            # Limpia cualquier residuo de glifos sin mapear si el OCR no aplicó,
+            # para no enviar '(cid:N)' al etiquetador ni al segmentador.
+            text = _CID_RE.sub(" ", text).strip()
         elif kind == "image":
             text = _ocr_image(f.name)
         elif kind == "docx":

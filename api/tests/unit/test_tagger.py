@@ -230,6 +230,28 @@ def test_pdf_imagen_cae_a_ocr(monkeypatch):
     assert "OCR" in text
 
 
+def test_pdf_basura_cid_cae_a_ocr(monkeypatch):
+    """PDF con fuente sin ToUnicode: pdfminer devuelve miles de '(cid:N)'. Aunque
+    son muchos 'tokens', es basura ilegible: debe dispararse el OCR y usarse su
+    texto, no la basura (esto rompía el escáner con iniciativas reales de la
+    Gaceta: 0 coincidencias ODS y 0 articulado)."""
+    from tipi_backend.api.endpoints import tagger
+
+    basura = "(cid:0)" * 5000  # miles de glifos sin mapear, cero legible
+    monkeypatch.setattr(tagger, "extract_pdf_text", lambda path: basura)
+
+    def fake_ocr(path):
+        return ("INICIATIVA CON PROYECTO DE DECRETO POR EL QUE SE REFORMA EL "
+                "ARTÍCULO 100 DEL CÓDIGO FISCAL DE LA FEDERACIÓN.")
+
+    monkeypatch.setattr(tagger, "_ocr_pdf", fake_ocr)
+
+    up = _FakeUpload(b"%PDF-1.4 cid", "application/pdf", "gaceta.pdf")
+    text = tagger._extract_text_from_file(up)
+    assert "(cid:" not in text
+    assert "CÓDIGO FISCAL" in text
+
+
 def test_pdf_con_texto_no_llama_ocr(monkeypatch):
     """Si pdfminer ya trae texto, no se dispara el OCR (más lento)."""
     from tipi_backend.api.endpoints import tagger
